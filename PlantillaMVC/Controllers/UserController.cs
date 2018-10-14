@@ -1,4 +1,5 @@
 ﻿using PlantillaMVC.Domain.Services;
+using PlantillaMVC.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,7 +17,14 @@ namespace PlantillaMVC.Controllers {
 
         // GET: User
         public ActionResult Index() {
-            return View();
+            var users = _userService.GetAll().Select(user => new UserViewModel {
+                Id = user.Id,
+                Name = user.Name,
+                Email = user.Email,
+                CreatedAt = user.CreatedAt,
+                UpdatedAt = user.UpdatedAt
+            });
+            return View(users);
         }
 
         // GET: User/Details/5

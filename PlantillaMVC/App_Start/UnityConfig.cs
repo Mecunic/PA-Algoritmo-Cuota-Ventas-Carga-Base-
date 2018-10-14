@@ -6,6 +6,8 @@ using PlantillaMVC.Domain.Repositories;
 using PlantillaMVC.Data.Repositories;
 using PlantillaMVC.Data.Helpers;
 using PlantillaMVC.Domain.Services;
+using PlantillaMVC.Controllers;
+using Unity.Lifetime;
 
 namespace PlantillaMVC {
 
@@ -44,10 +46,9 @@ namespace PlantillaMVC {
             // NOTE: To load from web.config uncomment the line below.
             // Make sure to add a Unity.Configuration to the using statements.
             // container.LoadConfiguration();
-
             // TODO: Register your type's mappings here.
             // container.RegisterType<IProductRepository, ProductRepository>();
-            container.RegisterType<IUnitOfWork, UnitOfWork>();
+            container.RegisterType<IUnitOfWork, UnitOfWork>(new HierarchicalLifetimeManager());
             container.RegisterType(typeof(IRepository<>), typeof(Repository<>));
             container.RegisterType<IUserService, UserService>();
         }
