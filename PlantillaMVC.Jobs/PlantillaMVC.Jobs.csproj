@@ -256,6 +256,16 @@
     <Content Include="Scripts\jquery-3.3.1.slim.min.map" />
     <Content Include="Scripts\jquery-3.3.1.min.map" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PlantillaMVC.Data\PlantillaMVC.Data.csproj">
+      <Project>{ddec9c5f-5c7e-48d9-a8f8-4a62c08b1402}</Project>
+      <Name>PlantillaMVC.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PlantillaMVC.Domain\PlantillaMVC.Domain.csproj">
+      <Project>{10e75ff9-84e1-4675-80ba-f7154812fef7}</Project>
+      <Name>PlantillaMVC.Domain</Name>
+    </ProjectReference>
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
