@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PlantillaMVC.Data", "Planti
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PlantillaMVC.Domain", "PlantillaMVC.Domain\PlantillaMVC.Domain.csproj", "{10E75FF9-84E1-4675-80BA-F7154812FEF7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlantillaMVC.Jobs", "PlantillaMVC.Jobs\PlantillaMVC.Jobs.csproj", "{0F5C8BF5-B860-4B27-B98C-A50DE923B693}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +53,8 @@ Global
 		{10E75FF9-84E1-4675-80BA-F7154812FEF7}.Release|Any CPU.Build.0 = Release|Any CPU
 		{10E75FF9-84E1-4675-80BA-F7154812FEF7}.Release|x86.ActiveCfg = Release|Any CPU
 		{10E75FF9-84E1-4675-80BA-F7154812FEF7}.Release|x86.Build.0 = Release|Any CPU
+		{0F5C8BF5-B860-4B27-B98C-A50DE923B693}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0F5C8BF5-B860-4B27-B98C-A50DE923B693}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
