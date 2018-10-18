@@ -13,6 +13,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PlantillaMVC.Domain", "Plan
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlantillaMVC.Jobs", "PlantillaMVC.Jobs\PlantillaMVC.Jobs.csproj", "{0F5C8BF5-B860-4B27-B98C-A50DE923B693}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlantillaMVC.API", "PlantillaMVC.API\PlantillaMVC.API.csproj", "{923B53E3-B5E3-45F3-8BE6-A548CFC871BB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -61,6 +63,14 @@ Global
 		{0F5C8BF5-B860-4B27-B98C-A50DE923B693}.Release|Any CPU.Build.0 = Release|Any CPU
 		{0F5C8BF5-B860-4B27-B98C-A50DE923B693}.Release|x86.ActiveCfg = Release|Any CPU
 		{0F5C8BF5-B860-4B27-B98C-A50DE923B693}.Release|x86.Build.0 = Release|Any CPU
+		{923B53E3-B5E3-45F3-8BE6-A548CFC871BB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{923B53E3-B5E3-45F3-8BE6-A548CFC871BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{923B53E3-B5E3-45F3-8BE6-A548CFC871BB}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{923B53E3-B5E3-45F3-8BE6-A548CFC871BB}.Debug|x86.Build.0 = Debug|Any CPU
+		{923B53E3-B5E3-45F3-8BE6-A548CFC871BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{923B53E3-B5E3-45F3-8BE6-A548CFC871BB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{923B53E3-B5E3-45F3-8BE6-A548CFC871BB}.Release|x86.ActiveCfg = Release|Any CPU
+		{923B53E3-B5E3-45F3-8BE6-A548CFC871BB}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
