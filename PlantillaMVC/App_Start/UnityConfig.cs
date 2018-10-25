@@ -6,7 +6,6 @@ using PlantillaMVC.Domain.Repositories;
 using PlantillaMVC.Data.Repositories;
 using PlantillaMVC.Data.Helpers;
 using PlantillaMVC.Domain.Services;
-using PlantillaMVC.Controllers;
 using Unity.Lifetime;
 
 namespace PlantillaMVC {

@@ -99,9 +99,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\PlantillaMVC\PlantillaMVC.csproj">
+    <ProjectReference Include="..\PlantillaMVC\PlantillaMVC.Web.csproj">
       <Project>{C79F568D-4AD5-4CA5-B352-048B2F71E726}</Project>
-      <Name>PlantillaMVC</Name>
+      <Name>PlantillaMVC.Web</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
