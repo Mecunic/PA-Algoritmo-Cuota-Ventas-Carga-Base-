@@ -21,15 +21,10 @@ namespace PlantillaMVC.Data.Helpers {
         public ISession Session { get; set; }
 
         static UnitOfWork() {
-            try {
-                _sessionFactory = Fluently.Configure()
-                    .Database(SQLiteConfiguration.Standard.InMemory)
-                    .Mappings(m => m.FluentMappings.AddFromAssemblyOf<UserMap>())
-                    .BuildSessionFactory();
-            } catch (Exception e) {
-                var typeLoadException = e.InnerException.InnerException as ReflectionTypeLoadException;
-                var loaderExceptions = typeLoadException.LoaderExceptions;
-            }
+            _sessionFactory = Fluently.Configure()
+                .Database(SQLiteConfiguration.Standard.InMemory)
+                .Mappings(m => m.FluentMappings.AddFromAssemblyOf<UserMap>())
+                .BuildSessionFactory();
         }
 
         public UnitOfWork() {

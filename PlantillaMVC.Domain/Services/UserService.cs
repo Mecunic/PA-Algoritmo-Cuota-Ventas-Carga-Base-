@@ -18,7 +18,7 @@ namespace PlantillaMVC.Domain.Services {
         void Update(User user);
 
         void Delete(int id);
-    }        
+    }
 
     public class UserService : IUserService {
         private IRepository<User> _userRepository;
@@ -41,7 +41,7 @@ namespace PlantillaMVC.Domain.Services {
 
         public User GetById(int id) {
             return _userRepository.GetById(id);
-        }        
+        }
 
         public void Update(User user) {
             _userRepository.Update(user);
