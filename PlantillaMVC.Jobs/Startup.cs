@@ -32,7 +32,7 @@ namespace PlantillaMVC.Jobs
                 {
                     JobName = System.Configuration.ConfigurationManager.AppSettings["Jobs.EnviarNotificaciones.Name"].ToString();
                     JobCron = System.Configuration.ConfigurationManager.AppSettings["Jobs.EnviarNotificaciones.Cron"].ToString();
-                    RecurringJob.AddOrUpdate(JobName, () => DemoJob.DemoMethod(), JobCron, TimeZoneInfo.FindSystemTimeZoneById("Central Standard Time (Mexico)"));
+                    RecurringJob.AddOrUpdate(JobName, () => DemoJob.DemoMethod(), Cron.MinuteInterval(5), TimeZoneInfo.FindSystemTimeZoneById("Central Standard Time (Mexico)"));
                 }
 
                 app.UseHangfireDashboard(Dashboardurl, new DashboardOptions
