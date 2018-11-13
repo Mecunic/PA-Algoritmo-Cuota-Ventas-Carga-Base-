@@ -7,7 +7,9 @@ using HubSpot.NET.Api.Contact.Dto;
 using HubSpot.NET.Api.Deal.Dto;
 using HubSpot.NET.Api.Engagement.Dto;
 using HubSpot.NET.Core;
+using Newtonsoft.Json;
 using PlantillaMVC.Integrations.Hubspot;
+using RestSharp;
 
 namespace PlantillaMVC.Integrations
 {
@@ -16,6 +18,8 @@ namespace PlantillaMVC.Integrations
         object CreateContact();
 
         List<HubspotDealModel> ReadDeals();
+
+        HubspotDealsResult ReadDeals2();
 
 
     }
@@ -74,6 +78,26 @@ namespace PlantillaMVC.Integrations
             }
 
             return list;
+        }
+
+        public HubspotDealsResult ReadDeals2()
+        {
+            var client = new RestClient("https://api.hubapi.com");
+
+            var request = new RestRequest("/deals/v1/deal/paged", Method.GET);
+            request.AddParameter("hapikey", "bdb3a514-f38f-466d-a1cb-94fd69a76a84");
+            request.AddParameter("includeAssociations", true);
+            request.AddParameter("properties", "hubspot_owner_id");
+            request.AddParameter("properties", "amount");
+            request.AddParameter("properties", "closedate");
+            request.AddParameter("properties", "dealstage");
+            request.AddParameter("properties", "dealname");
+            request.AddParameter("properties", "linea_de_negocio");
+            request.AddParameter("properties", "dealtype");
+
+            IRestResponse response = client.Execute(request);
+            HubspotDealsResult result = JsonConvert.DeserializeObject<HubspotDealsResult>(response.Content);
+            return result;
         }
     }
 }

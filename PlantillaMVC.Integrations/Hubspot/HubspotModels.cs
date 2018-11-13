@@ -18,4 +18,35 @@ namespace PlantillaMVC.Integrations.Hubspot
 
         public int RelatedContacts { set; get; }
     }
+
+    public class HubspotDealsResult
+    {
+        public long PortalId { set; get; }
+
+        public long DealId { set; get; }
+        public List<HubspotDeal> Deals { set; get; }
+    }
+
+    public class HubspotDeal
+    {
+        public List<HubspotDataEntity> Properties { set; get; }
+
+        //public string Associations { set; get; }
+    }
+
+    public class HubspotDataEntity
+    {
+        //public HubspotDataEntityProp Dealname { get; set; }
+        //public HubspotDataEntityProp Amount { get; set; }
+        //public HubspotDataEntityProp linea_de_negocio { get; set; }
+    }
+
+    public class HubspotDataEntityProp
+    {
+        public string Property { get; set; }
+
+        public object Value { get; set; }
+
+        public object Name { get; set; }
+    }
 }

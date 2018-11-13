@@ -29,12 +29,13 @@ namespace PlantillaMVC.Jobs.Jobs
                         //TODO: Implementar logica de negocio especifica
                         IHubspotService service = new HubspotService();
                         Trace.TraceInformation(string.Format("[DemoJob.DemoMethod] Executing at {0}", DateTime.Now));
-                        List<HubspotDealModel> hubspotDeals = service.ReadDeals();
-                        foreach (var deal in hubspotDeals)
-                        {
-                            //Trace.TraceInformation(string.Format("{0} - {1} - {2} - {3}- {4} - {5} - {6} - {7}", deal.Id, deal.Dealname, deal.Amount, deal.CloseDate, deal.DealType, deal.Pipeline, deal.RelatedCompanies, deal.RelatedContacts));
-                            Trace.TraceInformation(JsonUtil.ConvertToString(deal));
-                        }
+                        //List<HubspotDealModel> hubspotDeals = service.ReadDeals();
+                        //foreach (var deal in hubspotDeals)
+                        //{
+                        //    //Trace.TraceInformation(string.Format("{0} - {1} - {2} - {3}- {4} - {5} - {6} - {7}", deal.Id, deal.Dealname, deal.Amount, deal.CloseDate, deal.DealType, deal.Pipeline, deal.RelatedCompanies, deal.RelatedContacts));
+                        //    Trace.TraceInformation(JsonUtil.ConvertToString(deal));
+                        //}
+                        service.ReadDeals2();
                     }
                 }
                 catch (Exception ex)
