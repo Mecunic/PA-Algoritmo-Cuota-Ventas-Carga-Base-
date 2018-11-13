@@ -31,7 +31,8 @@ namespace PlantillaMVC.Web.Controllers {
             //Trace.TraceInformation(string.Format("{0}", contact));
 
             /*CREACION DE NOTAS*/
-            //api.Engagement.Create(new EngagementHubSpotModel() {
+            //api.Engagement.Create(new EngagementHubSpotModel()
+            //{
             //    Engagement = new EngagementHubSpotEngagementModel()
             //    {
             //        //String; One of NOTE, EMAIL, TASK, MEETING, or CALL, the type of the engagement.
@@ -39,23 +40,24 @@ namespace PlantillaMVC.Web.Controllers {
             //    },
             //    Metadata = new
             //    {
-            //        body = "This is an example note"
+            //        body = "This is an example note for a company"
             //    },
             //    Associations = new EngagementHubSpotAssociationsModel()
             //    {
-            //        ContactIds = new List<long>() { 151 /*contact.Id.Value*/ } //use the ID of the created contact from above
+            //        CompanyIds = new List<long>() { 1033124970 /*contact.Id.Value*/ }
+            //        //ContactIds = new List<long>() { 151 /*contact.Id.Value*/ } //use the ID of the created contact from above
             //    },
             //});
 
             /*LEER DEALS*/
-            var dealList = api.Deal.List<DealHubSpotModel>(false,
-                    new ListRequestOptions(250) { PropertiesToInclude = new List<string> { "dealname", "amount" } });
+            //var dealList = api.Deal.List<DealHubSpotModel>(false,
+            //        new ListRequestOptions(250) { PropertiesToInclude = new List<string> { "dealname", "amount" } });
 
-            foreach(var deal in dealList.Deals)
-            {
-                Trace.TraceInformation(string.Format("{0} - {1}", deal.Name, deal.Amount));
-            }
-            
+            //foreach(var deal in dealList.Deals)
+            //{
+            //    Trace.TraceInformation(string.Format("{0} - {1}", deal.Name, deal.Amount));
+            //}
+
             return View();
         }
 

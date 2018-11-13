@@ -25,7 +25,7 @@ namespace PlantillaMVC.Integrations
 
         public HubspotService()
         {
-            apiService = new HubSpotApi("3b609872-906e-42ae-92da-2e18ef841210");
+            apiService = new HubSpotApi(System.Configuration.ConfigurationManager.AppSettings["HubspotApiKey"]);
         }
 
         public object CreateContact()
@@ -46,9 +46,11 @@ namespace PlantillaMVC.Integrations
 
         public List<HubspotDealModel> ReadDeals()
         {
+            //https://api.hubapi.com/deals/v1/deal/paged?hapikey=<apikey>&includeAssociations=true&properties=dealname&properties=linea_de_negocio&properties=dealtype
+
             List<HubspotDealModel> list = new List<HubspotDealModel>();
-            var dealList = apiService.Deal.List<DealHubSpotModel>(true,
-                    new ListRequestOptions(250) { PropertiesToInclude = new List<string> { "hubspot_owner_id", "dealname", "amount", "associations", "closedate", "dealstage", "pipeline", "dealtype" } });
+            var dealList = apiService.Deal.List<HubspotDealModel>(true,
+                    new ListRequestOptions(250) { PropertiesToInclude = new List<string> { "hubspot_owner_id", "dealname", "amount", "closedate", "dealstage", "pipeline", "dealtype", "linea_de_negocio" } });
 
             foreach (var deal in dealList.Deals)
             {
@@ -59,12 +61,13 @@ namespace PlantillaMVC.Integrations
                 {
                     Id = deal.Id,
                     OwnerId = deal.OwnerId,
-                    Dealname = deal.Name,
+                    Name = deal.Name,
                     Amount = deal.Amount,
                     CloseDate = deal.CloseDate,
                     Stage = deal.Stage,
                     Pipeline = deal.Pipeline,
                     DealType = deal.DealType,
+                    linea_de_negocio = deal.linea_de_negocio,
                     RelatedCompanies = RelatedCompanies,
                     RelatedContacts = RelatedContacts
                 });
