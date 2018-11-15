@@ -7,6 +7,7 @@ using HubSpot.NET.Api.Contact.Dto;
 using HubSpot.NET.Api.Deal.Dto;
 using HubSpot.NET.Api.Engagement.Dto;
 using HubSpot.NET.Core;
+using HubSpot.NET.Core.Interfaces;
 using Newtonsoft.Json;
 using PlantillaMVC.Integrations.Hubspot;
 using RestSharp;
@@ -19,17 +20,22 @@ namespace PlantillaMVC.Integrations
 
         List<HubspotDealModel> ReadDeals();
 
-        HubspotDealsResult ReadDeals2();
+        DealHubSpot ReadDeals2();
 
+        string GetCompanyById(long id);
+        string GetContactById(long id);
 
     }
     public class HubspotService : IHubspotService
     {
-        HubSpotApi apiService;
-
+        private IHubSpotApi apiService;
+        private string apiKey;
+        private RestClient client;
         public HubspotService()
         {
             apiService = new HubSpotApi(System.Configuration.ConfigurationManager.AppSettings["HubspotApiKey"]);
+            apiKey = System.Configuration.ConfigurationManager.AppSettings["HubspotApiKey"];
+            client = new RestClient("https://api.hubapi.com");
         }
 
         public object CreateContact()
@@ -52,9 +58,8 @@ namespace PlantillaMVC.Integrations
         {
             //https://api.hubapi.com/deals/v1/deal/paged?hapikey=<apikey>&includeAssociations=true&properties=dealname&properties=linea_de_negocio&properties=dealtype
 
-            List<HubspotDealModel> list = new List<HubspotDealModel>();
-            var dealList = apiService.Deal.List<HubspotDealModel>(true,
-                    new ListRequestOptions(250) { PropertiesToInclude = new List<string> { "hubspot_owner_id", "dealname", "amount", "closedate", "dealstage", "pipeline", "dealtype", "linea_de_negocio" } });
+            List<DealHubSpotModel> list = new List<DealHubSpotModel>();
+            var dealList = apiService.Deal.List<HubspotDealModel>(true);
 
             foreach (var deal in dealList.Deals)
             {
@@ -77,15 +82,14 @@ namespace PlantillaMVC.Integrations
                 });
             }
 
-            return list;
+            return null;
         }
 
-        public HubspotDealsResult ReadDeals2()
+        public DealHubSpot ReadDeals2()
         {
-            var client = new RestClient("https://api.hubapi.com");
 
-            var request = new RestRequest("/deals/v1/deal/paged", Method.GET);
-            request.AddParameter("hapikey", "bdb3a514-f38f-466d-a1cb-94fd69a76a84");
+            RestRequest request = new RestRequest("/deals/v1/deal/paged", Method.GET);
+            request.AddParameter("hapikey", apiKey);
             request.AddParameter("includeAssociations", true);
             request.AddParameter("properties", "hubspot_owner_id");
             request.AddParameter("properties", "amount");
@@ -95,9 +99,29 @@ namespace PlantillaMVC.Integrations
             request.AddParameter("properties", "linea_de_negocio");
             request.AddParameter("properties", "dealtype");
 
-            IRestResponse response = client.Execute(request);
-            HubspotDealsResult result = JsonConvert.DeserializeObject<HubspotDealsResult>(response.Content);
+             IRestResponse response = client.Execute(request);
+            DealHubSpot result = JsonConvert.DeserializeObject<DealHubSpot>(response.Content);
             return result;
+        }
+        public string GetCompanyById(long id)
+        {
+
+            RestRequest request = new RestRequest("/companies/v2/companies/{id}", Method.GET);
+            request.AddParameter("hapikey", apiKey);
+            request.AddUrlSegment("id", id.ToString());
+
+            IRestResponse response = client.Execute(request);
+            return response.Content;
+        }
+        public string GetContactById(long id)
+        {
+
+            RestRequest request = new RestRequest("/contacts/v1/contact/vid/{id}/profile", Method.GET);
+            request.AddParameter("hapikey", apiKey);
+            request.AddUrlSegment("id", id.ToString());
+
+            IRestResponse response = client.Execute(request);
+            return response.Content;
         }
     }
 }
