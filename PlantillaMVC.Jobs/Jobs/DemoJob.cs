@@ -1,6 +1,7 @@
 ﻿using PlantillaMVC.Domain.Services;
 using PlantillaMVC.Integrations;
 using PlantillaMVC.Integrations.Hubspot;
+using PlantillaMVC.Integrations.Mapper;
 using PlantillaMVC.Utils;
 using System;
 using System.Collections.Generic;
@@ -35,7 +36,26 @@ namespace PlantillaMVC.Jobs.Jobs
                         //    //Trace.TraceInformation(string.Format("{0} - {1} - {2} - {3}- {4} - {5} - {6} - {7}", deal.Id, deal.Dealname, deal.Amount, deal.CloseDate, deal.DealType, deal.Pipeline, deal.RelatedCompanies, deal.RelatedContacts));
                         //    Trace.TraceInformation(JsonUtil.ConvertToString(deal));
                         //}
-                        service.ReadDeals2();
+                        var dealsObj = service.ReadDeals2();
+                        MapperFactory mapperFactory = new MapperFactory();
+                        IMapper<DealHubSpot, DealListModel> mapper = mapperFactory.CreateMapper<DealHubSpot, DealListModel>();
+                        var x = mapper.Map(dealsObj);
+                        foreach(var deal in dealsObj.Deals)
+                        {
+                            var associations = deal.Associations;
+                            long? contactId = null;
+                            if (associations.AssociatedVids != null && associations.AssociatedVids.Any())
+                            {
+                                contactId = associations.AssociatedVids.First();
+                                string contactObj = service.GetContactById(contactId.Value);
+                            }
+                            long? companyId = null;
+                            if (associations.associatedCompanyIds != null && associations.associatedCompanyIds.Any())
+                            {
+                                companyId = associations.associatedCompanyIds.First();
+                                string companyObj = service.GetCompanyById(companyId.Value);
+                            }
+                        }
                     }
                 }
                 catch (Exception ex)
