@@ -4,9 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PlantillaMVC.Integrations.Adapter
+namespace PlantillaMVC.Integrations
 {
-    public class DealHubspotSimpleModel
+    public class DealListModel {
+        public IList<DealModel> Deal { get; set; }
+        public bool HasMore { get; set; }
+    }
+    public class DealModel
     {
         public long? Id { get; set; }
         public string Name { get; set; }

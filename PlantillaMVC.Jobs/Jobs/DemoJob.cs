@@ -1,6 +1,7 @@
 ﻿using PlantillaMVC.Domain.Services;
 using PlantillaMVC.Integrations;
 using PlantillaMVC.Integrations.Hubspot;
+using PlantillaMVC.Integrations.Mapper;
 using PlantillaMVC.Utils;
 using System;
 using System.Collections.Generic;
@@ -36,6 +37,9 @@ namespace PlantillaMVC.Jobs.Jobs
                         //    Trace.TraceInformation(JsonUtil.ConvertToString(deal));
                         //}
                         var dealsObj = service.ReadDeals2();
+                        MapperFactory mapperFactory = new MapperFactory();
+                        IMapper<DealHubSpot, DealListModel> mapper = mapperFactory.CreateMapper<DealHubSpot, DealListModel>();
+                        var x = mapper.Map(dealsObj);
                         foreach(var deal in dealsObj.Deals)
                         {
                             var associations = deal.Associations;
