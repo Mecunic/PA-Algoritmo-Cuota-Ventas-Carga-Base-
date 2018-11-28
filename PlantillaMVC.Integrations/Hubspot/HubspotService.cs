@@ -18,12 +18,12 @@ namespace PlantillaMVC.Integrations
     {
         object CreateContact();
 
-        List<HubspotDealModel> ReadDeals();
+        List<HubspotDealModel> ReadDeals2();
 
-        DealHubSpot ReadDeals2();
+        DealHubSpotResult ReadDeals(int limit, long offset);
 
-        string GetCompanyById(long id);
-        string GetContactById(long id);
+        CompanyHubSpotResult GetCompanyById(long id);
+        ContactHubSpotResult GetContactById(long id);
 
     }
     public class HubspotService : IHubspotService
@@ -54,7 +54,7 @@ namespace PlantillaMVC.Integrations
         }
 
 
-        public List<HubspotDealModel> ReadDeals()
+        public List<HubspotDealModel> ReadDeals2()
         {
             //https://api.hubapi.com/deals/v1/deal/paged?hapikey=<apikey>&includeAssociations=true&properties=dealname&properties=linea_de_negocio&properties=dealtype
 
@@ -85,12 +85,13 @@ namespace PlantillaMVC.Integrations
             return null;
         }
 
-        public DealHubSpot ReadDeals2()
+        public DealHubSpotResult ReadDeals(int limit, long offset)
         {
-
             RestRequest request = new RestRequest("/deals/v1/deal/paged", Method.GET);
             request.AddParameter("hapikey", apiKey);
             request.AddParameter("includeAssociations", true);
+            if (limit > 0) request.AddParameter("limit", limit);
+            if (offset > 0) request.AddParameter("offset", offset);
             request.AddParameter("properties", "hubspot_owner_id");
             request.AddParameter("properties", "amount");
             request.AddParameter("properties", "closedate");
@@ -99,11 +100,11 @@ namespace PlantillaMVC.Integrations
             request.AddParameter("properties", "linea_de_negocio");
             request.AddParameter("properties", "dealtype");
 
-             IRestResponse response = client.Execute(request);
-            DealHubSpot result = JsonConvert.DeserializeObject<DealHubSpot>(response.Content);
+            IRestResponse response = client.Execute(request);
+            DealHubSpotResult result = JsonConvert.DeserializeObject<DealHubSpotResult>(response.Content);
             return result;
         }
-        public string GetCompanyById(long id)
+        public CompanyHubSpotResult GetCompanyById(long id)
         {
 
             RestRequest request = new RestRequest("/companies/v2/companies/{id}", Method.GET);
@@ -111,9 +112,12 @@ namespace PlantillaMVC.Integrations
             request.AddUrlSegment("id", id.ToString());
 
             IRestResponse response = client.Execute(request);
-            return response.Content;
+
+            CompanyHubSpotResult result = JsonConvert.DeserializeObject<CompanyHubSpotResult>(response.Content);
+
+            return result;
         }
-        public string GetContactById(long id)
+        public ContactHubSpotResult GetContactById(long id)
         {
 
             RestRequest request = new RestRequest("/contacts/v1/contact/vid/{id}/profile", Method.GET);
@@ -121,7 +125,13 @@ namespace PlantillaMVC.Integrations
             request.AddUrlSegment("id", id.ToString());
 
             IRestResponse response = client.Execute(request);
-            return response.Content;
+
+            ContactHubSpotResult result = JsonConvert.DeserializeObject<ContactHubSpotResult>(response.Content);
+
+            return result;
+
+
+
         }
     }
 }

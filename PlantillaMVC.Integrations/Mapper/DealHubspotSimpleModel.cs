@@ -7,8 +7,9 @@ using System.Threading.Tasks;
 namespace PlantillaMVC.Integrations
 {
     public class DealListModel {
-        public IList<DealModel> Deal { get; set; }
+        public IList<DealModel> Deals { get; set; }
         public bool HasMore { get; set; }
+        public long Offset { get; set; }
     }
     public class DealModel
     {

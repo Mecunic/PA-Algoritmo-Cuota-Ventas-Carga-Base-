@@ -133,13 +133,55 @@ namespace PlantillaMVC.Integrations.Hubspot
     }
 
     [DataContract]
-    public class DealHubSpot
+    public class DealHubSpotResult
     {
         [DataMember(Name = "deals")]
         public List<Deal> Deals { get; set; }
         [DataMember(Name = "hasMore")]
         public bool HasMore { get; set; }
         [DataMember(Name = "offset")]
-        public int Offset { get; set; }
+        public long Offset { get; set; }
     }
+
+    [DataContract]
+    public class CompanyHubSpotResult
+    {
+        [DataMember(Name = "portalId")]
+        public int PortalId { get; set; }
+        [DataMember(Name = "companyId")]
+        public int CompanyId { get; set; }
+        [DataMember(Name = "properties")]
+        public CompanyProperties Properties { get; set; }
+    }
+
+    [DataContract]
+    public class CompanyProperties
+    {
+        [DataMember(Name = "name")]
+        public Property Name { get; set; }
+        [DataMember(Name = "domain")]
+        public Property Domain { get; set; }
+    }
+
+    [DataContract]
+    public class ContactHubSpotResult
+    {
+        [DataMember(Name = "portalId")]
+        public int PortalId { get; set; }
+        [DataMember(Name = "companyId")]
+        public int CompanyId { get; set; }
+        [DataMember(Name = "properties")]
+        public ContactProperties Properties { get; set; }
+    }
+
+    [DataContract]
+    public class ContactProperties
+    {
+        [DataMember(Name = "firstname")]
+        public Property FirstName { get; set; }
+
+        [DataMember(Name = "email")]
+        public Property Email { get; set; }
+    }
+
 }

@@ -14,7 +14,7 @@ namespace PlantillaMVC.Integrations.Mapper
         
         public IMapper<TSource, TDestination> CreateMapper<TSource, TDestination>() where TSource : class where TDestination : class
         {
-            if(typeof(TSource) == typeof(DealHubSpot) && typeof(TDestination) == typeof(DealListModel))
+            if(typeof(TSource) == typeof(DealHubSpotResult) && typeof(TDestination) == typeof(DealListModel))
             {
                return (IMapper<TSource, TDestination>) new HubspotModelMapper();
             }

@@ -7,21 +7,21 @@ using System.Threading.Tasks;
 
 namespace PlantillaMVC.Integrations.Mapper
 {
-    public class HubspotModelMapper : IMapper<DealHubSpot, DealListModel>
+    public class HubspotModelMapper : IMapper<DealHubSpotResult, DealListModel>
     {
-        public DealListModel Map(DealHubSpot objToMap)
+        public DealListModel Map(DealHubSpotResult objToMap)
         {
             DealListModel listModel = new DealListModel {
                 HasMore = objToMap.HasMore,
-               
+                Offset = objToMap.Offset
             };
-            listModel.Deal = objToMap.Deals.Select(x => new DealModel {
-                Amount = x.Properties.Amount == null ? null : (double?)Double.Parse(x.Properties.Amount.Value),
-                CloseDate = x.Properties.CloseDate.Value,
+            listModel.Deals = objToMap.Deals.Select(x => new DealModel {
+                Amount = (x.Properties.Amount!=null && !string.IsNullOrEmpty(x.Properties.Amount.Value)) ? (double?)Double.Parse(x.Properties.Amount.Value) : null ,
+                //CloseDate = x.Properties.CloseDate.Value,
                 Name = x.Properties.Dealname.Value,
                 Stage = x.Properties.DealStage.Value,
                 Id = x.DealId,
-                OwnerId = x.Properties.Amount == null ? null : (long?)Int64.Parse(x.Properties.HubspotOwnerId.Value)
+                OwnerId = (x.Properties.HubspotOwnerId == null && !string.IsNullOrEmpty(x.Properties.HubspotOwnerId.Value)) ? null : (long?)Int64.Parse(x.Properties.HubspotOwnerId.Value)
             }).ToList();
             return listModel;
         }
