@@ -30,9 +30,9 @@ namespace PlantillaMVC.Jobs
 
                 if (NotificationProcessEnabled)
                 {
-                    JobName = System.Configuration.ConfigurationManager.AppSettings["Jobs.EnviarNotificaciones.Name"].ToString();
-                    JobCron = System.Configuration.ConfigurationManager.AppSettings["Jobs.EnviarNotificaciones.Cron"].ToString();
-                    RecurringJob.AddOrUpdate(JobName, () => DealsSyncJob.SyncDeals(), Cron.MinuteInterval(5), TimeZoneInfo.FindSystemTimeZoneById("Central Standard Time (Mexico)"));
+                    JobName = System.Configuration.ConfigurationManager.AppSettings["Jobs.SincronizarDeals.Name"].ToString();
+                    JobCron = System.Configuration.ConfigurationManager.AppSettings["Jobs.SincronizarDeals.Cron"].ToString();
+                    RecurringJob.AddOrUpdate(JobName, () => DealsSyncJob.SyncDeals(), Cron.MinuteInterval(60), TimeZoneInfo.FindSystemTimeZoneById("Central Standard Time (Mexico)"));
                 }
 
                 app.UseHangfireDashboard(Dashboardurl, new DashboardOptions

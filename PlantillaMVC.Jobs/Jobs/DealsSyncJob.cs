@@ -22,72 +22,117 @@ namespace PlantillaMVC.Jobs.Jobs
         {
             bool NotificationProcessEnabled = true;
             Boolean.TryParse(System.Configuration.ConfigurationManager.AppSettings["Jobs.EnabledJobs"], out NotificationProcessEnabled);
+            string FiltroDeal = System.Configuration.ConfigurationManager.AppSettings["Jobs.SincronizarDeals.Filtro"].ToString();
+
+            IDBService dbService = new DBService();
+            DBProceso procesoInfo = dbService.GetProcessInfo("SINCRONIZACION_DEALS");
+
             if (Monitor.TryEnter(thisLock))
             {
                 try
                 {
                     if (!executing && NotificationProcessEnabled)
                     {
-                        IDBService dbService = new DBService();
+                        int syncedDeals = 0;
+
                         IHubspotService apiService = new HubspotService();
                         Trace.TraceInformation(string.Format("[DealsSyncJob.SyncDeals] Executing at {0}", DateTime.Now));
                         
-                        var dealsObj = apiService.ReadDeals(250,0);
-
-                        //MapperFactory mapperFactory = new MapperFactory();
-                        //IMapper<DealHubSpotResult, DealListModel> mapper = mapperFactory.CreateMapper<DealHubSpotResult, DealListModel>();
-                        //DealListModel dealList = mapper.Map(dealsObj);
-                        //Trace.TraceInformation(string.Format("HasMore: {0} Offset: {1}", dealList.HasMore, dealList.Offset));
-
-                        Trace.TraceInformation(string.Format("HasMore: {0} Offset: {1}", dealsObj.HasMore, dealsObj.Offset));
-
-                        //foreach (DealModel deal in dealList.Deals)
-                        foreach (Deal deal in dealsObj.Deals)
+                        //SI ESTA HABILITADO Y NO SE ESYA EJECUTANDO
+                        if (!procesoInfo.EstatusEjecucion && procesoInfo.EstatusProceso)
                         {
-                            Trace.TraceInformation(JsonUtil.ConvertToString(deal));
-                            var associations = deal.Associations;
-                            long? contactId = null;
-                            string CompanyDomain = string.Empty;
-                            string CompanyName = string.Empty;
-                            long? companyId = null;
-                            decimal amount = 0;
-                            string ContactName = string.Empty;
+                            procesoInfo.EstatusEjecucion = true;
+                            procesoInfo.UltimaEjecucion = DateTime.Now;
+                            dbService.ActualizarEstatusProceso(procesoInfo);
 
-                            if (associations.AssociatedVids != null && associations.AssociatedVids.Any())
+                            DBProcesoEjecucion procesoDetalle = new DBProcesoEjecucion()
                             {
-                                contactId = associations.AssociatedVids.First();
-                                ContactHubSpotResult contactObj = apiService.GetContactById(contactId.Value);
-                                ContactName = contactObj.Properties.FirstName.Value;
-                            }
-                            if (associations.associatedCompanyIds != null && associations.associatedCompanyIds.Any())
-                            {
-                                companyId = associations.associatedCompanyIds.First();
-                                CompanyHubSpotResult companyObj = apiService.GetCompanyById(companyId.Value);
-                                CompanyName = companyObj.Properties.Name.Value;
-                                if (companyObj.Properties.Domain!=null && !string.IsNullOrEmpty(companyObj.Properties.Domain.Value))
-                                {
-                                    CompanyDomain = companyObj.Properties.Domain.Value;
-                                }
-                            }
-                            if (deal.Properties.Amount!=null && !string.IsNullOrEmpty(deal.Properties.Amount.Value))
-                            {
-                                amount = Convert.ToDecimal(deal.Properties.Amount.Value);
-                            }
-
-                            //INSERCION A BD
-                            DBDealModel dealBD = new DBDealModel()
-                            {
-                                DealId = deal.DealId,
-                                DealName = deal.Properties.Dealname.Value,
-                                CompanyDomain = CompanyDomain,
-                                Stage = deal.Properties.DealStage.Value,
-                                Amount = amount,
-                                CompanyName = CompanyName,
-                                ContactName = ContactName
+                                ProcesoId = procesoInfo.ProcesoId,
+                                Estatus = true,
+                                Resultado = "Procesando..."
                             };
-                            dbService.CreateDeal(dealBD);
-                        }
-                        Trace.TraceInformation(string.Format("[DealsSyncJob.SyncDeals] Finishing at {0}", DateTime.Now));
+                            int ProcesoDetalleId = dbService.CreateProcesoEjecucion(procesoDetalle);
+
+                            //LIMPIA LA TABLA
+                            dbService.ClearDeals();
+
+                            //INICIA SINCRONIZACION
+                            long offset = 0;
+                            bool hasMoreDeals = true;
+                            while (hasMoreDeals)
+                            {
+                                var dealsObj = apiService.ReadDeals(250, offset);
+
+                                Trace.TraceInformation(string.Format("HasMore: {0} Offset: {1}", dealsObj.HasMore, dealsObj.Offset));
+                                hasMoreDeals = dealsObj.HasMore;
+                                offset = dealsObj.Offset;
+                            
+                                foreach (Deal deal in dealsObj.Deals)
+                                {
+                                    Trace.TraceInformation(JsonUtil.ConvertToString(deal));
+                                    var associations = deal.Associations;
+                                    long? contactId = null;
+                                    string CompanyDomain = string.Empty;
+                                    string CompanyName = string.Empty;
+                                    long? companyId = null;
+                                    decimal amount = 0;
+                                    string ContactName = string.Empty;
+                                    string DealStage = deal.Properties.DealStage.Value;
+
+                                    if (!FiltroDeal.Contains(DealStage))
+                                    {
+                                        if (associations.AssociatedVids != null && associations.AssociatedVids.Any())
+                                        {
+                                            contactId = associations.AssociatedVids.First();
+                                            ContactHubSpotResult contactObj = apiService.GetContactById(contactId.Value);
+                                            if (contactObj.Properties.FirstName != null && !string.IsNullOrEmpty(contactObj.Properties.FirstName.Value))
+                                            {
+                                                ContactName = contactObj.Properties.FirstName.Value;
+                                            }
+                                        }
+                                        if (associations.associatedCompanyIds != null && associations.associatedCompanyIds.Any())
+                                        {
+                                            companyId = associations.associatedCompanyIds.First();
+                                            CompanyHubSpotResult companyObj = apiService.GetCompanyById(companyId.Value);
+                                            CompanyName = companyObj.Properties.Name.Value;
+                                            if (companyObj.Properties.Domain != null && !string.IsNullOrEmpty(companyObj.Properties.Domain.Value))
+                                            {
+                                                CompanyDomain = companyObj.Properties.Domain.Value;
+                                            }
+                                        }
+                                        if (deal.Properties.Amount != null && !string.IsNullOrEmpty(deal.Properties.Amount.Value))
+                                        {
+                                            amount = Convert.ToDecimal(deal.Properties.Amount.Value);
+                                        }
+
+                                        //INSERCION A BD
+                                        DBDealModel dealBD = new DBDealModel()
+                                        {
+                                            ProcesoDetalleId = ProcesoDetalleId,
+                                            DealId = deal.DealId,
+                                            DealName = deal.Properties.Dealname.Value,
+                                            CompanyDomain = CompanyDomain,
+                                            Stage = DealStage,
+                                            Amount = amount,
+                                            CompanyName = CompanyName,
+                                            ContactName = ContactName,
+                                            ProductLine = string.Empty,
+                                            OwnerName = string.Empty
+                                        };
+                                        dbService.CreateDeal(dealBD);
+                                        syncedDeals++;
+                                    } //END IF
+                                } //END FOR
+                            } //END WHILE
+                        
+                            Trace.TraceInformation(string.Format("[DealsSyncJob.SyncDeals] Finishing at {0}", DateTime.Now));
+
+                            procesoDetalle.FechaFin = DateTime.Now;
+                            procesoDetalle.Estatus = false;
+                            procesoDetalle.Resultado = string.Format("Se sincronizaron {0} deals", syncedDeals);
+                            dbService.ActualizarProcesoEjecucion(procesoDetalle);
+                            
+                        } //FIN DE PROCESO INFO
                     }
                 }
                 catch (Exception ex)
@@ -97,6 +142,10 @@ namespace PlantillaMVC.Jobs.Jobs
                 }
                 finally
                 {
+                    procesoInfo.EstatusEjecucion = false;
+                    procesoInfo.UltimaEjecucion = DateTime.Now;
+                    dbService.ActualizarEstatusProceso(procesoInfo);
+
                     executing = false;
                     Monitor.Exit(thisLock);
                 }

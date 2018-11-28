@@ -8,6 +8,7 @@ namespace PlantillaMVC.Domain.Models
 {
     public class DBDealModel
     {
+        public int ProcesoDetalleId { set; get; }
         public int DealId { set; get; }
         public string DealName { set; get; }
         public string CompanyDomain { set; get; }
@@ -17,6 +18,11 @@ namespace PlantillaMVC.Domain.Models
 
         public decimal Amount { set; get; }
         public string Stage { set; get; }
+
+        public string ProductLine { set; get; }
+
+        public string OwnerName { set; get; }
+        
 
     }
 }
