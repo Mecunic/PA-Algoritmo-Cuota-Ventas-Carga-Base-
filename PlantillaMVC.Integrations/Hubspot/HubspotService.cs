@@ -25,16 +25,20 @@ namespace PlantillaMVC.Integrations
         CompanyHubSpotResult GetCompanyById(long id);
         ContactHubSpotResult GetContactById(long id);
 
+        string CreateTicketToCompany();
+
     }
     public class HubspotService : IHubspotService
     {
         private IHubSpotApi apiService;
         private string apiKey;
+        private string apiKeyMetrolab;
         private RestClient client;
         public HubspotService()
         {
             apiService = new HubSpotApi(System.Configuration.ConfigurationManager.AppSettings["HubspotApiKey"]);
             apiKey = System.Configuration.ConfigurationManager.AppSettings["HubspotApiKey"];
+            apiKeyMetrolab = System.Configuration.ConfigurationManager.AppSettings["HubspotApiKey_Metrolab"];
             client = new RestClient("https://api.hubapi.com");
         }
 
@@ -97,7 +101,7 @@ namespace PlantillaMVC.Integrations
             request.AddParameter("properties", "closedate");
             request.AddParameter("properties", "dealstage");
             request.AddParameter("properties", "dealname");
-            request.AddParameter("properties", "linea_de_negocio");
+            request.AddParameter("properties", "linea");
             request.AddParameter("properties", "dealtype");
 
             IRestResponse response = client.Execute(request);
@@ -133,5 +137,54 @@ namespace PlantillaMVC.Integrations
 
 
         }
+
+        public string CreateTicketToCompany()
+        {
+            //https://developers.hubspot.com/docs/methods/crm-associations/crm-associations-overview
+            //Ticket to company 	26
+            
+            List<TicketProperty> ticketProperties = new List<TicketProperty>();
+            ticketProperties.Add(new TicketProperty() { Name = "subject", Value = "Ticket de prueba" });
+            ticketProperties.Add(new TicketProperty() { Name = "content", Value = "Contenido del ticket de prueba" });
+            ticketProperties.Add(new TicketProperty() { Name = "hs_pipeline", Value = "0" });
+            ticketProperties.Add(new TicketProperty() { Name = "hs_pipeline_stage", Value = "1" });
+            string jsonToSend = JsonConvert.SerializeObject(ticketProperties);
+
+            var request = new RestRequest("/crm-objects/v1/objects/tickets?hapikey=" + apiKeyMetrolab);
+            request.Method = Method.POST;
+            request.AddHeader("Accept", "application/json");
+            request.Parameters.Clear();
+            request.AddParameter("application/json", jsonToSend, ParameterType.RequestBody);
+
+            var response = client.Execute(request);
+
+            TicketResponse ticketResponse = JsonConvert.DeserializeObject<TicketResponse>(response.Content);
+
+            if (ticketResponse.ObjectId > 0)
+            {
+                Association association = new Association()
+                {
+                    FromObjectId = ticketResponse.ObjectId,
+                    ToObjectId = 1060806363,
+                    Category = "HUBSPOT_DEFINED",
+                    DefinitionId = 26
+                };
+                jsonToSend = JsonConvert.SerializeObject(association);
+                request = new RestRequest("/crm-associations/v1/associations?hapikey=" + apiKeyMetrolab);
+                request.Method = Method.PUT;
+                request.AddParameter("application/json", jsonToSend, ParameterType.RequestBody);
+                request.AddHeader("Content-Type", "application/json");
+                response = client.Put(request);
+            }
+            //response.StatusCode
+
+            return response.Content;
+        }
+        
+        //public int GetCompanyByRFC()
+        //{
+
+        //}
+
     }
 }

@@ -108,7 +108,7 @@ namespace PlantillaMVC.Integrations.Hubspot
         public Property HubspotOwnerId { get; set; }
         [DataMember(Name = "closedate")]
         public Property CloseDate { get; set; }
-        [DataMember(Name = "linea_de_negocio")]
+        [DataMember(Name = "linea")]
         public Property LineaDeNegocio { get; set; }
         [DataMember(Name = "dealstage")]
         public Property DealStage { get; set; }
@@ -184,4 +184,34 @@ namespace PlantillaMVC.Integrations.Hubspot
         public Property Email { get; set; }
     }
 
+    [DataContract]
+    public class Association
+    {
+        [DataMember(Name = "fromObjectId")]
+        public long FromObjectId { get; set; }
+        [DataMember(Name = "toObjectId")]
+        public long ToObjectId { get; set; }
+        [DataMember(Name = "category")]
+        public string Category { get; set; }
+        [DataMember(Name = "definitionId")]
+        public int DefinitionId { get; set; }
+    }
+
+    [DataContract]
+    public class TicketProperty
+    {
+        [DataMember(Name = "name")]
+        public string Name { get; set; }
+        [DataMember(Name = "value")]
+        public string Value { get; set; }
+    }
+
+    [DataContract]
+    public class TicketResponse
+    {
+        [DataMember(Name = "objectId")]
+        public long ObjectId { get; set; }
+        [DataMember(Name = "objectType")]
+        public string ObjectType { get; set; }
+    }
 }

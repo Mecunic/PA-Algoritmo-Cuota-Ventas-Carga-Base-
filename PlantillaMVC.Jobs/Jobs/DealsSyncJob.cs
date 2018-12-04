@@ -78,6 +78,8 @@ namespace PlantillaMVC.Jobs.Jobs
                                     decimal amount = 0;
                                     string ContactName = string.Empty;
                                     string DealStage = deal.Properties.DealStage.Value;
+                                    string linea = string.Empty;
+                                    string Owner = string.Empty;
 
                                     if (!FiltroDeal.Contains(DealStage))
                                     {
@@ -85,9 +87,9 @@ namespace PlantillaMVC.Jobs.Jobs
                                         {
                                             contactId = associations.AssociatedVids.First();
                                             ContactHubSpotResult contactObj = apiService.GetContactById(contactId.Value);
-                                            if (contactObj.Properties.FirstName != null && !string.IsNullOrEmpty(contactObj.Properties.FirstName.Value))
+                                            if (contactObj.Properties.Email != null && !string.IsNullOrEmpty(contactObj.Properties.Email.Value))
                                             {
-                                                ContactName = contactObj.Properties.FirstName.Value;
+                                                ContactName = contactObj.Properties.Email.Value;
                                             }
                                         }
                                         if (associations.associatedCompanyIds != null && associations.associatedCompanyIds.Any())
@@ -104,6 +106,14 @@ namespace PlantillaMVC.Jobs.Jobs
                                         {
                                             amount = Convert.ToDecimal(deal.Properties.Amount.Value);
                                         }
+                                        if (deal.Properties.LineaDeNegocio!=null && !string.IsNullOrEmpty(deal.Properties.LineaDeNegocio.Value))
+                                        {
+                                            linea = deal.Properties.LineaDeNegocio.Value;
+                                        }
+                                        if (deal.Properties.HubspotOwnerId != null && !string.IsNullOrEmpty(deal.Properties.HubspotOwnerId.SourceId))
+                                        {
+                                            Owner = deal.Properties.HubspotOwnerId.SourceId;
+                                        }
 
                                         //INSERCION A BD
                                         DBDealModel dealBD = new DBDealModel()
@@ -116,8 +126,8 @@ namespace PlantillaMVC.Jobs.Jobs
                                             Amount = amount,
                                             CompanyName = CompanyName,
                                             ContactName = ContactName,
-                                            ProductLine = string.Empty,
-                                            OwnerName = string.Empty
+                                            ProductLine = linea,
+                                            OwnerName = Owner
                                         };
                                         dbService.CreateDeal(dealBD);
                                         syncedDeals++;
