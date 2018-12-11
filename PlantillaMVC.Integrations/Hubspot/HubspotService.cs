@@ -17,15 +17,15 @@ namespace PlantillaMVC.Integrations
     public interface IHubspotService
     {
         object CreateContact();
-
-        List<HubspotDealModel> ReadDeals2();
-
+        
         DealHubSpotResult ReadDeals(int limit, long offset);
 
         CompanyHubSpotResult GetCompanyById(long id);
         ContactHubSpotResult GetContactById(long id);
 
         string CreateTicketToCompany();
+
+        CompaniesHubSpotResult GetAllCompanies(int limit, long offset);
 
     }
     public class HubspotService : IHubspotService
@@ -56,39 +56,7 @@ namespace PlantillaMVC.Integrations
 
             return contact;
         }
-
-
-        public List<HubspotDealModel> ReadDeals2()
-        {
-            //https://api.hubapi.com/deals/v1/deal/paged?hapikey=<apikey>&includeAssociations=true&properties=dealname&properties=linea_de_negocio&properties=dealtype
-
-            List<DealHubSpotModel> list = new List<DealHubSpotModel>();
-            var dealList = apiService.Deal.List<HubspotDealModel>(true);
-
-            foreach (var deal in dealList.Deals)
-            {
-                DealHubSpotAssociations associations = deal.Associations;
-                int RelatedCompanies = associations.AssociatedCompany!=null?associations.AssociatedCompany.Length:0;
-                int RelatedContacts = associations.AssociatedContacts!=null?associations.AssociatedContacts.Length:0;
-                list.Add(new HubspotDealModel()
-                {
-                    Id = deal.Id,
-                    OwnerId = deal.OwnerId,
-                    Name = deal.Name,
-                    Amount = deal.Amount,
-                    CloseDate = deal.CloseDate,
-                    Stage = deal.Stage,
-                    Pipeline = deal.Pipeline,
-                    DealType = deal.DealType,
-                    linea_de_negocio = deal.linea_de_negocio,
-                    RelatedCompanies = RelatedCompanies,
-                    RelatedContacts = RelatedContacts
-                });
-            }
-
-            return null;
-        }
-
+        
         public DealHubSpotResult ReadDeals(int limit, long offset)
         {
             RestRequest request = new RestRequest("/deals/v1/deal/paged", Method.GET);
@@ -103,6 +71,7 @@ namespace PlantillaMVC.Integrations
             request.AddParameter("properties", "dealname");
             request.AddParameter("properties", "linea");
             request.AddParameter("properties", "dealtype");
+            request.AddParameter("properties", "rfc");
 
             IRestResponse response = client.Execute(request);
             DealHubSpotResult result = JsonConvert.DeserializeObject<DealHubSpotResult>(response.Content);
@@ -181,6 +150,19 @@ namespace PlantillaMVC.Integrations
             return response.Content;
         }
         
+        public CompaniesHubSpotResult GetAllCompanies(int limit, long offset)
+        {
+            RestRequest request = new RestRequest("/companies/v2/companies/paged", Method.GET);
+            request.AddParameter("hapikey", apiKeyMetrolab);
+            if (limit > 0) request.AddParameter("limit", limit);
+            if (offset > 0) request.AddParameter("offset", offset);
+            request.AddParameter("properties", "name");
+            request.AddParameter("properties", "rfc");
+            IRestResponse response = client.Execute(request);
+            CompaniesHubSpotResult result = JsonConvert.DeserializeObject<CompaniesHubSpotResult>(response.Content);
+            return result;
+        }
+
         //public int GetCompanyByRFC()
         //{
 

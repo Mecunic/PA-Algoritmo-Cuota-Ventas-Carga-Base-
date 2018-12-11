@@ -20,8 +20,8 @@ namespace PlantillaMVC.Jobs.Jobs
 
         public static void SyncDeals()
         {
-            bool NotificationProcessEnabled = true;
-            Boolean.TryParse(System.Configuration.ConfigurationManager.AppSettings["Jobs.EnabledJobs"], out NotificationProcessEnabled);
+            bool ProcessEnabled = true;
+            Boolean.TryParse(System.Configuration.ConfigurationManager.AppSettings["Jobs.EnabledJobs"], out ProcessEnabled);
             string FiltroDeal = System.Configuration.ConfigurationManager.AppSettings["Jobs.SincronizarDeals.Filtro"].ToString();
 
             IDBService dbService = new DBService();
@@ -31,14 +31,15 @@ namespace PlantillaMVC.Jobs.Jobs
             {
                 try
                 {
-                    if (!executing && NotificationProcessEnabled)
+                    if (!executing && ProcessEnabled)
                     {
+                        executing = true;
                         int syncedDeals = 0;
 
                         IHubspotService apiService = new HubspotService();
                         Trace.TraceInformation(string.Format("[DealsSyncJob.SyncDeals] Executing at {0}", DateTime.Now));
                         
-                        //SI ESTA HABILITADO Y NO SE ESYA EJECUTANDO
+                        //SI ESTA HABILITADO Y NO SE ESTA EJECUTANDO
                         if (!procesoInfo.EstatusEjecucion && procesoInfo.EstatusProceso)
                         {
                             procesoInfo.EstatusEjecucion = true;
@@ -96,10 +97,10 @@ namespace PlantillaMVC.Jobs.Jobs
                                         {
                                             companyId = associations.associatedCompanyIds.First();
                                             CompanyHubSpotResult companyObj = apiService.GetCompanyById(companyId.Value);
-                                            CompanyName = companyObj.Properties.Name.Value;
-                                            if (companyObj.Properties.Domain != null && !string.IsNullOrEmpty(companyObj.Properties.Domain.Value))
+                                            CompanyName = string.Format("{0} - {1}", companyObj.CompanyId, companyObj.Properties.Name.Value);
+                                            if (companyObj.Properties.RFC != null && !string.IsNullOrEmpty(companyObj.Properties.RFC.Value))
                                             {
-                                                CompanyDomain = companyObj.Properties.Domain.Value;
+                                                CompanyDomain = companyObj.Properties.RFC.Value;
                                             }
                                         }
                                         if (deal.Properties.Amount != null && !string.IsNullOrEmpty(deal.Properties.Amount.Value))

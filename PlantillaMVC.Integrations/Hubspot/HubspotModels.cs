@@ -114,6 +114,13 @@ namespace PlantillaMVC.Integrations.Hubspot
         public Property DealStage { get; set; }
         [DataMember(Name = "hs_object_id")]
         public Property HsObjectId { get; set; }
+
+        //Propiedades de Compania
+        [DataMember(Name = "name")]
+        public Property Name { get; set; }
+
+        [DataMember(Name = "rfc")]
+        public Property RFC { get; set; }
     }
     [DataContract]
     public class Deal
@@ -161,6 +168,8 @@ namespace PlantillaMVC.Integrations.Hubspot
         public Property Name { get; set; }
         [DataMember(Name = "domain")]
         public Property Domain { get; set; }
+        [DataMember(Name = "rfc")]
+        public Property RFC { get; set; }
     }
 
     [DataContract]
@@ -213,5 +222,29 @@ namespace PlantillaMVC.Integrations.Hubspot
         public long ObjectId { get; set; }
         [DataMember(Name = "objectType")]
         public string ObjectType { get; set; }
+    }
+
+    [DataContract]
+    public class CompaniesHubSpotResult
+    {
+        [DataMember(Name = "companies")]
+        public List<Company> Companies { get; set; }
+        [DataMember(Name = "has-more")]
+        public bool HasMore { get; set; }
+        [DataMember(Name = "offset")]
+        public long Offset { get; set; }
+    }
+
+    [DataContract]
+    public class Company
+    {
+        [DataMember(Name = "portalId")]
+        public int PortalId { get; set; }
+        [DataMember(Name = "companyId")]
+        public int CompanyId { get; set; }
+        [DataMember(Name = "isDeleted")]
+        public bool IsDeleted { get; set; }
+        [DataMember(Name = "properties")]
+        public Properties Properties { get; set; }
     }
 }
