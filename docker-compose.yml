@@ -1,8 +1,0 @@
-version: '3.4'
-
-services:
-  plantillaproyectomvc:
-    image: ${DOCKER_REGISTRY}plantillaproyectomvc
-    build:
-      context: .\PlantillaProyectoMVC
-      dockerfile: Dockerfile
