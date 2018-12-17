@@ -11,7 +11,7 @@ namespace PlantillaMVC.Domain.Models
         public int ProcesoDetalleId { set; get; }
         public int DealId { set; get; }
         public string DealName { set; get; }
-        public string CompanyDomain { set; get; }
+        public string CompanyRFC { set; get; }
         public string CompanyName { set; get; }
 
         public string ContactName { set; get; }

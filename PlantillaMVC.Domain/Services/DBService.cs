@@ -44,7 +44,7 @@ namespace PlantillaMVC.Domain.Services
                 command.Parameters.Add("@procesoId", SqlDbType.Int).Value = deal.ProcesoDetalleId;
                 command.Parameters.Add("@dealId", SqlDbType.Int).Value = deal.DealId;
                 command.Parameters.Add("@dealName", SqlDbType.VarChar).Value = deal.DealName;
-                command.Parameters.Add("@domainName", SqlDbType.VarChar).Value = deal.CompanyDomain;
+                command.Parameters.Add("@companyRFC", SqlDbType.VarChar).Value = deal.CompanyRFC;
                 command.Parameters.Add("@amount", SqlDbType.Decimal).Value = deal.Amount;
                 command.Parameters.Add("@contact", SqlDbType.VarChar).Value = deal.ContactName;
                 command.Parameters.Add("@companyName", SqlDbType.VarChar).Value = deal.CompanyName;

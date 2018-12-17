@@ -73,7 +73,7 @@ namespace PlantillaMVC.Jobs.Jobs
                                     Trace.TraceInformation(JsonUtil.ConvertToString(deal));
                                     var associations = deal.Associations;
                                     long? contactId = null;
-                                    string CompanyDomain = string.Empty;
+                                    string CompanyRFC = string.Empty;
                                     string CompanyName = string.Empty;
                                     long? companyId = null;
                                     decimal amount = 0;
@@ -97,10 +97,10 @@ namespace PlantillaMVC.Jobs.Jobs
                                         {
                                             companyId = associations.associatedCompanyIds.First();
                                             CompanyHubSpotResult companyObj = apiService.GetCompanyById(companyId.Value);
-                                            CompanyName = string.Format("{0} - {1}", companyObj.CompanyId, companyObj.Properties.Name.Value);
+                                            CompanyName = string.Format("{0}", companyObj.Properties.Name.Value);
                                             if (companyObj.Properties.RFC != null && !string.IsNullOrEmpty(companyObj.Properties.RFC.Value))
                                             {
-                                                CompanyDomain = companyObj.Properties.RFC.Value;
+                                                CompanyRFC = companyObj.Properties.RFC.Value;
                                             }
                                         }
                                         if (deal.Properties.Amount != null && !string.IsNullOrEmpty(deal.Properties.Amount.Value))
@@ -122,7 +122,7 @@ namespace PlantillaMVC.Jobs.Jobs
                                             ProcesoDetalleId = ProcesoDetalleId,
                                             DealId = deal.DealId,
                                             DealName = deal.Properties.Dealname.Value,
-                                            CompanyDomain = CompanyDomain,
+                                            CompanyRFC = CompanyRFC,
                                             Stage = DealStage,
                                             Amount = amount,
                                             CompanyName = CompanyName,
