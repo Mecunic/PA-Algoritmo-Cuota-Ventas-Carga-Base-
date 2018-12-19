@@ -41,13 +41,13 @@ namespace PlantillaMVC.Jobs.Jobs
                             #region SINCRONIZACION DE COMPANIAS EN MEMORIA
                             Dictionary<string, long> CompanyDictionary = new Dictionary<string, long>();
                         long offset = 0;
-                        bool hasMoreDeals = true;
+                        bool hasMoreCompanies = true;
                         int totalCompanies = 0;
-                        while (hasMoreDeals)
+                        while (hasMoreCompanies)
                         {
                             CompaniesHubSpotResult companiesHubSpotResult = apiService.GetAllCompanies(250, offset);
                             Trace.TraceInformation(string.Format("HasMore: {0} Offset: {1}", companiesHubSpotResult.HasMore, companiesHubSpotResult.Offset));
-                            hasMoreDeals = companiesHubSpotResult.HasMore;
+                            hasMoreCompanies = companiesHubSpotResult.HasMore;
                             offset = companiesHubSpotResult.Offset;
                             totalCompanies += companiesHubSpotResult.Companies.Count();
                             foreach (Company company in companiesHubSpotResult.Companies)
@@ -66,7 +66,8 @@ namespace PlantillaMVC.Jobs.Jobs
                         {
                             Trace.TraceInformation(string.Format("Company: {0}  Id: {1} ", entry.Key, entry.Value));
                         }
-                        #endregion
+                            #endregion
+
                         }
                     }
                 }

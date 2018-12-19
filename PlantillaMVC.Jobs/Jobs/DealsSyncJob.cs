@@ -10,6 +10,8 @@ using System.Threading;
 using System.Web;
 using PlantillaMVC.Domain.Models;
 using PlantillaMVC.Domain.Services;
+using System.Web.Mvc;
+using System.Text;
 
 namespace PlantillaMVC.Jobs.Jobs
 {
@@ -26,7 +28,7 @@ namespace PlantillaMVC.Jobs.Jobs
 
             IDBService dbService = new DBService();
             DBProceso procesoInfo = dbService.GetProcessInfo("SINCRONIZACION_DEALS");
-
+            StringBuilder strResultado = new StringBuilder("Iniciando proceso...");
             if (Monitor.TryEnter(thisLock))
             {
                 try
@@ -44,6 +46,7 @@ namespace PlantillaMVC.Jobs.Jobs
                         {
                             procesoInfo.EstatusEjecucion = true;
                             procesoInfo.UltimaEjecucion = DateTime.Now;
+                            procesoInfo.Resultado = strResultado.ToString();
                             dbService.ActualizarEstatusProceso(procesoInfo);
 
                             DBProcesoEjecucion procesoDetalle = new DBProcesoEjecucion()
@@ -70,7 +73,8 @@ namespace PlantillaMVC.Jobs.Jobs
                             
                                 foreach (Deal deal in dealsObj.Deals)
                                 {
-                                    Trace.TraceInformation(JsonUtil.ConvertToString(deal));
+                                    //Trace.TraceInformation(JsonUtil.ConvertToString(deal));
+                                    strResultado.Append(" | " + JsonUtil.ConvertToString(deal));
                                     var associations = deal.Associations;
                                     long? contactId = null;
                                     string CompanyRFC = string.Empty;
@@ -84,38 +88,47 @@ namespace PlantillaMVC.Jobs.Jobs
 
                                     if (!FiltroDeal.Contains(DealStage))
                                     {
+                                        strResultado.Append(" * Paso 1 ");
                                         if (associations.AssociatedVids != null && associations.AssociatedVids.Any())
                                         {
+                                            strResultado.Append(" * Paso 1.1 ");
                                             contactId = associations.AssociatedVids.First();
+                                            strResultado.Append(" * Paso 1.2 ");
                                             ContactHubSpotResult contactObj = apiService.GetContactById(contactId.Value);
-                                            if (contactObj.Properties.Email != null && !string.IsNullOrEmpty(contactObj.Properties.Email.Value))
+                                            strResultado.Append(" * Paso 1.3 ");
+                                            if (/*contactObj!=null && contactObj.Properties!=null &&*/ contactObj.Properties.Email != null && !string.IsNullOrEmpty(contactObj.Properties.Email.Value))
                                             {
                                                 ContactName = contactObj.Properties.Email.Value;
                                             }
                                         }
+                                        strResultado.Append(" * Paso 2 ");
                                         if (associations.associatedCompanyIds != null && associations.associatedCompanyIds.Any())
                                         {
                                             companyId = associations.associatedCompanyIds.First();
                                             CompanyHubSpotResult companyObj = apiService.GetCompanyById(companyId.Value);
                                             CompanyName = string.Format("{0}", companyObj.Properties.Name.Value);
-                                            if (companyObj.Properties.RFC != null && !string.IsNullOrEmpty(companyObj.Properties.RFC.Value))
+                                            strResultado.Append(" * Paso 2.1 ");
+                                            if (/*companyObj!=null && companyObj.Properties!=null &&*/  companyObj.Properties.RFC != null && !string.IsNullOrEmpty(companyObj.Properties.RFC.Value))
                                             {
                                                 CompanyRFC = companyObj.Properties.RFC.Value;
                                             }
                                         }
+                                        strResultado.Append(" * Paso 3 ");
                                         if (deal.Properties.Amount != null && !string.IsNullOrEmpty(deal.Properties.Amount.Value))
                                         {
                                             amount = Convert.ToDecimal(deal.Properties.Amount.Value);
                                         }
+                                        strResultado.Append(" * Paso 4 ");
                                         if (deal.Properties.LineaDeNegocio!=null && !string.IsNullOrEmpty(deal.Properties.LineaDeNegocio.Value))
                                         {
                                             linea = deal.Properties.LineaDeNegocio.Value;
                                         }
+                                        strResultado.Append(" * Paso 5 ");
                                         if (deal.Properties.HubspotOwnerId != null && !string.IsNullOrEmpty(deal.Properties.HubspotOwnerId.SourceId))
                                         {
                                             Owner = deal.Properties.HubspotOwnerId.SourceId;
                                         }
-
+                                        strResultado.Append(" * Paso 6 ");
                                         //INSERCION A BD
                                         DBDealModel dealBD = new DBDealModel()
                                         {
@@ -130,9 +143,13 @@ namespace PlantillaMVC.Jobs.Jobs
                                             ProductLine = linea,
                                             OwnerName = Owner
                                         };
+                                        strResultado.Append(" * Paso 7 ");
                                         dbService.CreateDeal(dealBD);
                                         syncedDeals++;
                                     } //END IF
+
+                                    Thread.Sleep(150);
+
                                 } //END FOR
                             } //END WHILE
                         
@@ -141,20 +158,44 @@ namespace PlantillaMVC.Jobs.Jobs
                             procesoDetalle.FechaFin = DateTime.Now;
                             procesoDetalle.Estatus = false;
                             procesoDetalle.Resultado = string.Format("Se sincronizaron {0} deals", syncedDeals);
+                            strResultado.Append(string.Format("|Se sincronizaron {0} deals", syncedDeals));
                             dbService.ActualizarProcesoEjecucion(procesoDetalle);
                             
                         } //FIN DE PROCESO INFO
                     }
                 }
-                catch (Exception ex)
+                catch (Exception exception)
                 {
-                    Debug.WriteLine(ex.Message);
-                    Trace.TraceInformation(ex.Message);
+                    Debug.WriteLine(exception.Message);
+                    Trace.TraceInformation(exception.Message);
+
+                    strResultado.Append("|" + exception.Message);
+
+                    if (exception.Source != null)
+                    {
+                        strResultado.Append("|" + exception.Source);
+                    }
+                    if (exception.StackTrace != null)
+                    {
+                        strResultado.Append("|" + exception.StackTrace);
+                    }
+
+                    try
+                    {
+                        System.Diagnostics.StackTrace trace = new System.Diagnostics.StackTrace(exception, true);
+                        strResultado.Append("|" + String.Format("<p>Error Detail Message :{0}  => Error In :{1}  => Line Number :{2} => Error Method:{3}</p>",
+                                  HttpUtility.HtmlEncode(exception.Message),
+                                  trace.GetFrame(0).GetFileName(),
+                                  trace.GetFrame(0).GetFileLineNumber(),
+                                  trace.GetFrame(0).GetMethod().Name));
+                    }
+                    catch (Exception ex) { }
                 }
                 finally
                 {
                     procesoInfo.EstatusEjecucion = false;
                     procesoInfo.UltimaEjecucion = DateTime.Now;
+                    procesoInfo.Resultado = strResultado.ToString();
                     dbService.ActualizarEstatusProceso(procesoInfo);
 
                     executing = false;

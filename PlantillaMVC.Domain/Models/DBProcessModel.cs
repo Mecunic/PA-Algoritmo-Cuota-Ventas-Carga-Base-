@@ -16,6 +16,8 @@ namespace PlantillaMVC.Domain.Models
         public bool EstatusEjecucion { set; get; }
 
         public DateTime? UltimaEjecucion { set; get; }
+
+        public string Resultado { set; get; }
     }
 
     public class DBProcesoEjecucion

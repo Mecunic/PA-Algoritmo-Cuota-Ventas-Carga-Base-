@@ -108,12 +108,13 @@ namespace PlantillaMVC.Domain.Services
         
         public void ActualizarEstatusProceso(DBProceso procesoInfo)
         {
-            string sql = "UPDATE dbo.Proceso_Herramental SET EstatusEjecucion = @EstatusEjecucion, UltimaEjecucion = @UltimaEjecucion WHERE codigo = @codigo";
+            string sql = "UPDATE dbo.Proceso_Herramental SET EstatusEjecucion = @EstatusEjecucion, UltimaEjecucion = @UltimaEjecucion, Resultado = @Resultado WHERE codigo = @codigo";
             SqlCommand cmd = new SqlCommand(sql, cnn);
             cmd.CommandType = CommandType.Text;
             cmd.Parameters.Add("@EstatusEjecucion", SqlDbType.Bit).Value = procesoInfo.EstatusEjecucion;
             cmd.Parameters.Add("@UltimaEjecucion", SqlDbType.DateTime2).Value = procesoInfo.UltimaEjecucion;
             cmd.Parameters.Add("@codigo", SqlDbType.VarChar).Value = procesoInfo.Codigo;
+            cmd.Parameters.Add("@Resultado", SqlDbType.VarChar).Value = procesoInfo.Resultado;
             cmd.ExecuteNonQuery();
         }
 

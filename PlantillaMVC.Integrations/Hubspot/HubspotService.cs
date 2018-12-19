@@ -23,6 +23,8 @@ namespace PlantillaMVC.Integrations
         CompanyHubSpotResult GetCompanyById(long id);
         ContactHubSpotResult GetContactById(long id);
 
+        string AssociateCompanyToTicket(long ticketId, long companyId);
+
         string CreateTicketToCompany();
 
         CompaniesHubSpotResult GetAllCompanies(int limit, long offset);
@@ -163,10 +165,29 @@ namespace PlantillaMVC.Integrations
             return result;
         }
 
-        //public int GetCompanyByRFC()
-        //{
+        public string AssociateCompanyToTicket(long companyId, long ticketId)
+        {
+            //https://developers.hubspot.com/docs/methods/crm-associations/crm-associations-overview
+            //Company to ticket   25
+ 
+            Association association = new Association()
+            {
+                FromObjectId = companyId,
+                ToObjectId = ticketId,
+                Category = "HUBSPOT_DEFINED",
+                DefinitionId = 25
+            };
+            string jsonToSend = JsonConvert.SerializeObject(association);
+            var request = new RestRequest("/crm-associations/v1/associations?hapikey=" + apiKey);
+            request.Method = Method.PUT;
+            request.AddParameter("application/json", jsonToSend, ParameterType.RequestBody);
+            request.AddHeader("Content-Type", "application/json");
+            var response = client.Put(request);
 
-        //}
+            return response.Content;
+        }
+
+
 
     }
 }
