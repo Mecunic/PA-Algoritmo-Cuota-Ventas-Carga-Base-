@@ -260,7 +260,7 @@ namespace PlantillaMVC.Integrations.Hubspot
         [DataMember(Name = "pipelineId")]
         public string PipelineId { get; set; }
         [DataMember(Name = "stages")]
-        public PipelineState Stages { get; set; }
+        public IList<PipelineState> Stages { get; set; }
     }
     [DataContract]
     public class PipelineState
@@ -276,6 +276,6 @@ namespace PlantillaMVC.Integrations.Hubspot
     public class PipelineStateMetadata
     {
         [DataMember(Name = "probability")]
-        public long Probability { get; set; }
+        public decimal Probability { get; set; }
     }
 }
