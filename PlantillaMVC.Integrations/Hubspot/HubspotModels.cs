@@ -247,4 +247,35 @@ namespace PlantillaMVC.Integrations.Hubspot
         [DataMember(Name = "properties")]
         public Properties Properties { get; set; }
     }
+
+    [DataContract]
+    public class  PipelinesHubSpotResult
+    {
+        [DataMember(Name = "results")]
+        public List<Pipeline> Pipelines { get; set; }
+    }
+    [DataContract]
+    public class Pipeline
+    {
+        [DataMember(Name = "pipelineId")]
+        public string PipelineId { get; set; }
+        [DataMember(Name = "stages")]
+        public PipelineState Stages { get; set; }
+    }
+    [DataContract]
+    public class PipelineState
+    {
+        [DataMember(Name = "stageId")]
+        public string StageId { get; set; }
+        [DataMember(Name = "label")]
+        public string Label { get; set; }
+        [DataMember(Name = "metadata")]
+        public PipelineStateMetadata Metadata { get; set; }
+    }
+    [DataContract]
+    public class PipelineStateMetadata
+    {
+        [DataMember(Name = "probability")]
+        public long Probability { get; set; }
+    }
 }
