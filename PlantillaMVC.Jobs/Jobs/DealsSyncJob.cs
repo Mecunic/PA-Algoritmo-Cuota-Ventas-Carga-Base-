@@ -84,6 +84,7 @@ namespace PlantillaMVC.Jobs.Jobs
                                     string ContactName = string.Empty;
                                     string DealStage = deal.Properties.DealStage.Value;
                                     string linea = string.Empty;
+                                    string factor = string.Empty;
                                     string Owner = string.Empty;
 
                                     if (!FiltroDeal.Contains(DealStage))
@@ -123,6 +124,10 @@ namespace PlantillaMVC.Jobs.Jobs
                                         {
                                             linea = deal.Properties.LineaDeNegocio.Value;
                                         }
+                                        if (deal.Properties.Factor != null && !string.IsNullOrEmpty(deal.Properties.Factor.Value))
+                                        {
+                                            factor = deal.Properties.Factor.Value;
+                                        }
                                         strResultado.Append(" * Paso 5 ");
                                         if (deal.Properties.HubspotOwnerId != null && !string.IsNullOrEmpty(deal.Properties.HubspotOwnerId.SourceId))
                                         {
@@ -141,7 +146,8 @@ namespace PlantillaMVC.Jobs.Jobs
                                             CompanyName = CompanyName,
                                             ContactName = ContactName,
                                             ProductLine = linea,
-                                            OwnerName = Owner
+                                            OwnerName = Owner,
+                                            Factor = factor
                                         };
                                         strResultado.Append(" * Paso 7 ");
                                         dbService.CreateDeal(dealBD);

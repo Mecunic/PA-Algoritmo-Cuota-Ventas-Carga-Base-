@@ -110,6 +110,8 @@ namespace PlantillaMVC.Integrations.Hubspot
         public Property CloseDate { get; set; }
         [DataMember(Name = "linea")]
         public Property LineaDeNegocio { get; set; }
+        [DataMember(Name = "factor")]
+        public Property Factor { get; set; }
         [DataMember(Name = "dealstage")]
         public Property DealStage { get; set; }
         [DataMember(Name = "hs_object_id")]

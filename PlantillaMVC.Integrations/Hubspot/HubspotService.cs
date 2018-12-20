@@ -74,6 +74,7 @@ namespace PlantillaMVC.Integrations
             request.AddParameter("properties", "dealstage");
             request.AddParameter("properties", "dealname");
             request.AddParameter("properties", "linea");
+            request.AddParameter("properties", "factor");
             request.AddParameter("properties", "dealtype");
             request.AddParameter("properties", "rfc");
 

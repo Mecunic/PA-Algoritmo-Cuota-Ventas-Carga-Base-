@@ -15,38 +15,38 @@ namespace PlantillaMVC.Jobs
     {
         public void Configuration(IAppBuilder app)
         {
-            //bool NotificationProcessEnabled = false;
-            //string JobName = string.Empty;
-            //string JobCron = string.Empty;
-            //string Dashboardurl = string.Empty;
+            bool NotificationProcessEnabled = false;
+            string JobName = string.Empty;
+            string JobCron = string.Empty;
+            string Dashboardurl = string.Empty;
 
-            //ConfigureAuth(app);
+            ConfigureAuth(app);
 
-            //try
-            //{
-            //    GlobalConfiguration.Configuration.UseSqlServerStorage("DefaultConnection");
-            //    Boolean.TryParse(System.Configuration.ConfigurationManager.AppSettings["Jobs.EnabledJobs"], out NotificationProcessEnabled);
-            //    Dashboardurl = System.Configuration.ConfigurationManager.AppSettings["Jobs.Dashboard.Url"].ToString();
+            try
+            {
+                GlobalConfiguration.Configuration.UseSqlServerStorage("DefaultConnection");
+                Boolean.TryParse(System.Configuration.ConfigurationManager.AppSettings["Jobs.EnabledJobs"], out NotificationProcessEnabled);
+                Dashboardurl = System.Configuration.ConfigurationManager.AppSettings["Jobs.Dashboard.Url"].ToString();
 
-            //    if (NotificationProcessEnabled)
-            //    {
-            //        JobName = System.Configuration.ConfigurationManager.AppSettings["Jobs.SincronizarDeals.Name"].ToString();
-            //        JobCron = System.Configuration.ConfigurationManager.AppSettings["Jobs.SincronizarDeals.Cron"].ToString();
-            //        RecurringJob.AddOrUpdate(JobName, () => DealsSyncJob.SyncDeals(), JobCron, TimeZoneInfo.FindSystemTimeZoneById("Central Standard Time (Mexico)"));
-            //        //RecurringJob.AddOrUpdate("SINCRONIZACION_TICKETS", () => TicketsSyncJob.SyncTickets(), Cron.MinuteInterval(60), TimeZoneInfo.FindSystemTimeZoneById("Central Standard Time (Mexico)"));
-            //    }
+                if (NotificationProcessEnabled)
+                {
+                    JobName = System.Configuration.ConfigurationManager.AppSettings["Jobs.SincronizarDeals.Name"].ToString();
+                    JobCron = System.Configuration.ConfigurationManager.AppSettings["Jobs.SincronizarDeals.Cron"].ToString();
+                    RecurringJob.AddOrUpdate(JobName, () => DealsSyncJob.SyncDeals(), JobCron, TimeZoneInfo.FindSystemTimeZoneById("Central Standard Time (Mexico)"));
+                    //RecurringJob.AddOrUpdate("SINCRONIZACION_TICKETS", () => TicketsSyncJob.SyncTickets(), Cron.MinuteInterval(60), TimeZoneInfo.FindSystemTimeZoneById("Central Standard Time (Mexico)"));
+                }
 
-            //    app.UseHangfireDashboard(Dashboardurl, new DashboardOptions
-            //    {
-            //        DisplayStorageConnectionString = false,
-            //        Authorization = new[] { new JobsAuthorizationFilter() },
-            //    });
-            //    app.UseHangfireServer();
-            //}
-            //catch
-            //{
-            //    throw;
-            //}
+                app.UseHangfireDashboard(Dashboardurl, new DashboardOptions
+                {
+                    DisplayStorageConnectionString = false,
+                    Authorization = new[] { new JobsAuthorizationFilter() },
+                });
+                app.UseHangfireServer();
+            }
+            catch
+            {
+                throw;
+            }
         }
     }
 }

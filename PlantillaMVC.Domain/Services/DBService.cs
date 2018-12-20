@@ -51,6 +51,7 @@ namespace PlantillaMVC.Domain.Services
                 command.Parameters.Add("@owner", SqlDbType.VarChar).Value = deal.OwnerName;
                 command.Parameters.Add("@stage", SqlDbType.VarChar).Value = deal.Stage;
                 command.Parameters.Add("@productLine", SqlDbType.VarChar).Value = deal.ProductLine;
+                command.Parameters.Add("@factor", SqlDbType.VarChar).Value = deal.Factor;
                 rdr = command.ExecuteReader();
             }
             finally

@@ -21,6 +21,8 @@ namespace PlantillaMVC.Domain.Models
 
         public string ProductLine { set; get; }
 
+        public string Factor { set; get; }
+
         public string OwnerName { set; get; }
         
 
