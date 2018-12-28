@@ -64,7 +64,16 @@ namespace PlantillaMVC.Utils
         {
             return UnixTimeToDateTime(unixtime, TIME_ZONE);
         }
-
+        public static DateTime ConvertMilisecondsToDateTime(long miliseconds)
+        {
+            return ConvertMilisecondsToDateTime(miliseconds, TIME_ZONE);
+        }
+        public static DateTime ConvertMilisecondsToDateTime(long miliseconds, string timeZoneId)
+        {
+            DateTime sTime = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+            sTime = sTime.AddMilliseconds(miliseconds).ToLocalTime();
+            return sTime;
+        }
         public static DateTime UnixTimeToDateTime(long unixtime, string timeZoneId)
         {
             DateTime sTime = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);

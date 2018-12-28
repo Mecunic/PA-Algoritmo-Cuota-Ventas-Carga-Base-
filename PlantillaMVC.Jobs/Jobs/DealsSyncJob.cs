@@ -147,8 +147,17 @@ namespace PlantillaMVC.Jobs.Jobs
                                             ContactName = ContactName,
                                             ProductLine = linea,
                                             OwnerName = Owner,
-                                            Factor = factor
+                                            Factor = factor,
                                         };
+                                        long closeDateUnixTimeStamp = 0;
+                                        if(deal.Properties.CloseDate != null && Int64.TryParse(deal.Properties.CloseDate.Value, out closeDateUnixTimeStamp))
+                                        {
+                                            dealBD.CloseDate = DateUtil.ConvertMilisecondsToDateTime(closeDateUnixTimeStamp);
+                                        }
+                                        if(deal.Properties.NumFacturaEpicor != null)
+                                        {
+                                            dealBD.NumFacturaEpicor = Int64.Parse(deal.Properties.NumFacturaEpicor.Value);
+                                        }
                                         strResultado.Append(" * Paso 7 ");
                                         dbService.CreateDeal(dealBD);
                                         syncedDeals++;

@@ -52,6 +52,18 @@ namespace PlantillaMVC.Domain.Services
                 command.Parameters.Add("@stage", SqlDbType.VarChar).Value = deal.Stage;
                 command.Parameters.Add("@productLine", SqlDbType.VarChar).Value = deal.ProductLine;
                 command.Parameters.Add("@factor", SqlDbType.VarChar).Value = deal.Factor;
+                object closeDateParam = DBNull.Value;
+                if (deal.CloseDate.HasValue)
+                {
+                    closeDateParam = deal.CloseDate.Value;
+                }
+                command.Parameters.Add("@closeDate", SqlDbType.DateTime).Value = closeDateParam;
+                object numFacturaEpicorParametro = DBNull.Value;
+                if (deal.NumFacturaEpicor.HasValue)
+                {
+                    numFacturaEpicorParametro = deal.NumFacturaEpicor.Value;
+                }
+                command.Parameters.Add("@numFacturaEpicor", SqlDbType.BigInt).Value = numFacturaEpicorParametro;
                 rdr = command.ExecuteReader();
             }
             finally

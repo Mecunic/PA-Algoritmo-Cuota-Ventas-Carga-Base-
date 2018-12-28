@@ -114,6 +114,8 @@ namespace PlantillaMVC.Integrations.Hubspot
         public Property Factor { get; set; }
         [DataMember(Name = "dealstage")]
         public Property DealStage { get; set; }
+        [DataMember(Name = "num_factura_epicor")]
+        public Property NumFacturaEpicor { get; set; }
         [DataMember(Name = "hs_object_id")]
         public Property HsObjectId { get; set; }
 

@@ -77,6 +77,7 @@ namespace PlantillaMVC.Integrations
             request.AddParameter("properties", "factor");
             request.AddParameter("properties", "dealtype");
             request.AddParameter("properties", "rfc");
+            request.AddParameter("properties", "num_factura_epicor");
 
             IRestResponse response = client.Execute(request);
             DealHubSpotResult result = JsonConvert.DeserializeObject<DealHubSpotResult>(response.Content);
