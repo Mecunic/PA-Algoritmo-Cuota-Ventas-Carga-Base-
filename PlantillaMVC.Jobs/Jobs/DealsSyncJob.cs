@@ -19,6 +19,7 @@ namespace PlantillaMVC.Jobs.Jobs
     {
         static bool executing = false;
         static readonly Object thisLock = new Object();
+        
 
         public static void SyncDeals()
         {
@@ -39,6 +40,9 @@ namespace PlantillaMVC.Jobs.Jobs
                         int syncedDeals = 0;
 
                         IHubspotService apiService = new HubspotService();
+                        Trace.TraceInformation(string.Format("[DealsSyncJob.SyncDeals] Get owners {0}", DateTime.Now));
+
+                        IDictionary<int, string> ownersEmails = apiService.GetDisctionaryEmailsOwner();
                         Trace.TraceInformation(string.Format("[DealsSyncJob.SyncDeals] Executing at {0}", DateTime.Now));
                         
                         //SI ESTA HABILITADO Y NO SE ESTA EJECUTANDO
@@ -131,7 +135,11 @@ namespace PlantillaMVC.Jobs.Jobs
                                         strResultado.Append(" * Paso 5 ");
                                         if (deal.Properties.HubspotOwnerId != null && !string.IsNullOrEmpty(deal.Properties.HubspotOwnerId.SourceId))
                                         {
-                                            Owner = deal.Properties.HubspotOwnerId.SourceId;
+                                            int ownerId = 0;
+                                            if (Int32.TryParse(deal.Properties.HubspotOwnerId.Value, out ownerId) && ownersEmails != null)
+                                            {
+                                                ownersEmails.TryGetValue(ownerId, out Owner);
+                                            }
                                         }
                                         strResultado.Append(" * Paso 6 ");
                                         //INSERCION A BD

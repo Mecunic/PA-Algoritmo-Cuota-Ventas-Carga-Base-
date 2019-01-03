@@ -28,6 +28,8 @@ namespace PlantillaMVC.Integrations
         string CreateTicketToCompany();
 
         CompaniesHubSpotResult GetAllCompanies(int limit, long offset);
+        IList<HubspotOwnerModel> GetOwners();
+        IDictionary<int, string> GetDisctionaryEmailsOwner();
 
         PipelinesHubSpotResult GetAllPipelines();
 
@@ -96,6 +98,27 @@ namespace PlantillaMVC.Integrations
 
             return result;
         }
+
+
+        public IList<HubspotOwnerModel> GetOwners()
+        {
+            RestRequest request = new RestRequest("/owners/v2/owners", Method.GET);
+            request.AddParameter("hapikey", apiKey);
+            IRestResponse response = client.Execute(request);
+            IList<HubspotOwnerModel> result = JsonConvert.DeserializeObject<IList<HubspotOwnerModel>>(response.Content);
+            return result;
+        }
+
+        public IDictionary<int, string> GetDisctionaryEmailsOwner()
+        {
+            IList<HubspotOwnerModel> hubspotOwnerModels = this.GetOwners();
+            if(hubspotOwnerModels == null)
+            {
+                return null;
+            }
+            return hubspotOwnerModels.ToDictionary(x => x.OwnerId, y => y.Email);
+        }
+
         public ContactHubSpotResult GetContactById(long id)
         {
 

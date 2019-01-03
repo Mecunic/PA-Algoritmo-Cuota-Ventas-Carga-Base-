@@ -63,6 +63,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Hubspot\HubspotOwnerModels.cs" />
     <Compile Include="Mapper\DealHubspotSimpleModel.cs" />
     <Compile Include="Hubspot\HubspotClient.cs" />
     <Compile Include="Mapper\HubspotModelMapper.cs" />
