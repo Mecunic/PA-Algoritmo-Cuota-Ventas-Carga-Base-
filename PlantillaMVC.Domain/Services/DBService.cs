@@ -14,6 +14,7 @@ namespace PlantillaMVC.Domain.Services
         void CreateDeal(DBDealModel deal);
 
         void ClearDeals();
+        void UpdateSyncTicket(DBTicketModel ticket);
 
         DBProceso GetProcessInfo(string codigo);
         void ActualizarEstatusProceso(DBProceso procesoInfo);
@@ -21,6 +22,8 @@ namespace PlantillaMVC.Domain.Services
         int CreateProcesoEjecucion(DBProcesoEjecucion detalle);
 
         void ActualizarProcesoEjecucion(DBProcesoEjecucion detalle);
+        IList<DBTicketModel> GetTickets();
+        void UpdateTicketsToProcess();
     }
 
     public class DBService : IDBService
@@ -31,6 +34,92 @@ namespace PlantillaMVC.Domain.Services
             string connetionString = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
             cnn = new System.Data.SqlClient.SqlConnection(connetionString);
             cnn.Open();
+        }
+
+        public void UpdateSyncTicket(DBTicketModel ticket)
+        {
+            string sql = "[dbo].[MTL_HBP_Tickets_Sync]";
+            SqlCommand command = new SqlCommand(sql, cnn);
+            SqlDataReader rdr = null;
+            try
+            {
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.Add("@company", SqlDbType.Char).Value = ticket.Company;
+                command.Parameters.Add("@rfc", SqlDbType.Char).Value = ticket.RFC;
+                command.Parameters.Add("@numoperacion", SqlDbType.Int).Value = ticket.NumeroOperacion;
+                command.Parameters.Add("@tipoactividad", SqlDbType.Char).Value = ticket.TipoActividad;
+                command.Parameters.Add("@ticketid", SqlDbType.BigInt).Value = ticket.TicketId;
+
+                rdr = command.ExecuteReader();
+            }
+            finally
+            {
+                if (rdr != null)
+                {
+                    rdr.Close();
+                }
+            }
+        }
+
+        public void UpdateTicketsToProcess()
+        {
+            string sql = "[dbo].[MTL_HBP_Tickets]";
+            SqlCommand command = new SqlCommand(sql, cnn);
+            SqlDataReader rdr = null;
+            try
+            {
+                command.CommandType = CommandType.StoredProcedure;
+                rdr = command.ExecuteReader();
+            }
+            finally
+            {
+                if (rdr != null)
+                {
+                    rdr.Close();
+                }
+            }
+        }
+        public IList<DBTicketModel> GetTickets()
+        {
+            string sql = "SELECT TOP 1 * FROM dbo.HBP_Tickets where TicketId is null and RTRIM(LTRIM(RFC))  in('ALE870612DS8','BRA960418RV5','CRR840820SL3','DEA7103086X2','FQU900713523','TAM520130D49','VME640813HF6','MJD960223MV9','RBO910102QJ9','STE071214BE7','TME840710TR4','THE791105HP2','MON971124PC1','HME850910RF1','ASM940420779','LMO080401895','GME920316IM1')";
+            SqlCommand sqlCommand = new SqlCommand(sql, cnn);
+            SqlDataReader dataReader = null;
+            IList<DBTicketModel> tickets = new List<DBTicketModel>();
+            try
+            {
+                sqlCommand.CommandType = CommandType.Text;
+                dataReader = sqlCommand.ExecuteReader();
+                if (dataReader.HasRows)
+                {
+                    DataTable dataTable = new DataTable();
+                    dataTable.Load(dataReader);
+                    foreach (DataRow row in dataTable.Rows)
+                    {
+                        DBTicketModel ticketModel = new DBTicketModel
+                        {
+                            Company = row.Field<string>("Company"),
+                            RFC = row.Field<string>("RFC"),
+                            Monto = row.Field<decimal?>("Monto"),
+                            FechaAlta = row.Field<DateTime>("FechaAlta"),
+                            NumeroOperacion = row.Field<int>("NumOperacion"),
+                            Descripcion = row.Field<string>("Descripcion"),
+                            SyncDate = row.Field<DateTime?>("sync_date"),
+                            TicketId = row.Field<long?>("TicketId"),
+                            TipoActividad = row.Field<string>("TipoActividad")
+                        };
+                        tickets.Add(ticketModel);
+                    }
+                }
+            }
+            finally
+            {
+                if (dataReader != null)
+                {
+                    dataReader.Close();
+                }
+            }
+            return tickets;
+
         }
 
         public void CreateDeal(DBDealModel deal)

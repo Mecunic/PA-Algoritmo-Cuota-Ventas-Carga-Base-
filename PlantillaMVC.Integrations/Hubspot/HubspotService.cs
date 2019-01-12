@@ -25,7 +25,7 @@ namespace PlantillaMVC.Integrations
 
         string AssociateCompanyToTicket(long ticketId, long companyId);
 
-        string CreateTicketToCompany();
+        CompanyTicketCreateHubspotResponse CreateTicketToCompany(CompanyTicketHubspotSave ticketToSave);
 
         CompaniesHubSpotResult GetAllCompanies(int limit, long offset);
         IList<HubspotOwnerModel> GetOwners();
@@ -136,14 +136,16 @@ namespace PlantillaMVC.Integrations
 
         }
 
-        public string CreateTicketToCompany()
+        public CompanyTicketCreateHubspotResponse CreateTicketToCompany(CompanyTicketHubspotSave ticket)
         {
             //https://developers.hubspot.com/docs/methods/crm-associations/crm-associations-overview
             //Ticket to company 	26
-            
+            CompanyTicketCreateHubspotResponse responseModel = new CompanyTicketCreateHubspotResponse();
             List<TicketProperty> ticketProperties = new List<TicketProperty>();
-            ticketProperties.Add(new TicketProperty() { Name = "subject", Value = "Ticket de prueba" });
-            ticketProperties.Add(new TicketProperty() { Name = "content", Value = "Contenido del ticket de prueba" });
+            ticketProperties.Add(new TicketProperty() { Name = "subject", Value = ticket.Subject.Trim() });
+            ticketProperties.Add(new TicketProperty() { Name = "content", Value = ticket.Content.Trim() });
+            ticketProperties.Add(new TicketProperty() { Name = "numero_de_operaci_n", Value = ticket.NumeroOperacion.ToString() });
+            ticketProperties.Add(new TicketProperty() { Name = "monto", Value = ticket.Monto.ToString() });
             ticketProperties.Add(new TicketProperty() { Name = "hs_pipeline", Value = "0" });
             ticketProperties.Add(new TicketProperty() { Name = "hs_pipeline_stage", Value = "1" });
             string jsonToSend = JsonConvert.SerializeObject(ticketProperties);
@@ -153,17 +155,14 @@ namespace PlantillaMVC.Integrations
             request.AddHeader("Accept", "application/json");
             request.Parameters.Clear();
             request.AddParameter("application/json", jsonToSend, ParameterType.RequestBody);
-
-            var response = client.Execute(request);
-
+            IRestResponse response = client.Execute(request);
             TicketResponse ticketResponse = JsonConvert.DeserializeObject<TicketResponse>(response.Content);
-
             if (ticketResponse.ObjectId > 0)
             {
                 Association association = new Association()
                 {
                     FromObjectId = ticketResponse.ObjectId,
-                    ToObjectId = 1060806363,
+                    ToObjectId = ticket.CompanyId,
                     Category = "HUBSPOT_DEFINED",
                     DefinitionId = 26
                 };
@@ -173,10 +172,15 @@ namespace PlantillaMVC.Integrations
                 request.AddParameter("application/json", jsonToSend, ParameterType.RequestBody);
                 request.AddHeader("Content-Type", "application/json");
                 response = client.Put(request);
+                if(response.StatusCode == System.Net.HttpStatusCode.NoContent)
+                {
+                    responseModel.IsCreated = true;
+                    responseModel.TicketId = ticketResponse.ObjectId;
+                }
             }
-            //response.StatusCode
-
-            return response.Content;
+            responseModel.Content = response.Content;
+            responseModel.StatusHttp = (int)response.StatusCode;
+            return responseModel;
         }
         
         public CompaniesHubSpotResult GetAllCompanies(int limit, long offset)

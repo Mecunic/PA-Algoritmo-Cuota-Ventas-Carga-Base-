@@ -1,4 +1,5 @@
-﻿using PlantillaMVC.Integrations;
+﻿using PlantillaMVC.Domain.Services;
+using PlantillaMVC.Integrations;
 using PlantillaMVC.Integrations.Hubspot;
 using System;
 using System.Collections.Generic;
@@ -19,7 +20,6 @@ namespace PlantillaMVC.Jobs.Controllers
 
             IHubspotService apiService = new HubspotService();
             PipelinesHubSpotResult result = apiService.GetAllPipelines();
-
             return View();
         }
 

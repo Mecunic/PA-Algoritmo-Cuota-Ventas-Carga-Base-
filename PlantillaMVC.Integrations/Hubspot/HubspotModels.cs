@@ -282,4 +282,24 @@ namespace PlantillaMVC.Integrations.Hubspot
         [DataMember(Name = "probability")]
         public decimal Probability { get; set; }
     }
+    public class CompanyTicketHubspotSave
+    {
+        public string Subject { get; set; }
+        public string Content { get; set; }
+        public long CompanyId { get; set; }
+        public decimal? Monto { get; set; }
+        public int NumeroOperacion { get; set; }
+    }
+
+    public class CompanyTicketCreateHubspotResponse : HubspotRespose
+    {
+        public bool IsCreated { get; set; }
+        public long? TicketId { get; set; }
+    }
+    public class HubspotRespose
+    {
+
+        public int StatusHttp { get; set; }
+        public string Content { get; set; }
+    }
 }
