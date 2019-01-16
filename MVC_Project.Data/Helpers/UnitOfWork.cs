@@ -1,6 +1,8 @@
 ﻿using FluentNHibernate.Cfg;
 using FluentNHibernate.Cfg.Db;
 using NHibernate;
+using NHibernate.Cfg;
+using NHibernate.Tool.hbm2ddl;
 using MVC_Project.Data.Mappings;
 using MVC_Project.Domain.Helpers;
 
@@ -8,6 +10,7 @@ namespace MVC_Project.Data.Helpers {
 
     public class UnitOfWork : IUnitOfWork {
         private static readonly ISessionFactory _sessionFactory;
+        private static Configuration configuration;
         private ITransaction _transaction;
 
         public ISession Session { get; set; }
@@ -16,11 +19,14 @@ namespace MVC_Project.Data.Helpers {
             _sessionFactory = Fluently.Configure()
                 .Database(SQLiteConfiguration.Standard.InMemory)
                 .Mappings(m => m.FluentMappings.AddFromAssemblyOf<UserMap>())
+                .ExposeConfiguration(cfg => configuration = cfg)
                 .BuildSessionFactory();
         }
 
         public UnitOfWork() {
             Session = _sessionFactory.OpenSession();
+             var export = new SchemaExport(configuration);
+            export.Execute(true, true, false, Session.Connection, null);
         }
 
         public void BeginTransaction() {
