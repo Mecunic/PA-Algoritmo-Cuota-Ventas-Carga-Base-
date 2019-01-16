@@ -7,7 +7,7 @@ using System.Web;
 using System.Web.Mvc;
 
 namespace MVC_Project.Web.Controllers
-{
+{    
     public class UserController : Controller
     {
         private IUserService _userService;

@@ -14,12 +14,14 @@ namespace MVC_Project.Web.Controllers
             _authService = authService;
         }
 
+        [AllowAnonymous]
         public ActionResult Login()
         {
             return View();
         }
 
         [HttpPost]
+        [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public ActionResult Login(AuthViewModel model)
         {
