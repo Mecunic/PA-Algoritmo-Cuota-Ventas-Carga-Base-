@@ -29,7 +29,7 @@ namespace MVC_Project.Data.Repositories {
         }
 
         public IQueryable<T> FindBy(Expression<Func<T, bool>> predicate) {
-            throw new NotImplementedException();
+            return Session.Query<T>().Where(predicate);         
         }
 
         public IQueryable<T> GetAll() {
