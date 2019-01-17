@@ -17,7 +17,7 @@ namespace MVC_Project.Data.Helpers {
 
         static UnitOfWork() {
             _sessionFactory = Fluently.Configure()
-                .Database(SQLiteConfiguration.Standard.InMemory)
+                .Database(SQLiteConfiguration.Standard.ConnectionString(conection => conection.FromConnectionStringWithKey("testConectionString")))
                 .Mappings(m => m.FluentMappings.AddFromAssemblyOf<UserMap>())
                 .ExposeConfiguration(cfg => configuration = cfg)
                 .BuildSessionFactory();
