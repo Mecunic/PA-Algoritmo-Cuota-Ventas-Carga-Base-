@@ -5,6 +5,7 @@ using NHibernate.Cfg;
 using NHibernate.Tool.hbm2ddl;
 using MVC_Project.Data.Mappings;
 using MVC_Project.Domain.Helpers;
+using System;
 
 namespace MVC_Project.Data.Helpers {
 
@@ -24,9 +25,7 @@ namespace MVC_Project.Data.Helpers {
         }
 
         public UnitOfWork() {
-            Session = _sessionFactory.OpenSession();
-             var export = new SchemaExport(configuration);
-            export.Execute(true, true, false, Session.Connection, null);
+            Session = _sessionFactory.OpenSession();            
         }
 
         public void BeginTransaction() {

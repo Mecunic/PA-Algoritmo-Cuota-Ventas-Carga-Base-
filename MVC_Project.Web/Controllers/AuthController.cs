@@ -1,5 +1,8 @@
 ﻿using MVC_Project.Domain.Services;
+using MVC_Project.Web.AuthManagement;
+using MVC_Project.Web.AuthManagement.Models;
 using MVC_Project.Web.Models;
+using System.Linq;
 using System.Web.Mvc;
 
 namespace MVC_Project.Web.Controllers
@@ -27,13 +30,28 @@ namespace MVC_Project.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (_authService.Authenticate(model.Email, model.Password))
+                var user = _authService.Authenticate(model.Email, model.Password);
+                if (user != null)
                 {
+                    AuthUser authUser = new AuthUser
+                    {
+                        Email = user.Email,
+                        Role = new Role
+                        {
+                            Code = user.Role.Code
+                        },
+                        Permissions = user.Permissions.Select(p => new Permission {
+                            Action = p.Action,
+                            Controller = p.Controller
+                        }).ToList()
+                    };
+                    Authenticator.StoreAuthenticatedUser(authUser);
                     return RedirectToAction("Index", "Home");
-                } else
+                }
+                else
                 {
                     ViewBag.Error = "El usuario no existe o contraseña inválida.";
-                }                
+                }
             }
 
             return View(model);

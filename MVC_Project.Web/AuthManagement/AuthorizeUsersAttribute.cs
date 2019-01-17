@@ -24,13 +24,8 @@ namespace MVC_Project.Web.AuthManagement
         }
 
         protected override bool AuthorizeCore(HttpContextBase httpContext)
-        {
-            AuthUser authenticatedUser = new AuthUser{
-                Role = new Role
-                {
-                    Code = "ADMIN"
-                }
-            }; // TODO retrieve the authenticated user                        
+        {                                 
+            AuthUser authenticatedUser = Authenticator.AuthenticatedUser;
             if (authenticatedUser != null)
             {
                 string controller = httpContext.Request.RequestContext.RouteData.Values["controller"].ToString();
