@@ -81,7 +81,7 @@ namespace PlantillaMVC.Domain.Services
         }
         public IList<DBTicketModel> GetTickets()
         {
-            string sql = "SELECT TOP 1 * FROM dbo.HBP_Tickets where TicketId is null and RTRIM(LTRIM(RFC))  in('ALE870612DS8','BRA960418RV5','CRR840820SL3','DEA7103086X2','FQU900713523','TAM520130D49','VME640813HF6','MJD960223MV9','RBO910102QJ9','STE071214BE7','TME840710TR4','THE791105HP2','MON971124PC1','HME850910RF1','ASM940420779','LMO080401895','GME920316IM1')";
+            string sql = "SELECT * FROM dbo.HBP_Tickets where TicketId is null";
             SqlCommand sqlCommand = new SqlCommand(sql, cnn);
             SqlDataReader dataReader = null;
             IList<DBTicketModel> tickets = new List<DBTicketModel>();
@@ -187,7 +187,7 @@ namespace PlantillaMVC.Domain.Services
         {
             DBProceso proceso = new DBProceso();
 
-            string sql = "SELECT * FROM dbo.Proceso_Herramental WHERE codigo = @codigo";
+            string sql = "SELECT * FROM dbo.Proceso_Metrolap WHERE codigo = @codigo";
             SqlCommand cmd = new SqlCommand(sql, cnn);
             SqlDataReader reader;
             cmd.CommandType = CommandType.Text;
@@ -196,7 +196,7 @@ namespace PlantillaMVC.Domain.Services
             reader = cmd.ExecuteReader();
             while (reader.Read())
             {
-                proceso.ProcesoId = Convert.ToInt32(reader["ProcesoHerramentalId"]);
+                proceso.ProcesoId = Convert.ToInt32(reader["ProcesoMetrolapId"]);
                 proceso.Codigo = Convert.ToString(reader["Codigo"]);
                 proceso.EstatusProceso = Convert.ToBoolean(reader["EstatusProceso"]);
                 proceso.EstatusEjecucion = Convert.ToBoolean(reader["EstatusEjecucion"]);
@@ -210,7 +210,7 @@ namespace PlantillaMVC.Domain.Services
         
         public void ActualizarEstatusProceso(DBProceso procesoInfo)
         {
-            string sql = "UPDATE dbo.Proceso_Herramental SET EstatusEjecucion = @EstatusEjecucion, UltimaEjecucion = @UltimaEjecucion, Resultado = @Resultado WHERE codigo = @codigo";
+            string sql = "UPDATE dbo.Proceso_Metrolap SET EstatusEjecucion = @EstatusEjecucion, UltimaEjecucion = @UltimaEjecucion, Resultado = @Resultado WHERE codigo = @codigo";
             SqlCommand cmd = new SqlCommand(sql, cnn);
             cmd.CommandType = CommandType.Text;
             cmd.Parameters.Add("@EstatusEjecucion", SqlDbType.Bit).Value = procesoInfo.EstatusEjecucion;
@@ -251,7 +251,7 @@ namespace PlantillaMVC.Domain.Services
 
         public void ActualizarProcesoEjecucion(DBProcesoEjecucion detalle)
         {
-            string sql = "UPDATE dbo.ProcesoEjecucion_Herramental SET Estatus = @Estatus, FechaFin = @FechaFin, Resultado = @Resultado WHERE ProcesoEjecucionHerramentalId = @id";
+            string sql = "UPDATE dbo.ProcesoEjecucion_Metrolap SET Estatus = @Estatus, FechaFin = @FechaFin, Resultado = @Resultado WHERE ProcesoEjecucionHerramentalId = @id";
             SqlCommand cmd = new SqlCommand(sql, cnn);
             cmd.CommandType = CommandType.Text;
             cmd.Parameters.Add("@id", SqlDbType.Int).Value = detalle.ProcesoEjecucionId;
