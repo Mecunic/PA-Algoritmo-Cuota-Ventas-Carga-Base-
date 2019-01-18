@@ -289,6 +289,9 @@ namespace PlantillaMVC.Integrations.Hubspot
         public long CompanyId { get; set; }
         public decimal? Monto { get; set; }
         public int NumeroOperacion { get; set; }
+        public string PipelineId { get; set; }
+        public string PipelineStageId { get; set; }
+        public int DefinitionId { get; set; }
     }
 
     public class CompanyTicketCreateHubspotResponse : HubspotRespose

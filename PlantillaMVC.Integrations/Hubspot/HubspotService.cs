@@ -146,8 +146,8 @@ namespace PlantillaMVC.Integrations
             ticketProperties.Add(new TicketProperty() { Name = "content", Value = ticket.Content.Trim() });
             ticketProperties.Add(new TicketProperty() { Name = "numero_de_operaci_n", Value = ticket.NumeroOperacion.ToString() });
             ticketProperties.Add(new TicketProperty() { Name = "monto", Value = ticket.Monto.ToString() });
-            ticketProperties.Add(new TicketProperty() { Name = "hs_pipeline", Value = "0" });
-            ticketProperties.Add(new TicketProperty() { Name = "hs_pipeline_stage", Value = "1" });
+            ticketProperties.Add(new TicketProperty() { Name = "hs_pipeline", Value = ticket.PipelineId });
+            ticketProperties.Add(new TicketProperty() { Name = "hs_pipeline_stage", Value = ticket.PipelineStageId });
             string jsonToSend = JsonConvert.SerializeObject(ticketProperties);
 
             var request = new RestRequest("/crm-objects/v1/objects/tickets?hapikey=" + apiKeyMetrolab);
@@ -164,7 +164,7 @@ namespace PlantillaMVC.Integrations
                     FromObjectId = ticketResponse.ObjectId,
                     ToObjectId = ticket.CompanyId,
                     Category = "HUBSPOT_DEFINED",
-                    DefinitionId = 26
+                    DefinitionId = ticket.DefinitionId
                 };
                 jsonToSend = JsonConvert.SerializeObject(association);
                 request = new RestRequest("/crm-associations/v1/associations?hapikey=" + apiKeyMetrolab);

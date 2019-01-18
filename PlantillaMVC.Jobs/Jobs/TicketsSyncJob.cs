@@ -21,7 +21,13 @@ namespace PlantillaMVC.Jobs.Jobs
         {
             bool ProcessEnabled = true;
             Boolean.TryParse(System.Configuration.ConfigurationManager.AppSettings["Jobs.EnabledJobs"], out ProcessEnabled);
-
+            int definitionId = 0;
+            if(!Int32.TryParse(System.Configuration.ConfigurationManager.AppSettings["DefinitionId"], out definitionId))
+            {
+                throw new Exception("DefinitionId no existe en el web config");
+            }
+            string pipelineId = System.Configuration.ConfigurationManager.AppSettings["PipelineId"];
+            string pipelineStageId = System.Configuration.ConfigurationManager.AppSettings["PipelineStageId"];
             IHubspotService apiService = new HubspotService();
             Trace.TraceInformation(string.Format("[TicketsSyncJob.SyncTickets] Executing at {0}", DateTime.Now));
             //string result = apiService.CreateTicketToCompany();
@@ -77,7 +83,8 @@ namespace PlantillaMVC.Jobs.Jobs
                                     //TODO: Cambiar por RFC
                                     if (company.Properties.RFC != null && !string.IsNullOrEmpty(company.Properties.RFC.Value))
                                     {
-                                        if (!CompanyDictionary.ContainsKey(company.Properties.RFC.Value)) CompanyDictionary.Add(company.Properties.RFC.Value, company.CompanyId);
+                                        string rfcCompany = company.Properties.RFC.Value.Trim().ToUpper();
+                                        if (!CompanyDictionary.ContainsKey(rfcCompany)) CompanyDictionary.Add(rfcCompany, company.CompanyId);
                                     }
                                 }
                             }
@@ -94,7 +101,7 @@ namespace PlantillaMVC.Jobs.Jobs
                             {
                                 long companyId = 0;
                                 strResultado.Append(" * Paso 4.1 ");
-                                string rfc = ticket.RFC.Trim();
+                                string rfc = ticket.RFC.Trim().ToUpper();
                                 if (!CompanyDictionary.TryGetValue(rfc, out companyId))
                                 {
                                     strResultado.Append(String.Format("No existe el rfc {0} en el hubspot", rfc));
@@ -107,7 +114,10 @@ namespace PlantillaMVC.Jobs.Jobs
                                     Content = ticket.Descripcion,
                                     Monto = ticket.Monto,
                                     NumeroOperacion = ticket.NumeroOperacion,
-                                    Subject = ticket.TipoActividad
+                                    Subject = ticket.TipoActividad,
+                                    DefinitionId = definitionId,
+                                    PipelineId = pipelineId,
+                                    PipelineStageId = pipelineStageId
                                 };
 
                                 strResultado.Append(" * Paso 4.3 ");
