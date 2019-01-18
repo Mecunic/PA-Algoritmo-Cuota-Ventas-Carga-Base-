@@ -41,7 +41,7 @@
             {
                 @Html.AntiForgeryToken()
                 @Html.ValidationSummary()
-
+                @Html.Hidden("ReturnUrl", (string)ViewBag.ReturnUrl)
                 <div class="form-group">
                     @Html.TextBoxFor(m => m.Email, new { @class = "form-control", type = "email", placeholder = "Usuario", @required = "required" })                    
                 </div>

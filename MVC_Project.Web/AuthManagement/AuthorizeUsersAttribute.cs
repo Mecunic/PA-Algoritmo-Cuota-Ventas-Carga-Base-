@@ -1,10 +1,10 @@
 ﻿using MVC_Project.Web.AuthManagement.Models;
 using System;
-using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Security;
 
 namespace MVC_Project.Web.AuthManagement
 {
@@ -13,14 +13,14 @@ namespace MVC_Project.Web.AuthManagement
     {                
         protected override void HandleUnauthorizedRequest(AuthorizationContext filterContext)
         {
-            if (!filterContext.HttpContext.User.Identity.IsAuthenticated)
-            {
-                filterContext.Result = new RedirectToRouteResult(new System.Web.Routing.RouteValueDictionary(new { controller = "Auth", action = "Login" }));
-            }
-            else
+            if (Authenticator.AuthenticatedUser != null && filterContext.HttpContext.User.Identity.IsAuthenticated)
             {
                 filterContext.Result = new System.Web.Mvc.HttpStatusCodeResult((int)System.Net.HttpStatusCode.Forbidden);
             }
+            else
+            {
+                base.HandleUnauthorizedRequest(filterContext);
+            }            
         }
 
         protected override bool AuthorizeCore(HttpContextBase httpContext)
@@ -39,8 +39,8 @@ namespace MVC_Project.Web.AuthManagement
                     return true;
                 }
                 return false;
-            }
+            }                    
             return false;
-        }
+        }        
     }
 }

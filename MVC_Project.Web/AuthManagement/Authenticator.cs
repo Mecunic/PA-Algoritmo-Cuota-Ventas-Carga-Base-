@@ -1,4 +1,5 @@
 ﻿using MVC_Project.Web.AuthManagement.Models;
+using System.Web;
 using System.Web.Security;
 
 namespace MVC_Project.Web.AuthManagement
@@ -15,15 +16,14 @@ namespace MVC_Project.Web.AuthManagement
         }
         public static void StoreAuthenticatedUser(AuthUser authUser)
         {
-            System.Web.HttpContext.Current.Session.Add("ST_AUTH_USER", authUser);
+            HttpContext.Current.Session.Add("ST_AUTH_USER", authUser);
             FormsAuthentication.SetAuthCookie(authUser.Email, true);
         }
 
         public static void RemoveAuthenticatedUser()
         {            
-            System.Web.HttpContext.Current.Session.Remove("ST_AUTH_USER");            
-            FormsAuthentication.SignOut(); 
-          
+            HttpContext.Current.Session.Remove("ST_AUTH_USER");            
+            FormsAuthentication.SignOut();            
         }
     }
 }

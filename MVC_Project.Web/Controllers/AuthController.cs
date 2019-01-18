@@ -18,8 +18,9 @@ namespace MVC_Project.Web.Controllers
         }
 
         [AllowAnonymous]
-        public ActionResult Login()
+        public ActionResult Login(string returnUrl)
         {
+            ViewBag.ReturnUrl = returnUrl;
             return View();
         }
 
@@ -46,7 +47,11 @@ namespace MVC_Project.Web.Controllers
                         }).ToList()
                     };
                     Authenticator.StoreAuthenticatedUser(authUser);
-                    return RedirectToAction("Index", "Home");
+                    if (!string.IsNullOrEmpty(Request.Form["ReturnUrl"]))
+                    {
+                        return Redirect(Request.Form["ReturnUrl"]);
+                    }
+                    return RedirectToAction("Index", "Home");                    
                 }
                 else
                 {
@@ -55,6 +60,13 @@ namespace MVC_Project.Web.Controllers
             }
 
             return View(model);
+        }
+
+        [AllowAnonymous]
+        public ActionResult Logout()
+        {
+            Authenticator.RemoveAuthenticatedUser();
+            return RedirectToAction("Login", "Auth");
         }
     }
 }
