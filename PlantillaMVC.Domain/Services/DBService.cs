@@ -251,7 +251,7 @@ namespace PlantillaMVC.Domain.Services
 
         public void ActualizarProcesoEjecucion(DBProcesoEjecucion detalle)
         {
-            string sql = "UPDATE dbo.ProcesoEjecucion_Metrolap SET Estatus = @Estatus, FechaFin = @FechaFin, Resultado = @Resultado WHERE ProcesoEjecucionHerramentalId = @id";
+            string sql = "UPDATE dbo.ProcesoEjecucion_Metrolap SET Estatus = @Estatus, FechaFin = @FechaFin, Resultado = @Resultado WHERE ProcesoEjecucionMetrolapId = @id";
             SqlCommand cmd = new SqlCommand(sql, cnn);
             cmd.CommandType = CommandType.Text;
             cmd.Parameters.Add("@id", SqlDbType.Int).Value = detalle.ProcesoEjecucionId;
