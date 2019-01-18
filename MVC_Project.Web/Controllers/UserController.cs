@@ -10,9 +10,9 @@ namespace MVC_Project.Web.Controllers
 {    
     public class UserController : Controller
     {
-        private IUserService _userService;
+        private UserService _userService;
 
-        public UserController(IUserService userService)
+        public UserController(UserService userService)
         {
             _userService = userService;
         }

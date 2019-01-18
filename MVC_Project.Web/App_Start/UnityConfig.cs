@@ -50,7 +50,7 @@ namespace MVC_Project.Web
             // container.RegisterType<IProductRepository, ProductRepository>();
             container.RegisterType<IUnitOfWork, UnitOfWork>(new HierarchicalLifetimeManager());
             container.RegisterType(typeof(IRepository<>), typeof(Repository<>));
-            container.RegisterType<IUserService, UserService>();
+            container.RegisterType(typeof(IService<>), typeof(ServiceBase<>));
             container.RegisterType<IAuthService, AuthService>();
         }
     }
