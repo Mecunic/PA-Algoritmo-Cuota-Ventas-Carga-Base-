@@ -59,11 +59,11 @@ namespace PlantillaMVC.Domain.Services
                 }
                 command.Parameters.Add("@closeDate", SqlDbType.DateTime).Value = closeDateParam;
                 object numFacturaEpicorParametro = DBNull.Value;
-                if (deal.NumFacturaEpicor.HasValue)
+                if (!String.IsNullOrWhiteSpace(deal.NumFacturaEpicor))
                 {
-                    numFacturaEpicorParametro = deal.NumFacturaEpicor.Value;
+                    numFacturaEpicorParametro = deal.NumFacturaEpicor;
                 }
-                command.Parameters.Add("@numFacturaEpicor", SqlDbType.BigInt).Value = numFacturaEpicorParametro;
+                command.Parameters.Add("@numFacturaEpicor", SqlDbType.VarChar).Value = numFacturaEpicorParametro;
                 rdr = command.ExecuteReader();
             }
             finally

@@ -164,7 +164,7 @@ namespace PlantillaMVC.Jobs.Jobs
                                         }
                                         if(deal.Properties.NumFacturaEpicor != null)
                                         {
-                                            dealBD.NumFacturaEpicor = Int64.Parse(deal.Properties.NumFacturaEpicor.Value);
+                                            dealBD.NumFacturaEpicor = deal.Properties.NumFacturaEpicor.Value;
                                         }
                                         strResultado.Append(" * Paso 7 ");
                                         dbService.CreateDeal(dealBD);

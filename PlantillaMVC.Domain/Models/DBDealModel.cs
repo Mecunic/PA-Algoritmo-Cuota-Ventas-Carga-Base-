@@ -25,6 +25,6 @@ namespace PlantillaMVC.Domain.Models
 
         public string OwnerName { set; get; }
         public DateTime? CloseDate { get; set; }
-        public long? NumFacturaEpicor { get; set; }
+        public string NumFacturaEpicor { get; set; }
     }
 }
