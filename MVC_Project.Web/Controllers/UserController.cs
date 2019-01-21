@@ -1,4 +1,6 @@
-﻿using MVC_Project.Domain.Services;
+﻿using MVC_Project.Domain.Entities;
+using MVC_Project.Domain.Services;
+using MVC_Project.Web.AuthManagement;
 using MVC_Project.Web.Models;
 using System;
 using System.Collections.Generic;
@@ -11,10 +13,12 @@ namespace MVC_Project.Web.Controllers
     public class UserController : Controller
     {
         private UserService _userService;
+        private RoleService _roleService;
 
-        public UserController(UserService userService)
+        public UserController(UserService userService, RoleService roleService)
         {
             _userService = userService;
+            _roleService = roleService;
         }
 
         // GET: User
@@ -40,20 +44,47 @@ namespace MVC_Project.Web.Controllers
         // GET: User/Create
         public ActionResult Create()
         {
-            return View();
+            var userCreateViewModel = new UserCreateViewModel { Roles = PopulateRoles() };
+            return View(userCreateViewModel);
+        }
+
+        private IEnumerable<SelectListItem> PopulateRoles()
+        {
+            var availableRoles = _roleService.GetAll();
+            var rolesList = new List<SelectListItem>();
+            rolesList = availableRoles.Select(role => new SelectListItem
+            {
+                Value = role.Id.ToString(),
+                Text = role.Name
+            }).ToList();
+            return rolesList;
         }
 
         // POST: User/Create
         [HttpPost]
-        public ActionResult Create(FormCollection collection)
+        public ActionResult Create(UserCreateViewModel userCreateViewModel)
         {
-            try
+            if(ModelState.IsValid)
             {
                 // TODO: Add insert logic here
-
+                var user = new User
+                {
+                    Name = userCreateViewModel.Name,
+                    Email = userCreateViewModel.Email,
+                    Password = EncryptHelper.EncryptPassword(userCreateViewModel.Password),
+                    Role = new Role { Id = userCreateViewModel.Role },
+                    CreatedAt = DateTime.Now,
+                    UpdatedAt = DateTime.Now,                             
+                };
+                var role = _roleService.GetById(user.Role.Id);
+                foreach (var permission in role.Permissions)
+                {
+                    user.Permissions.Add(permission);
+                }
+                _userService.Create(user);                                
                 return RedirectToAction("Index");
             }
-            catch
+            else
             {
                 return View();
             }

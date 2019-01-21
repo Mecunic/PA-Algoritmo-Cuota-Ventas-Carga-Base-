@@ -16,7 +16,7 @@ namespace MVC_Project.Data.Mappings {
             Map(x => x.UpdatedAt).Column("updated_at").Not.Nullable();
             Map(x => x.RemovedAt).Column("removed_at").Nullable();
             References(x => x.Role).Column("role_id");
-            HasManyToMany(x => x.Permissions).Cascade.All().Table("permission_user").ParentKeyColumn("user_id").ChildKeyColumn("permission_id");
+            HasManyToMany(x => x.Permissions).Cascade.SaveUpdate().Table("permission_user").ParentKeyColumn("user_id").ChildKeyColumn("permission_id");
         }
     }
 }

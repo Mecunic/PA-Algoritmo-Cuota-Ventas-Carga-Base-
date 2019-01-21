@@ -172,15 +172,18 @@
     <Compile Include="App_Start\UnityMvcActivator.cs" />
     <Compile Include="AuthManagement\Authenticator.cs" />
     <Compile Include="AuthManagement\AuthorizeUsersAttribute.cs" />
+    <Compile Include="AuthManagement\EncryptHelper.cs" />
     <Compile Include="AuthManagement\Models\AuthUser.cs" />
     <Compile Include="Controllers\AuthController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\RoleController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\HTMLHelperExtensions.cs" />
     <Compile Include="Models\AuthViewModel.cs" />
+    <Compile Include="Models\RoleViewModel.cs" />
     <Compile Include="Models\UserViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -1572,6 +1575,9 @@
     <Content Include="Scripts\template\plugins\diff_match_patch\COPYING" />
     <Content Include="Scripts\template\plugins\justified-gallery\README.md" />
     <Content Include="Scripts\template\plugins\topojson\LICENSE" />
+    <Content Include="Views\Role\Index.cshtml" />
+    <Content Include="Views\Role\Create.cshtml" />
+    <Content Include="Views\Role\EditorTemplates\PermissionViewModel.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MVC_Project.Data\MVC_Project.Data.csproj">

@@ -19,7 +19,7 @@ namespace MVC_Project.Web.Controllers
 
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
-        {
+        {            
             ViewBag.ReturnUrl = returnUrl;
             return View();
         }
@@ -31,7 +31,7 @@ namespace MVC_Project.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = _authService.Authenticate(model.Email, model.Password);
+                var user = _authService.Authenticate(model.Email, EncryptHelper.EncryptPassword(model.Password));
                 if (user != null)
                 {
                     AuthUser authUser = new AuthUser

@@ -4,8 +4,6 @@ namespace MVC_Project.Domain.Services
 {
     public interface IAuthService
     {
-        User Authenticate(string username, string password);
-
-        string EncryptPassword(string password);
+        User Authenticate(string username, string password);        
     }
 }
