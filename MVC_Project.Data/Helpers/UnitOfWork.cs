@@ -25,10 +25,11 @@ namespace MVC_Project.Data.Helpers {
         }
 
         public UnitOfWork() {
-            Session = _sessionFactory.OpenSession();            
+            Session = _sessionFactory.OpenSession();                        
         }
 
         public void BeginTransaction() {
+            Session = _sessionFactory.OpenSession();
             _transaction = Session.BeginTransaction();
         }
 

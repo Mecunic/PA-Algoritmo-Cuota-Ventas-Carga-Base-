@@ -10,7 +10,7 @@ using System.Web.Mvc;
 
 namespace MVC_Project.Web.Controllers
 {    
-    public class UserController : Controller
+    public class UserController : BaseController
     {
         private UserService _userService;
         private RoleService _roleService;
@@ -81,7 +81,7 @@ namespace MVC_Project.Web.Controllers
                 {
                     user.Permissions.Add(permission);
                 }
-                _userService.Create(user);                                
+                _userService.Create(user);
                 return RedirectToAction("Index");
             }
             else

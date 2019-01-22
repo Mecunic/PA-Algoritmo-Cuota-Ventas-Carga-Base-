@@ -175,6 +175,7 @@
     <Compile Include="AuthManagement\EncryptHelper.cs" />
     <Compile Include="AuthManagement\Models\AuthUser.cs" />
     <Compile Include="Controllers\AuthController.cs" />
+    <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\RoleController.cs" />
     <Compile Include="Controllers\UserController.cs" />
@@ -1538,7 +1539,9 @@
     <Content Include="Views\User\Index.cshtml" />
     <Content Include="Views\_ViewStart.cshtml" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Views\Base\" />
+  </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -1569,6 +1572,7 @@
     <Content Include="Content\template\plugins\summernote\font\summernote.ttf" />
     <Content Include="Content\template\plugins\summernote\font\summernote.woff" />
     <Content Include="App_Data\test.db" />
+    <Content Include="libman.json" />
     <None Include="packages.config" />
     <Content Include="Scripts\template\api\typehead_collection.json" />
     <Content Include="Scripts\template\plugins\chartist\chartist.min.js.map" />
