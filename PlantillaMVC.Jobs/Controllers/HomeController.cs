@@ -16,10 +16,6 @@ namespace PlantillaMVC.Jobs.Controllers
             //IHubspotService apiService = new HubspotService();
             //string response = apiService.AssociateCompanyToTicket(1086248987, 3785340);
             //Trace.TraceInformation(response);
-
-            IHubspotService apiService = new HubspotService();
-            PipelinesHubSpotResult result = apiService.GetAllPipelines();
-
             return View();
         }
 

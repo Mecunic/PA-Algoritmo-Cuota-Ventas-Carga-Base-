@@ -67,6 +67,7 @@ namespace PlantillaMVC.Jobs.Jobs
                             //INICIA SINCRONIZACION
                             long offset = 0;
                             bool hasMoreDeals = true;
+                            IDictionary<string, IDictionary<string, PipelineState>> pipelineStages = apiService.GetDealsPipelinesStages(); 
                             while (hasMoreDeals)
                             {
                                 var dealsObj = apiService.ReadDeals(250, offset);
@@ -167,6 +168,17 @@ namespace PlantillaMVC.Jobs.Jobs
                                             dealBD.NumFacturaEpicor = deal.Properties.NumFacturaEpicor.Value;
                                         }
                                         strResultado.Append(" * Paso 7 ");
+                                        IDictionary<string, PipelineState> stages = new Dictionary<string, PipelineState>();
+                                        if(deal.Properties.Pipeline != null && pipelineStages.TryGetValue(deal.Properties.Pipeline.Value,out stages))
+                                        {
+                                            PipelineState pipelineState = null;
+                                            if (deal.Properties.DealStage != null && stages.TryGetValue(deal.Properties.DealStage.Value, out pipelineState))
+                                            {
+                                                dealBD.StageProbability = pipelineState.Metadata.Probability;
+                                                dealBD.StageName = pipelineState.Label;
+                                            }
+                                        }
+                                        strResultado.Append(" * Paso 8 ");
                                         dbService.CreateDeal(dealBD);
                                         syncedDeals++;
                                     } //END IF

@@ -64,6 +64,18 @@ namespace PlantillaMVC.Domain.Services
                     numFacturaEpicorParametro = deal.NumFacturaEpicor;
                 }
                 command.Parameters.Add("@numFacturaEpicor", SqlDbType.VarChar).Value = numFacturaEpicorParametro;
+                object stageName = DBNull.Value;
+                if (!String.IsNullOrWhiteSpace(deal.StageName))
+                {
+                    stageName = deal.StageName;
+                }
+                command.Parameters.Add("@stageName", SqlDbType.VarChar).Value = stageName;
+                object stageProbability = DBNull.Value;
+                if (deal.StageProbability.HasValue)
+                {
+                    stageProbability = deal.StageProbability.Value;
+                }
+                command.Parameters.Add("@stageProbability", SqlDbType.Decimal).Value = stageProbability;
                 rdr = command.ExecuteReader();
             }
             finally

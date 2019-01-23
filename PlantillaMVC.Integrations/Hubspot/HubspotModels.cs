@@ -102,6 +102,8 @@ namespace PlantillaMVC.Integrations.Hubspot
     {
         [DataMember(Name = "dealname")]
         public Property Dealname { get; set; }
+        [DataMember(Name = "pipeline")]
+        public Property Pipeline { get; set; }
         [DataMember(Name = "amount")]
         public Property Amount { get; set; }
         [DataMember(Name = "hubspot_owner_id")]

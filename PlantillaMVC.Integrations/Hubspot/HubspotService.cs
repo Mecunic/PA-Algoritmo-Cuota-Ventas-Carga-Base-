@@ -30,8 +30,10 @@ namespace PlantillaMVC.Integrations
         CompaniesHubSpotResult GetAllCompanies(int limit, long offset);
         IList<HubspotOwnerModel> GetOwners();
         IDictionary<int, string> GetDisctionaryEmailsOwner();
+        PipelinesHubSpotResult GetDealsPipelines();
+        PipelinesHubSpotResult GetAllPipelines(string objType);
+        IDictionary<string, IDictionary<string, PipelineState>> GetDealsPipelinesStages();
 
-        PipelinesHubSpotResult GetAllPipelines();
 
     }
     public class HubspotService : IHubspotService
@@ -79,12 +81,40 @@ namespace PlantillaMVC.Integrations
             request.AddParameter("properties", "factor");
             request.AddParameter("properties", "dealtype");
             request.AddParameter("properties", "rfc");
+            request.AddParameter("properties", "pipeline");
             request.AddParameter("properties", "num_factura_epicor");
 
             IRestResponse response = client.Execute(request);
             DealHubSpotResult result = JsonConvert.DeserializeObject<DealHubSpotResult>(response.Content);
             return result;
         }
+        public PipelinesHubSpotResult GetAllPipelines(string objType)
+        {
+            RestRequest request = new RestRequest("/crm-pipelines/v1/pipelines/{objType}", Method.GET);
+            request.AddParameter("hapikey", apiKey);
+            request.AddUrlSegment("objType", objType);
+            IRestResponse response = client.Execute(request);
+            PipelinesHubSpotResult result = JsonConvert.DeserializeObject<PipelinesHubSpotResult>(response.Content);
+            return result;
+        }
+        public PipelinesHubSpotResult GetDealsPipelines()
+        {
+            return this.GetAllPipelines("deals");
+        }
+        public IDictionary<string, IDictionary<string, PipelineState>> GetDealsPipelinesStages()
+        {
+            PipelinesHubSpotResult pipelineResult = this.GetDealsPipelines();
+            if (pipelineResult == null || pipelineResult.Pipelines == null || !pipelineResult.Pipelines.Any())
+            {
+                return null;
+            }
+            IEnumerable<Pipeline> pipelines = 
+                pipelineResult.Pipelines.Where(x => x.Stages != null && x.Stages.Any(stage=> stage.Metadata != null));
+            return pipelineResult.Pipelines.ToDictionary(x => x.PipelineId, y => (IDictionary<string, PipelineState>)y.Stages.ToDictionary(k=>k.StageId, v=>v));
+
+        }
+
+
         public CompanyHubSpotResult GetCompanyById(long id)
         {
 
@@ -213,16 +243,7 @@ namespace PlantillaMVC.Integrations
 
             return response.Content;
         }
-
-        public PipelinesHubSpotResult GetAllPipelines()
-        {
-            RestRequest request = new RestRequest("/crm-pipelines/v1/pipelines/deals", Method.GET);
-            request.AddParameter("hapikey", apiKey);
-            //request.AddParameter("properties", "name");
-            IRestResponse response = client.Execute(request);
-            PipelinesHubSpotResult result = JsonConvert.DeserializeObject<PipelinesHubSpotResult>(response.Content);
-            return result;
-        }
+        
 
     }
 }

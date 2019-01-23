@@ -17,6 +17,8 @@ namespace PlantillaMVC.Domain.Models
         public string ContactName { set; get; }
 
         public decimal Amount { set; get; }
+        public string StageName { set; get; }
+        public decimal? StageProbability { set; get; }
         public string Stage { set; get; }
 
         public string ProductLine { set; get; }
