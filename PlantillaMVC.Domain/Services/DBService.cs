@@ -69,6 +69,7 @@ namespace PlantillaMVC.Domain.Services
             try
             {
                 command.CommandType = CommandType.StoredProcedure;
+                command.CommandTimeout = 300;
                 rdr = command.ExecuteReader();
             }
             finally
