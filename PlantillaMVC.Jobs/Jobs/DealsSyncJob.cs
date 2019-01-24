@@ -100,11 +100,14 @@ namespace PlantillaMVC.Jobs.Jobs
                                             strResultado.Append(" * Paso 1.1 ");
                                             contactId = associations.AssociatedVids.First();
                                             strResultado.Append(" * Paso 1.2 ");
-                                            ContactHubSpotResult contactObj = apiService.GetContactById(contactId.Value);
-                                            strResultado.Append(" * Paso 1.3 ");
-                                            if (/*contactObj!=null && contactObj.Properties!=null &&*/ contactObj.Properties.Email != null && !string.IsNullOrEmpty(contactObj.Properties.Email.Value))
+                                            if (contactId.HasValue)
                                             {
-                                                ContactName = contactObj.Properties.Email.Value;
+                                                ContactHubSpotResult contactObj = apiService.GetContactById(contactId.Value);
+                                                strResultado.Append(" * Paso 1.3 ");
+                                                if (contactObj.Properties.Email != null && !string.IsNullOrEmpty(contactObj.Properties.Email.Value))
+                                                {
+                                                    ContactName = contactObj.Properties.Email.Value;
+                                                }
                                             }
                                         }
                                         strResultado.Append(" * Paso 2 ");
