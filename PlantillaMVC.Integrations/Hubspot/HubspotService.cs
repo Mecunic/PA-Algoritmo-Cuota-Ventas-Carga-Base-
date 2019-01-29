@@ -222,7 +222,6 @@ namespace PlantillaMVC.Integrations
         {
             RestRequest request = new RestRequest("/crm-pipelines/v1/pipelines/deals", Method.GET);
             request.AddParameter("hapikey", apiKey);
-            //request.AddParameter("properties", "name");
             IRestResponse response = client.Execute(request);
             PipelinesHubSpotResult result = JsonConvert.DeserializeObject<PipelinesHubSpotResult>(response.Content);
             return result;
