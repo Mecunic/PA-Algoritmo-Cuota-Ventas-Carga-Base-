@@ -23,8 +23,6 @@ namespace PlantillaMVC.Jobs.Jobs
 
             IHubspotService apiService = new HubspotService();
             Trace.TraceInformation(string.Format("[TicketsSyncJob.SyncTickets] Executing at {0}", DateTime.Now));
-            //string result = apiService.CreateTicketToCompany();
-            //Trace.TraceInformation(result);
             IDBService dbService = new DBService();
             DBProceso procesoInfo = dbService.GetProcessInfo("SINCRONIZACION_TICKETS");
 

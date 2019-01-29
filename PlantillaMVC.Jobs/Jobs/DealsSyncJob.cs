@@ -78,7 +78,6 @@ namespace PlantillaMVC.Jobs.Jobs
                             
                                 foreach (Deal deal in dealsObj.Deals)
                                 {
-                                    //Trace.TraceInformation(JsonUtil.ConvertToString(deal));
                                     strResultado.Append(" | " + JsonUtil.ConvertToString(deal));
                                     var associations = deal.Associations;
                                     long? contactId = null;

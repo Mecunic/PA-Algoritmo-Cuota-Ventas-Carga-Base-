@@ -204,7 +204,6 @@ namespace PlantillaMVC.Integrations
                 request.AddHeader("Content-Type", "application/json");
                 response = client.Put(request);
             }
-            //response.StatusCode
 
             return response.Content;
         }
