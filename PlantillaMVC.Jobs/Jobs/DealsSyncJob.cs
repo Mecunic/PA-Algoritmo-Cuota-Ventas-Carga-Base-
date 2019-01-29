@@ -104,7 +104,7 @@ namespace PlantillaMVC.Jobs.Jobs
                                             {
                                                 ContactHubSpotResult contactObj = apiService.GetContactById(contactId.Value);
                                                 strResultado.Append(" * Paso 1.3 ");
-                                                if (contactObj.Properties.Email != null && !string.IsNullOrEmpty(contactObj.Properties.Email.Value))
+                                                if (contactObj != null && contactObj.Properties.Email != null && !string.IsNullOrEmpty(contactObj.Properties.Email.Value))
                                                 {
                                                     ContactName = contactObj.Properties.Email.Value;
                                                 }
