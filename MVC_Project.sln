@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MVC_Project.Domain", "MVC_P
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MVC_Project.Jobs", "MVC_Project.Jobs\MVC_Project.Jobs.csproj", "{0F5C8BF5-B860-4B27-B98C-A50DE923B693}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MVC_Project.Utils", "MVC_Project.Utils\MVC_Project.Utils.csproj", "{23B89C18-68C5-449F-ADED-E51A86DA6B52}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +53,10 @@ Global
 		{0F5C8BF5-B860-4B27-B98C-A50DE923B693}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0F5C8BF5-B860-4B27-B98C-A50DE923B693}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0F5C8BF5-B860-4B27-B98C-A50DE923B693}.Release|Any CPU.Build.0 = Release|Any CPU
+		{23B89C18-68C5-449F-ADED-E51A86DA6B52}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{23B89C18-68C5-449F-ADED-E51A86DA6B52}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{23B89C18-68C5-449F-ADED-E51A86DA6B52}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{23B89C18-68C5-449F-ADED-E51A86DA6B52}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
