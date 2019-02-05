@@ -1571,8 +1571,6 @@
     <Content Include="Content\template\plugins\summernote\font\summernote.eot" />
     <Content Include="Content\template\plugins\summernote\font\summernote.ttf" />
     <Content Include="Content\template\plugins\summernote\font\summernote.woff" />
-    <Content Include="App_Data\test.db" />
-    <Content Include="libman.json" />
     <None Include="packages.config" />
     <Content Include="Scripts\template\api\typehead_collection.json" />
     <Content Include="Scripts\template\plugins\chartist\chartist.min.js.map" />
@@ -1582,6 +1580,8 @@
     <Content Include="Views\Role\Index.cshtml" />
     <Content Include="Views\Role\Create.cshtml" />
     <Content Include="Views\Role\EditorTemplates\PermissionViewModel.cshtml" />
+    <None Include="Properties\PublishProfiles\ensi-template - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\ensi-template - Web Deploy.pubxml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MVC_Project.Data\MVC_Project.Data.csproj">
