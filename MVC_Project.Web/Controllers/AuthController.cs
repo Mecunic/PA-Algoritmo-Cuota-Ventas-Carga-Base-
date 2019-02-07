@@ -35,6 +35,8 @@ namespace MVC_Project.Web.Controllers
                 {
                     AuthUser authUser = new AuthUser
                     {
+                        FirstName = user.FirstName,
+                        LastName = user.LastName,
                         Email = user.Email,
                         Role = new Role
                         {

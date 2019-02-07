@@ -27,7 +27,7 @@ namespace MVC_Project.Web.Controllers
             var users = _userService.GetAll().Select(user => new UserViewModel
             {
                 Id = user.Id,
-                Name = user.Name,
+                Name = user.FirstName,
                 Email = user.Email,
                 CreatedAt = user.CreatedAt,
                 UpdatedAt = user.UpdatedAt
@@ -69,7 +69,7 @@ namespace MVC_Project.Web.Controllers
                 // TODO: Add insert logic here
                 var user = new User
                 {
-                    Name = userCreateViewModel.Name,
+                    FirstName = userCreateViewModel.Name,
                     Email = userCreateViewModel.Email,
                     Password = EncryptHelper.EncryptPassword(userCreateViewModel.Password),
                     Role = new Role { Id = userCreateViewModel.Role },

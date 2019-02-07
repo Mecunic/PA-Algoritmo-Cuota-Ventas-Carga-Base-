@@ -9,7 +9,8 @@ namespace MVC_Project.Data.Mappings {
         public UserMap() {
             Table("users");
             Id(x => x.Id).GeneratedBy.Identity().Column("id");
-            Map(x => x.Name).Column("name").Not.Nullable();
+            Map(x => x.FirstName).Column("first_name").Not.Nullable();
+            Map(x => x.LastName).Column("last_name").Nullable();
             Map(x => x.Email).Column("email").Not.Nullable();
             Map(x => x.Password).Column("password").Not.Nullable();            
             Map(x => x.CreatedAt).Column("created_at").Not.Nullable();
