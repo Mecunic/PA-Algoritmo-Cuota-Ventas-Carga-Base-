@@ -26,6 +26,7 @@ namespace PlantillaMVC.Jobs.Jobs
             bool ProcessEnabled = true;
             Boolean.TryParse(System.Configuration.ConfigurationManager.AppSettings["Jobs.EnabledJobs"], out ProcessEnabled);
             string FiltroDeal = System.Configuration.ConfigurationManager.AppSettings["Jobs.SincronizarDeals.Filtro"].ToString();
+            string FiltroDealPipeline = System.Configuration.ConfigurationManager.AppSettings["Jobs.SincronizarDeals.FiltroPipeline"].ToString();
 
             IDBService dbService = new DBService();
             DBProceso procesoInfo = dbService.GetProcessInfo("SINCRONIZACION_DEALS");
@@ -114,7 +115,7 @@ namespace PlantillaMVC.Jobs.Jobs
                                         {
                                             companyId = associations.associatedCompanyIds.First();
                                             CompanyHubSpotResult companyObj = apiService.GetCompanyById(companyId.Value);
-                                            CompanyName = string.Format("{0}", companyObj.Properties.Name.Value);
+                                            CompanyName = companyObj.Properties.Name!=null?string.Format("{0}", companyObj.Properties.Name.Value):string.Empty;
                                             strResultado.Append(" * Paso 2.1 ");
                                             if (/*companyObj!=null && companyObj.Properties!=null &&*/  companyObj.Properties.RFC != null && !string.IsNullOrEmpty(companyObj.Properties.RFC.Value))
                                             {
@@ -171,7 +172,9 @@ namespace PlantillaMVC.Jobs.Jobs
                                         }
                                         strResultado.Append(" * Paso 7 ");
                                         IDictionary<string, PipelineState> stages = new Dictionary<string, PipelineState>();
-                                        if(deal.Properties.Pipeline != null && pipelineStages.TryGetValue(deal.Properties.Pipeline.Value,out stages))
+                                        if(deal.Properties.Pipeline != null 
+                                            && deal.Properties.Pipeline.Value == FiltroDealPipeline
+                                            && pipelineStages.TryGetValue(deal.Properties.Pipeline.Value,out stages))
                                         {
                                             PipelineState pipelineState = null;
                                             if (deal.Properties.DealStage != null && stages.TryGetValue(deal.Properties.DealStage.Value, out pipelineState))
