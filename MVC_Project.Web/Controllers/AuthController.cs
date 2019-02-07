@@ -7,8 +7,7 @@ using System.Web.Mvc;
 
 namespace MVC_Project.Web.Controllers
 {
-
-    public class AuthController : Controller
+    public class AuthController : BaseController
     {
         private IAuthService _authService;
 
@@ -19,7 +18,7 @@ namespace MVC_Project.Web.Controllers
 
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
-        {            
+        {
             ViewBag.ReturnUrl = returnUrl;
             return View();
         }
@@ -41,7 +40,8 @@ namespace MVC_Project.Web.Controllers
                         {
                             Code = user.Role.Code
                         },
-                        Permissions = user.Permissions.Select(p => new Permission {
+                        Permissions = user.Permissions.Select(p => new Permission
+                        {
                             Action = p.Action,
                             Controller = p.Controller
                         }).ToList()
@@ -51,7 +51,7 @@ namespace MVC_Project.Web.Controllers
                     {
                         return Redirect(Request.Form["ReturnUrl"]);
                     }
-                    return RedirectToAction("Index", "Home");                    
+                    return RedirectToAction("Index", "Home");
                 }
                 else
                 {
