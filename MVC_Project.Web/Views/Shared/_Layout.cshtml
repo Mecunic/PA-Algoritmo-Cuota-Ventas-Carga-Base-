@@ -29,17 +29,27 @@
 		@Html.Partial("_Navigation")
 
 		<!-- Page wraper -->
-		<div id="page-wrapper" class="gray-bg @ViewBag.SpecialClass">
+        <div id="page-wrapper" class="gray-bg @ViewBag.SpecialClass">
 
-			<!-- Top Navbar -->
-			@Html.Partial("_TopNavbar")
+            <!-- Top Navbar -->
+            @Html.Partial("_TopNavbar")
 
-			<!-- Main view  -->
-			@RenderBody()
+            <div class="row wrapper border-bottom white-bg page-heading">
+                <div class="col-sm-4">
+                    <h2>@ViewBag.Title</h2>
+                    @*<ol class="breadcrumb">
+                        <li class="active">
+                            <strong>Usuarios</strong>
+                        </li>*@
+                    </ol>
+                </div>
+            </div>
+            <!-- Main view  -->
+            @RenderBody()
 
-			<!-- Footer -->
-			@Html.Partial("_Footer")
-		</div>
+            <!-- Footer -->
+            @Html.Partial("_Footer")
+        </div>
 		<!-- End page wrapper-->
 		<!-- Right Sidebar -->
 		@Html.Partial("_RightSidebar")

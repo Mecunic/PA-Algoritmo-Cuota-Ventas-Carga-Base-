@@ -176,6 +176,7 @@
     <Compile Include="AuthManagement\Models\AuthUser.cs" />
     <Compile Include="Controllers\AuthController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
+    <Compile Include="Controllers\DashboardsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\RoleController.cs" />
     <Compile Include="Controllers\UserController.cs" />
@@ -1535,7 +1536,7 @@
     <Content Include="Views\Shared\_Navigation.cshtml" />
     <Content Include="Views\Shared\_RightSidebar.cshtml" />
     <Content Include="Views\Shared\_TopNavbar.cshtml" />
-    <Content Include="Views\User\Create.cshtml" />
+    <Content Include="Views\User\Form.cshtml" />
     <Content Include="Views\User\Index.cshtml" />
     <Content Include="Views\_ViewStart.cshtml" />
   </ItemGroup>
@@ -1582,6 +1583,12 @@
     <Content Include="Views\Role\EditorTemplates\PermissionViewModel.cshtml" />
     <None Include="Properties\PublishProfiles\ensi-template - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\ensi-template - Web Deploy.pubxml" />
+    <Content Include="Views\Dashboards\Dashboard_1.cshtml" />
+    <Content Include="Views\Dashboards\Dashboard_2.cshtml" />
+    <Content Include="Views\Dashboards\Dashboard_3.cshtml" />
+    <Content Include="Views\Dashboards\Dashboard_4.cshtml" />
+    <Content Include="Views\Dashboards\Dashboard_4_1.cshtml" />
+    <Content Include="Views\Dashboards\Dashboard_5.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MVC_Project.Data\MVC_Project.Data.csproj">

@@ -6,9 +6,11 @@ namespace MVC_Project.Domain.Entities {
 
     public class User : IEntity {
         public virtual int Id { get; set; }
+        public virtual string Uuid { get; set; }
         public virtual string FirstName { get; set; }
         public virtual string LastName { get; set; }
         public virtual string Email { get; set; }
+        
         public virtual string Password { get; set; }
         public virtual Role Role { get; set; }
         public virtual IList<Permission> Permissions { get; set; }

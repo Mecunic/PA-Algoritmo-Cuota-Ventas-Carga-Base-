@@ -38,33 +38,33 @@
                 </ul>
             </li>
 
-            <li class="@Html.IsSelected(controller: "Reports")">
-                <a href="#"><i class="fa fa-th-large"></i> <span class="nav-label" data-i18n="nav.dashboard">Reportes</span> <span class="fain arrow"></span></a>
-                <ul class="nav nav-second-level collapse @Html.IsSelected(controller: "Reports", cssClass: "in")">
-                    <li class="@Html.IsSelected(action: "Dashboard_1")"><a href="@Url.Action("Report_1", "Dashboards")">Reporte 1</a></li>
-                    <li class="@Html.IsSelected(action: "Dashboard_2")"><a href="@Url.Action("Report_2", "Dashboards")">Reporte 2</a></li>
-                </ul>
-            </li>
-
             <li class="@Html.IsSelected(controller: "Catalogs")">
-                <a href="#"><i class="fa fa-th-large"></i> <span class="nav-label" data-i18n="nav.dashboard">Catálogos</span> <span class="fain arrow"></span></a>
+                <a href="#"><i class="fa fa-table"></i> <span class="nav-label" data-i18n="nav.dashboard">Catálogos</span> <span class="fain arrow"></span></a>
                 <ul class="nav nav-second-level collapse @Html.IsSelected(controller: "Catalogs", cssClass: "in")">
                     <li class="@Html.IsSelected(action: "Dashboard_1")"><a href="@Url.Action("Report_1", "Dashboards")">Catálogo 1</a></li>
                     <li class="@Html.IsSelected(action: "Dashboard_2")"><a href="@Url.Action("Report_2", "Dashboards")">Catálogo 2</a></li>
                 </ul>
             </li>
 
-            @*<li class="@Html.IsSelected(controller: "Dashboards")">
-            <a href="@Url.Action("Dashboard_1", "Dashboards")"><i class="fa fa-th-large"></i> <span class="nav-label" data-i18n="nav.dashboard">Dashboards</span> <span class="fain arrow"></span></a>
-            <ul class="nav nav-second-level collapse @Html.IsSelected(controller: "Dashboards", cssClass: "in")">
-                <li class="@Html.IsSelected(action: "Dashboard_1")"><a href="@Url.Action("Dashboard_1", "Dashboards")">Dashboard v.1</a></li>
-                <li class="@Html.IsSelected(action: "Dashboard_2")"><a href="@Url.Action("Dashboard_2", "Dashboards")">Dashboard v.2</a></li>
-                <li class="@Html.IsSelected(action: "Dashboard_3")"><a href="@Url.Action("Dashboard_3", "Dashboards")">Dashboard v.3</a></li>
-                <li class="@Html.IsSelected(action: "Dashboard_4_1")"><a href="@Url.Action("Dashboard_4_1", "Dashboards")">Dashboard v.4</a></li>
-                <li class="@Html.IsSelected(action: "Dashboard_5")"><a href="@Url.Action("Dashboard_5", "Dashboards")">Dashboard v.5</a></li>
-            </ul>
-        </li>
-        <li class="@Html.IsSelected(controller: "Layouts")">
+            <li class="@Html.IsSelected(controller: "Reports")">
+                <a href="#"><i class="fa fa-bar-chart-o"></i> <span class="nav-label" data-i18n="nav.dashboard">Reportes</span> <span class="fain arrow"></span></a>
+                <ul class="nav nav-second-level collapse @Html.IsSelected(controller: "Reports", cssClass: "in")">
+                    <li class="@Html.IsSelected(action: "Dashboard_1")"><a href="@Url.Action("Report_1", "Dashboards")">Reporte 1</a></li>
+                    <li class="@Html.IsSelected(action: "Dashboard_2")"><a href="@Url.Action("Report_2", "Dashboards")">Reporte 2</a></li>
+                </ul>
+            </li>
+
+            <li class="@Html.IsSelected(controller: "Dashboards")">
+                <a href="@Url.Action("Dashboard_1", "Dashboards")"><i class="fa fa-pie-chart"></i> <span class="nav-label" data-i18n="nav.dashboard">Dashboards</span> <span class="fain arrow"></span></a>
+                <ul class="nav nav-second-level collapse @Html.IsSelected(controller: "Dashboards", cssClass: "in")">
+                    <li class="@Html.IsSelected(action: "Dashboard_1")"><a href="@Url.Action("Dashboard_1", "Dashboards")">Dashboard v.1</a></li>
+                    <li class="@Html.IsSelected(action: "Dashboard_2")"><a href="@Url.Action("Dashboard_2", "Dashboards")">Dashboard v.2</a></li>
+                    <li class="@Html.IsSelected(action: "Dashboard_3")"><a href="@Url.Action("Dashboard_3", "Dashboards")">Dashboard v.3</a></li>
+                    <li class="@Html.IsSelected(action: "Dashboard_4_1")"><a href="@Url.Action("Dashboard_4_1", "Dashboards")">Dashboard v.4</a></li>
+                    <li class="@Html.IsSelected(action: "Dashboard_5")"><a href="@Url.Action("Dashboard_5", "Dashboards")">Dashboard v.5</a></li>
+                </ul>
+            </li>
+            @*<li class="@Html.IsSelected(controller: "Layouts")">
             <a href="@Url.Action("Index", "Layouts")"><i class="fa fa-diamond"></i> <span class="nav-label" data-i18n="nav.layouts">Layouts</span> <span class="label label-primary pull-right">NEW</span></a>
         </li>
         <li class="@Html.IsSelected(controller: "Graphs")">
@@ -227,8 +227,8 @@
                 <li class="@Html.IsSelected(action: "SlickCarusela")"><a href="@Url.Action("SlickCarusela", "Gallery")">Slick Carusela</a></li>
                 <li class="@Html.IsSelected(action: "BootstrapCarusela")"><a href="@Url.Action("BootstrapCarusela", "Gallery")">Bootstrap Carusela</a></li>
             </ul>
-        </li>
-        <li>
+        </li>*@
+            @*<li>
             <a href="#"><i class="fa fa-sitemap"></i> <span class="nav-label" data-i18n="nav.menulevels">Menu Levels </span><span class="fain arrow"></span></a>
             <ul class="nav nav-second-level">
                 <li>

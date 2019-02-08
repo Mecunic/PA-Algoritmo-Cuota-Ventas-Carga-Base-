@@ -45,7 +45,7 @@ namespace MVC_Project.Web.Controllers
         public ActionResult Create()
         {
             var userCreateViewModel = new UserCreateViewModel { Roles = PopulateRoles() };
-            return View(userCreateViewModel);
+            return View("Form",userCreateViewModel);
         }
 
         private IEnumerable<SelectListItem> PopulateRoles()
@@ -69,6 +69,7 @@ namespace MVC_Project.Web.Controllers
                 // TODO: Add insert logic here
                 var user = new User
                 {
+                    Uuid = Guid.NewGuid().ToString(),
                     FirstName = userCreateViewModel.Name,
                     Email = userCreateViewModel.Email,
                     Password = EncryptHelper.EncryptPassword(userCreateViewModel.Password),
@@ -86,19 +87,19 @@ namespace MVC_Project.Web.Controllers
             }
             else
             {
-                return View();
+                return View("Form");
             }
         }
 
         // GET: User/Edit/5
-        public ActionResult Edit(int id)
+        public ActionResult Edit(string uuid)
         {
-            return View();
+            return View("Form");
         }
 
         // POST: User/Edit/5
         [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+        public ActionResult Edit(string uuid, FormCollection collection)
         {
             try
             {
@@ -113,14 +114,14 @@ namespace MVC_Project.Web.Controllers
         }
 
         // GET: User/Delete/5
-        public ActionResult Delete(int id)
+        public ActionResult Delete(string uuid)
         {
             return View();
         }
 
         // POST: User/Delete/5
         [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
+        public ActionResult Delete(string uuid, FormCollection collection)
         {
             try
             {

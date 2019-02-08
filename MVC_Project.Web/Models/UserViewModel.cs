@@ -13,6 +13,8 @@ namespace MVC_Project.Web.Models {
         [Display(Name = "Nombre")]
         public string Name { get; set; }
 
+        public string Uuid { get; set; }
+
         public string Email { get; set; }
 
         [Display(Name = "Fecha de creación")]
