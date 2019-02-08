@@ -173,7 +173,6 @@ namespace PlantillaMVC.Jobs.Jobs
                                         strResultado.Append(" * Paso 7 ");
                                         IDictionary<string, PipelineState> stages = new Dictionary<string, PipelineState>();
                                         if(deal.Properties.Pipeline != null 
-                                            && deal.Properties.Pipeline.Value == FiltroDealPipeline
                                             && pipelineStages.TryGetValue(deal.Properties.Pipeline.Value,out stages))
                                         {
                                             PipelineState pipelineState = null;
@@ -184,8 +183,12 @@ namespace PlantillaMVC.Jobs.Jobs
                                             }
                                         }
                                         strResultado.Append(" * Paso 8 ");
-                                        dbService.CreateDeal(dealBD);
-                                        syncedDeals++;
+                                        //FILTRO DE PIPELINE
+                                        if (deal.Properties.Pipeline != null && deal.Properties.Pipeline.Value == FiltroDealPipeline)
+                                        {
+                                            dbService.CreateDeal(dealBD);
+                                            syncedDeals++;
+                                        }
                                     } //END IF
 
                                     Thread.Sleep(150);
