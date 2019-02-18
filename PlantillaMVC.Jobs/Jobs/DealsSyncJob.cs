@@ -91,7 +91,9 @@ namespace PlantillaMVC.Jobs.Jobs
                                     string linea = string.Empty;
                                     string factor = string.Empty;
                                     string Owner = string.Empty;
-
+                                    string statusMessage = "SUCCESS";
+                                    bool hasError = false;
+                                    StringBuilder errorMessage = new StringBuilder();
                                     if (!FiltroDeal.Contains(DealStage))
                                     {
                                         strResultado.Append(" * Paso 1 ");
@@ -102,11 +104,20 @@ namespace PlantillaMVC.Jobs.Jobs
                                             strResultado.Append(" * Paso 1.2 ");
                                             if (contactId.HasValue)
                                             {
-                                                ContactHubSpotResult contactObj = apiService.GetContactById(contactId.Value);
-                                                strResultado.Append(" * Paso 1.3 ");
-                                                if (contactObj != null && contactObj.Properties.Email != null && !string.IsNullOrEmpty(contactObj.Properties.Email.Value))
+                                                try
                                                 {
-                                                    ContactName = contactObj.Properties.Email.Value;
+                                                    ContactHubSpotResult contactObj = apiService.GetContactById(contactId.Value);
+                                                    strResultado.Append(" * Paso 1.3 ");
+                                                    if (contactObj != null && contactObj.Properties.Email != null && !string.IsNullOrEmpty(contactObj.Properties.Email.Value))
+                                                    {
+                                                        ContactName = contactObj.Properties.Email.Value;
+                                                    }
+                                                }catch(Exception e)
+                                                {
+                                                    errorMessage.Append("Error al realizar la consulta de la api de contactos");
+                                                    errorMessage.Append(Environment.NewLine);
+                                                    ExceptionUtil.AppendMessage(e, errorMessage);
+                                                    hasError = true;
                                                 }
                                             }
                                         }
@@ -114,13 +125,26 @@ namespace PlantillaMVC.Jobs.Jobs
                                         if (associations.associatedCompanyIds != null && associations.associatedCompanyIds.Any())
                                         {
                                             companyId = associations.associatedCompanyIds.First();
-                                            CompanyHubSpotResult companyObj = apiService.GetCompanyById(companyId.Value);
-                                            CompanyName = companyObj.Properties.Name!=null?string.Format("{0}", companyObj.Properties.Name.Value):string.Empty;
-                                            strResultado.Append(" * Paso 2.1 ");
-                                            if (/*companyObj!=null && companyObj.Properties!=null &&*/  companyObj.Properties.RFC != null && !string.IsNullOrEmpty(companyObj.Properties.RFC.Value))
+                                            try
                                             {
-                                                CompanyRFC = companyObj.Properties.RFC.Value;
+                                                CompanyHubSpotResult companyObj = apiService.GetCompanyById(companyId.Value);
+                                                CompanyName = companyObj.Properties.Name != null ? string.Format("{0}", companyObj.Properties.Name.Value) : string.Empty;
+                                                strResultado.Append(" * Paso 2.1 ");
+                                                if (/*companyObj!=null && companyObj.Properties!=null &&*/  companyObj.Properties.RFC != null && !string.IsNullOrEmpty(companyObj.Properties.RFC.Value))
+                                                {
+                                                    CompanyRFC = companyObj.Properties.RFC.Value;
+                                                }
+                                            }catch(Exception e)
+                                            {
+                                                errorMessage.Append("Error al realizar la consulta de la api de compania");
+                                                errorMessage.Append(Environment.NewLine);
+                                                ExceptionUtil.AppendMessage(e, errorMessage);
+                                                hasError = true;
                                             }
+                                        }
+                                        if (hasError)
+                                        {
+                                            statusMessage = errorMessage.ToString();
                                         }
                                         strResultado.Append(" * Paso 3 ");
                                         if (deal.Properties.Amount != null && !string.IsNullOrEmpty(deal.Properties.Amount.Value))
@@ -160,6 +184,7 @@ namespace PlantillaMVC.Jobs.Jobs
                                             ProductLine = linea,
                                             OwnerName = Owner,
                                             Factor = factor,
+                                            StatusMessage = statusMessage
                                         };
                                         long closeDateUnixTimeStamp = 0;
                                         if(deal.Properties.CloseDate != null && Int64.TryParse(deal.Properties.CloseDate.Value, out closeDateUnixTimeStamp))

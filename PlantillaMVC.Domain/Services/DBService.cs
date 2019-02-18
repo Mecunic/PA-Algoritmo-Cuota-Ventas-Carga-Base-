@@ -52,6 +52,7 @@ namespace PlantillaMVC.Domain.Services
                 command.Parameters.Add("@stage", SqlDbType.VarChar).Value = deal.Stage;
                 command.Parameters.Add("@productLine", SqlDbType.VarChar).Value = deal.ProductLine;
                 command.Parameters.Add("@factor", SqlDbType.VarChar).Value = deal.Factor;
+                command.Parameters.Add("@statusMessage", SqlDbType.VarChar).Value = deal.StatusMessage;
                 object closeDateParam = DBNull.Value;
                 if (deal.CloseDate.HasValue)
                 {
