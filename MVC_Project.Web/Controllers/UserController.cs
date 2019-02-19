@@ -1,19 +1,24 @@
 ﻿using MVC_Project.Domain.Entities;
+using MVC_Project.Domain.Helpers;
 using MVC_Project.Domain.Services;
 using MVC_Project.Web.AuthManagement;
 using MVC_Project.Web.Models;
+using NHibernate;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Web;
 using System.Web.Mvc;
 
 namespace MVC_Project.Web.Controllers
-{    
+{
+    
     public class UserController : BaseController
     {
         private UserService _userService;
         private RoleService _roleService;
+        
 
         public UserController(UserService userService, RoleService roleService)
         {
@@ -24,15 +29,84 @@ namespace MVC_Project.Web.Controllers
         // GET: User
         public ActionResult Index()
         {
-            var users = _userService.GetAll().Select(user => new UserViewModel
+            UserViewModel model = new UserViewModel
             {
-                Id = user.Id,
-                Name = user.FirstName,
-                Email = user.Email,
-                CreatedAt = user.CreatedAt,
-                UpdatedAt = user.UpdatedAt
+                UserList = new UserData()
+            };
+            List<SelectListItem> listStatus = new List<SelectListItem>();
+            listStatus.Add(new SelectListItem
+            {
+                Text = "Todos",
+                Value = "2"
             });
-            return View(users);
+            listStatus.Add(new SelectListItem
+            {
+                Text = "Activos",
+                Value = "1",
+                Selected = true
+            });
+            listStatus.Add(new SelectListItem
+            {
+                Text = "Inactivos",
+                Value = "0"
+            });
+            ViewBag.OpcionesStatus = listStatus;
+            //var users = _userService.GetAll().Select(user => new UserData
+            //{
+            //    Id = user.Id,
+            //    Name = user.FirstName,
+            //    Email = user.Email,
+            //    CreatedAt = user.CreatedAt,
+            //    UpdatedAt = user.UpdatedAt,
+            //    Uuid = user.Uuid,
+            //    Status = user.Status
+            //});
+            return View(model);
+        }
+        [HttpGet, Authorize]
+        public JsonResult ObtenerUsuarios(JQueryDataTableParams param, string filtros)
+        {
+            DataTableUsersModel model = new DataTableUsersModel();
+            try
+            {
+                using (ISession session = NHibernateHelper.OpenSession())
+                {
+                    UserBLogic userBLogic = new UserBLogic(session);
+                    IList<User> userss = userBLogic.ObtenerUsuarios(filtros);
+                    //var users = _userService.ObtenerUsuarios(filtros);
+                    IList<UserData> UsuariosResponse = new List<UserData>();
+                    foreach (var user in userss)
+                    {
+                        UserData userData = new UserData();
+                        userData.Name = user.FirstName + " " + user.LastName;
+                        userData.Email = user.Email;
+                        userData.CreatedAt = user.CreatedAt;
+                        userData.UpdatedAt = user.UpdatedAt;
+                        userData.Status = user.Status;
+                        userData.Uuid = user.Uuid;
+                        UsuariosResponse.Add(userData);
+                    }
+                    return Json(new
+                    {
+                        success = true,
+                        sEcho = param.sEcho,
+                        iTotalRecords = UsuariosResponse.Count(),
+                        iTotalDisplayRecords = 10,
+                        aaData = UsuariosResponse
+                    }, JsonRequestBehavior.AllowGet);
+                }
+
+                    
+            }
+            catch (Exception ex)
+            {
+                return new JsonResult
+                {
+                    Data = new { Mensaje = new { title = "Error", message = ex.Message } },
+                    JsonRequestBehavior = JsonRequestBehavior.AllowGet,
+                    MaxJsonLength = Int32.MaxValue
+                };
+            }
         }
 
         // GET: User/Details/5
@@ -94,22 +168,31 @@ namespace MVC_Project.Web.Controllers
         // GET: User/Edit/5
         public ActionResult Edit(string uuid)
         {
-            return View("Form");
+            User user = _userService.FindBy(x => x.Uuid == uuid).First();
+            UserEditViewModel model = new UserEditViewModel();
+            model.Uuid = user.Uuid;
+            model.Name = user.FirstName;
+            model.Email = user.Email;
+            model.Roles = PopulateRoles();
+            return View("EditForm",model);
         }
 
         // POST: User/Edit/5
         [HttpPost]
-        public ActionResult Edit(string uuid, FormCollection collection)
+        public ActionResult Edit(UserEditViewModel model, FormCollection collection)
         {
             try
             {
-                // TODO: Add update logic here
-
+                User user = _userService.FindBy(x => x.Uuid == model.Uuid).First();
+                user.FirstName = model.Name;
+                user.LastName = model.Apellidos;
+                user.Email = model.Email;
+                _userService.Update(user);
                 return RedirectToAction("Index");
             }
             catch
             {
-                return View();
+                return View(model);
             }
         }
 
@@ -125,14 +208,39 @@ namespace MVC_Project.Web.Controllers
         {
             try
             {
-                // TODO: Add delete logic here
-
-                return RedirectToAction("Index");
+                var users = _userService.FindBy(x=>x.Uuid == uuid).First();
+                if (users != null)
+                {
+                    if(users.Status == true)
+                    {
+                        users.Status = false;
+                    }
+                    else
+                    {
+                        users.Status = true;
+                    }
+                    
+                }
+                _userService.Update(users);
+                return Json(true, JsonRequestBehavior.AllowGet);
             }
-            catch
+            catch(Exception ex)
             {
-                return View();
+                return Json(false, JsonRequestBehavior.AllowGet);
             }
+        }
+        [HttpPost]
+        public ActionResult SearchUsers(UserViewModel users)
+        {
+            //try
+            //{
+            //    var user = _userService.ObtenerUsuarios(users.Name, 1, 0,0);
+            //}
+            //catch (Exception ex)
+            //{
+            //    return Json(false, JsonRequestBehavior.AllowGet);
+            //}
+            return null;
         }
     }
 }

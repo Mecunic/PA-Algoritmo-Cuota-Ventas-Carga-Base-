@@ -3,6 +3,7 @@ using MVC_Project.Domain.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -25,6 +26,11 @@ namespace MVC_Project.Domain.Services
         public void Delete(int id)
         {
             _baseRepository.Delete(id);
+        }
+
+        public IEnumerable<M> FindBy(Expression<Func<M, bool>> predicate)
+        {
+            return _baseRepository.FindBy(predicate);
         }
 
         public IEnumerable<M> GetAll()

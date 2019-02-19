@@ -1,7 +1,7 @@
-﻿@model MVC_Project.Web.Models.UserCreateViewModel
+﻿@model MVC_Project.Web.Models.UserEditViewModel
 
 @{
-    ViewBag.Title = "Crear/Editar Usuario";
+    ViewBag.Title = "Editar Usuario";
 }
 
 @section Styles {
@@ -10,13 +10,13 @@
 
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-sm-4">
-        <h2>Crear</h2>
+        <h2>Editar</h2>
         <ol class="breadcrumb">
             <li>
                 @Html.ActionLink("Usuarios", "Index")
             </li>
             <li class="active">
-                <strong>Crear</strong>
+                <strong>Editar usuario</strong>
             </li>
         </ol>
     </div>
@@ -32,12 +32,13 @@
         <div class="col-lg-12">
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
-                    <h5>Crear Usuario</h5>
+                    <h5>Editar Usuario</h5>
                 </div>
                 <div class="ibox-content">
 
                     @using (Html.BeginForm())
                     {
+                        @Html.HiddenFor(model => model.Uuid)
                         @Html.AntiForgeryToken()
 
                     <div class="form-horizontal">
@@ -85,7 +86,7 @@
 
                         <div class="form-group">
                             <div class="col-md-offset-2 col-md-10">
-                                <input type="submit" value="Crear" class="btn btn-primary" />
+                                <input type="submit" value="Guardar" class="btn btn-primary" />
                                 @Html.ActionLink("Cancelar", "Index", null, new { @class = "btn btn-white" })
                             </div>
                         </div>

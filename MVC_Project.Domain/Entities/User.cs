@@ -17,6 +17,7 @@ namespace MVC_Project.Domain.Entities {
         public virtual DateTime CreatedAt { get; set; }
         public virtual DateTime UpdatedAt { get; set; }
         public virtual DateTime? RemovedAt { get; set; }
+        public virtual Boolean Status { get; set; }
 
         public User()
         {            

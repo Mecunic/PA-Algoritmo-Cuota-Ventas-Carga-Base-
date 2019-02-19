@@ -51,7 +51,15 @@
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="FluentNHibernate, Version=2.1.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Bin\FluentNHibernate.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="NHibernate, Version=5.1.0.0, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Bin\NHibernate.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.SQLite, Version=1.0.109.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
@@ -64,6 +72,7 @@
       <HintPath>..\packages\System.Data.SQLite.Linq.1.0.109.0\lib\net46\System.Data.SQLite.Linq.dll</HintPath>
     </Reference>
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -185,8 +194,11 @@
     </Compile>
     <Compile Include="Helpers\HTMLHelperExtensions.cs" />
     <Compile Include="Models\AuthViewModel.cs" />
+    <Compile Include="Models\DataTableModel.cs" />
+    <Compile Include="Models\JQueryDataTableParams.cs" />
     <Compile Include="Models\RoleViewModel.cs" />
     <Compile Include="Models\UserViewModel.cs" />
+    <Compile Include="NHibernateSessionManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -1169,7 +1181,6 @@
     <Content Include="Scripts\template\app\skin.config.min.js" />
     <Content Include="Scripts\template\bootstrap.js" />
     <Content Include="Scripts\template\bootstrap.min.js" />
-    <Content Include="Scripts\template\jquery-2.1.1.min.js" />
     <Content Include="Scripts\template\jquery-3.1.1.min.js" />
     <Content Include="Scripts\template\plugins\blueimp\jquery.blueimp-gallery.min.js" />
     <Content Include="Scripts\template\plugins\bootstrap-markdown\bootstrap-markdown.js" />
@@ -1516,6 +1527,8 @@
     <Content Include="Scripts\template\plugins\velocity\velocity.ui.min.js" />
     <Content Include="Scripts\template\plugins\video\responsible-video.js" />
     <Content Include="Scripts\template\plugins\wow\wow.min.js" />
+    <Content Include="Scripts\template\Utils.js" />
+    <Content Include="Scripts\views\user\Index.js" />
     <Content Include="Views\Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -1589,6 +1602,8 @@
     <Content Include="Views\Dashboards\Dashboard_4.cshtml" />
     <Content Include="Views\Dashboards\Dashboard_4_1.cshtml" />
     <Content Include="Views\Dashboards\Dashboard_5.cshtml" />
+    <Content Include="Views\User\DataTableUser.cshtml" />
+    <Content Include="Views\User\EditForm.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MVC_Project.Data\MVC_Project.Data.csproj">

@@ -17,6 +17,7 @@ namespace MVC_Project.Data.Mappings {
             Map(x => x.CreatedAt).Column("created_at").Not.Nullable();
             Map(x => x.UpdatedAt).Column("updated_at").Not.Nullable();
             Map(x => x.RemovedAt).Column("removed_at").Nullable();
+            Map(x => x.Status).Column("status").Nullable();
             References(x => x.Role).Column("role_id");
             HasManyToMany(x => x.Permissions)
                 .Cascade.SaveUpdate()
