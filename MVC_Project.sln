@@ -19,6 +19,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MVC_Project.Jobs", "MVC_Pro
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MVC_Project.Utils", "MVC_Project.Utils\MVC_Project.Utils.csproj", "{23B89C18-68C5-449F-ADED-E51A86DA6B52}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MVC_Project.Integrations", "MVC_Project.Integrations\MVC_Project.Integrations.csproj", "{E616D7FC-E5A8-4E69-91E6-FF0760920CE8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -57,6 +59,10 @@ Global
 		{23B89C18-68C5-449F-ADED-E51A86DA6B52}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{23B89C18-68C5-449F-ADED-E51A86DA6B52}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{23B89C18-68C5-449F-ADED-E51A86DA6B52}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E616D7FC-E5A8-4E69-91E6-FF0760920CE8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E616D7FC-E5A8-4E69-91E6-FF0760920CE8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E616D7FC-E5A8-4E69-91E6-FF0760920CE8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E616D7FC-E5A8-4E69-91E6-FF0760920CE8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
