@@ -1,4 +1,5 @@
-﻿using MVC_Project.Domain.Entities;
+﻿using MVC_Project.Data.Helpers;
+using MVC_Project.Domain.Entities;
 using MVC_Project.Domain.Helpers;
 using MVC_Project.Domain.Services;
 using MVC_Project.Web.AuthManagement;
@@ -51,16 +52,6 @@ namespace MVC_Project.Web.Controllers
                 Value = "0"
             });
             ViewBag.OpcionesStatus = listStatus;
-            //var users = _userService.GetAll().Select(user => new UserData
-            //{
-            //    Id = user.Id,
-            //    Name = user.FirstName,
-            //    Email = user.Email,
-            //    CreatedAt = user.CreatedAt,
-            //    UpdatedAt = user.UpdatedAt,
-            //    Uuid = user.Uuid,
-            //    Status = user.Status
-            //});
             return View(model);
         }
         [HttpGet, Authorize]
@@ -69,13 +60,13 @@ namespace MVC_Project.Web.Controllers
             DataTableUsersModel model = new DataTableUsersModel();
             try
             {
-                using (ISession session = NHibernateHelper.OpenSession())
-                {
-                    UserBLogic userBLogic = new UserBLogic(session);
-                    IList<User> userss = userBLogic.ObtenerUsuarios(filtros);
-                    //var users = _userService.ObtenerUsuarios(filtros);
-                    IList<UserData> UsuariosResponse = new List<UserData>();
-                    foreach (var user in userss)
+                UnitOfWork unitOfWork = new UnitOfWork();
+                ISession session = unitOfWork.Session;
+                UserBLogic userBLogic = new UserBLogic(session);
+                IList<User> users = userBLogic.ObtenerUsuarios(filtros);
+                //var users = _userService.ObtenerUsuarios(filtros);
+                IList<UserData> UsuariosResponse = new List<UserData>();
+                    foreach (var user in users)
                     {
                         UserData userData = new UserData();
                         userData.Name = user.FirstName + " " + user.LastName;
@@ -94,7 +85,7 @@ namespace MVC_Project.Web.Controllers
                         iTotalDisplayRecords = 10,
                         aaData = UsuariosResponse
                     }, JsonRequestBehavior.AllowGet);
-                }
+                
 
                     
             }

@@ -36,6 +36,12 @@
                 <ul class="nav nav-second-level collapse @Html.IsSelected(controller: "User", cssClass: "in")">
                     <li class="@Html.IsSelected(action: "Dashboard_1")"><a href="@Url.Action("Index", "User")">Usuarios</a></li>
                 </ul>
+                @if (user.HasAccessSection("Role"))
+                {
+                    <ul class="nav nav-second-level collapse @Html.IsSelected(controller: "User", cssClass: "in")">
+                        <li class="@Html.IsSelected(action: "Dashboard_1")"><a href="@Url.Action("Index", "Role")">Roles</a></li>
+                    </ul>
+                }
             </li>
 
             <li class="@Html.IsSelected(controller: "Catalogs")">

@@ -1,5 +1,8 @@
-﻿using MVC_Project.Domain.Services;
+﻿using MVC_Project.Data.Helpers;
+using MVC_Project.Domain.Entities;
+using MVC_Project.Domain.Services;
 using MVC_Project.Web.Models;
+using NHibernate;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,10 +11,11 @@ using System.Web.Mvc;
 
 namespace MVC_Project.Web.Controllers
 {
-    public class RoleController : Controller
+    public class RoleController : BaseController
     {
         private RoleService _roleService;
         private PermissionService _permissionService;
+
         public RoleController(RoleService roleService, PermissionService permissionService)
         {
             _roleService = roleService;
@@ -21,15 +25,57 @@ namespace MVC_Project.Web.Controllers
         // GET: Role
         public ActionResult Index()
         {
-            var roles = _roleService.GetAll().Select(role => new RoleViewModel
-            {
-                Id = role.Id,
-                Name = role.Name,
-                Description = role.Description,
-                CreatedAt = role.CreatedAt,
-                UpdatedAt = role.UpdatedAt
-            });
+            RoleViewModel roles = new RoleViewModel();
+            //var roles = _roleService.GetAll().Select(role => new RoleViewModel
+            //{
+            //    Id = role.Id,
+            //    Name = role.Name,
+            //    Description = role.Description,
+            //    CreatedAt = role.CreatedAt,
+            //    UpdatedAt = role.UpdatedAt
+            //});
             return View(roles);
+        }
+        [HttpGet, Authorize]
+        public JsonResult ObtenerRoles(JQueryDataTableParams param, string filtros)
+        {
+            DataTableUsersModel model = new DataTableUsersModel();
+            try
+            {
+                var roles = _roleService.ObtenerRoles(filtros);
+                IList<RoleData> UsuariosResponse = new List<RoleData>();
+                foreach (var rol in roles)
+                {
+                    RoleData userData = new RoleData();
+                    userData.Name = rol.Name;
+                    userData.Description = rol.Description;
+                    userData.CreatedAt = rol.CreatedAt;
+                    userData.UpdatedAt = rol.UpdatedAt;
+                    userData.Status = rol.Status;
+                    userData.Uuid = rol.Uuid;
+                    UsuariosResponse.Add(userData);
+                }
+                return Json(new
+                {
+                    success = true,
+                    sEcho = param.sEcho,
+                    iTotalRecords = UsuariosResponse.Count(),
+                    iTotalDisplayRecords = 10,
+                    aaData = UsuariosResponse
+                }, JsonRequestBehavior.AllowGet);
+
+
+
+            }
+            catch (Exception ex)
+            {
+                return new JsonResult
+                {
+                    Data = new { Mensaje = new { title = "Error", message = ex.Message } },
+                    JsonRequestBehavior = JsonRequestBehavior.AllowGet,
+                    MaxJsonLength = Int32.MaxValue
+                };
+            }
         }
 
         // GET: Role/Details/5
@@ -69,9 +115,22 @@ namespace MVC_Project.Web.Controllers
         }
 
         // GET: Role/Edit/5
-        public ActionResult Edit(int id)
+        public ActionResult Edit(string uuid)
         {
-            return View();
+            Role role = new Role();
+            role = _roleService.FindBy(x => x.Uuid == uuid).First();
+            RoleEditViewModel model = new RoleEditViewModel();
+            model.Name = role.Name;
+            IEnumerable<PermissionViewModel> permisos = PopulatePermissions();
+            foreach (PermissionViewModel permiso in permisos)
+            {
+                if (role.Permissions.Select(x => x.Description.Equals(permiso.Description)).First())
+                {
+                    permiso.Assigned = true;
+                }
+            }
+            model.Permissions = permisos;
+            return View(model);
         }
 
         // POST: Role/Edit/5
@@ -98,17 +157,29 @@ namespace MVC_Project.Web.Controllers
 
         // POST: Role/Delete/5
         [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
+        public ActionResult Delete(string uuid, FormCollection collection)
         {
             try
             {
-                // TODO: Add delete logic here
+                var rol = _roleService.FindBy(x => x.Uuid == uuid).First();
+                if (rol != null)
+                {
+                    if (rol.Status == true)
+                    {
+                        rol.Status = false;
+                    }
+                    else
+                    {
+                        rol.Status = true;
+                    }
 
-                return RedirectToAction("Index");
+                }
+                _roleService.Update(rol);
+                return Json(true, JsonRequestBehavior.AllowGet);
             }
-            catch
+            catch (Exception ex)
             {
-                return View();
+                return Json(false, JsonRequestBehavior.AllowGet);
             }
         }
     }

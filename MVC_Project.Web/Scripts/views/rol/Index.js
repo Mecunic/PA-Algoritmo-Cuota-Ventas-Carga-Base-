@@ -1,5 +1,4 @@
-﻿
-var UserIndexControlador = function (htmlTableId, baseUrl, modalEditAction, modalDeleteAction) {
+﻿var RolIndexControlador = function (htmlTableId, baseUrl, modalEditAction, modalDeleteAction) {
     var self = this;
     this.htmlTable = $('#' + htmlTableId);
     this.baseUrl = baseUrl;
@@ -40,7 +39,7 @@ var UserIndexControlador = function (htmlTableId, baseUrl, modalEditAction, moda
             columns: [
                 { data: 'Id', title: "Id", visible: false },
                 { data: 'Name', title: "Nombre" },
-                { data: 'Email', title: "Email" },
+                { data: 'Description', title: "Descripción" },
                 {
                     data: null, orderName: "CreatedAt", title: "Fecha Creación", autoWidth: false, className: "dt-center td-actions thead-dark",
                     render: function (data, type, row, meta) {
@@ -98,7 +97,7 @@ var UserIndexControlador = function (htmlTableId, baseUrl, modalEditAction, moda
 
                 swal({
                     title: "Confirmación",
-                    text: "¿Desea activar al usuario?",
+                    text: "¿Desea activar el rol?",
                     showCancelButton: true,
                     confirmButtonClass: "btn-danger",
                     confirmButtonText: "Aceptar",
@@ -112,7 +111,7 @@ var UserIndexControlador = function (htmlTableId, baseUrl, modalEditAction, moda
                                 type: 'POST',
                                 async: true,
                                 data: { uuid: id },
-                                url: '/User/Delete',
+                                url: '/Role/Delete',
                                 success: function (data) {
                                     if (!data) {
                                         swal({
@@ -146,7 +145,7 @@ var UserIndexControlador = function (htmlTableId, baseUrl, modalEditAction, moda
 
                 swal({
                     title: "Confirmación",
-                    text: "¿Desea inactivar al usuario?",
+                    text: "¿Desea inactivar el rol?",
                     showCancelButton: true,
                     confirmButtonClass: "btn-danger",
                     confirmButtonText: "Aceptar",
@@ -159,11 +158,11 @@ var UserIndexControlador = function (htmlTableId, baseUrl, modalEditAction, moda
                             $.ajax({
                                 type: 'POST',
                                 async: true,
-                                data: { uuid: id},
-                                url: '/User/Delete',
+                                data: { uuid: id },
+                                url: '/Role/Delete',
                                 success: function (data) {
                                     if (!data) {
-                                        
+
                                         swal({
                                             type: 'error',
                                             title: data.Mensaje.Titulo,
@@ -196,7 +195,7 @@ var UserIndexControlador = function (htmlTableId, baseUrl, modalEditAction, moda
                 var form = document.createElement('form');
                 document.body.appendChild(form);
                 form.method = 'GET';
-                form.action = "/User/Edit?uuid=" + uuid;
+                form.action = "/Role/Edit?uuid=" + uuid;
 
                 var input = document.createElement('input');
                 input.type = 'hidden';

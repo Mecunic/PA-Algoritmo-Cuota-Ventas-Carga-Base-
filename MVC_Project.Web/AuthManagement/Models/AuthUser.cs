@@ -12,6 +12,16 @@ namespace MVC_Project.Web.AuthManagement.Models
         public string Email { get; set; }
         public Role Role { get; set; }
         public IList<Permission> Permissions { get; set; }
+
+        public bool HasAccessSection(string section)
+        {
+            if (this.Permissions != null && this.Permissions.Count > 0)
+            {
+                var per = from ap in this.Permissions where ap.Action == section select ap;
+                return per.Count<Permission>() > 0;
+            }
+            return false;
+        }
     }
 
     public class Role
@@ -24,4 +34,5 @@ namespace MVC_Project.Web.AuthManagement.Models
         public string Controller { get; set; }
         public string Action { get; set; }
     }
+    
 }

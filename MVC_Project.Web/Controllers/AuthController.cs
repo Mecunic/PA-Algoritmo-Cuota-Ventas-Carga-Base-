@@ -1,7 +1,9 @@
-﻿using MVC_Project.Domain.Services;
+﻿using MVC_Project.Data.Helpers;
+using MVC_Project.Domain.Services;
 using MVC_Project.Web.AuthManagement;
 using MVC_Project.Web.AuthManagement.Models;
 using MVC_Project.Web.Models;
+using NHibernate;
 using System.Linq;
 using System.Web.Mvc;
 
@@ -48,6 +50,8 @@ namespace MVC_Project.Web.Controllers
                             Controller = p.Controller
                         }).ToList()
                     };
+                    UnitOfWork unitOfWork = new UnitOfWork();
+                    ISession session = unitOfWork.Session;
                     Authenticator.StoreAuthenticatedUser(authUser);
                     if (!string.IsNullOrEmpty(Request.Form["ReturnUrl"]))
                     {

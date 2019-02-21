@@ -24,6 +24,8 @@ namespace MVC_Project.Data.Helpers
                 MsSqlConfiguration.MsSql2012.ConnectionString(
                     conection => conection.FromConnectionStringWithKey("testConectionString")))
                 .Mappings(m => m.FluentMappings.AddFromAssemblyOf<UserMap>())
+                .Mappings(m => m.FluentMappings.AddFromAssemblyOf<RoleMap>())
+                .Mappings(m => m.FluentMappings.AddFromAssemblyOf<PermissionMap>())
                 .ExposeConfiguration(cfg => configuration = cfg)
                 .BuildSessionFactory();
         }

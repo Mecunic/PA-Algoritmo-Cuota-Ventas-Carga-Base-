@@ -1,4 +1,5 @@
 ﻿using MVC_Project.Domain.Entities;
+using MVC_Project.Domain.Repositories;
 using NHibernate;
 using System;
 using System.Collections.Generic;
@@ -34,5 +35,12 @@ namespace MVC_Project.Domain.Services
             return query.OrderBy(u => u.FirstName).Desc.List();
 
         }
+        //public User FindByUuid(string uuid)
+        //{
+        //    IRepository<User> repository = new DataRepository<User>(session);
+        //    Dictionary<string, object> paramsSearch = new Dictionary<string, object>();
+        //    paramsSearch["Uuid"] = uuid;
+        //    return repository.Find(paramsSearch);
+        //}
     }
 }

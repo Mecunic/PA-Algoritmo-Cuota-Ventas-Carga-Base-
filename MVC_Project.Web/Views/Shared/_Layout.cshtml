@@ -1,4 +1,8 @@
-﻿<!DOCTYPE html>
+﻿@using MVC_Project.Web.AuthManagement.Models
+@{
+    AuthUser authUser = ViewBag.UserProfile;
+}
+<!DOCTYPE html>
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -25,14 +29,14 @@
     @Scripts.Render("~/plugins/sweetAlert")
 </head>
 <body>
-	<!-- Wrapper-->
-	<!-- PageClass give you ability to specify custom style for specific view based on action -->
-	<div id="wrapper" class="@Html.PageClass()">
+    <!-- Wrapper-->
+    <!-- PageClass give you ability to specify custom style for specific view based on action -->
+    <div id="wrapper" class="@Html.PageClass()">
 
-		<!-- Navigation -->
-		@Html.Partial("_Navigation")
+        <!-- Navigation -->
+        @Html.Partial("_Navigation")
 
-		<!-- Page wraper -->
+        <!-- Page wraper -->
         <div id="page-wrapper" class="gray-bg @ViewBag.SpecialClass">
 
             <!-- Top Navbar -->
@@ -54,18 +58,18 @@
             <!-- Footer -->
             @Html.Partial("_Footer")
         </div>
-		<!-- End page wrapper-->
-		<!-- Right Sidebar -->
-		@Html.Partial("_RightSidebar")
-	</div>
-	<!-- End wrapper-->
-	<!-- Section for main scripts render -->
-	@Scripts.Render("~/bundles/jquery")
-	@Scripts.Render("~/bundles/bootstrap")
-	@Scripts.Render("~/plugins/slimScroll")
-	@Scripts.Render("~/bundles/inspinia")
+        <!-- End page wrapper-->
+        <!-- Right Sidebar -->
+        @Html.Partial("_RightSidebar")
+    </div>
+    <!-- End wrapper-->
+    <!-- Section for main scripts render -->
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/plugins/slimScroll")
+    @Scripts.Render("~/bundles/inspinia")
 
-	<!-- Handler for local scripts -->
-	@RenderSection("scripts", required: false)
+    <!-- Handler for local scripts -->
+    @RenderSection("scripts", required: false)
 </body>
 </html>
