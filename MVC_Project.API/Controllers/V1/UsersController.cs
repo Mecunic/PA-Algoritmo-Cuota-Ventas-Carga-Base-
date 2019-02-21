@@ -12,7 +12,7 @@ namespace MVC_Project.API.Controllers.V1 {
 
     [ApiVersion("1.0")]
     [RoutePrefix("api/v{version:apiVersion}/users")]
-    public class UsersController : ApiController {
+    public class UsersController : BaseApiController {
         private IUserService _userService;
 
         public UsersController(IUserService userService) {
