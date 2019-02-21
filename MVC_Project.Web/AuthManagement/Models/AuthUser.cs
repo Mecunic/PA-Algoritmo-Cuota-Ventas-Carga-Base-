@@ -13,26 +13,48 @@ namespace MVC_Project.Web.AuthManagement.Models
         public Role Role { get; set; }
         public IList<Permission> Permissions { get; set; }
 
-        public bool HasAccessSection(string section)
+        public bool HasAccessToModule(string module)
         {
             if (this.Permissions != null && this.Permissions.Count > 0)
             {
-                var per = from ap in this.Permissions where ap.Action == section select ap;
+                var per = from ap in this.Permissions where ap.Module == module select ap;
                 return per.Count<Permission>() > 0;
             }
             return false;
+        }
+
+        public bool HasAccessController(string controller)
+        {
+            if (this.Permissions != null && this.Permissions.Count > 0)
+            {
+                var per = from ap in this.Permissions where ap.Controller == controller select ap;
+                return per.Count<Permission>() > 0;
+            }
+            return false;
+        }
+
+        public string GetControllerModule(string controller)
+        {
+            if (this.Permissions != null && this.Permissions.Count > 0)
+            {
+                var per = from ap in this.Permissions where ap.Controller == controller select ap;
+                return per.First<Permission>().Module;
+            }
+            return string.Empty;
         }
     }
 
     public class Role
     {
-        public string Code { get; set; }        
+        public string Code { get; set; }
+        public string Name { get; set; }
     }
 
     public class Permission
     {
         public string Controller { get; set; }
         public string Action { get; set; }
+        public string Module { get; set; }
     }
     
 }

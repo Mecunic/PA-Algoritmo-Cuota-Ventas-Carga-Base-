@@ -35,23 +35,37 @@ namespace MVC_Project.Web.Controllers
                 var user = _authService.Authenticate(model.Email, EncryptHelper.EncryptPassword(model.Password));
                 if (user != null)
                 {
+                    if (!user.Status)
+                    {
+                        ViewBag.Error = "El usuario está inactivo.";
+                        return View(model);
+                    }
+                    
                     AuthUser authUser = new AuthUser
                     {
                         FirstName = user.FirstName,
                         LastName = user.LastName,
                         Email = user.Email,
+
                         Role = new Role
                         {
-                            Code = user.Role.Code
+                            Code = user.Role.Code,
+                            Name = user.Role.Name
                         },
-                        Permissions = user.Permissions.Select(p => new Permission
+                        Permissions = user.Role.Permissions.Select(p => new Permission
                         {
                             Action = p.Action,
-                            Controller = p.Controller
+                            Controller = p.Controller,
+                            Module = p.Module
                         }).ToList()
+                        //Permissions = user.Permissions.Select(p => new Permission
+                        //{
+                        //    Action = p.Action,
+                        //    Controller = p.Controller
+                        //}).ToList()
                     };
-                    UnitOfWork unitOfWork = new UnitOfWork();
-                    ISession session = unitOfWork.Session;
+                    //UnitOfWork unitOfWork = new UnitOfWork();
+                    //ISession session = unitOfWork.Session;
                     Authenticator.StoreAuthenticatedUser(authUser);
                     if (!string.IsNullOrEmpty(Request.Form["ReturnUrl"]))
                     {

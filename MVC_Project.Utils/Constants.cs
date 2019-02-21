@@ -14,9 +14,9 @@ namespace MVC_Project.Utils
         public static readonly string AUTHENTICATED_USER_PROFILE = "ddc30589-80ba-48e6-88ec-6454350f2cd7_USER_PROFILE";
 
         //ROLE CODES
-        public static readonly string ROLE_COMPANY_ADMIN = "SUPER_ADMIN";
-        public static readonly string ROLE_COMPANY_RESOURCE = "ADMIN";
-        public static readonly string ROLE_GLOBAL_PUBLISHER = "COMPANY";
+        public static readonly string ROLE_ADMIN = "ADMIN";
+        public static readonly string ROLE_EMPLOYEE = "EMP";
+        public static readonly string ROLE_APP_USER = "APP_USER";
 
         //public static string STORAGE_MAIN_CONTAINER = ConfigurationManager.AppSettings["StorageMainContainer"];
 
