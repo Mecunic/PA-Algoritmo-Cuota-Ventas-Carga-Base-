@@ -71,6 +71,7 @@
     <Compile Include="Constants.cs" />
     <Compile Include="Cryptography.cs" />
     <Compile Include="DateUtil.cs" />
+    <Compile Include="EncryptorText.cs" />
     <Compile Include="Enums.cs" />
     <Compile Include="ExcelUtil.cs" />
     <Compile Include="FormatUtil.cs" />

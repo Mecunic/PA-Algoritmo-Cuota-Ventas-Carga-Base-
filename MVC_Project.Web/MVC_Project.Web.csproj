@@ -1538,7 +1538,9 @@
     <Content Include="Views\Web.config">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
@@ -1614,6 +1616,7 @@
     <Content Include="Views\Auth\ResetPassword.cshtml" />
     <Content Include="Views\Role\Edit.cshtml" />
     <Content Include="Views\ReportService\Index.cshtml" />
+    <Content Include="Views\Auth\RecuperarContrasena.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MVC_Project.Data\MVC_Project.Data.csproj">
@@ -1623,6 +1626,10 @@
     <ProjectReference Include="..\MVC_Project.Domain\MVC_Project.Domain.csproj">
       <Project>{AADE4A05-4CC5-4465-BD0F-B681FA698C97}</Project>
       <Name>MVC_Project.Domain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MVC_Project.Utils\MVC_Project.Utils.csproj">
+      <Project>{23B89C18-68C5-449F-ADED-E51A86DA6B52}</Project>
+      <Name>MVC_Project.Utils</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
