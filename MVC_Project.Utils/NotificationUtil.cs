@@ -8,7 +8,7 @@ using System.Net.Mime;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PlataformaSWC.Utils
+namespace MVC_Project.Utils
 {
     public class NotificationUtil
     {

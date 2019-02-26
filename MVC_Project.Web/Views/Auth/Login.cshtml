@@ -2,7 +2,11 @@
 @{
     Layout = null;
 }
-
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/bootstrap")
+@Scripts.Render("~/plugins/validate")
+@Styles.Render("~/plugins/sweetAlertStyles")
+@Scripts.Render("~/plugins/sweetAlert")
 <!DOCTYPE html>
 <html>
 <head>
@@ -54,9 +58,62 @@
                 <span class="help-block"></span>
                 <button type="submit" class="btn btn-primary block full-width m-b">Acceder</button>
                 <span class="help-block"></span>
-                <a href="#"><small>Olvidé mi contraseña</small></a>
+                <a type="button" onclick="Validar()" class="btn btn-lg btn-sm btn-block btn-secondary" data-target="#modal-containerRecupera" data-toggle="modal">Olvidé mi contraseña</a>
+
             }
         </div>
     </div>
 </body>
 </html>
+<div id="modal-containerRecupera" class="modal fade hidden-print" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-centered" role="dialog">
+        <div class="modal-content"></div>
+    </div>
+</div>
+
+@if (ViewBag.Message != null)
+{
+    <script type="text/javascript">
+            swal({
+                title: "Login",
+                text: '@(ViewBag.Message)',
+                html: true
+            });
+    </script>
+}
+
+<script>
+
+    function Validar() {
+        $("#modal-containerRecupera").find('.modal-content').load("@Url.Action("RecuperarContrasena")", function () {
+
+            $("#modal-containerRecupera").modal("show");
+            $("#btn-RecuperaCE").on("click",
+                function (e) {
+                    e.preventDefault();
+                    debugger;
+                    var validate = $('form#recupera-cuenta-form').validate();
+                    console.log($('#recupera-cuenta-form').valid())
+                    if (!$('#recupera-cuenta-form').valid()) {
+                        //$("form#recupera-cuenta-form").find('span').removeClass("help-block").css("display", "none");
+                        return;
+                    }
+                    $("#modal-containerRecupera form#recupera-cuenta-form button#btn-RecuperaCE").hide();
+
+                    $('#recupera-cuenta-form').submit();
+
+                });
+        });
+    }
+    function MessageAlert(d) {
+        debugger;
+        var rslt = $.parseJSON(d.responseText);
+        if (rslt.statusCode == 200) {
+            $().toastmessage("showSuccessToast", rslt.status);
+        }
+        else {
+            $().toastmessage("showErrorToast", rslt.status);
+        }
+    }
+
+</script>
