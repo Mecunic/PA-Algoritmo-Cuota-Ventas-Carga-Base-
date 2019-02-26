@@ -57,7 +57,6 @@ namespace MVC_Project.Web.Controllers
         [HttpGet, Authorize]
         public JsonResult ObtenerUsuarios(JQueryDataTableParams param, string filtros)
         {
-            DataTableUsersModel model = new DataTableUsersModel();
             try
             {
                 UnitOfWork unitOfWork = new UnitOfWork();

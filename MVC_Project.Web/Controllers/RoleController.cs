@@ -15,11 +15,13 @@ namespace MVC_Project.Web.Controllers
     {
         private RoleService _roleService;
         private PermissionService _permissionService;
+        private RolePermissionService _rolePermissionService;
 
-        public RoleController(RoleService roleService, PermissionService permissionService)
+        public RoleController(RoleService roleService, PermissionService permissionService, RolePermissionService rolePermissionService)
         {
             _roleService = roleService;
             _permissionService = permissionService;
+            _rolePermissionService = rolePermissionService;
         }
 
         // GET: Role
@@ -39,7 +41,6 @@ namespace MVC_Project.Web.Controllers
         [HttpGet, Authorize]
         public JsonResult ObtenerRoles(JQueryDataTableParams param, string filtros)
         {
-            DataTableUsersModel model = new DataTableUsersModel();
             try
             {
                 var roles = _roleService.ObtenerRoles(filtros);
@@ -120,11 +121,13 @@ namespace MVC_Project.Web.Controllers
             Role role = new Role();
             role = _roleService.FindBy(x => x.Uuid == uuid).First();
             RoleEditViewModel model = new RoleEditViewModel();
+            model.Id = role.Id;
             model.Name = role.Name;
             IEnumerable<PermissionViewModel> permisos = PopulatePermissions();
             foreach (PermissionViewModel permiso in permisos)
             {
-                if (role.Permissions.Select(x => x.Description.Equals(permiso.Description)).First())
+                var match = role.Permissions.FirstOrDefault(stringToCheck => stringToCheck.Description.Contains(permiso.Description));
+                if (match!=null)
                 {
                     permiso.Assigned = true;
                 }
@@ -135,12 +138,27 @@ namespace MVC_Project.Web.Controllers
 
         // POST: Role/Edit/5
         [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+        public ActionResult Edit(RoleEditViewModel model)
         {
             try
             {
-                // TODO: Add update logic here
-
+                Role role = _roleService.FindBy(x => x.Id == model.Id).First();
+                IList<Permission> permissions = role.Permissions;
+                IList<PermissionViewModel> permisosNuevos = model.Permissions.Where(x=>x.Assigned==true).ToList();
+                var query = permisosNuevos.Where(p => !permissions.Any(l => p.Id == l.Id)); //permisosNuevos.Where(x => permissions.Contains(x.Id));
+                var query2 = permissions.Where(p => !permisosNuevos.Any(l => p.Id == l.Id));
+                foreach (PermissionViewModel permisoNuevo in query)
+                {
+                    RolePermission rolePermission = new RolePermission();
+                    rolePermission.Role = new Role { Id = role.Id };
+                    rolePermission.Permission = new Permission { Id = permisoNuevo.Id };
+                    _rolePermissionService.Create(rolePermission);
+                }
+                foreach (Permission permisoQuitado in query2)
+                {
+                    RolePermission rolePermission = _rolePermissionService.FindBy(x=>x.Role.Id == role.Id && x.Permission.Id == permisoQuitado.Id).FirstOrDefault();
+                     _rolePermissionService.Delete(rolePermission.Id);
+                }
                 return RedirectToAction("Index");
             }
             catch
