@@ -1,5 +1,4 @@
 ﻿using MVC_Project.Data.Helpers;
-using MVC_Project.Domain.Entities;
 using MVC_Project.Domain.Services;
 using MVC_Project.Utils;
 using MVC_Project.Web.AuthManagement;
@@ -18,13 +17,11 @@ namespace MVC_Project.Web.Controllers
     {
         private IAuthService _authService;
         private UserService _userService;
-        private RoleService _roleService;
 
-        public AuthController(IAuthService authService, UserService userService, RoleService roleService)
+        public AuthController(IAuthService authService, UserService userService)
         {
             _authService = authService;
             _userService = userService;
-            _roleService = roleService;
         }
 
         [AllowAnonymous]
@@ -41,27 +38,40 @@ namespace MVC_Project.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                User user = _authService.Authenticate(model.Email, EncryptHelper.EncryptPassword(model.Password));
-                Domain.Entities.Role role = _roleService.FindBy(x => x.Id == user.Role.Id).First();
+                var user = _authService.Authenticate(model.Email, EncryptHelper.EncryptPassword(model.Password));
                 if (user != null)
                 {
+                    if (!user.Status)
+                    {
+                        ViewBag.Error = "El usuario está inactivo.";
+                        return View(model);
+                    }
+                    
                     AuthUser authUser = new AuthUser
                     {
                         FirstName = user.FirstName,
                         LastName = user.LastName,
                         Email = user.Email,
-                        Role = new AuthManagement.Models.Role
+
+                        Role = new Role
                         {
-                            Code = user.Role.Code
+                            Code = user.Role.Code,
+                            Name = user.Role.Name
                         },
-                        Permissions = role.Permissions.Select(p => new AuthManagement.Models.Permission
+                        Permissions = user.Role.Permissions.Select(p => new Permission
                         {
                             Action = p.Action,
-                            Controller = p.Controller
+                            Controller = p.Controller,
+                            Module = p.Module
                         }).ToList()
+                        //Permissions = user.Permissions.Select(p => new Permission
+                        //{
+                        //    Action = p.Action,
+                        //    Controller = p.Controller
+                        //}).ToList()
                     };
-                    UnitOfWork unitOfWork = new UnitOfWork();
-                    ISession session = unitOfWork.Session;
+                    //UnitOfWork unitOfWork = new UnitOfWork();
+                    //ISession session = unitOfWork.Session;
                     Authenticator.StoreAuthenticatedUser(authUser);
                     if (!string.IsNullOrEmpty(Request.Form["ReturnUrl"]))
                     {
@@ -172,11 +182,6 @@ namespace MVC_Project.Web.Controllers
                     model.Uuid = resultado.Uuid.ToString();
                     return View("ResetPassword", model);
                 }
-                else
-                {
-                    ViewBag.Message = "Token de contraseña expirado";
-                    return View("Login");
-                }
             }
             catch (Exception ex)
             {
@@ -206,18 +211,17 @@ namespace MVC_Project.Web.Controllers
                 if (resultado != null)
                 {
                     resultado.Password = model.Password;
-
                     _userService.Update(resultado);
                     AuthUser authUser = new AuthUser
                     {
                         FirstName = resultado.FirstName,
                         LastName = resultado.LastName,
                         Email = resultado.Email,
-                        Role = new AuthManagement.Models.Role
+                        Role = new Role
                         {
                             Code = resultado.Role.Code
                         },
-                        Permissions = resultado.Permissions.Select(p => new AuthManagement.Models.Permission
+                        Permissions = resultado.Permissions.Select(p => new Permission
                         {
                             Action = p.Action,
                             Controller = p.Controller
@@ -236,7 +240,14 @@ namespace MVC_Project.Web.Controllers
             }
 
             ModelState.AddModelError("Password", "No se encontró ninguna cuenta con el correo proporcionado. Verifique su información.");
-            return View("ResetPassword", model);
+            return Json(new
+            {
+                success = false,
+                issue = model,
+                errors = ModelState.Keys.Where(k => ModelState[k].Errors.Count > 0)
+                .Select(k => new { propertyName = k, errorMessage = ModelState[k].Errors[0].ErrorMessage })
+            });
+
         }
     }
 }
