@@ -214,6 +214,7 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\SampleDirection.cs" />
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
+    <Compile Include="AuthManagement\EncryptHelper.cs" />
     <Compile Include="Controllers\V1\BaseApiController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\V1\AuthController.cs" />
@@ -223,7 +224,11 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\ApiResponse.cs" />
-    <Compile Include="Models\Api_Response\Message.cs" />
+    <Compile Include="Models\Api_Request\LoginRequest.cs" />
+    <Compile Include="Models\Api_Request\RegisterRequest.cs" />
+    <Compile Include="Models\Api_Request\ResetPassRequest.cs" />
+    <Compile Include="Models\Api_Response\AuthUserResponse.cs" />
+    <Compile Include="Models\Api_Response\MessageResponse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -259,6 +264,8 @@
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="Properties\PublishProfiles\ensi-template-api - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\ensi-template-api - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
     <Content Include="Scripts\jquery-3.3.1.min.js" />
@@ -282,7 +289,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Models\Api_Request\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
@@ -321,6 +327,10 @@
     <ProjectReference Include="..\MVC_Project.Domain\MVC_Project.Domain.csproj">
       <Project>{AADE4A05-4CC5-4465-BD0F-B681FA698C97}</Project>
       <Name>MVC_Project.Domain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MVC_Project.Utils\MVC_Project.Utils.csproj">
+      <Project>{23b89c18-68c5-449f-aded-e51a86da6b52}</Project>
+      <Name>MVC_Project.Utils</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

@@ -7,7 +7,7 @@ using System.Web;
 namespace MVC_Project.API.Models.Api_Response
 {
     [DataContract]
-    public class Message
+    public class MessageResponse
     {
         [DataMember(Name = "type")]
         public string Type { get; set; }
