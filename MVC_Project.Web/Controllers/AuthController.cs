@@ -155,6 +155,7 @@ namespace MVC_Project.Web.Controllers
             });
 
         }
+        [HttpGet]
         [AllowAnonymous]
         public ActionResult AccedeToken(string token)
         {

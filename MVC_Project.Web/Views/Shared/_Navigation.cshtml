@@ -66,7 +66,7 @@
                 <li class="@Html.IsModuleSelected(user, "reports")">
                     <a href="#"><i class="fa fa-bar-chart-o"></i> <span class="nav-label" data-i18n="nav.dashboard">Reportes</span> <span class="fain arrow"></span></a>
                     <ul class="nav nav-second-level collapse @Html.IsSelected(controller: "Reports", cssClass: "in")">
-                        <li class="@Html.IsSelected(action: "Dashboard_1")"><a href="@Url.Action("Report_1", "Dashboards")">Reporte 1</a></li>
+                        <li class="@Html.IsSelected(action: "Dashboard_1")"><a href="@Url.Action("Index", "ReportService")">Reporte Ordenes</a></li>
                         <li class="@Html.IsSelected(action: "Dashboard_2")"><a href="@Url.Action("Report_2", "Dashboards")">Reporte 2</a></li>
                     </ul>
                 </li>
