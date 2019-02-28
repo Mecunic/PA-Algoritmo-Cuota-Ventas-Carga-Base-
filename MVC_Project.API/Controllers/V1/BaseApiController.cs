@@ -25,13 +25,13 @@ namespace MVC_Project.API.Controllers
             return Request.CreateResponse(HttpStatusCode.OK, response);
         }
 
-        public HttpResponseMessage CreateErrorResponse(Exception exception, IList<Message> messages)
+        public HttpResponseMessage CreateErrorResponse(Exception exception, IList<MessageResponse> messages)
         {
-            var response = new ApiResponse<IList<Message>>();
+            var response = new ApiResponse<IList<MessageResponse>>();
             if (exception == null)
             {
                 messages.Select(x => { x.Type = MessageType.error.ToString("G"); return x; }).ToList();
-                response = new ApiResponse<IList<Message>>
+                response = new ApiResponse<IList<MessageResponse>>
                 {
                     Result = "error",
                     ResponseData = messages,
@@ -44,9 +44,9 @@ namespace MVC_Project.API.Controllers
                 Win32Exception win32Ex = exception as Win32Exception;
                 string errorMsg = exception.InnerException != null ? exception.InnerException.Message : exception.Message;
                 int errorCode = win32Ex == null ? (int)HttpStatusCode.BadRequest : (int)HttpStatusCode.InternalServerError;
-                messages = new List<Message>();
-                messages.Add(new Message { Type = MessageType.error.ToString("G"), Description = errorMsg });
-                response = new ApiResponse<IList<Message>>
+                messages = new List<MessageResponse>();
+                messages.Add(new MessageResponse { Type = MessageType.error.ToString("G"), Description = errorMsg });
+                response = new ApiResponse<IList<MessageResponse>>
                 {
                     Result = "error",
                     ResponseData = messages,
