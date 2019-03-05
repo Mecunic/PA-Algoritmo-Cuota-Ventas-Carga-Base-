@@ -24,7 +24,7 @@ namespace PlantillaMVC.Jobs
 
             try
             {
-                GlobalConfiguration.Configuration.UseSqlServerStorage("DefaultConnection");
+                //GlobalConfiguration.Configuration.UseSqlServerStorage("DefaultConnection");
                 Boolean.TryParse(System.Configuration.ConfigurationManager.AppSettings["Jobs.EnabledJobs"], out NotificationProcessEnabled);
                 Dashboardurl = System.Configuration.ConfigurationManager.AppSettings["Jobs.Dashboard.Url"].ToString();
 
@@ -40,6 +40,7 @@ namespace PlantillaMVC.Jobs
                 {
                     DisplayStorageConnectionString = false,
                     Authorization = new[] { new JobsAuthorizationFilter() },
+
                 });
                 app.UseHangfireServer();
             }

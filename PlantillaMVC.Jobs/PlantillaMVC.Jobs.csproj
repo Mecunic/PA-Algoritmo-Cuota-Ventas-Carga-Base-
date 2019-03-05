@@ -186,6 +186,8 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="HangfireConfig\ApplicationPreload.cs" />
+    <Compile Include="HangfireConfig\HangfireBootstrapper.cs" />
     <Compile Include="Jobs\DealsSyncJob.cs" />
     <Compile Include="Jobs\TicketsSyncJob.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
