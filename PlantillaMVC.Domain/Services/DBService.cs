@@ -201,7 +201,7 @@ namespace PlantillaMVC.Domain.Services
         {
             DBProceso proceso = new DBProceso();
 
-            string sql = "SELECT * FROM dbo.Proceso_Metrolap WHERE codigo = @codigo";
+            string sql = "SELECT * FROM dbo.Proceso_Herramental WHERE codigo = @codigo";
             SqlCommand cmd = new SqlCommand(sql, cnn);
             SqlDataReader reader;
             cmd.CommandType = CommandType.Text;
@@ -210,7 +210,7 @@ namespace PlantillaMVC.Domain.Services
             reader = cmd.ExecuteReader();
             while (reader.Read())
             {
-                proceso.ProcesoId = Convert.ToInt32(reader["ProcesoMetrolapId"]);
+                proceso.ProcesoId = Convert.ToInt32(reader["ProcesoHerramentalId"]);
                 proceso.Codigo = Convert.ToString(reader["Codigo"]);
                 proceso.EstatusProceso = Convert.ToBoolean(reader["EstatusProceso"]);
                 proceso.EstatusEjecucion = Convert.ToBoolean(reader["EstatusEjecucion"]);
@@ -224,7 +224,7 @@ namespace PlantillaMVC.Domain.Services
         
         public void ActualizarEstatusProceso(DBProceso procesoInfo)
         {
-            string sql = "UPDATE dbo.Proceso_Metrolap SET EstatusEjecucion = @EstatusEjecucion, UltimaEjecucion = @UltimaEjecucion, Resultado = @Resultado WHERE codigo = @codigo";
+            string sql = "UPDATE dbo.Proceso_Herramental SET EstatusEjecucion = @EstatusEjecucion, UltimaEjecucion = @UltimaEjecucion, Resultado = @Resultado WHERE codigo = @codigo";
             SqlCommand cmd = new SqlCommand(sql, cnn);
             cmd.CommandType = CommandType.Text;
             cmd.Parameters.Add("@EstatusEjecucion", SqlDbType.Bit).Value = procesoInfo.EstatusEjecucion;
@@ -265,7 +265,7 @@ namespace PlantillaMVC.Domain.Services
 
         public void ActualizarProcesoEjecucion(DBProcesoEjecucion detalle)
         {
-            string sql = "UPDATE dbo.ProcesoEjecucion_Metrolap SET Estatus = @Estatus, FechaFin = @FechaFin, Resultado = @Resultado WHERE ProcesoEjecucionMetrolapId = @id";
+            string sql = "UPDATE dbo.ProcesoEjecucion_Herramental SET Estatus = @Estatus, FechaFin = @FechaFin, Resultado = @Resultado WHERE ProcesoEjecucionHerramentalId = @id";
             SqlCommand cmd = new SqlCommand(sql, cnn);
             cmd.CommandType = CommandType.Text;
             cmd.Parameters.Add("@id", SqlDbType.Int).Value = detalle.ProcesoEjecucionId;
