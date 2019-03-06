@@ -190,6 +190,7 @@
     <Compile Include="Controllers\ReportServiceController.cs" />
     <Compile Include="Controllers\RoleController.cs" />
     <Compile Include="Controllers\UserController.cs" />
+    <Compile Include="Controllers\UserPermissionsController.cs" />
     <Compile Include="Controllers\UserServicesController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -198,8 +199,10 @@
     <Compile Include="Models\AuthViewModel.cs" />
     <Compile Include="Models\DataTableModel.cs" />
     <Compile Include="Models\JQueryDataTableParams.cs" />
+    <Compile Include="Models\ReportOrdersModel.cs" />
     <Compile Include="Models\RoleViewModel.cs" />
     <Compile Include="Models\RolPermission.cs" />
+    <Compile Include="Models\UserPermissionViewModel.cs" />
     <Compile Include="Models\UserProfile.cs" />
     <Compile Include="Models\UserViewModel.cs" />
     <Compile Include="NHibernateSessionManager.cs" />
@@ -1533,7 +1536,9 @@
     <Content Include="Scripts\template\plugins\video\responsible-video.js" />
     <Content Include="Scripts\template\plugins\wow\wow.min.js" />
     <Content Include="Scripts\template\Utils.js" />
+    <Content Include="Scripts\views\Reports\OrderIndex.js" />
     <Content Include="Scripts\views\rol\Index.js" />
+    <Content Include="Scripts\views\UserPermission\Index.js" />
     <Content Include="Scripts\views\user\Index.js" />
     <Content Include="Views\Web.config">
       <SubType>Designer</SubType>
@@ -1617,6 +1622,9 @@
     <Content Include="Views\Role\Edit.cshtml" />
     <Content Include="Views\ReportService\Index.cshtml" />
     <Content Include="Views\Auth\RecuperarContrasena.cshtml" />
+    <Content Include="Views\UserPermissions\Index.cshtml" />
+    <Content Include="Views\UserPermissions\EditorTemplates\PermissionViewModel.cshtml" />
+    <Content Include="Views\UserPermissions\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MVC_Project.Data\MVC_Project.Data.csproj">

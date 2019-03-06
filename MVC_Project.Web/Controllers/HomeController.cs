@@ -29,4 +29,8 @@ namespace MVC_Project.Web.Controllers
             return View();
         }
     }
+    public class Hobbies
+    {
+        
+    }
 }

@@ -26,6 +26,7 @@ namespace MVC_Project.Data.Helpers
                 .Mappings(m => m.FluentMappings.AddFromAssemblyOf<UserMap>())
                 .Mappings(m => m.FluentMappings.AddFromAssemblyOf<RoleMap>())
                 .Mappings(m => m.FluentMappings.AddFromAssemblyOf<PermissionMap>())
+                .Mappings(m => m.FluentMappings.AddFromAssemblyOf<RolePermissionMap>())
                 .ExposeConfiguration(cfg => configuration = cfg)
                 .BuildSessionFactory();
         }
