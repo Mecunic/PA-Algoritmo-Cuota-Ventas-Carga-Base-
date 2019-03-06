@@ -24,7 +24,7 @@ namespace PlantillaMVC.Jobs
 
             try
             {
-                GlobalConfiguration.Configuration.UseSqlServerStorage("DefaultConnection");
+                //GlobalConfiguration.Configuration.UseSqlServerStorage("DefaultConnection");
                 Boolean.TryParse(System.Configuration.ConfigurationManager.AppSettings["Jobs.EnabledJobs"], out NotificationProcessEnabled);
                 Dashboardurl = System.Configuration.ConfigurationManager.AppSettings["Jobs.Dashboard.Url"].ToString();
 
@@ -32,14 +32,17 @@ namespace PlantillaMVC.Jobs
                 {
                     JobName = System.Configuration.ConfigurationManager.AppSettings["Jobs.SincronizarDeals.Name"].ToString();
                     JobCron = System.Configuration.ConfigurationManager.AppSettings["Jobs.SincronizarDeals.Cron"].ToString();
+                    //JobName = System.Configuration.ConfigurationManager.AppSettings["Jobs.SincronizarTickets.Name"].ToString();
+                    //JobCron = System.Configuration.ConfigurationManager.AppSettings["Jobs.SincronizarTickets.Cron"].ToString();
                     RecurringJob.AddOrUpdate(JobName, () => DealsSyncJob.SyncDeals(), JobCron, TimeZoneInfo.FindSystemTimeZoneById("Central Standard Time (Mexico)"));
-                    //RecurringJob.AddOrUpdate("SINCRONIZACION_TICKETS", () => TicketsSyncJob.SyncTickets(), Cron.MinuteInterval(60), TimeZoneInfo.FindSystemTimeZoneById("Central Standard Time (Mexico)"));
+                    //RecurringJob.AddOrUpdate(JobName, () => TicketsSyncJob.SyncTickets(), JobCron, TimeZoneInfo.FindSystemTimeZoneById("Central Standard Time (Mexico)"));
                 }
 
                 app.UseHangfireDashboard(Dashboardurl, new DashboardOptions
                 {
                     DisplayStorageConnectionString = false,
                     Authorization = new[] { new JobsAuthorizationFilter() },
+
                 });
                 app.UseHangfireServer();
             }

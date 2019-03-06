@@ -14,6 +14,7 @@ namespace PlantillaMVC.Domain.Services
         void CreateDeal(DBDealModel deal);
 
         void ClearDeals();
+        void UpdateSyncTicket(DBTicketModel ticket);
 
         DBProceso GetProcessInfo(string codigo);
         void ActualizarEstatusProceso(DBProceso procesoInfo);
@@ -21,6 +22,8 @@ namespace PlantillaMVC.Domain.Services
         int CreateProcesoEjecucion(DBProcesoEjecucion detalle);
 
         void ActualizarProcesoEjecucion(DBProcesoEjecucion detalle);
+        IList<DBTicketModel> GetTickets();
+        void UpdateTicketsToProcess();
     }
 
     public class DBService : IDBService
@@ -31,6 +34,93 @@ namespace PlantillaMVC.Domain.Services
             string connetionString = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
             cnn = new System.Data.SqlClient.SqlConnection(connetionString);
             cnn.Open();
+        }
+
+        public void UpdateSyncTicket(DBTicketModel ticket)
+        {
+            string sql = "[dbo].[MTL_HBP_Tickets_Sync]";
+            SqlCommand command = new SqlCommand(sql, cnn);
+            SqlDataReader rdr = null;
+            try
+            {
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.Add("@company", SqlDbType.Char).Value = ticket.Company;
+                command.Parameters.Add("@rfc", SqlDbType.Char).Value = ticket.RFC;
+                command.Parameters.Add("@numoperacion", SqlDbType.Int).Value = ticket.NumeroOperacion;
+                command.Parameters.Add("@tipoactividad", SqlDbType.Char).Value = ticket.TipoActividad;
+                command.Parameters.Add("@ticketid", SqlDbType.BigInt).Value = ticket.TicketId;
+
+                rdr = command.ExecuteReader();
+            }
+            finally
+            {
+                if (rdr != null)
+                {
+                    rdr.Close();
+                }
+            }
+        }
+
+        public void UpdateTicketsToProcess()
+        {
+            string sql = "[dbo].[MTL_HBP_Tickets]";
+            SqlCommand command = new SqlCommand(sql, cnn);
+            SqlDataReader rdr = null;
+            try
+            {
+                command.CommandType = CommandType.StoredProcedure;
+                command.CommandTimeout = 300;
+                rdr = command.ExecuteReader();
+            }
+            finally
+            {
+                if (rdr != null)
+                {
+                    rdr.Close();
+                }
+            }
+        }
+        public IList<DBTicketModel> GetTickets()
+        {
+            string sql = "SELECT * FROM dbo.HBP_Tickets where TicketId is null";
+            SqlCommand sqlCommand = new SqlCommand(sql, cnn);
+            SqlDataReader dataReader = null;
+            IList<DBTicketModel> tickets = new List<DBTicketModel>();
+            try
+            {
+                sqlCommand.CommandType = CommandType.Text;
+                dataReader = sqlCommand.ExecuteReader();
+                if (dataReader.HasRows)
+                {
+                    DataTable dataTable = new DataTable();
+                    dataTable.Load(dataReader);
+                    foreach (DataRow row in dataTable.Rows)
+                    {
+                        DBTicketModel ticketModel = new DBTicketModel
+                        {
+                            Company = row.Field<string>("Company"),
+                            RFC = row.Field<string>("RFC"),
+                            Monto = row.Field<decimal?>("Monto"),
+                            FechaAlta = row.Field<DateTime>("FechaAlta"),
+                            NumeroOperacion = row.Field<int>("NumOperacion"),
+                            Descripcion = row.Field<string>("Descripcion"),
+                            SyncDate = row.Field<DateTime?>("sync_date"),
+                            TicketId = row.Field<long?>("TicketId"),
+                            TipoActividad = row.Field<string>("TipoActividad")
+                        };
+                        tickets.Add(ticketModel);
+                    }
+                }
+            }
+            finally
+            {
+                if (dataReader != null)
+                {
+                    dataReader.Close();
+                }
+            }
+            return tickets;
+
         }
 
         public void CreateDeal(DBDealModel deal)
@@ -111,7 +201,7 @@ namespace PlantillaMVC.Domain.Services
         {
             DBProceso proceso = new DBProceso();
 
-            string sql = "SELECT * FROM dbo.Proceso_Herramental WHERE codigo = @codigo";
+            string sql = "SELECT * FROM dbo.Proceso_Metrolap WHERE codigo = @codigo";
             SqlCommand cmd = new SqlCommand(sql, cnn);
             SqlDataReader reader;
             cmd.CommandType = CommandType.Text;
@@ -120,7 +210,7 @@ namespace PlantillaMVC.Domain.Services
             reader = cmd.ExecuteReader();
             while (reader.Read())
             {
-                proceso.ProcesoId = Convert.ToInt32(reader["ProcesoHerramentalId"]);
+                proceso.ProcesoId = Convert.ToInt32(reader["ProcesoMetrolapId"]);
                 proceso.Codigo = Convert.ToString(reader["Codigo"]);
                 proceso.EstatusProceso = Convert.ToBoolean(reader["EstatusProceso"]);
                 proceso.EstatusEjecucion = Convert.ToBoolean(reader["EstatusEjecucion"]);
@@ -134,7 +224,7 @@ namespace PlantillaMVC.Domain.Services
         
         public void ActualizarEstatusProceso(DBProceso procesoInfo)
         {
-            string sql = "UPDATE dbo.Proceso_Herramental SET EstatusEjecucion = @EstatusEjecucion, UltimaEjecucion = @UltimaEjecucion, Resultado = @Resultado WHERE codigo = @codigo";
+            string sql = "UPDATE dbo.Proceso_Metrolap SET EstatusEjecucion = @EstatusEjecucion, UltimaEjecucion = @UltimaEjecucion, Resultado = @Resultado WHERE codigo = @codigo";
             SqlCommand cmd = new SqlCommand(sql, cnn);
             cmd.CommandType = CommandType.Text;
             cmd.Parameters.Add("@EstatusEjecucion", SqlDbType.Bit).Value = procesoInfo.EstatusEjecucion;
@@ -175,7 +265,7 @@ namespace PlantillaMVC.Domain.Services
 
         public void ActualizarProcesoEjecucion(DBProcesoEjecucion detalle)
         {
-            string sql = "UPDATE dbo.ProcesoEjecucion_Herramental SET Estatus = @Estatus, FechaFin = @FechaFin, Resultado = @Resultado WHERE ProcesoEjecucionHerramentalId = @id";
+            string sql = "UPDATE dbo.ProcesoEjecucion_Metrolap SET Estatus = @Estatus, FechaFin = @FechaFin, Resultado = @Resultado WHERE ProcesoEjecucionMetrolapId = @id";
             SqlCommand cmd = new SqlCommand(sql, cnn);
             cmd.CommandType = CommandType.Text;
             cmd.Parameters.Add("@id", SqlDbType.Int).Value = detalle.ProcesoEjecucionId;
