@@ -17,6 +17,7 @@ namespace MVC_Project.Domain.Services {
     public class UserService : ServiceBase<User>, IUserService
     {
         private IRepository<User> _repository;
+        
         public UserService(IRepository<User> baseRepository) : base(baseRepository)
         {
             _repository = baseRepository;

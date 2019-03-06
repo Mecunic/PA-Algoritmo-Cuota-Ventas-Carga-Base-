@@ -57,6 +57,8 @@
     <Compile Include="Entities\Permission.cs" />
     <Compile Include="Entities\Role.cs" />
     <Compile Include="Entities\RolePermission.cs" />
+    <Compile Include="Entities\Staff.cs" />
+    <Compile Include="Entities\Store.cs" />
     <Compile Include="Entities\User.cs" />
     <Compile Include="Helpers\IUnitOfWork.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

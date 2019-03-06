@@ -208,7 +208,7 @@
     <Compile Include="Models\AuthViewModel.cs" />
     <Compile Include="Models\DataTableModel.cs" />
     <Compile Include="Models\JQueryDataTableParams.cs" />
-    <Compile Include="Models\ReportOrdersModel.cs" />
+    <Compile Include="Models\ReportOrdersViewModel.cs" />
     <Compile Include="Models\RoleViewModel.cs" />
     <Compile Include="Models\RolPermission.cs" />
     <Compile Include="Models\UserPermissionViewModel.cs" />
@@ -217,6 +217,7 @@
     <Compile Include="NHibernateSessionManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utils\Constants.cs" />
+    <Compile Include="Utils\FileDownloadAttribute.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\template\animate.css" />
@@ -1194,6 +1195,7 @@
     <Content Include="Images\p_big2.jpg" />
     <Content Include="Images\p_big3.jpg" />
     <Content Include="Images\zender_logo.png" />
+    <Content Include="Scripts\plugins\fileDownload\jquery.fileDownload.js" />
     <Content Include="Scripts\template\app\inspinia.js" />
     <Content Include="Scripts\template\app\skin.config.min.js" />
     <Content Include="Scripts\template\bootstrap.js" />
