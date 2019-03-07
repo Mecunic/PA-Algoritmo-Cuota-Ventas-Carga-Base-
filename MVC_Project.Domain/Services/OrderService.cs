@@ -40,7 +40,7 @@ namespace MVC_Project.Domain.Services
             if (!String.IsNullOrWhiteSpace(filters[0]))
             {
                 query = query.WhereRestrictionOn(() => customerAlias.FirstName).IsInsensitiveLike("%" + filters[0] + "%");
-        }
+            }
             //if (filters[1] != "2")
             //{
             //    bool status = filters[1] == "1" ? true : false;

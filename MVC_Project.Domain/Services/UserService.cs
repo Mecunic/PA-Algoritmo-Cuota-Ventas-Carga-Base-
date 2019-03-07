@@ -22,23 +22,24 @@ namespace MVC_Project.Domain.Services {
         {
             _repository = baseRepository;
         }
-        public IList<User> ObtenerUsuarios(string filtros)
+        public IList<User> ObtenerUsuarios(string filtros, ISession session)
         {
             filtros = filtros.Replace("[", "").Replace("]", "").Replace("\\", "").Replace("\"", "");
             var filters = filtros.Split(',').ToList();
 
-            var users = _repository.GetAll();
+            var query = session.QueryOver<User>();
             if (!string.IsNullOrWhiteSpace(filters[0]))
             {
                 string nombre = filters[0];
-                users = users.Where(p => p.FirstName.ToLower().Contains(nombre.ToLower()));
+                query = query.Where(x => (x.Email.IsInsensitiveLike("%" + nombre + "%") || x.FirstName.IsInsensitiveLike("%" + nombre + "%")));
+
             }
             if (filters[1] != "2")
             {
                 bool status = filters[1]=="1"?true:false;
-                users = users.Where(p => p.Status == status);
+                query = query.Where(p => p.Status == status);
             }
-            return users.ToList();
+            return query.OrderBy(u => u.CreatedAt).Desc.List();
         }
 
     }

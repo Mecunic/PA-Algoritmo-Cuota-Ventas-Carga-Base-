@@ -43,18 +43,19 @@ namespace MVC_Project.Web.Models {
     }
 
     public class UserCreateViewModel {
-
+        [Required]
         [Display(Name = "Nombre")]
         public string Name { get; set; }
         [Display(Name = "Apellidos")]
         public string Apellidos { get; set; }
-
+        [Required]
         public string Email { get; set; }
-
+        [Required]
         [Display(Name = "Contraseña")]
         public string Password { get; set; }
 
         [Display(Name = "Rol")]
+        [Required]
         public int Role { get; set; }
 
         public IEnumerable<SelectListItem> Roles { get; set; }

@@ -61,9 +61,7 @@ namespace MVC_Project.Web.Controllers
             {
                 UnitOfWork unitOfWork = new UnitOfWork();
                 ISession session = unitOfWork.Session;
-                UserBLogic userBLogic = new UserBLogic(session);
-                IList<User> users = userBLogic.ObtenerUsuarios(filtros);
-                //var users = _userService.ObtenerUsuarios(filtros);
+                var users = _userService.ObtenerUsuarios(filtros, session);
                 IList<UserData> UsuariosResponse = new List<UserData>();
                     foreach (var user in users)
                     {
@@ -108,8 +106,16 @@ namespace MVC_Project.Web.Controllers
         // GET: User/Create
         public ActionResult Create()
         {
-            var userCreateViewModel = new UserCreateViewModel { Roles = PopulateRoles() };
-            return View("Form",userCreateViewModel);
+            try
+            {
+                var userCreateViewModel = new UserCreateViewModel { Roles = PopulateRoles() };
+                return View("Form", userCreateViewModel);
+            }
+            catch
+            {
+                return View();
+            }
+           
         }
 
         private IEnumerable<SelectListItem> PopulateRoles()
@@ -135,6 +141,7 @@ namespace MVC_Project.Web.Controllers
                 {
                     Uuid = Guid.NewGuid().ToString(),
                     FirstName = userCreateViewModel.Name,
+                    LastName = userCreateViewModel.Apellidos,
                     Email = userCreateViewModel.Email,
                     Password = EncryptHelper.EncryptPassword(userCreateViewModel.Password),
                     Role = new Role { Id = userCreateViewModel.Role },
@@ -151,7 +158,7 @@ namespace MVC_Project.Web.Controllers
             }
             else
             {
-                return View("Form");
+                return View("Form", userCreateViewModel);
             }
         }
 
@@ -162,8 +169,10 @@ namespace MVC_Project.Web.Controllers
             UserEditViewModel model = new UserEditViewModel();
             model.Uuid = user.Uuid;
             model.Name = user.FirstName;
+            model.Apellidos = user.LastName;
             model.Email = user.Email;
             model.Roles = PopulateRoles();
+            model.Role = user.Role.Id;
             return View("EditForm",model);
         }
 

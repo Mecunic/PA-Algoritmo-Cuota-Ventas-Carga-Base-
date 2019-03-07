@@ -103,7 +103,7 @@ namespace MVC_Project.Web.Controllers
             int countRegistros = 0;
             UnitOfWork unitOfWork = new UnitOfWork();
             ISession session = unitOfWork.Session;
-            string filtros= "["+ modeloFiltro.Nombre+ "," + modeloFiltro.Status + "]";
+            string filtros= "["+ modeloFiltro.Nombre+ "," + modeloFiltro.Status +","+""+"," + "]";
             List<ExportOrdersViewModel> pagosPorCajero = _orderService.ObtenerOrders(filtros, session).Select(x => new ExportOrdersViewModel
             {
                 Id = x.Id,
