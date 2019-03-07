@@ -70,6 +70,7 @@ namespace MVC_Project.Web.Controllers
                         UserData userData = new UserData();
                         userData.Name = user.FirstName + " " + user.LastName;
                         userData.Email = user.Email;
+                        userData.RoleName = user.Role.Name;
                         userData.CreatedAt = user.CreatedAt;
                         userData.UpdatedAt = user.UpdatedAt;
                         userData.Status = user.Status;
@@ -81,7 +82,7 @@ namespace MVC_Project.Web.Controllers
                         success = true,
                         sEcho = param.sEcho,
                         iTotalRecords = UsuariosResponse.Count(),
-                        iTotalDisplayRecords = 10,
+                        iTotalDisplayRecords = 20,
                         aaData = UsuariosResponse
                     }, JsonRequestBehavior.AllowGet);
                 

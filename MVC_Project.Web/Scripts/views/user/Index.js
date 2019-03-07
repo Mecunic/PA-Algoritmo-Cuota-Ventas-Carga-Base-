@@ -39,8 +39,9 @@ var UserIndexControlador = function (htmlTableId, baseUrl, modalEditAction, moda
             ordering: false,
             columns: [
                 { data: 'Id', title: "Id", visible: false },
-                { data: 'Name', title: "Nombre" },
                 { data: 'Email', title: "Email" },
+                { data: 'RoleName', title: "Rol" },
+                { data: 'Name', title: "Nombre" },
                 {
                     data: null, orderName: "CreatedAt", title: "Fecha Creación", autoWidth: false, className: "dt-center td-actions thead-dark",
                     render: function (data, type, row, meta) {

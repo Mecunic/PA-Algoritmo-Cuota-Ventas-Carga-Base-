@@ -33,6 +33,9 @@ namespace MVC_Project.Web.Models {
 
         public string Email { get; set; }
 
+        [Display(Name = "Rol")]
+        public string RoleName { get; set; }
+
         [Display(Name = "Fecha de creación")]
         public DateTime CreatedAt { get; set; }
 
