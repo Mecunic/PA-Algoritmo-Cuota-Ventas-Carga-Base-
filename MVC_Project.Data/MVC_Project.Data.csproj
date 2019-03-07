@@ -90,6 +90,8 @@
     <Compile Include="Mappings\PermissionMap.cs" />
     <Compile Include="Mappings\RoleMap.cs" />
     <Compile Include="Mappings\RolePermissionMap.cs" />
+    <Compile Include="Mappings\StaffMap.cs" />
+    <Compile Include="Mappings\StoreMap.cs" />
     <Compile Include="Mappings\UserMap.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\GenericRepository.cs" />

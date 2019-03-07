@@ -55,12 +55,15 @@ namespace MVC_Project.API.Controllers.V1
                 _userService.Update(user);
                 var response = new AuthUserResponse
                 {
-                    Uuid = user.Uuid,
-                    FirstName = user.FirstName,
-                    LastName = user.LastName,
-                    Email = user.Email,
                     ApiKey = user.ApiKey,
-                    ApiKeyExpiration = expiration.ToString("yyyy/MM/dd HH:mm:ss")
+                    ApiKeyExpiration = expiration.ToString("yyyy/MM/dd HH:mm:ss"),
+                    UserData = new AuthUser
+                    {
+                        Uuid = user.Uuid,
+                        FirstName = user.FirstName,
+                        LastName = user.LastName,
+                        Email = user.Email
+                    }
                 };
                 return CreateResponse(response);
             }
@@ -112,10 +115,15 @@ namespace MVC_Project.API.Controllers.V1
             {
                 List<MessageResponse> messages = new List<MessageResponse>();
 
-                var user = _userService.FindBy(e => e.Email == email).First();
+                var user = _userService.FindBy(e => e.Email == email).FirstOrDefault();
                 if (user == null)
                 {
                     messages.Add(new MessageResponse { Type = MessageType.error.ToString("G"), Description = "El correo electrónico solicitado no se encuentra registrado." });
+                    return CreateErrorResponse(null, messages);
+                }
+                if (user.Role.Code != "APP_USER")
+                {
+                    messages.Add(new MessageResponse { Type = MessageType.error.ToString("G"), Description = "El usuario no cuenta con acceso al app." });
                     return CreateErrorResponse(null, messages);
                 }
                 string token = (user.Uuid + "@" + DateTime.Now.AddDays(1).ToString());
@@ -161,6 +169,11 @@ namespace MVC_Project.API.Controllers.V1
                 if(user == null || DateTime.Now > user.ExpiraToken)
                 {
                     messages.Add(new MessageResponse { Type = MessageType.error.ToString("G"), Description = "El token ha expirado." });
+                    return CreateErrorResponse(null, messages);
+                }
+                if (user.Role.Code != "APP_USER")
+                {
+                    messages.Add(new MessageResponse { Type = MessageType.error.ToString("G"), Description = "El usuario no cuenta con acceso al app." });
                     return CreateErrorResponse(null, messages);
                 }
                 user.Password = request.Password;

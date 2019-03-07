@@ -6,7 +6,7 @@ using System.Web.Mvc;
 
 namespace MVC_Project.Web.Models
 {
-    public class ReportOrdersModel
+    public class ReportOrdersViewModel
     {
         public string Nombre { get; set; }
         public DateTime Inicio { get; set; }
@@ -25,5 +25,9 @@ namespace MVC_Project.Web.Models
         public DateTime ShipperAt { get; set; }
         public string Tienda { get; set; }
         public string Vendedor { get; set; }
+    }
+    public class ExportOrdersViewModel : OrdersData
+    {
+        public string FechaPagoFormateada { get; set; }
     }
 }

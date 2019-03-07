@@ -63,8 +63,7 @@
                     className: 'personal-options',
                     render: function (data) {
                         //console.log(data)
-                        var deshabilitar = data.Status ? '<button class="btn btn-light btn-delete" title="Desactivar" style="margin-left:5px;"><span class="far fa-check-square "></span></button>' :
-                            '<button class="btn btn-light btn-active" title="Activar" style="margin-left:5px;"><span class="far fa-square"></span></button>';
+                        var deshabilitar = "";
                         var buttons = '<div class="btn-group" role="group" aria-label="Opciones">' +
                             deshabilitar +
                             '<button class="btn btn-light btn-edit"><span class="fas fa-edit"></span></button>' +
@@ -87,5 +86,18 @@
                 });
             }
         });
+
+        function getFiltros(form) {
+            var $inputs = $(form + ' [filtro="true"]');
+            var nFiltros = $inputs.length;
+            //alert(nFiltros);
+            var filtros = [];
+            for (i = 1; i <= nFiltros; i++) {
+                var input = $.grep($inputs, function (item) { return $(item).attr('filtro-order') == i; });
+                filtros.push($(input).val());
+            }
+
+            return JSON.stringify(filtros);
+        }
     }
 }

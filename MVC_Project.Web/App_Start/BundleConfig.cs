@@ -459,6 +459,10 @@ namespace MVC_Project.Web
             bundles.Add(new StyleBundle("~/plugins/passwordMeter").Include(
                         "~/Scripts/template/plugins/pwstrength/pwstrength-bootstrap.min.js",
                         "~/Scripts/template/plugins/pwstrength/zxcvbn.js"));
+
+            // Exportar excel
+            bundles.Add(new ScriptBundle("~/bundles/fileDownload").Include(
+                "~/Scripts/plugins/fileDownload/jquery.fileDownload.js"));
         }
     }
 }
