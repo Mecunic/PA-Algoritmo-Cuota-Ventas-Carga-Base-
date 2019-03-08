@@ -22,6 +22,7 @@ namespace MVC_Project.Data.Mappings {
             Map(x => x.Token).Column("token").Nullable();
             Map(x => x.ApiKey).Column("apikey").Nullable();
             Map(x => x.ExpiraApiKey).Column("expira_apikey").Nullable();
+            Map(x=>x.LastLoginAt).Column("last_login_at").Nullable();
             References(x => x.Role).Column("role_id");
             HasManyToMany(x => x.Permissions)
                 .Cascade.SaveUpdate()

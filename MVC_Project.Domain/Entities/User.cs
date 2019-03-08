@@ -22,6 +22,7 @@ namespace MVC_Project.Domain.Entities {
         public virtual DateTime? ExpiraToken { get; set; }
         public virtual string ApiKey { get; set; }
         public virtual DateTime? ExpiraApiKey { get; set; }
+        public virtual DateTime? LastLoginAt { get; set; }
 
         public User()
         {            

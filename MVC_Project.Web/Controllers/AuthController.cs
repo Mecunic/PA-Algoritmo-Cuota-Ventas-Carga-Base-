@@ -46,7 +46,8 @@ namespace MVC_Project.Web.Controllers
                         ViewBag.Error = "El usuario está inactivo.";
                         return View(model);
                     }
-                    
+                    user.LastLoginAt = DateTime.Now;
+                    _userService.Update(user);
                     AuthUser authUser = new AuthUser
                     {
                         FirstName = user.FirstName,
