@@ -4,6 +4,7 @@ using MVC_Project.Domain.Helpers;
 using MVC_Project.Domain.Services;
 using MVC_Project.Web.AuthManagement;
 using MVC_Project.Web.Models;
+using MVC_Project.Web.Utils.Enums;
 using NHibernate;
 using System;
 using System.Collections.Generic;
@@ -14,12 +15,10 @@ using System.Web.Mvc;
 
 namespace MVC_Project.Web.Controllers
 {
-    
     public class UserController : BaseController
     {
         private UserService _userService;
         private RoleService _roleService;
-        
 
         public UserController(UserService userService, RoleService roleService)
         {
@@ -32,60 +31,40 @@ namespace MVC_Project.Web.Controllers
         {
             UserViewModel model = new UserViewModel
             {
-                UserList = new UserData()
+                UserList = new UserData(),
+                Status = FilterStatusEnum.ALL.Id,
+                Statuses = FilterStatusEnum.GetSelectListItems()
             };
-            List<SelectListItem> listStatus = new List<SelectListItem>();
-            listStatus.Add(new SelectListItem
-            {
-                Text = "Todos",
-                Value = "2"
-            });
-            listStatus.Add(new SelectListItem
-            {
-                Text = "Activos",
-                Value = "1",
-                Selected = true
-            });
-            listStatus.Add(new SelectListItem
-            {
-                Text = "Inactivos",
-                Value = "0"
-            });
-            ViewBag.OpcionesStatus = listStatus;
             return View(model);
         }
+
         [HttpGet, Authorize]
-        public JsonResult ObtenerUsuarios(JQueryDataTableParams param, string filtros)
+        public JsonResult GetAllByFilter(JQueryDataTableParams param, string filtros)
         {
             try
             {
-                UnitOfWork unitOfWork = new UnitOfWork();
-                ISession session = unitOfWork.Session;
-                var users = _userService.ObtenerUsuarios(filtros, session);
+                var users = _userService.FilterBy(filtros);
                 IList<UserData> UsuariosResponse = new List<UserData>();
-                    foreach (var user in users)
-                    {
-                        UserData userData = new UserData();
-                        userData.Name = user.FirstName + " " + user.LastName;
-                        userData.Email = user.Email;
-                        userData.RoleName = user.Role.Name;
-                        userData.CreatedAt = user.CreatedAt;
-                        userData.UpdatedAt = user.UpdatedAt;
-                        userData.Status = user.Status;
-                        userData.Uuid = user.Uuid;
-                        UsuariosResponse.Add(userData);
-                    }
-                    return Json(new
-                    {
-                        success = true,
-                        sEcho = param.sEcho,
-                        iTotalRecords = UsuariosResponse.Count(),
-                        iTotalDisplayRecords = 20,
-                        aaData = UsuariosResponse
-                    }, JsonRequestBehavior.AllowGet);
-                
-
-                    
+                foreach (var user in users)
+                {
+                    UserData userData = new UserData();
+                    userData.Name = user.FirstName + " " + user.LastName;
+                    userData.Email = user.Email;
+                    userData.RoleName = user.Role.Name;
+                    userData.CreatedAt = user.CreatedAt;
+                    userData.UpdatedAt = user.UpdatedAt;
+                    userData.Status = user.Status;
+                    userData.Uuid = user.Uuid;
+                    UsuariosResponse.Add(userData);
+                }
+                return Json(new
+                {
+                    success = true,
+                    param.sEcho,
+                    iTotalRecords = UsuariosResponse.Count(),
+                    iTotalDisplayRecords = 20,
+                    aaData = UsuariosResponse
+                }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {
@@ -107,16 +86,8 @@ namespace MVC_Project.Web.Controllers
         // GET: User/Create
         public ActionResult Create()
         {
-            try
-            {
-                var userCreateViewModel = new UserCreateViewModel { Roles = PopulateRoles() };
-                return View("Form", userCreateViewModel);
-            }
-            catch
-            {
-                return View();
-            }
-           
+            var userCreateViewModel = new UserCreateViewModel { Roles = PopulateRoles() };
+            return View(userCreateViewModel);
         }
 
         private IEnumerable<SelectListItem> PopulateRoles()
@@ -135,7 +106,7 @@ namespace MVC_Project.Web.Controllers
         [HttpPost]
         public ActionResult Create(UserCreateViewModel userCreateViewModel)
         {
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 // TODO: Add insert logic here
                 var user = new User
@@ -147,7 +118,7 @@ namespace MVC_Project.Web.Controllers
                     Password = EncryptHelper.EncryptPassword(userCreateViewModel.Password),
                     Role = new Role { Id = userCreateViewModel.Role },
                     CreatedAt = DateTime.Now,
-                    UpdatedAt = DateTime.Now,                             
+                    UpdatedAt = DateTime.Now,
                 };
                 var role = _roleService.GetById(user.Role.Id);
                 foreach (var permission in role.Permissions)
@@ -159,7 +130,7 @@ namespace MVC_Project.Web.Controllers
             }
             else
             {
-                return View("Form", userCreateViewModel);
+                return View("Create", userCreateViewModel);
             }
         }
 
@@ -174,7 +145,7 @@ namespace MVC_Project.Web.Controllers
             model.Email = user.Email;
             model.Roles = PopulateRoles();
             model.Role = user.Role.Id;
-            return View("EditForm",model);
+            return View(model);
         }
 
         // POST: User/Edit/5
@@ -208,10 +179,10 @@ namespace MVC_Project.Web.Controllers
         {
             try
             {
-                var users = _userService.FindBy(x=>x.Uuid == uuid).First();
+                var users = _userService.FindBy(x => x.Uuid == uuid).First();
                 if (users != null)
                 {
-                    if(users.Status == true)
+                    if (users.Status == true)
                     {
                         users.Status = false;
                     }
@@ -219,28 +190,14 @@ namespace MVC_Project.Web.Controllers
                     {
                         users.Status = true;
                     }
-                    
                 }
                 _userService.Update(users);
                 return Json(true, JsonRequestBehavior.AllowGet);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return Json(false, JsonRequestBehavior.AllowGet);
             }
-        }
-        [HttpPost]
-        public ActionResult SearchUsers(UserViewModel users)
-        {
-            //try
-            //{
-            //    var user = _userService.ObtenerUsuarios(users.Name, 1, 0,0);
-            //}
-            //catch (Exception ex)
-            //{
-            //    return Json(false, JsonRequestBehavior.AllowGet);
-            //}
-            return null;
         }
     }
 }

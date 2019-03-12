@@ -17,10 +17,12 @@ namespace MVC_Project.Web.Controllers
     public class ReportServiceController : BaseController
     {
         private OrderService _orderService;
+
         public ReportServiceController(OrderService orderService, RoleService roleService)
         {
             _orderService = orderService;
         }
+
         // GET: ReportService
         public ActionResult Index()
         {
@@ -45,15 +47,13 @@ namespace MVC_Project.Web.Controllers
             ViewBag.OpcionesStatus = listStatus;
             return View(model);
         }
+
         [HttpGet, Authorize]
-        public JsonResult ObtenerOrders(JQueryDataTableParams param, string filtros)
+        public JsonResult GetAllByFilter(JQueryDataTableParams param, string filtros)
         {
             try
             {
-                UnitOfWork unitOfWork = new UnitOfWork();
-                ISession session = unitOfWork.Session;
-                //IList<User> users = userBLogic.ObtenerUsuarios(filtros);
-                var orders = _orderService.ObtenerOrders(filtros, session);
+                var orders = _orderService.FilterBy(filtros);
                 IList<OrdersData> OrdesResponse = new List<OrdersData>();
                 foreach (var order in orders)
                 {
@@ -74,9 +74,6 @@ namespace MVC_Project.Web.Controllers
                     iTotalDisplayRecords = param.iDisplayLength,
                     aaData = OrdesResponse
                 }, JsonRequestBehavior.AllowGet);
-
-
-
             }
             catch (Exception ex)
             {
@@ -98,13 +95,9 @@ namespace MVC_Project.Web.Controllers
         [HttpPost]
         public ActionResult ExportExcel(ReportOrdersViewModel modeloFiltro)
         {
-
             ReportOrdersViewModel modelo = new ReportOrdersViewModel();
-            int countRegistros = 0;
-            UnitOfWork unitOfWork = new UnitOfWork();
-            ISession session = unitOfWork.Session;
-            string filtros= "["+ modeloFiltro.Nombre+ "," + modeloFiltro.Status +","+""+"," + "]";
-            List<ExportOrdersViewModel> pagosPorCajero = _orderService.ObtenerOrders(filtros, session).Select(x => new ExportOrdersViewModel
+            string filtros = "[" + modeloFiltro.Nombre + "," + modeloFiltro.Status + "," + "" + "," + "]";
+            List<ExportOrdersViewModel> pagosPorCajero = _orderService.FilterBy(filtros).Select(x => new ExportOrdersViewModel
             {
                 Id = x.Id,
                 Cliente = x.Customer.FirstName,
@@ -115,7 +108,7 @@ namespace MVC_Project.Web.Controllers
             }).ToList();
 
             //Lista que contiene las columnas que serán excluidas.
-            List<string> columnasExcluidas = new List<string> { "FechaPagoFormateada"};
+            List<string> columnasExcluidas = new List<string> { "FechaPagoFormateada" };
 
             //Diccionario que contiene los nuevos nombres de las columnas.
             Dictionary<string, string> dicNuevosNombres = new Dictionary<string, string>();
@@ -130,7 +123,6 @@ namespace MVC_Project.Web.Controllers
             stream.Seek(0, SeekOrigin.Begin);
 
             return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "Reporte Ordenes.xlsx");
-
         }
     }
 }

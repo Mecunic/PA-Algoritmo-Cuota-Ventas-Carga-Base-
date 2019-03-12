@@ -2,10 +2,8 @@
 using FluentNHibernate.Cfg.Db;
 using NHibernate;
 using NHibernate.Cfg;
-using NHibernate.Tool.hbm2ddl;
 using MVC_Project.Data.Mappings;
 using MVC_Project.Domain.Helpers;
-using System;
 
 namespace MVC_Project.Data.Helpers
 {

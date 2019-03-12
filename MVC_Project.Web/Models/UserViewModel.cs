@@ -6,24 +6,29 @@ using System.Runtime.Serialization;
 using System.Web;
 using System.Web.Mvc;
 
-namespace MVC_Project.Web.Models {
-
+namespace MVC_Project.Web.Models
+{
     public class DataTableUsersModel
     {
         public int recordsFiltered { get; set; }
         public int recordsTotal { get; set; }
+
         [DataMember(Name = "data")]
         public IList<UserData> Data { get; set; }
     }
+
     public class UserViewModel : DataTableModel
     {
-        public string Nombre { get; set; }
-        public int? Status { get; set; }
-        public SelectList ListStatus { get; set; }
+        [Display(Name = "Nombre")]
+        public string Name { get; set; }
+
+        public int Status { get; set; }
+        public IEnumerable<SelectListItem> Statuses { get; set; }
         public UserData UserList { get; set; }
     }
 
-    public class UserData {
+    public class UserData
+    {
         public int Id { get; set; }
 
         [Display(Name = "Nombre")]
@@ -41,18 +46,23 @@ namespace MVC_Project.Web.Models {
 
         [Display(Name = "Fecha de actualización")]
         public DateTime UpdatedAt { get; set; }
+
         [Display(Name = "Estatus")]
         public bool Status { get; set; }
     }
 
-    public class UserCreateViewModel {
+    public class UserCreateViewModel
+    {
         [Required]
         [Display(Name = "Nombre")]
         public string Name { get; set; }
+
         [Display(Name = "Apellidos")]
         public string Apellidos { get; set; }
+
         [Required]
         public string Email { get; set; }
+
         [Required]
         [Display(Name = "Contraseña")]
         public string Password { get; set; }
@@ -71,11 +81,14 @@ namespace MVC_Project.Web.Models {
         [Display(Name = "Nombre")]
         public string Name { get; set; }
     }
+
     public class UserEditViewModel
     {
         public string Uuid { get; set; }
+
         [Display(Name = "Nombre")]
         public string Name { get; set; }
+
         [Display(Name = "Apellidos")]
         public string Apellidos { get; set; }
 
