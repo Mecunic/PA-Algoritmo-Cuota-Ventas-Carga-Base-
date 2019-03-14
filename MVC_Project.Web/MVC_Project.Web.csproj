@@ -220,10 +220,18 @@
     <Compile Include="Utils\FileDownloadAttribute.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\template\animate.css" />
-    <Content Include="Content\template\bootstrap.css" />
-    <Content Include="Content\template\bootstrap.min.css" />
-    <Content Include="Content\template\email.css" />
+    <Content Include="Content\template\animate.css">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\template\bootstrap.css">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\template\bootstrap.min.css">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\template\email.css">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\template\landing\avatar_all.png" />
     <Content Include="Content\template\landing\header_one.jpg" />
     <Content Include="Content\template\landing\header_two.jpg" />
@@ -323,14 +331,20 @@
     <Content Include="Content\template\plugins\slick\slick.css" />
     <Content Include="Content\template\plugins\social-buttons\social-buttons.css" />
     <Content Include="Content\template\plugins\steps\jquery.steps.css" />
-    <Content Include="Content\template\plugins\summernote\summernote-bs3.css" />
-    <Content Include="Content\template\plugins\summernote\summernote.css" />
+    <Content Include="Content\template\plugins\summernote\summernote-bs3.css">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\template\plugins\summernote\summernote.css">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\template\plugins\sweetalert\sweetalert.css" />
     <Content Include="Content\template\plugins\switchery\switchery.css" />
     <Content Include="Content\template\plugins\textSpinners\spinners.css" />
     <Content Include="Content\template\plugins\toastr\toastr.min.css" />
     <Content Include="Content\template\plugins\touchspin\jquery.bootstrap-touchspin.min.css" />
-    <Content Include="Content\template\style.css" />
+    <Content Include="Content\template\style.css">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="favicon.ico" />
     <Content Include="fonts\font-awesome\all.css" />
     <Content Include="fonts\font-awesome\all.js" />
@@ -1598,8 +1612,12 @@
     <Content Include="fonts\webfonts\fa-solid-900.ttf" />
     <Content Include="fonts\webfonts\fa-solid-900.woff" />
     <Content Include="fonts\webfonts\fa-solid-900.woff2" />
-    <Content Include="Content\template\bootstrap.css.map" />
-    <Content Include="Content\template\bootstrap.min.css.map" />
+    <Content Include="Content\template\bootstrap.css.map">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\template\bootstrap.min.css.map">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\template\plugins\bootstrap-rtl\bootstrap-rtl.css.map" />
     <Content Include="Content\template\plugins\footable\fonts\footable.eot" />
     <Content Include="Content\template\plugins\footable\fonts\footable.ttf" />

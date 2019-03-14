@@ -73,6 +73,7 @@ namespace MVC_Project.Web.Controllers
                         userData.UpdatedAt = user.UpdatedAt;
                         userData.Status = user.Status;
                         userData.Uuid = user.Uuid;
+                        userData.LastLoginAt = user.LastLoginAt;
                         UsuariosResponse.Add(userData);
                     }
                     return Json(new

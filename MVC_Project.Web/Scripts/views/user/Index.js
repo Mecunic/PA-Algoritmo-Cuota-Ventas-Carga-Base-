@@ -52,10 +52,10 @@ var UserIndexControlador = function (htmlTableId, baseUrl, modalEditAction, moda
                     }
                 },
                 {
-                    data: null, orderName: "UpdatedAt", title: "Fecha Modificación", autoWidth: false, className: "dt-center td-actions thead-dark",
+                    data: null, orderName: "UpdatedAt", title: "Fecha último acceso", autoWidth: false, className: "dt-center td-actions thead-dark",
                     render: function (data, type, row, meta) {
-                        if (data.UpdatedAt != null && data.UpdatedAt !== "") {
-                            return moment(data.UpdatedAt).format('DD-MMM-YYYY');
+                        if (data.LastLoginAt != null && data.LastLoginAt !== "") {
+                            return moment(data.LastLoginAt).format('DD-MMM-YYYY');
                         }
                         return '';
                     }

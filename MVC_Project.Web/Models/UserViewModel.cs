@@ -41,6 +41,7 @@ namespace MVC_Project.Web.Models {
 
         [Display(Name = "Fecha de actualización")]
         public DateTime UpdatedAt { get; set; }
+        public DateTime? LastLoginAt { get; set; }
         [Display(Name = "Estatus")]
         public bool Status { get; set; }
     }
