@@ -5,29 +5,7 @@
     this.dataTable = {};
     this.init = function () {
         self.dataTable = this.htmlTable.DataTable({
-            language: {
-                "sProcessing": "Procesando...",
-                "sLengthMenu": "Mostrar _MENU_",
-                "sZeroRecords": "No se encontraron resultados",
-                "sEmptyTable": "Ningún dato disponible en esta tabla",
-                "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
-                "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
-                "sInfoFiltered": " ",
-                "sInfoPostFix": "",
-                "sUrl": "",
-                "sInfoThousands": ",",
-                "sLoadingRecords": "Cargando...",
-                "oPaginate": {
-                    "sFirst": "Primero",
-                    "sLast": "Último",
-                    "sNext": "Siguiente",
-                    "sPrevious": "Anterior"
-                },
-                "oAria": {
-                    "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
-                    "sSortDescending": ": Activar para ordenar la columna de manera descendente"
-                }
-            },
+            language: { url: 'Scripts/template/plugins/dataTables/lang/es_MX.json' },
             "bProcessing": true,
             "bServerSide": true,
             "sAjaxSource": this.baseUrl,
@@ -76,7 +54,6 @@
                 aoData.push({ "name": "filtros", "value": getFiltros("form#SearchForm") });
 
                 $.getJSON(sSource, aoData, function (json) {
-
                     //if (json.success === true)
                     fnCallback(json);
                     //else
@@ -115,6 +92,5 @@
 
             return JSON.stringify(filtros);
         }
-
     }
 }

@@ -3,10 +3,7 @@
 @{
     ViewBag.Title = "Editar Usuario";
 }
-@section Scripts {
-    @Scripts.Render("~/plugins/chosen")
-    @Scripts.Render("~/plugins/validate")
-}
+
 @section Styles {
     @Styles.Render("~/Content/template/plugins/chosen/chosenStyles")
 }
@@ -101,8 +98,13 @@
     </div>
 </div>
 
+@section Scripts {
+    @Scripts.Render("~/plugins/chosen")
+    @Scripts.Render("~/plugins/validate")
+}
 <script type="text/javascript">
     $(document).ready(function () {
+        $('.chosen-select').chosen({ width: '100%' });
         $.validator.addMethod("PasswordTrue",
             function (value, element) {
                 return value.match(/^(?=.*\d)(?=.*\W+)(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/);

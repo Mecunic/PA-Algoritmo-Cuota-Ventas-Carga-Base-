@@ -1,13 +1,14 @@
 ﻿using MVC_Project.Domain.Entities;
+using NHibernate;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
 
-namespace MVC_Project.Domain.Repositories {
-
-    public interface IRepository<T> where T : IEntity {
+namespace MVC_Project.Domain.Repositories
+{
+    public interface IRepository<T> where T : IEntity
+    {
+        ISession Session { get; }
 
         IQueryable<T> GetAll();
 

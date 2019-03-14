@@ -75,6 +75,7 @@ namespace MVC_Project.Web.Controllers
                 return View();
             }
         }
+
         private IEnumerable<PermissionViewModel> PopulatePermissions()
         {
             var permissions = _permissionService.GetAll();
@@ -92,7 +93,7 @@ namespace MVC_Project.Web.Controllers
         {
             User user = new User();
             Role role = new Role();
-            user = _userService.FindBy(x => x.Uuid == uuid ).First();
+            user = _userService.FindBy(x => x.Uuid == uuid).First();
             role = _roleService.FindBy(x => x.Id == user.Role.Id).First();
             RoleEditViewModel model = new RoleEditViewModel();
             model.Name = role.Name;
@@ -145,16 +146,13 @@ namespace MVC_Project.Web.Controllers
                 return View();
             }
         }
+
         [HttpGet, Authorize]
-        public JsonResult ObtenerUserPermission(JQueryDataTableParams param, string filtros)
+        public JsonResult GetAllByFilter(JQueryDataTableParams param, string filtros)
         {
             try
             {
-                UnitOfWork unitOfWork = new UnitOfWork();
-                ISession session = unitOfWork.Session;
-                UserBLogic userBLogic = new UserBLogic(session);
-                IList<User> users = userBLogic.ObtenerUsuarios(filtros);
-                //var users = _userService.ObtenerUsuarios(filtros);
+                var users = _userService.FilterBy(filtros);
                 IList<UserPermissionData> UsuariosResponse = new List<UserPermissionData>();
                 foreach (var user in users)
                 {
@@ -170,14 +168,11 @@ namespace MVC_Project.Web.Controllers
                 return Json(new
                 {
                     success = true,
-                    sEcho = param.sEcho,
+                    param.sEcho,
                     iTotalRecords = UsuariosResponse.Count(),
                     iTotalDisplayRecords = 10,
                     aaData = UsuariosResponse
                 }, JsonRequestBehavior.AllowGet);
-
-
-
             }
             catch (Exception ex)
             {

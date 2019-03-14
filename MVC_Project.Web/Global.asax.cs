@@ -16,9 +16,10 @@ namespace MVC_Project.Web
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+            log4net.Config.XmlConfigurator.Configure();
         }
 
-        void Application_BeginRequest(object sender, EventArgs e)
+        private void Application_BeginRequest(object sender, EventArgs e)
         {
             try
             {
@@ -35,7 +36,7 @@ namespace MVC_Project.Web
             catch (Exception ex) { }
         }
 
-        void Application_EndRequest(object sender, EventArgs e)
+        private void Application_EndRequest(object sender, EventArgs e)
         {
             try
             {
@@ -71,9 +72,11 @@ namespace MVC_Project.Web
                     case 404:
                         action = "PageNotFound";
                         break;
+
                     case 500:
                         action = "InternalError";
                         break;
+
                     default:
                         action = "Index";
                         break;
@@ -128,7 +131,6 @@ namespace MVC_Project.Web
             }
             // Clear the error from the server
             Server.ClearError();
-
         }
     }
 }
