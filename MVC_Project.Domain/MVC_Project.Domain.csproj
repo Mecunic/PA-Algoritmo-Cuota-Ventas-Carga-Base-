@@ -54,7 +54,9 @@
     <Compile Include="Entities\Customer.cs" />
     <Compile Include="Entities\IEntity.cs" />
     <Compile Include="Entities\Order.cs" />
+    <Compile Include="Entities\OrderItems.cs" />
     <Compile Include="Entities\Permission.cs" />
+    <Compile Include="Entities\Producto.cs" />
     <Compile Include="Entities\Role.cs" />
     <Compile Include="Entities\RolePermission.cs" />
     <Compile Include="Entities\Staff.cs" />

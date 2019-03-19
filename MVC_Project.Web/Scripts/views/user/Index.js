@@ -30,7 +30,7 @@
                 {
                     data: null, orderName: "UpdatedAt", title: "Fecha último acceso", autoWidth: false, className: "dt-center td-actions thead-dark",
                     render: function (data, type, row, meta) {
-                        if (data.LastLoginAt != null && data.LastLoginAt !== "") {
+                        if (data.LastLoginAt !== null && data.LastLoginAt !== "") {
                             return moment(data.LastLoginAt).format('DD-MMM-YYYY');
                         }
                         return '';

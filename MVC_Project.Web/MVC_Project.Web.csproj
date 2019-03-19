@@ -1548,7 +1548,7 @@
     <Content Include="Scripts\template\plugins\wow\wow.min.js" />
     <Content Include="Scripts\template\Utils.js" />
     <Content Include="Scripts\views\Reports\OrderIndex.js" />
-    <Content Include="Scripts\views\rol\Index.js" />
+    <Content Include="Scripts\views\Rol\Index.js" />
     <Content Include="Scripts\views\UserPermission\Index.js" />
     <Content Include="Scripts\views\User\Index.js" />
     <Content Include="Views\Web.config">
@@ -1641,6 +1641,7 @@
     <Content Include="Views\UserPermissions\EditorTemplates\PermissionViewModel.cshtml" />
     <Content Include="Views\UserPermissions\Edit.cshtml" />
     <Content Include="Scripts\template\plugins\dataTables\lang\es_MX.json" />
+    <Content Include="Views\ReportService\ModalDetalles.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MVC_Project.Data\MVC_Project.Data.csproj">

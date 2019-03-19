@@ -1,4 +1,5 @@
 ﻿using MVC_Project.Data.Helpers;
+using MVC_Project.Domain.Entities;
 using MVC_Project.Domain.Services;
 using MVC_Project.Utils;
 using MVC_Project.Web.Models;
@@ -28,6 +29,8 @@ namespace MVC_Project.Web.Controllers
         {
             ReportOrdersViewModel model = new ReportOrdersViewModel();
             List<SelectListItem> listStatus = new List<SelectListItem>();
+            List<SelectListItem> listStores = new List<SelectListItem>();
+            List<SelectListItem> listStaff = new List<SelectListItem>();
             listStatus.Add(new SelectListItem
             {
                 Text = "Todos",
@@ -44,7 +47,23 @@ namespace MVC_Project.Web.Controllers
                 Text = "Inactivos",
                 Value = "0"
             });
+            
+
+            var Stores = _orderService.FilterStore();
+            listStores = Stores.Select(m => new SelectListItem
+            {
+                Value = m.Id.ToString(),
+                Text = m.Nombre
+            }).ToList();
+            var Staff = _orderService.FilterStaff();
+            listStaff = Staff.Select(m => new SelectListItem
+            {
+                Value = m.Id.ToString(),
+                Text = m.FirstName
+            }).ToList();
             ViewBag.OpcionesStatus = listStatus;
+            ViewBag.OpcionesStore = listStores;
+            ViewBag.OpcionesStaff = listStaff;
             return View(model);
         }
 
@@ -53,7 +72,8 @@ namespace MVC_Project.Web.Controllers
         {
             try
             {
-                var orders = _orderService.FilterBy(filtros);
+                int TotalDatos = _orderService.TotalFilterBy(filtros, param.iDisplayStart, param.iDisplayLength);
+                var orders = _orderService.FilterBy(filtros, param.iDisplayStart, param.iDisplayLength);
                 IList<OrdersData> OrdesResponse = new List<OrdersData>();
                 foreach (var order in orders)
                 {
@@ -70,8 +90,8 @@ namespace MVC_Project.Web.Controllers
                 {
                     success = true,
                     sEcho = param.sEcho,
-                    iTotalRecords = OrdesResponse.Count(),
-                    iTotalDisplayRecords = param.iDisplayLength,
+                    iTotalRecords = TotalDatos,
+                    iTotalDisplayRecords = TotalDatos,
                     aaData = OrdesResponse
                 }, JsonRequestBehavior.AllowGet);
             }
@@ -96,8 +116,8 @@ namespace MVC_Project.Web.Controllers
         public ActionResult ExportExcel(ReportOrdersViewModel modeloFiltro)
         {
             ReportOrdersViewModel modelo = new ReportOrdersViewModel();
-            string filtros = "[" + modeloFiltro.Nombre + "," + modeloFiltro.Status + "," + "" + "," + "]";
-            List<ExportOrdersViewModel> pagosPorCajero = _orderService.FilterBy(filtros).Select(x => new ExportOrdersViewModel
+            string filtros = "[" + modeloFiltro.Nombre + "," + modeloFiltro.Status + "," + modelo.Store + "," + modelo.Staff + "," + modelo.Inicio + "," + modelo.Fin+"]";
+            List<ExportOrdersViewModel> pagosPorCajero = _orderService.FilterBy(filtros, null, null).Select(x => new ExportOrdersViewModel
             {
                 Id = x.Id,
                 Cliente = x.Customer.FirstName,
@@ -123,6 +143,25 @@ namespace MVC_Project.Web.Controllers
             stream.Seek(0, SeekOrigin.Begin);
 
             return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "Reporte Ordenes.xlsx");
+        }
+        [Authorize]
+        [HttpGet]
+        public ActionResult ModalDetails(int orderId)
+        {
+            IList <ReportOrdersDetail> model = new List<ReportOrdersDetail>();
+            IList<OrderItems> details = _orderService.OrdenDetail(orderId);
+            foreach(OrderItems order in details)
+            {
+                ReportOrdersDetail Dato = new ReportOrdersDetail();
+                Dato.Id = order.Id;
+                Dato.Nombre = order.Producto.Nombre;
+                Dato.Cantidad = order.Cantidad;
+                Dato.Descuento = order.Descuento;
+                Dato.Precio = order.PrecioLista;
+                model.Add(Dato);
+
+            }
+            return PartialView("ModalDetalles", model);
         }
     }
 }

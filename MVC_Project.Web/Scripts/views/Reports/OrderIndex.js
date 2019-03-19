@@ -1,9 +1,11 @@
-﻿var OrderIndexControlador = function (htmlTableId, baseUrl, modalEditAction, modalDeleteAction) {
+﻿var OrderIndexControlador = function (htmlTableId, baseUrl, modalDetailAction, modalDeleteAction) {
     var self = this;
     this.htmlTable = $('#' + htmlTableId);
     this.baseUrl = baseUrl;
     this.dataTable = {};
-    this.init = function () {
+    this._modal = $('#modalDetails-container');
+    this.modalDetail = modalDetailAction;
+    this.init = function modalDetailAction() {
         self.dataTable = this.htmlTable.DataTable({
             language: { url: 'Scripts/template/plugins/dataTables/lang/es_MX.json' },
             "bProcessing": true,
@@ -21,7 +23,7 @@
                 {
                     data: null, orderName: "CreatedAt", title: "Fecha Creación", autoWidth: false, className: "dt-center td-actions thead-dark",
                     render: function (data, type, row, meta) {
-                        if (data.CreatedAt != null && data.CreatedAt !== "") {
+                        if (data.CreatedAt !== null && data.CreatedAt !== "") {
                             return moment(data.CreatedAt).format('DD-MMM-YYYY');
                         }
                         return '';
@@ -30,7 +32,7 @@
                 {
                     data: null, orderName: "ShipperAt", title: "Fecha de entrega", autoWidth: false, className: "dt-center td-actions thead-dark",
                     render: function (data, type, row, meta) {
-                        if (data.UpdatedAt != null && data.UpdatedAt !== "") {
+                        if (data.UpdatedAt !== null && data.UpdatedAt !== "") {
                             return moment(data.UpdatedAt).format('DD-MMM-YYYY');
                         }
                         return '';
@@ -38,13 +40,13 @@
                 },
                 {
                     data: null,
-                    className: 'personal-options',
+                    className: 'order-options',
                     render: function (data) {
                         //console.log(data)
                         var deshabilitar = "";
                         var buttons = '<div class="btn-group" role="group" aria-label="Opciones">' +
                             deshabilitar +
-                            '<button class="btn btn-light btn-edit"><span class="fas fa-edit"></span></button>' +
+                            '<button class="btn btn-light btn-details"><span class="fas fa-info"></span></button>' +
                             //'<button class="btn btn-light btn-delete" style="margin-left:5px;"><span class="fas fa-trash"></span></button>' +
                             '</div>';
                         return buttons;
@@ -63,6 +65,39 @@
                 });
             }
         });
+        $(this.htmlTable, "tbody").on('click',
+            'td.order-options .btn-group .btn-details',
+            function () {
+                var tr = $(this).closest('tr');
+                var row = self.dataTable.row(tr);
+                self._modal.find('.modal-content').load(self.modalDetail + "?orderId=" + row.data().Id,
+                    function () {
+                        self._modal.modal('show');
+                        //$("#btn-actionDescuento-edit").on("click",
+                        //    function () {
+                        //        if (!$('#edit-descuentoImpuesto-form').valid()) {
+                        //            return;
+                        //        }
+                        //        var formData = $('#edit-descuentoImpuesto-form').serializeFormJSON();
+                        //        $.ajax({
+                        //            type: "POST",
+                        //            url: $('#edit-descuentoImpuesto-form').attr('action'),
+                        //            data: JSON.stringify(formData),
+                        //            dataType: "json",
+                        //            contentType: 'application/json; charset=utf-8',
+                        //            processData: false,
+                        //            success: function (result) {
+                        //                operacionExitosa();
+                        //                self._modal.modal('hide');
+                        //                self.dataTable.ajax.reload();
+                        //            },
+                        //            error: function (jqXHR, textStatus, errorThrown) {
+                        //                console.log("fail");
+                        //            }
+                        //        });
+                        //    });
+                    });
+            });
 
         function getFiltros(form) {
             var $inputs = $(form + ' [filtro="true"]');
