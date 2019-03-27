@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlantillaMVC.Utils", "Plant
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlantillaMVC.Domain", "PlantillaMVC.Domain\PlantillaMVC.Domain.csproj", "{504A5583-1647-47F1-A56A-C58040B40D8D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RequestToIIS", "RequestToIIS\RequestToIIS.csproj", "{1D79D84B-698B-4EE5-ADAD-43D4624906E0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +53,14 @@ Global
 		{504A5583-1647-47F1-A56A-C58040B40D8D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{504A5583-1647-47F1-A56A-C58040B40D8D}.Release|x86.ActiveCfg = Release|Any CPU
 		{504A5583-1647-47F1-A56A-C58040B40D8D}.Release|x86.Build.0 = Release|Any CPU
+		{1D79D84B-698B-4EE5-ADAD-43D4624906E0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1D79D84B-698B-4EE5-ADAD-43D4624906E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1D79D84B-698B-4EE5-ADAD-43D4624906E0}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{1D79D84B-698B-4EE5-ADAD-43D4624906E0}.Debug|x86.Build.0 = Debug|Any CPU
+		{1D79D84B-698B-4EE5-ADAD-43D4624906E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1D79D84B-698B-4EE5-ADAD-43D4624906E0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1D79D84B-698B-4EE5-ADAD-43D4624906E0}.Release|x86.ActiveCfg = Release|Any CPU
+		{1D79D84B-698B-4EE5-ADAD-43D4624906E0}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
