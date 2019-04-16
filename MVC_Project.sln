@@ -21,6 +21,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MVC_Project.Utils", "MVC_Pr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MVC_Project.Integrations", "MVC_Project.Integrations\MVC_Project.Integrations.csproj", "{E616D7FC-E5A8-4E69-91E6-FF0760920CE8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExcelObjectMapping", "ExcelObjectMapping\ExcelObjectMapping.csproj", "{89F9F036-0428-49A2-84F1-72851728183D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -63,6 +65,10 @@ Global
 		{E616D7FC-E5A8-4E69-91E6-FF0760920CE8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E616D7FC-E5A8-4E69-91E6-FF0760920CE8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E616D7FC-E5A8-4E69-91E6-FF0760920CE8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{89F9F036-0428-49A2-84F1-72851728183D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{89F9F036-0428-49A2-84F1-72851728183D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{89F9F036-0428-49A2-84F1-72851728183D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{89F9F036-0428-49A2-84F1-72851728183D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

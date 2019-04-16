@@ -102,4 +102,20 @@ namespace MVC_Project.Web.Models
 
         public IEnumerable<SelectListItem> Roles { get; set; }
     }
+    public class UserImportViewModel
+    {
+        [Display(Name = "Subir archivo")]
+        [Required]
+        public HttpPostedFileBase ImportedFile { get; set; }
+
+        public IList<UserRowImportResultViewModel> ImportResult { get; set; }
+    }
+    public class UserRowImportResultViewModel
+    {
+        public int RowNumber { get; set; }
+        public string EmployeeNumber { get; set; }
+        public string Email { get; set; }
+        public string Name { get; set; }
+        public IList<string> Messages { get; set; }
+    }
 }

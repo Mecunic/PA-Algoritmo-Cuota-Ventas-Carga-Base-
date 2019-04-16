@@ -1,9 +1,11 @@
-﻿using MVC_Project.Data.Helpers;
+﻿using ExcelEngine;
+using MVC_Project.Data.Helpers;
 using MVC_Project.Domain.Entities;
 using MVC_Project.Domain.Helpers;
 using MVC_Project.Domain.Services;
 using MVC_Project.Web.AuthManagement;
 using MVC_Project.Web.Models;
+using MVC_Project.Web.Models.ExcelImport;
 using MVC_Project.Web.Utils.Enums;
 using NHibernate;
 using System;
@@ -36,6 +38,52 @@ namespace MVC_Project.Web.Controllers
                 Statuses = FilterStatusEnum.GetSelectListItems()
             };
             return View(model);
+        }
+        [Authorize]
+        public ActionResult Import()
+        {
+            UserImportViewModel model = new UserImportViewModel();
+            return View("Import", model);
+        }
+        [HttpPost, Authorize, ValidateAntiForgeryToken]
+        public ActionResult Import(UserImportViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                ResultExcelImporter<UserImport> result = ExcelImporterMapper.ReadExcel<UserImport>(new ExcelFileInputData
+                {
+                    ContentLength = model.ImportedFile.ContentLength,
+                    FileName = model.ImportedFile.FileName,
+                    InputStream = model.ImportedFile.InputStream
+                });
+                model.ImportResult = new List<UserRowImportResultViewModel>();
+                foreach (RowResult rowResult in result.ResultMapExcel.RowResults)
+                {
+                    UserRowImportResultViewModel userRowImportResultViewModel = new UserRowImportResultViewModel();
+                    userRowImportResultViewModel.Email = rowResult.RowsValues.Email;
+                    userRowImportResultViewModel.EmployeeNumber = rowResult.RowsValues.EmployeeNumber;
+                    userRowImportResultViewModel.Name = rowResult.RowsValues.Name;
+                    userRowImportResultViewModel.RowNumber = rowResult.Number;
+                    userRowImportResultViewModel.Messages = new List<string>();
+                    bool hasCustomError = false;
+                    User existingUser = _userService.FindBy(x => x.Email == userRowImportResultViewModel.Email).FirstOrDefault();
+                    if (existingUser != null && !String.IsNullOrWhiteSpace(userRowImportResultViewModel.Email))
+                    {
+                        userRowImportResultViewModel.Messages.Add("El correo electrónico del usuario ya se encuentra registrado");
+                    }
+                    hasCustomError = userRowImportResultViewModel.Messages.Any();
+                    if (rowResult.HasError)
+                    {
+                        userRowImportResultViewModel.Messages = userRowImportResultViewModel.Messages.Concat(rowResult.ErrorMessages).ToList();
+                    }
+                    if(!rowResult.HasError && !hasCustomError)
+                    {
+                        
+                        userRowImportResultViewModel.Messages.Add("Usuario registrado satisfactoriamente");
+                    }
+                }
+            }
+            return View("Import", model);
         }
 
         [HttpGet, Authorize]
