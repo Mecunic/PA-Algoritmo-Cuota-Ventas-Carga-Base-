@@ -1,11 +1,22 @@
-﻿var OrderIndexControlador = function (htmlTableId, baseUrl, modalDetailAction, modalDeleteAction) {
+﻿var OrderIndexControlador = function (htmlTableId, btnClearFormId, searchFormId, baseUrl, modalDetailAction, modalDeleteAction) {
     var self = this;
     this.htmlTable = $('#' + htmlTableId);
     this.baseUrl = baseUrl;
     this.dataTable = {};
+    this.btnClearForm = $('#' + btnClearFormId);
+    this.searchForm = $('#' + searchFormId);
     this._modal = $('#modalDetails-container');
     this.modalDetail = modalDetailAction;
+    this.initBtnClearForm = function () {
+        this.btnClearForm.click(function () {
+            self.searchForm.each(function () {
+                this.reset();
+            });
+            self.dataTable.ajax.reload();
+        });
+    }
     this.init = function modalDetailAction() {
+        self.initBtnClearForm();
         self.dataTable = this.htmlTable.DataTable({
             language: { url: 'Scripts/template/plugins/dataTables/lang/es_MX.json' },
             "bProcessing": true,
