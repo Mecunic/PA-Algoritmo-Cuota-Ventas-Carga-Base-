@@ -176,12 +176,26 @@ namespace PlantillaMVC.Integrations.Hubspot
     [DataContract]
     public class ContactHubSpotResult
     {
+        [DataMember(Name = "vid")]
+        public int Id { get; set; }
         [DataMember(Name = "portalId")]
         public int PortalId { get; set; }
         [DataMember(Name = "companyId")]
         public int CompanyId { get; set; }
         [DataMember(Name = "properties")]
         public ContactProperties Properties { get; set; }
+    }
+
+    [DataContract]
+    public class ContactListHubSpotResult
+    {
+        [DataMember(Name = "contacts")]
+        public IEnumerable<ContactHubSpotResult> Contacts { get; set; }
+        [DataMember(Name = "has-more")]
+        public bool HasMore { get; set; }
+
+        [DataMember(Name = "vid-offset")]
+        public long Offset { get; set; }
     }
 
     [DataContract]

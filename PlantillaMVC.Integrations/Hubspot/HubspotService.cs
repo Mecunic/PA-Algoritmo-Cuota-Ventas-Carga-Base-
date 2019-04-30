@@ -49,6 +49,54 @@ namespace PlantillaMVC.Integrations
             apiKeyMetrolab = System.Configuration.ConfigurationManager.AppSettings["HubspotApiKey_Metrolab"];
             client = new RestClient("https://api.hubapi.com");
         }
+        public IDictionary<int, Company> GetAllCompaniesDictionary()
+        {
+            return this.GetAllCompanies().ToDictionary(x => x.CompanyId, x => x);
+        }
+
+        public IEnumerable<Company> GetAllCompanies()
+        {
+            int companiesSize = 250;
+            long offset = 0;
+            CompaniesHubSpotResult companiesHubSpotResult;
+            IEnumerable<Company> companiesList = new List<Company>();
+            do
+            {
+                companiesHubSpotResult = this.GetAllCompanies(companiesSize, offset);
+                IList<Company> currentCompanies = companiesHubSpotResult.Companies;
+                if (currentCompanies != null && currentCompanies.Any())
+                {
+                    companiesList = companiesList.Concat(currentCompanies);
+                }
+                offset = companiesHubSpotResult.Offset;
+            } while (companiesHubSpotResult.HasMore);
+            return companiesList;
+        }
+
+        public IDictionary<int, ContactHubSpotResult> GetAllContactsDictionary()
+        {
+            return this.GetAllContacts().ToDictionary(x => x.Id, x => x);
+        }
+
+        public IEnumerable<ContactHubSpotResult> GetAllContacts()
+        {
+            int companiesSize = 250;
+            long offset = 0;
+            ContactListHubSpotResult contactListHubSpotResult;
+            IEnumerable<ContactHubSpotResult> contactsList = new List<ContactHubSpotResult>();
+            do
+            {
+                contactListHubSpotResult = this.GetAllContacts(companiesSize, offset);
+                IEnumerable<ContactHubSpotResult> currentCompanies = contactListHubSpotResult.Contacts;
+                if (currentCompanies != null && currentCompanies.Any())
+                {
+                    contactsList = contactsList.Concat(currentCompanies);
+                }
+                offset = contactListHubSpotResult.Offset;
+            } while (contactListHubSpotResult.HasMore);
+            return contactsList;
+        }
+
 
         public object CreateContact()
         {
@@ -254,6 +302,16 @@ namespace PlantillaMVC.Integrations
             request.AddParameter("hapikey", apiKey);
             IRestResponse response = client.Execute(request);
             PipelinesHubSpotResult result = JsonConvert.DeserializeObject<PipelinesHubSpotResult>(response.Content);
+            return result;
+        }
+        public ContactListHubSpotResult GetAllContacts(int limit, long offset)
+        {
+            RestRequest request = new RestRequest("/contacts/v1/lists/all/contacts/all", Method.GET);
+            request.AddParameter("hapikey", apiKeyMetrolab);
+            if (limit > 0) request.AddParameter("count", limit);
+            if (offset > 0) request.AddParameter("vidOffset", offset);
+            IRestResponse response = client.Execute(request);
+            ContactListHubSpotResult result = JsonConvert.DeserializeObject<ContactListHubSpotResult>(response.Content);
             return result;
         }
 
