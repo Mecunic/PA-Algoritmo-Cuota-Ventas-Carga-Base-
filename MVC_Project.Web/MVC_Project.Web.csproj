@@ -181,6 +181,7 @@
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\DashboardsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\PaymentsController.cs" />
     <Compile Include="Controllers\ReportServiceController.cs" />
     <Compile Include="Controllers\RoleController.cs" />
     <Compile Include="Controllers\UserController.cs" />
@@ -1579,6 +1580,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\Base\" />
+    <Folder Include="Views\Payments\" />
     <Folder Include="Views\UserServices\" />
   </ItemGroup>
   <ItemGroup>
@@ -1623,8 +1625,6 @@
     <Content Include="Views\Role\Index.cshtml" />
     <Content Include="Views\Role\Create.cshtml" />
     <Content Include="Views\Role\EditorTemplates\PermissionViewModel.cshtml" />
-    <None Include="Properties\PublishProfiles\ensi-template - FTP.pubxml" />
-    <None Include="Properties\PublishProfiles\ensi-template - Web Deploy.pubxml" />
     <Content Include="Views\Dashboards\Dashboard_1.cshtml" />
     <Content Include="Views\Dashboards\Dashboard_2.cshtml" />
     <Content Include="Views\Dashboards\Dashboard_3.cshtml" />
@@ -1642,6 +1642,8 @@
     <Content Include="Views\UserPermissions\Edit.cshtml" />
     <Content Include="Scripts\template\plugins\dataTables\lang\es_MX.json" />
     <Content Include="Views\ReportService\ModalDetalles.cshtml" />
+    <None Include="Properties\PublishProfiles\ensi-template - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\ensi-template - Web Deploy.pubxml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MVC_Project.Data\MVC_Project.Data.csproj">
@@ -1651,6 +1653,10 @@
     <ProjectReference Include="..\MVC_Project.Domain\MVC_Project.Domain.csproj">
       <Project>{AADE4A05-4CC5-4465-BD0F-B681FA698C97}</Project>
       <Name>MVC_Project.Domain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MVC_Project.Integrations\MVC_Project.Integrations.csproj">
+      <Project>{E616D7FC-E5A8-4E69-91E6-FF0760920CE8}</Project>
+      <Name>MVC_Project.Integrations</Name>
     </ProjectReference>
     <ProjectReference Include="..\MVC_Project.Utils\MVC_Project.Utils.csproj">
       <Project>{23B89C18-68C5-449F-ADED-E51A86DA6B52}</Project>
