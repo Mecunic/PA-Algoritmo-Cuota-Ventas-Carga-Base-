@@ -11,7 +11,7 @@ namespace MVC_Project.Integrations.OpenPay
         public string id { get; set; }
         public string type { get; set; }
 
-        public string event_date { get; set; }
+        public DateTime? event_date { get; set; }
 
         public DateTime? creation_date { get; set; }
 
@@ -35,5 +35,22 @@ namespace MVC_Project.Integrations.OpenPay
         public string status { get; set; }
 
         public bool conciliated { get; set; }
+
+        public string creation_date { get; set; }
+
+        public string operation_date { get; set; }
+
+        public string description { get; set; }
+
+        public string error_message { get; set; }
+        public string order_id { get; set; }
+        public string customer_id { get; set; }
+        public string due_date { get; set; }
+
+        public string currency { get; set; }
+        public decimal amount { get; set; }
+
+        //payment_method
+        //fee
     }
 }

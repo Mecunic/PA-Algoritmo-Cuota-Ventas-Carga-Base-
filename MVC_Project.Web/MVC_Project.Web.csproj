@@ -1189,6 +1189,12 @@
     <Content Include="Images\p6.jpg" />
     <Content Include="Images\p7.jpg" />
     <Content Include="Images\p8.jpg" />
+    <Content Include="Images\payments\cards1.png" />
+    <Content Include="Images\payments\cards2.png" />
+    <Content Include="Images\payments\cvv.png" />
+    <Content Include="Images\payments\openpay.png" />
+    <Content Include="Images\payments\radio_on.png" />
+    <Content Include="Images\payments\security.png" />
     <Content Include="Images\profile.jpg" />
     <Content Include="Images\profile_big.jpg" />
     <Content Include="Images\profile_small.jpg" />
@@ -1580,7 +1586,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\Base\" />
-    <Folder Include="Views\Payments\" />
     <Folder Include="Views\UserServices\" />
   </ItemGroup>
   <ItemGroup>
@@ -1644,6 +1649,8 @@
     <Content Include="Views\ReportService\ModalDetalles.cshtml" />
     <None Include="Properties\PublishProfiles\ensi-template - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\ensi-template - Web Deploy.pubxml" />
+    <Content Include="Views\Payments\CreateTDC.cshtml" />
+    <Content Include="Views\Payments\CreateSPEI.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MVC_Project.Data\MVC_Project.Data.csproj">

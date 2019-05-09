@@ -11,8 +11,22 @@ namespace MVC_Project.Web.Controllers
 {
     public class PaymentsController : Controller
     {
+        [Authorize]
+        public ActionResult CreateTDC()
+        {
+
+            return View();
+        }
+
+        [Authorize]
+        public ActionResult CreateSPEI()
+        {
+
+            return View();
+        }
+
         [AllowAnonymous]
-        public string Index(string OrderId, decimal Amount)
+        public string Create(string OrderId, decimal Amount)
         {
             string JsonData = string.Empty;
 
@@ -45,24 +59,6 @@ namespace MVC_Project.Web.Controllers
                     }
                 }
             }
-
-            //List<PaymentEventModel> paymentEvents = JsonConvert.DeserializeObject<List<PaymentEventModel>>(rawJSON);
-
-            //if (paymentEvents != null)
-            //{
-            //    string count = paymentEvents.Count.ToString();
-            //    //string urlKey = Request.QueryString["k"];
-
-            //    System.Diagnostics.Trace.TraceInformation("PaymentsController [count] : " + count);
-
-            //    foreach (PaymentEventModel paymenEvent in paymentEvents)
-            //    {
-            //        if (!string.IsNullOrWhiteSpace(paymenEvent.type))
-            //        {
-            //            System.Diagnostics.Trace.TraceInformation("Transaction: " + paymenEvent.transaction); // For debugging to the Azure Streaming logs
-            //        }
-            //    }
-            //}
 
             return new HttpStatusCodeResult(HttpStatusCode.OK);
         }
