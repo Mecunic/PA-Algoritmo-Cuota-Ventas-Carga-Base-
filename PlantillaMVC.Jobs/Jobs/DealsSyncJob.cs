@@ -68,7 +68,10 @@ namespace PlantillaMVC.Jobs.Jobs
                             //INICIA SINCRONIZACION
                             long offset = 0;
                             bool hasMoreDeals = true;
-                            IDictionary<string, IDictionary<string, PipelineState>> pipelineStages = apiService.GetDealsPipelinesStages(); 
+                            IDictionary<string, IDictionary<string, PipelineState>> pipelineStages = apiService.GetDealsPipelinesStages();
+                            IDictionary<long, ContactHubSpotResult> contacts = apiService.GetAllContactsDictionary();
+                            IDictionary<long, Company> companies= apiService.GetAllCompaniesDictionary();
+
                             while (hasMoreDeals)
                             {
                                 var dealsObj = apiService.ReadDeals(250, offset);
@@ -106,7 +109,7 @@ namespace PlantillaMVC.Jobs.Jobs
                                             {
                                                 try
                                                 {
-                                                    ContactHubSpotResult contactObj = apiService.GetContactById(contactId.Value);
+                                                    ContactHubSpotResult contactObj = contacts[contactId.Value];
                                                     strResultado.Append(" * Paso 1.3 ");
                                                     if (contactObj != null && contactObj.Properties.Email != null && !string.IsNullOrEmpty(contactObj.Properties.Email.Value))
                                                     {
@@ -114,7 +117,7 @@ namespace PlantillaMVC.Jobs.Jobs
                                                     }
                                                 }catch(Exception e)
                                                 {
-                                                    errorMessage.Append("Error al realizar la consulta de la api de contactos");
+                                                    errorMessage.Append("Error el contacto no se encuentra registrado en el hubspot");
                                                     errorMessage.Append(Environment.NewLine);
                                                     ExceptionUtil.AppendMessage(e, errorMessage);
                                                     hasError = true;
@@ -127,7 +130,7 @@ namespace PlantillaMVC.Jobs.Jobs
                                             companyId = associations.associatedCompanyIds.First();
                                             try
                                             {
-                                                CompanyHubSpotResult companyObj = apiService.GetCompanyById(companyId.Value);
+                                                Company companyObj = companies[companyId.Value];
                                                 CompanyName = companyObj.Properties.Name != null ? string.Format("{0}", companyObj.Properties.Name.Value) : string.Empty;
                                                 strResultado.Append(" * Paso 2.1 ");
                                                 if (/*companyObj!=null && companyObj.Properties!=null &&*/  companyObj.Properties.RFC != null && !string.IsNullOrEmpty(companyObj.Properties.RFC.Value))
@@ -136,7 +139,7 @@ namespace PlantillaMVC.Jobs.Jobs
                                                 }
                                             }catch(Exception e)
                                             {
-                                                errorMessage.Append("Error al realizar la consulta de la api de compania");
+                                                errorMessage.Append("Error la compania no se encuentra registrada en el hubspot");
                                                 errorMessage.Append(Environment.NewLine);
                                                 ExceptionUtil.AppendMessage(e, errorMessage);
                                                 hasError = true;

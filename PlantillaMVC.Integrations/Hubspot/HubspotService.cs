@@ -33,7 +33,8 @@ namespace PlantillaMVC.Integrations
         PipelinesHubSpotResult GetDealsPipelines();
         PipelinesHubSpotResult GetAllPipelines(string objType);
         IDictionary<string, IDictionary<string, PipelineState>> GetDealsPipelinesStages();
-
+        IDictionary<long, Company> GetAllCompaniesDictionary();
+        IDictionary<long, ContactHubSpotResult> GetAllContactsDictionary();
 
     }
     public class HubspotService : IHubspotService
@@ -49,7 +50,7 @@ namespace PlantillaMVC.Integrations
             apiKeyMetrolab = System.Configuration.ConfigurationManager.AppSettings["HubspotApiKey_Metrolab"];
             client = new RestClient("https://api.hubapi.com");
         }
-        public IDictionary<int, Company> GetAllCompaniesDictionary()
+        public IDictionary<long, Company> GetAllCompaniesDictionary()
         {
             return this.GetAllCompanies().ToDictionary(x => x.CompanyId, x => x);
         }
@@ -62,7 +63,7 @@ namespace PlantillaMVC.Integrations
             IEnumerable<Company> companiesList = new List<Company>();
             do
             {
-                companiesHubSpotResult = this.GetAllCompanies(companiesSize, offset);
+                companiesHubSpotResult = this.GetAllCompaniesHerramental(companiesSize, offset);
                 IList<Company> currentCompanies = companiesHubSpotResult.Companies;
                 if (currentCompanies != null && currentCompanies.Any())
                 {
@@ -73,20 +74,20 @@ namespace PlantillaMVC.Integrations
             return companiesList;
         }
 
-        public IDictionary<int, ContactHubSpotResult> GetAllContactsDictionary()
+        public IDictionary<long, ContactHubSpotResult> GetAllContactsDictionary()
         {
             return this.GetAllContacts().ToDictionary(x => x.Id, x => x);
         }
 
         public IEnumerable<ContactHubSpotResult> GetAllContacts()
         {
-            int companiesSize = 250;
+            int contactSize = 250;
             long offset = 0;
             ContactListHubSpotResult contactListHubSpotResult;
             IEnumerable<ContactHubSpotResult> contactsList = new List<ContactHubSpotResult>();
             do
             {
-                contactListHubSpotResult = this.GetAllContacts(companiesSize, offset);
+                contactListHubSpotResult = this.GetAllContactsHerramental(contactSize, offset);
                 IEnumerable<ContactHubSpotResult> currentCompanies = contactListHubSpotResult.Contacts;
                 if (currentCompanies != null && currentCompanies.Any())
                 {
@@ -274,6 +275,19 @@ namespace PlantillaMVC.Integrations
             return result;
         }
 
+        public CompaniesHubSpotResult GetAllCompaniesHerramental(int limit, long offset)
+        {
+            RestRequest request = new RestRequest("/companies/v2/companies/paged", Method.GET);
+            request.AddParameter("hapikey", apiKey);
+            if (limit > 0) request.AddParameter("limit", limit);
+            if (offset > 0) request.AddParameter("offset", offset);
+            request.AddParameter("properties", "name");
+            request.AddParameter("properties", "rfc");
+            IRestResponse response = client.Execute(request);
+            CompaniesHubSpotResult result = JsonConvert.DeserializeObject<CompaniesHubSpotResult>(response.Content);
+            return result;
+        }
+
         public string AssociateCompanyToTicket(long companyId, long ticketId)
         {
             //https://developers.hubspot.com/docs/methods/crm-associations/crm-associations-overview
@@ -308,6 +322,17 @@ namespace PlantillaMVC.Integrations
         {
             RestRequest request = new RestRequest("/contacts/v1/lists/all/contacts/all", Method.GET);
             request.AddParameter("hapikey", apiKeyMetrolab);
+            if (limit > 0) request.AddParameter("count", limit);
+            if (offset > 0) request.AddParameter("vidOffset", offset);
+            IRestResponse response = client.Execute(request);
+            ContactListHubSpotResult result = JsonConvert.DeserializeObject<ContactListHubSpotResult>(response.Content);
+            return result;
+        }
+
+        public ContactListHubSpotResult GetAllContactsHerramental(int limit, long offset)
+        {
+            RestRequest request = new RestRequest("/contacts/v1/lists/all/contacts/all", Method.GET);
+            request.AddParameter("hapikey", apiKey);
             if (limit > 0) request.AddParameter("count", limit);
             if (offset > 0) request.AddParameter("vidOffset", offset);
             IRestResponse response = client.Execute(request);

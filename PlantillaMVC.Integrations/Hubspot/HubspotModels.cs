@@ -177,7 +177,7 @@ namespace PlantillaMVC.Integrations.Hubspot
     public class ContactHubSpotResult
     {
         [DataMember(Name = "vid")]
-        public int Id { get; set; }
+        public long Id { get; set; }
         [DataMember(Name = "portalId")]
         public int PortalId { get; set; }
         [DataMember(Name = "companyId")]
@@ -256,7 +256,7 @@ namespace PlantillaMVC.Integrations.Hubspot
         [DataMember(Name = "portalId")]
         public int PortalId { get; set; }
         [DataMember(Name = "companyId")]
-        public int CompanyId { get; set; }
+        public long CompanyId { get; set; }
         [DataMember(Name = "isDeleted")]
         public bool IsDeleted { get; set; }
         [DataMember(Name = "properties")]
