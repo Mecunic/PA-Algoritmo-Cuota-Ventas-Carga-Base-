@@ -1,4 +1,9 @@
-﻿using MVC_Project.Integrations.OpenPay;
+﻿using MVC_Project.Domain.Entities;
+using MVC_Project.Domain.Services;
+using MVC_Project.Integrations.PaymentsOpenPay;
+using MVC_Project.Utils;
+using MVC_Project.Web.AuthManagement;
+using MVC_Project.Web.Models;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -9,31 +14,63 @@ using System.Web.Mvc;
 
 namespace MVC_Project.Web.Controllers
 {
-    public class PaymentsController : Controller
+    
+    public class PaymentsController : BaseController
     {
+        private PaymentService _paymentService;
+
+        public PaymentsController(PaymentService paymentService)
+        {
+            _paymentService = paymentService;
+        }
+
         [Authorize]
         public ActionResult CreateTDC()
         {
+            PaymentViewModel model = new PaymentViewModel();
 
-            return View();
+            return View(model);
         }
 
         [Authorize]
         public ActionResult CreateSPEI()
         {
-
-            return View();
+            PaymentViewModel model = new PaymentViewModel();
+            return View(model);
         }
 
-        [AllowAnonymous]
-        public string Create(string OrderId, decimal Amount)
+        [HttpPost]
+        [Authorize]
+        public ActionResult CreateSPEI(PaymentViewModel model)
         {
-            string JsonData = string.Empty;
-
             PaymentSPEI paymentSPEI = new PaymentSPEI();
-            JsonData = paymentSPEI.CreatePayment(OrderId, Amount);
+            PaymentModel payment = new PaymentModel()
+            {
+                OrderId = model.OrderId,
+                Amount = model.Amount
+            };
 
-            return JsonData;
+            payment = paymentSPEI.CreatePayment(payment);
+
+            Payment paymentBO = new Payment();
+            paymentBO.CreationDate = DateUtil.GetDateTimeNow();
+            paymentBO.User = new User() { Id = Authenticator.AuthenticatedUser.Id };
+            paymentBO.Amount = model.Amount;
+            paymentBO.OrderId = model.OrderId;
+            paymentBO.ProviderId = payment.Id;
+            paymentBO.Status = payment.Status;
+            paymentBO.DueDate = payment.DueDate;
+
+            paymentBO.ConfirmationDate = null;
+
+            _paymentService.Create(paymentBO);
+
+            model.Id = payment.Id;
+            model.JsonData = payment.JsonData;
+            model.DueDate = payment.DueDate;
+            model.PaymentCardURL = payment.PaymentCardURL;
+
+            return View("CreateSPEI", model);
         }
 
         // GET: Payments
@@ -55,7 +92,23 @@ namespace MVC_Project.Web.Controllers
                     if (paymentEvent.transaction != null)
                     {
                         System.Diagnostics.Trace.TraceInformation("\t\t Id: " + paymentEvent.transaction.id); 
-                        System.Diagnostics.Trace.TraceInformation("\t\t Authorization: " + paymentEvent.transaction.authorization); 
+                        System.Diagnostics.Trace.TraceInformation("\t\t Authorization: " + paymentEvent.transaction.authorization);
+
+                        Payment payment = _paymentService.GetByOrderTransaction(paymentEvent.transaction.order_id, paymentEvent.transaction.id);
+                        
+                        if (payment!=null)
+                        {
+                            System.Diagnostics.Trace.TraceInformation("\t\t Payment BO ID: " + payment.Id);
+                            payment.Status = paymentEvent.transaction.status;
+                            payment.LogData = rawJSON;
+                            if (paymentEvent.type == "charge.succeeded")
+                            {
+                                payment.ConfirmationDate = DateUtil.GetDateTimeNow();
+                                payment.AuthorizationCode = paymentEvent.transaction.authorization;
+                            }
+                            _paymentService.Update(payment);
+                            System.Diagnostics.Trace.TraceInformation("\t\t Payment BO Status Updated: " + payment.Status);
+                        }
                     }
                 }
             }

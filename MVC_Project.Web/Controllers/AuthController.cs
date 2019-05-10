@@ -50,6 +50,7 @@ namespace MVC_Project.Web.Controllers
                     _userService.Update(user);
                     AuthUser authUser = new AuthUser
                     {
+                        Id = user.Id,
                         FirstName = user.FirstName,
                         LastName = user.LastName,
                         Email = user.Email,

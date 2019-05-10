@@ -58,8 +58,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Azure\AzureBlobService.cs" />
-    <Compile Include="OpenPay\PaymentEventModel.cs" />
-    <Compile Include="OpenPay\PaymentSPEI.cs" />
+    <Compile Include="PaymentsOpenPay\PaymentEventModel.cs" />
+    <Compile Include="PaymentsOpenPay\PaymentModel.cs" />
+    <Compile Include="PaymentsOpenPay\PaymentSPEI.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

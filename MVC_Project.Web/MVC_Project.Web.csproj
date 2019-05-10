@@ -194,6 +194,7 @@
     <Compile Include="Models\AuthViewModel.cs" />
     <Compile Include="Models\DataTableModel.cs" />
     <Compile Include="Models\JQueryDataTableParams.cs" />
+    <Compile Include="Models\PaymentViewModel.cs" />
     <Compile Include="Models\ReportOrdersViewModel.cs" />
     <Compile Include="Models\RoleViewModel.cs" />
     <Compile Include="Models\RolPermission.cs" />

@@ -1,4 +1,4 @@
-﻿
+﻿@model  MVC_Project.Web.Models.PaymentViewModel
 @{
     ViewBag.Title = "Pago con SPEI";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -21,23 +21,36 @@
                     <div class="row">
                         <div class="col-sm-6 b-r">
                             <h3 class="m-t-none m-b">Capture los datos</h3>
-                            <form role="form">
+                            @using (Html.BeginForm("CreateSPEI", "Payments", FormMethod.Post, new { @id = "CreateForm", @role = "form" }))
+                            {
                                 <div class="form-group">
                                     <label>ID Orden / Transacción (Única)</label>
-                                    <input type="text" name="OrderId" placeholder="ID Orden / Transacción" class="form-control" autocomplete="off">
+                                    <input type="text" name="OrderId" required="required" placeholder="ID Orden / Transacción" class="form-control" autocomplete="off">
                                 </div>
                                 <div class="form-group">
                                     <label>Monto</label>
-                                    <input type="number" name="Amount" placeholder="Monto" class="form-control" autocomplete="off">
+                                    <input type="number" name="Amount" required="required" placeholder="Monto" class="form-control" autocomplete="off">
                                 </div>
                                 <div>
                                     <button class="btn btn-sm btn-primary float-right m-t-n-xs" type="submit"><strong>Pagar</strong></button>
                                 </div>
-                            </form>
+                            }
                         </div>
+                        @if (!string.IsNullOrEmpty(Model.Id))
+                        {
                         <div class="col-sm-6">
-                            
+                            <b>ID Transacción:</b> @Html.Raw(Model.Id)
+                            <br />
+                            <b>ID Orden:</b> @Html.Raw(Model.OrderId)
+                            <br />
+                            <b>Monto:</b> @Html.Raw(Model.Amount)
+                            <br />
+                            <b>Fecha de Vencimiento:</b> @Html.Raw(Model.DueDate)
+                            <br />
+                            <b>Ficha de Pago:</b> <a href="@Html.Raw(Model.PaymentCardURL)" target="_blank" class="btn btn-block">Descarga</a>
+                            <br />
                         </div>
+                        }
                     </div>
                 </div>
             </div>

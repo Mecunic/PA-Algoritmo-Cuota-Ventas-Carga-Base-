@@ -52,6 +52,7 @@ namespace MVC_Project.Web
             container.RegisterType(typeof(IRepository<>), typeof(Repository<>));
             container.RegisterType(typeof(IService<>), typeof(ServiceBase<>));
             container.RegisterType<IAuthService, AuthService>();
+            container.RegisterType<IPaymentService, PaymentService>();
         }
     }
 }

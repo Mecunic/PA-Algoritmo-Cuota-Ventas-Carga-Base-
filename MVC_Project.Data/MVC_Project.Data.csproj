@@ -88,6 +88,7 @@
     <Compile Include="Mappings\CustomerMap.cs" />
     <Compile Include="Mappings\OrderItemsMap.cs" />
     <Compile Include="Mappings\OrderMap.cs" />
+    <Compile Include="Mappings\PaymentMap.cs" />
     <Compile Include="Mappings\PermissionMap.cs" />
     <Compile Include="Mappings\ProductoMap.cs" />
     <Compile Include="Mappings\RoleMap.cs" />
