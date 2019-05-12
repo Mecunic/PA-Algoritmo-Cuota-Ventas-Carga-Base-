@@ -28,6 +28,10 @@ namespace MVC_Project.Domain.Entities
 
         public virtual string AuthorizationCode { get; set; }
 
+        public virtual string Method { get; set; }
+
+        public virtual string TransactionType { get; set; }
+
         public virtual User User { get; set; }
     }
 }

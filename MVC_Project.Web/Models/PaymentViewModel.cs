@@ -15,6 +15,10 @@ namespace MVC_Project.Web.Models
 
         public string PaymentCardURL { get; set; }
 
+        public string TokenId { get; set; }
+
+        public string DeviceSessionId { get; set; }
+
         public string JsonData { get; set; }
     }
 }

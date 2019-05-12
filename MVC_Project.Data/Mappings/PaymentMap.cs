@@ -17,6 +17,8 @@ namespace MVC_Project.Data.Mappings
             Id(x => x.Id).GeneratedBy.Identity().Column("id");
             Map(x => x.CreationDate).Column("creation_date").Not.Nullable();
             Map(x => x.OrderId).Column("order_id").Nullable();
+            Map(x => x.Method).Column("method").Nullable();
+            Map(x => x.TransactionType).Column("transaction_type").Nullable();
             Map(x => x.Status).Column("status").Nullable();
             Map(x => x.Amount).Column("amount").Nullable();
             Map(x => x.ConfirmationDate).Column("confirmation_date").Nullable();

@@ -14,7 +14,7 @@ using System.Web.Mvc;
 
 namespace MVC_Project.Web.Controllers
 {
-    
+
     public class PaymentsController : BaseController
     {
         private PaymentService _paymentService;
@@ -43,15 +43,16 @@ namespace MVC_Project.Web.Controllers
         [Authorize]
         public ActionResult CreateSPEI(PaymentViewModel model)
         {
-            PaymentSPEI paymentSPEI = new PaymentSPEI();
+            OpenPayService paymentProviderService = new OpenPayService();
             PaymentModel payment = new PaymentModel()
             {
                 OrderId = model.OrderId,
                 Amount = model.Amount
             };
 
-            payment = paymentSPEI.CreatePayment(payment);
+            payment = paymentProviderService.CreateSPEIPayment(payment);
 
+            //Primero guardar en BD
             Payment paymentBO = new Payment();
             paymentBO.CreationDate = DateUtil.GetDateTimeNow();
             paymentBO.User = new User() { Id = Authenticator.AuthenticatedUser.Id };
@@ -60,6 +61,8 @@ namespace MVC_Project.Web.Controllers
             paymentBO.ProviderId = payment.Id;
             paymentBO.Status = payment.Status;
             paymentBO.DueDate = payment.DueDate;
+            paymentBO.Method = "bank_account";
+            paymentBO.TransactionType = "charge";
 
             paymentBO.ConfirmationDate = null;
 
@@ -71,6 +74,54 @@ namespace MVC_Project.Web.Controllers
             model.PaymentCardURL = payment.PaymentCardURL;
 
             return View("CreateSPEI", model);
+        }
+
+        [HttpPost]
+        [Authorize]
+        public ActionResult CreateTDC(PaymentViewModel model)
+        {
+            OpenPayService paymentProviderService = new OpenPayService();
+
+            //Simulado
+            model.OrderId = Guid.NewGuid().ToString().Substring(24);
+            model.Amount = Convert.ToInt32( (new Random().NextDouble() * 10000) );
+
+            PaymentModel payment = new PaymentModel()
+            {
+                OrderId = model.OrderId,
+                Amount = model.Amount,
+                TokenId = model.TokenId,
+                DeviceSessionId = model.DeviceSessionId
+            };
+
+            //Primero en BD
+            Payment paymentBO = new Payment();
+            paymentBO.CreationDate = DateUtil.GetDateTimeNow();
+            paymentBO.User = new User() { Id = Authenticator.AuthenticatedUser.Id };
+            paymentBO.Amount = model.Amount;
+            paymentBO.OrderId = model.OrderId;
+            paymentBO.Status = "in_progress";
+            paymentBO.Method = "card";
+            paymentBO.TransactionType = "charge";
+
+            paymentBO.ConfirmationDate = null;
+            _paymentService.Create(paymentBO);
+
+            //Luego cobrar
+            payment = paymentProviderService.CreateTDCPayment(payment);
+
+            //Luego actualizar
+            paymentBO.ProviderId = payment.Id;
+            paymentBO.Status = payment.Status;
+            paymentBO.DueDate = payment.DueDate;
+            _paymentService.Update(paymentBO);
+
+            model.Id = payment.Id;
+            model.JsonData = payment.JsonData;
+            model.DueDate = payment.DueDate;
+            model.PaymentCardURL = payment.PaymentCardURL;
+
+            return View("CreateTDC", model);
         }
 
         // GET: Payments
@@ -91,7 +142,8 @@ namespace MVC_Project.Web.Controllers
                     System.Diagnostics.Trace.TraceInformation("\tTransaction: " + paymentEvent.transaction); 
                     if (paymentEvent.transaction != null)
                     {
-                        System.Diagnostics.Trace.TraceInformation("\t\t Id: " + paymentEvent.transaction.id); 
+                        System.Diagnostics.Trace.TraceInformation("\t\t Transaction Id: " + paymentEvent.transaction.id);
+                        System.Diagnostics.Trace.TraceInformation("\t\t Order Id: " + paymentEvent.transaction.order_id);
                         System.Diagnostics.Trace.TraceInformation("\t\t Authorization: " + paymentEvent.transaction.authorization);
 
                         Payment payment = _paymentService.GetByOrderTransaction(paymentEvent.transaction.order_id, paymentEvent.transaction.id);

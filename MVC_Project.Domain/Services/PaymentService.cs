@@ -23,7 +23,7 @@ namespace MVC_Project.Domain.Services
 
         public Payment GetByOrderTransaction(string OrderId, string ProviderId)
         {
-            var payments = _repository.Session.QueryOver<Payment>().Where( x=> x.OrderId == OrderId && x.ProviderId == ProviderId);
+            var payments = _repository.Session.QueryOver<Payment>().Where( x=> x.OrderId == OrderId /*&& x.ProviderId == ProviderId*/);
             return payments.List().FirstOrDefault();
         }
     }
