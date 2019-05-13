@@ -36,6 +36,7 @@ namespace MVC_Project.Web.Controllers
         public ActionResult CreateSPEI()
         {
             PaymentViewModel model = new PaymentViewModel();
+            model.OrderId = Guid.NewGuid().ToString().Substring(24);
             return View(model);
         }
 
