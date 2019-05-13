@@ -164,7 +164,7 @@ namespace PlantillaMVC.Jobs.Jobs
                                             factor = deal.Properties.Factor.Value;
                                         }
                                         strResultado.Append(" * Paso 5 ");
-                                        if (deal.Properties.HubspotOwnerId != null && !string.IsNullOrEmpty(deal.Properties.HubspotOwnerId.SourceId))
+                                        if (deal.Properties.HubspotOwnerId != null && !string.IsNullOrEmpty(deal.Properties.HubspotOwnerId.Value))
                                         {
                                             int ownerId = 0;
                                             if (Int32.TryParse(deal.Properties.HubspotOwnerId.Value, out ownerId) && ownersEmails != null)
