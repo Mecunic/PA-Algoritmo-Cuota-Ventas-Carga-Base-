@@ -47,33 +47,38 @@ namespace MVC_Project.Web.Controllers
             OpenPayService paymentProviderService = new OpenPayService();
             PaymentModel payment = new PaymentModel()
             {
+                ClientId = "avfwrv0q9x2binx9odgf",
                 OrderId = model.OrderId,
-                Amount = model.Amount
+                Amount = model.Amount,
+                Description = "Pago test con SPEI"
             };
 
             payment = paymentProviderService.CreateSPEIPayment(payment);
 
-            //Primero guardar en BD
-            Payment paymentBO = new Payment();
-            paymentBO.CreationDate = DateUtil.GetDateTimeNow();
-            paymentBO.User = new User() { Id = Authenticator.AuthenticatedUser.Id };
-            paymentBO.Amount = model.Amount;
-            paymentBO.OrderId = model.OrderId;
-            paymentBO.ProviderId = payment.Id;
-            paymentBO.Status = payment.Status;
-            paymentBO.DueDate = payment.DueDate;
-            paymentBO.Method = "bank_account";
-            paymentBO.TransactionType = "charge";
+            if (payment.ChargeSuccess)
+            {
+                //Primero guardar en BD
+                Payment paymentBO = new Payment();
+                paymentBO.CreationDate = DateUtil.GetDateTimeNow();
+                paymentBO.User = new User() { Id = Authenticator.AuthenticatedUser.Id };
+                paymentBO.Amount = model.Amount;
+                paymentBO.OrderId = model.OrderId;
+                paymentBO.ProviderId = payment.Id;
+                paymentBO.Status = payment.Status;
+                paymentBO.DueDate = payment.DueDate;
+                paymentBO.Method = PaymentMethod.Bank_Account;
+                paymentBO.TransactionType = "charge";
 
-            paymentBO.ConfirmationDate = null;
+                paymentBO.ConfirmationDate = null;
 
-            _paymentService.Create(paymentBO);
+                _paymentService.Create(paymentBO);
 
-            model.Id = payment.Id;
-            model.JsonData = payment.JsonData;
-            model.DueDate = payment.DueDate;
-            model.PaymentCardURL = payment.PaymentCardURL;
-
+                model.Id = payment.Id;
+                model.JsonData = payment.ResultData;
+                model.DueDate = payment.DueDate;
+                model.PaymentCardURL = payment.PaymentCardURL;
+            }
+            
             return View("CreateSPEI", model);
         }
 
@@ -89,10 +94,12 @@ namespace MVC_Project.Web.Controllers
 
             PaymentModel payment = new PaymentModel()
             {
+                ClientId = "avfwrv0q9x2binx9odgf",
                 OrderId = model.OrderId,
                 Amount = model.Amount,
                 TokenId = model.TokenId,
-                DeviceSessionId = model.DeviceSessionId
+                DeviceSessionId = model.DeviceSessionId,
+                Description = "Pago test con TDC"
             };
 
             //Primero en BD
@@ -101,8 +108,8 @@ namespace MVC_Project.Web.Controllers
             paymentBO.User = new User() { Id = Authenticator.AuthenticatedUser.Id };
             paymentBO.Amount = model.Amount;
             paymentBO.OrderId = model.OrderId;
-            paymentBO.Status = "in_progress";
-            paymentBO.Method = "card";
+            paymentBO.Status = PaymentStatus.In_Progress;
+            paymentBO.Method = PaymentMethod.Card;
             paymentBO.TransactionType = "charge";
 
             paymentBO.ConfirmationDate = null;
@@ -111,16 +118,25 @@ namespace MVC_Project.Web.Controllers
             //Luego cobrar
             payment = paymentProviderService.CreateTDCPayment(payment);
 
-            //Luego actualizar
-            paymentBO.ProviderId = payment.Id;
-            paymentBO.Status = payment.Status;
-            paymentBO.DueDate = payment.DueDate;
-            _paymentService.Update(paymentBO);
+            if (payment.ChargeSuccess)
+            {
+                //Luego actualizar
+                paymentBO.ProviderId = payment.Id;
+                paymentBO.Status = payment.Status;
+                paymentBO.DueDate = payment.DueDate;
+                paymentBO.LogData = payment.ResultData;
+                _paymentService.Update(paymentBO);
 
-            model.Id = payment.Id;
-            model.JsonData = payment.JsonData;
-            model.DueDate = payment.DueDate;
-            model.PaymentCardURL = payment.PaymentCardURL;
+                model.Id = payment.Id;
+                model.JsonData = payment.ResultData;
+                model.DueDate = payment.DueDate;
+                model.PaymentCardURL = payment.PaymentCardURL;
+            } else
+            {
+                paymentBO.Status = PaymentStatus.Error;
+                paymentBO.LogData = payment.ResultData;
+                _paymentService.Update(paymentBO);
+            }
 
             return View("CreateTDC", model);
         }

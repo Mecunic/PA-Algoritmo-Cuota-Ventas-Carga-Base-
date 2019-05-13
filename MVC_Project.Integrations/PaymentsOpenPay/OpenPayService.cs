@@ -26,33 +26,36 @@ namespace MVC_Project.Integrations.PaymentsOpenPay
         {
             OpenpayAPI openpayAPI = new OpenpayAPI(OpenpayKey, MerchantId);
             openpayAPI.Production = false;
-
-            Customer customer = new Customer
+            try
             {
-                Name = "Test ",
-                LastName = "Client",
-                Email = "test@ensitech.com"
-            };
+                Customer customer = openpayAPI.CustomerService.Get(payment.ClientId);
 
-            Customer customerCreated = openpayAPI.CustomerService.Create(customer);
+                ChargeRequest request = new ChargeRequest
+                {
+                    OrderId = payment.OrderId,
+                    Amount = payment.Amount,
+                    DueDate = DateTime.Now.AddDays(2),
+                    Method = PaymentMethod.Bank_Account,
+                    Description = payment.Description,
+                    Customer = customer
+                };
+            
+                Charge charge = openpayAPI.ChargeService.Create(request);
 
-            ChargeRequest request = new ChargeRequest
+                payment.Id = charge.Id;
+                payment.DueDate = request.DueDate;
+                payment.Status = charge.Status;
+                payment.TransactionType = charge.TransactionType;
+                payment.PaymentCardURL = DashboardURL + "/spei-pdf/" + MerchantId + "/" + charge.Id;
+                payment.ResultData = charge.ToJson();
+                payment.ChargeSuccess = true;
+            }
+            catch (OpenpayException ex)
             {
-                OrderId = payment.OrderId,
-                Amount = payment.Amount,
-                DueDate = DateTime.Now.AddDays(2),
-                Method = "bank_account",
-                Description = "Pago SPEI Prueba",
-            };
-
-            Charge charge = openpayAPI.ChargeService.Create(customerCreated.Id, request);
-
-            payment.Id = charge.Id;
-            payment.DueDate = request.DueDate;
-            payment.Status = charge.Status;
-            payment.TransactionType = charge.TransactionType;
-            payment.PaymentCardURL = DashboardURL + "/spei-pdf/" + MerchantId + "/" + charge.Id;
-            payment.JsonData = charge.ToJson();
+                payment.ChargeSuccess = false;
+                payment.ResultData = ex.Description;
+                payment.ResultCategory = ex.Category;
+            }
 
             return payment;
 
@@ -63,37 +66,38 @@ namespace MVC_Project.Integrations.PaymentsOpenPay
             OpenpayAPI openpayAPI = new OpenpayAPI(OpenpayKey, MerchantId);
             openpayAPI.Production = false;
 
-            Customer customer = new Customer
+            try
             {
-                Name = "Test ",
-                LastName = "Client",
-                Email = "test@ensitech.com"
-            };
 
-            Customer customerCreated = openpayAPI.CustomerService.Create(customer);
+                Customer customer = openpayAPI.CustomerService.Get(payment.ClientId);
 
-            ChargeRequest request = new ChargeRequest
+                ChargeRequest request = new ChargeRequest
+                {
+                    Method = PaymentMethod.Card,
+                    SourceId = payment.TokenId,
+                    Amount = payment.Amount,
+                    OrderId = payment.OrderId,
+                    Description = payment.Description,
+                    DeviceSessionId = payment.DeviceSessionId,
+                    Customer = customer
+                };
+                
+                Charge charge = openpayAPI.ChargeService.Create(request);
+
+                payment.Id = charge.Id;
+                payment.DueDate = request.DueDate;
+                payment.Status = charge.Status;
+                payment.TransactionType = charge.TransactionType;
+                payment.PaymentCardURL = DashboardURL + "/spei-pdf/" + MerchantId + "/" + charge.Id;
+                payment.ResultData = charge.ToJson();
+
+            }
+            catch (OpenpayException ex)
             {
-                Method = "card",
-                SourceId = payment.TokenId,
-                Amount = payment.Amount,
-                OrderId = payment.OrderId,
-                Description = "Pago TDC Prueba",
-                DeviceSessionId = payment.DeviceSessionId,
-                Customer = customer
-            };
-
-            // Opcional, si estamos usando puntos
-            //request.UseCardPoints = false; //useCardPoints;
-
-            Charge charge = openpayAPI.ChargeService.Create(request);
-
-            payment.Id = charge.Id;
-            payment.DueDate = request.DueDate;
-            payment.Status = charge.Status;
-            payment.TransactionType = charge.TransactionType;
-            payment.PaymentCardURL = DashboardURL + "/spei-pdf/" + MerchantId + "/" + charge.Id;
-            payment.JsonData = charge.ToJson();
+                payment.ChargeSuccess = false;
+                payment.ResultData = ex.Description;
+                payment.ResultCategory = ex.Category;
+            }
 
             return payment;
         }
