@@ -31,6 +31,13 @@ namespace MVC_Project.Utils
             });
         }
 
+        public static void SendNotification(string recipient, Dictionary<string, string> customParams, string template)
+        {
+            List<string> Emails = new List<string>();
+            Emails.Add(recipient);
+            SendNotification(Emails, customParams, template);
+        }
+
         public static AlternateView InsertImages(AlternateView alternateView, IList<Tuple<MemoryStream, string>> images)
         {
             foreach(var item in images)

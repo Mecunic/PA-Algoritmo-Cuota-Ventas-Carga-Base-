@@ -125,15 +125,12 @@ namespace MVC_Project.Web.Controllers
                     string token = (resultado.Uuid + "@" + DateTime.Now.AddDays(1).ToString());
                      token = EncryptorText.DataEncrypt(token).Replace("/", "!!").Replace("+", "$");
                     resultado.Token = token;
-                    List<string> Email = new List<string>();
-                    Email.Add(resultado.Email);
                     Dictionary<string, string> customParams = new Dictionary<string, string>();
                     string urlAccion = (string)ConfigurationManager.AppSettings["_UrlServerAccess"];
                     string link = urlAccion + "Auth/AccedeToken?token=" + token;
                     customParams.Add("param1", resultado.Email);
                     customParams.Add("param2", link);
-                    string template = "aa61890e-5e39-43c4-92ff-fae95e03a711";
-                    NotificationUtil.SendNotification(Email, customParams, template);
+                    NotificationUtil.SendNotification(resultado.Email, customParams, Constants.NOT_TEMPLATE_PASSWORDRECOVER );
                     _userService.Update(resultado);
 
                     //MensajesFlash.MensajeFlashHandler.RegistrarMensaje(ImpuestoPredial.Resource.Recursos.OperacionExitosa);

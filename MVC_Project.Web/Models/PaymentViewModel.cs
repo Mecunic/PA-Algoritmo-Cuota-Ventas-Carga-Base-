@@ -11,6 +11,8 @@ namespace MVC_Project.Web.Models
         public string OrderId { get; set; }
         public decimal Amount { get; set; }
 
+        public string Description { get; set; }
+
         public DateTime? DueDate { get; set; }
 
         public string PaymentCardURL { get; set; }
@@ -20,5 +22,13 @@ namespace MVC_Project.Web.Models
         public string DeviceSessionId { get; set; }
 
         public string JsonData { get; set; }
+
+        public string BankName { get; set; }
+
+        public string Clabe { get; set; }
+
+        public string Reference { get; set; }
+
+        public string Name { get; set; }
     }
 }

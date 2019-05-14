@@ -34,20 +34,46 @@ namespace MVC_Project.Integrations.PaymentsOpenPay
         public bool ChargeSuccess { get; set; }
 
         public string Description { get; set; }
+
+        public PaymentMethodModel PaymentMethod { get; set; }
+}
+
+    public class PaymentMethodModel
+    {
+        public string Type { get; set; }
+        public string BankName { get; set; }
+
+        public string Clabe { get; set; }
+
+        public string Reference { get; set; }
+
+        public string Name { get; set; }
     }
 
-    public static class PaymentMethod
+        public static class PaymentMethod
     {
          public const string
-            Card = "card",
-            Bank_Account = "bank_account";
+            CARD = "card",
+            BANK_ACCOUNT = "bank_account";
     }
 
     public static class PaymentStatus
     {
         public const string
-           In_Progress = "in_progress",
-           Completed = "completed",
-           Error = "Error";
+           IN_PROGRESS = "in_progress",
+           COMPLETED = "completed",
+           ERROR = "Error";
+    }
+
+    public static class PaymentEventStatus
+    {
+        public const string
+           CHARGE_SUCCEEDED = "charge.succeeded";
+    }
+
+    public static class PaymentType
+    {
+        public const string
+           CHARGE = "charge";
     }
 }

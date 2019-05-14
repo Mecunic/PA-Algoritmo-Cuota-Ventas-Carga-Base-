@@ -22,7 +22,7 @@ namespace MVC_Project.Integrations.PaymentsOpenPay
             DashboardURL = System.Configuration.ConfigurationManager.AppSettings["Payments.DashboardURL"];
         }
 
-        public PaymentModel CreateSPEIPayment(PaymentModel payment)
+        public PaymentModel CreateBankTransferPayment(PaymentModel payment)
         {
             OpenpayAPI openpayAPI = new OpenpayAPI(OpenpayKey, MerchantId);
             openpayAPI.Production = false;
@@ -35,7 +35,7 @@ namespace MVC_Project.Integrations.PaymentsOpenPay
                     OrderId = payment.OrderId,
                     Amount = payment.Amount,
                     DueDate = DateTime.Now.AddDays(2),
-                    Method = PaymentMethod.Bank_Account,
+                    Method = PaymentMethod.BANK_ACCOUNT,
                     Description = payment.Description,
                     Customer = customer
                 };
@@ -49,6 +49,16 @@ namespace MVC_Project.Integrations.PaymentsOpenPay
                 payment.PaymentCardURL = DashboardURL + "/spei-pdf/" + MerchantId + "/" + charge.Id;
                 payment.ResultData = charge.ToJson();
                 payment.ChargeSuccess = true;
+
+                payment.PaymentMethod = new PaymentMethodModel
+                {
+                    Type = charge.PaymentMethod.Type,
+                    BankName = charge.PaymentMethod.BankName,
+                    Clabe = charge.PaymentMethod.CLABE,
+                    Reference = charge.PaymentMethod.Reference,
+                    Name = charge.PaymentMethod.Name
+                };
+
             }
             catch (OpenpayException ex)
             {
@@ -73,7 +83,7 @@ namespace MVC_Project.Integrations.PaymentsOpenPay
 
                 ChargeRequest request = new ChargeRequest
                 {
-                    Method = PaymentMethod.Card,
+                    Method = PaymentMethod.CARD,
                     SourceId = payment.TokenId,
                     Amount = payment.Amount,
                     OrderId = payment.OrderId,

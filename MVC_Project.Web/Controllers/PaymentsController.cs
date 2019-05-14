@@ -18,10 +18,12 @@ namespace MVC_Project.Web.Controllers
     public class PaymentsController : BaseController
     {
         private PaymentService _paymentService;
+        private UserService _userService;
 
-        public PaymentsController(PaymentService paymentService)
+        public PaymentsController(PaymentService paymentService, UserService userService)
         {
             _paymentService = paymentService;
+            _userService = userService;
         }
 
         [Authorize]
@@ -53,7 +55,7 @@ namespace MVC_Project.Web.Controllers
                 Description = "Pago test con SPEI"
             };
 
-            payment = paymentProviderService.CreateSPEIPayment(payment);
+            payment = paymentProviderService.CreateBankTransferPayment(payment);
 
             if (payment.ChargeSuccess)
             {
@@ -66,17 +68,26 @@ namespace MVC_Project.Web.Controllers
                 paymentBO.ProviderId = payment.Id;
                 paymentBO.Status = payment.Status;
                 paymentBO.DueDate = payment.DueDate;
-                paymentBO.Method = PaymentMethod.Bank_Account;
-                paymentBO.TransactionType = "charge";
+                paymentBO.Method = PaymentMethod.BANK_ACCOUNT;
+                paymentBO.TransactionType = PaymentType.CHARGE;
 
                 paymentBO.ConfirmationDate = null;
 
                 _paymentService.Create(paymentBO);
 
                 model.Id = payment.Id;
+                model.Description = payment.Description;
                 model.JsonData = payment.ResultData;
                 model.DueDate = payment.DueDate;
                 model.PaymentCardURL = payment.PaymentCardURL;
+                model.BankName = payment.PaymentMethod.BankName;
+                model.Clabe = payment.PaymentMethod.Clabe;
+                model.Reference = payment.PaymentMethod.Reference;
+                model.Name = payment.PaymentMethod.Name;
+            }
+            else
+            {
+                model.Description = payment.ResultData;
             }
             
             return View("CreateSPEI", model);
@@ -108,8 +119,8 @@ namespace MVC_Project.Web.Controllers
             paymentBO.User = new User() { Id = Authenticator.AuthenticatedUser.Id };
             paymentBO.Amount = model.Amount;
             paymentBO.OrderId = model.OrderId;
-            paymentBO.Status = PaymentStatus.In_Progress;
-            paymentBO.Method = PaymentMethod.Card;
+            paymentBO.Status = PaymentStatus.IN_PROGRESS;
+            paymentBO.Method = PaymentMethod.CARD;
             paymentBO.TransactionType = "charge";
 
             paymentBO.ConfirmationDate = null;
@@ -128,14 +139,16 @@ namespace MVC_Project.Web.Controllers
                 _paymentService.Update(paymentBO);
 
                 model.Id = payment.Id;
+                model.Description = payment.Description;
                 model.JsonData = payment.ResultData;
                 model.DueDate = payment.DueDate;
                 model.PaymentCardURL = payment.PaymentCardURL;
             } else
             {
-                paymentBO.Status = PaymentStatus.Error;
+                paymentBO.Status = PaymentStatus.ERROR;
                 paymentBO.LogData = payment.ResultData;
                 _paymentService.Update(paymentBO);
+                model.Description = payment.ResultData;
             }
 
             return View("CreateTDC", model);
@@ -164,16 +177,23 @@ namespace MVC_Project.Web.Controllers
                         System.Diagnostics.Trace.TraceInformation("\t\t Authorization: " + paymentEvent.transaction.authorization);
 
                         Payment payment = _paymentService.GetByOrderTransaction(paymentEvent.transaction.order_id, paymentEvent.transaction.id);
+                        User user = _userService.GetById(payment.User.Id);
                         
                         if (payment!=null)
                         {
                             System.Diagnostics.Trace.TraceInformation("\t\t Payment BO ID: " + payment.Id);
                             payment.Status = paymentEvent.transaction.status;
                             payment.LogData = rawJSON;
-                            if (paymentEvent.type == "charge.succeeded")
+                            if (paymentEvent.type == PaymentEventStatus.CHARGE_SUCCEEDED)
                             {
                                 payment.ConfirmationDate = DateUtil.GetDateTimeNow();
                                 payment.AuthorizationCode = paymentEvent.transaction.authorization;
+
+                                Dictionary<string, string> customParams = new Dictionary<string, string>();
+                                customParams.Add("param1", user.FirstName);
+                                customParams.Add("param2", paymentEvent.transaction.order_id);
+                                customParams.Add("param3", payment.AuthorizationCode);
+                                NotificationUtil.SendNotification(user.Email, customParams, Constants.NOT_TEMPLATE_CHARGESUCCESS);
                             }
                             _paymentService.Update(payment);
                             System.Diagnostics.Trace.TraceInformation("\t\t Payment BO Status Updated: " + payment.Status);
