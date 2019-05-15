@@ -144,7 +144,9 @@ namespace MVC_Project.Web
                       "~/Scripts/template/plugins/validate/jquery.validate.min.js"));
 
             bundles.Add(new ScriptBundle("~/plugins/validateUnobtrusive").Include(
-                      "~/Scripts/template/plugins/validate/jquery.validate.unobtrusive.min.js"));
+                      "~/Scripts/template/plugins/validate/jquery.validate.unobtrusive.min.js",
+                      "~/Scripts/custom-validations/password-secured-validation.js",
+                      "~/Scripts/custom-validations/string-comparer-validation.js"));
 
             // fullCalendar styles
             bundles.Add(new StyleBundle("~/plugins/fullCalendarStyles").Include(

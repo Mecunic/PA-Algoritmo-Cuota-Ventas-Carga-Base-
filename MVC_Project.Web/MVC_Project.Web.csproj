@@ -185,6 +185,8 @@
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Controllers\UserPermissionsController.cs" />
     <Compile Include="Controllers\UserServicesController.cs" />
+    <Compile Include="CustomAttributes\Validations\StringComparerAttribute.cs" />
+    <Compile Include="CustomAttributes\Validations\PasswordSecuredAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -1196,6 +1198,8 @@
     <Content Include="Images\p_big3.jpg" />
     <Content Include="Images\zender_logo.png" />
     <None Include="Scripts\template\plugins\validate\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\custom-validations\password-secured-validation.js" />
+    <Content Include="Scripts\custom-validations\string-comparer-validation.js" />
     <Content Include="Scripts\template\plugins\validate\jquery.validate.js" />
     <Content Include="Scripts\template\plugins\validate\jquery.validate.min.js" />
     <Content Include="Scripts\template\plugins\validate\jquery.validate.unobtrusive.js" />
@@ -1663,6 +1667,10 @@
     <ProjectReference Include="..\MVC_Project.Domain\MVC_Project.Domain.csproj">
       <Project>{AADE4A05-4CC5-4465-BD0F-B681FA698C97}</Project>
       <Name>MVC_Project.Domain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MVC_Project.FlashMessages\MVC_Project.FlashMessages.csproj">
+      <Project>{0ce135cb-4dc5-449d-be1d-28982188b260}</Project>
+      <Name>MVC_Project.FlashMessages</Name>
     </ProjectReference>
     <ProjectReference Include="..\MVC_Project.Utils\MVC_Project.Utils.csproj">
       <Project>{23B89C18-68C5-449F-ADED-E51A86DA6B52}</Project>
