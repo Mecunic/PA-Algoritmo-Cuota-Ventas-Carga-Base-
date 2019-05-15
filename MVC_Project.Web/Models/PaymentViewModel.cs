@@ -30,5 +30,9 @@ namespace MVC_Project.Web.Models
         public string Reference { get; set; }
 
         public string Name { get; set; }
+
+        public string Agreement { get; set; }
+
+        public bool ChargeSuccess { get; set; }
     }
 }

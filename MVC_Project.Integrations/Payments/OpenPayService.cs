@@ -56,7 +56,8 @@ namespace MVC_Project.Integrations.PaymentsOpenPay
                     BankName = charge.PaymentMethod.BankName,
                     Clabe = charge.PaymentMethod.CLABE,
                     Reference = charge.PaymentMethod.Reference,
-                    Name = charge.PaymentMethod.Name
+                    Name = charge.PaymentMethod.Name,
+                    //Agreement = charge.PaymentMethod.
                 };
 
             }

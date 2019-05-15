@@ -48,6 +48,7 @@ namespace MVC_Project.Integrations.PaymentsOpenPay
         public string Reference { get; set; }
 
         public string Name { get; set; }
+        public string Agreement { get; set; }
     }
 
         public static class PaymentMethod
