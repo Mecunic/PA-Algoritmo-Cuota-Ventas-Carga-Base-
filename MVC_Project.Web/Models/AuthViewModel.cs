@@ -35,11 +35,11 @@ namespace MVC_Project.Web.Models
     {
         [Display(Name = "Nueva contraseña")]
         [DataType(DataType.Password)]
-        [Required, MinLength(8)]
+        [Required(ErrorMessage = "Campo obligatorio"), MinLength(8, ErrorMessage = "{0} debe ser mínimo de {1} caracteres")]
         public string Password { get; set; }
         [Display(Name = "Confirmar nueva contraseña")]
         [DataType(DataType.Password)]
-        [Required, MinLength(8)]
+        [Required(ErrorMessage = "Campo obligatorio"), MinLength(8, ErrorMessage = "{0} debe ser mínimo de {1} caracteres")]
         public string ConfirmPassword { get; set; }
     }
 }

@@ -1195,6 +1195,11 @@
     <Content Include="Images\p_big2.jpg" />
     <Content Include="Images\p_big3.jpg" />
     <Content Include="Images\zender_logo.png" />
+    <None Include="Scripts\template\plugins\validate\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\template\plugins\validate\jquery.validate.js" />
+    <Content Include="Scripts\template\plugins\validate\jquery.validate.min.js" />
+    <Content Include="Scripts\template\plugins\validate\jquery.validate.unobtrusive.js" />
+    <Content Include="Scripts\template\plugins\validate\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\plugins\fileDownload\jquery.fileDownload.js" />
     <Content Include="Scripts\template\app\inspinia.js" />
     <Content Include="Scripts\template\app\skin.config.min.js" />
@@ -1541,7 +1546,6 @@
     <Content Include="Scripts\template\plugins\touchpunch\jquery.ui.touch-punch.min.js" />
     <Content Include="Scripts\template\plugins\touchspin\jquery.bootstrap-touchspin.min.js" />
     <Content Include="Scripts\template\plugins\typehead\bootstrap3-typeahead.min.js" />
-    <Content Include="Scripts\template\plugins\validate\jquery.validate.min.js" />
     <Content Include="Scripts\template\plugins\velocity\velocity.min.js" />
     <Content Include="Scripts\template\plugins\velocity\velocity.ui.min.js" />
     <Content Include="Scripts\template\plugins\video\responsible-video.js" />
