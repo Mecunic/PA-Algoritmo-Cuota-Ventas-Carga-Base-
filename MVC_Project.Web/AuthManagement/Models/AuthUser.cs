@@ -9,10 +9,13 @@ namespace MVC_Project.Web.AuthManagement.Models
     {
         public int Id { get; set; }
         public string FirstName { get; set; }
+        public string Uuid { get; set; }
         public string LastName { get; set; }
         public string Email { get; set; }
         public Role Role { get; set; }
         public IList<Permission> Permissions { get; set; }
+
+        public DateTime? PasswordExpiration { get; set; }
 
         public bool HasAccessToModule(string module)
         {

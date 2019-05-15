@@ -45,17 +45,18 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Antlr3.Runtime, Version=3.5.0.2, Culture=neutral, PublicKeyToken=eb42632606e9261f, processorArchitecture=MSIL">
+      <HintPath>..\packages\Antlr3.Runtime.3.5.1\lib\net40-client\Antlr3.Runtime.dll</HintPath>
+    </Reference>
     <Reference Include="FluentNHibernate, Version=2.1.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>Bin\FluentNHibernate.dll</HintPath>
+      <HintPath>..\packages\FluentNHibernate.2.1.2\lib\net461\FluentNHibernate.dll</HintPath>
     </Reference>
     <Reference Include="Iesi.Collections, Version=4.0.0.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
       <HintPath>..\packages\Iesi.Collections.4.0.4\lib\net461\Iesi.Collections.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="NHibernate, Version=5.1.0.0, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>Bin\NHibernate.dll</HintPath>
+      <HintPath>..\packages\NHibernate.5.1.1\lib\net461\NHibernate.dll</HintPath>
     </Reference>
     <Reference Include="Remotion.Linq, Version=2.1.0.0, Culture=neutral, PublicKeyToken=fee00910d6e5f53b, processorArchitecture=MSIL">
       <HintPath>..\packages\Remotion.Linq.2.1.2\lib\net45\Remotion.Linq.dll</HintPath>
@@ -67,6 +68,8 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Transactions" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -130,10 +133,6 @@
       <Private>True</Private>
       <HintPath>..\packages\WebGrease.1.6.0\lib\WebGrease.dll</HintPath>
     </Reference>
-    <Reference Include="Antlr3.Runtime">
-      <Private>True</Private>
-      <HintPath>..\packages\Antlr.3.5.0.2\lib\Antlr3.Runtime.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System.Diagnostics.DiagnosticSource">
@@ -187,12 +186,15 @@
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Controllers\UserPermissionsController.cs" />
     <Compile Include="Controllers\UserServicesController.cs" />
+    <Compile Include="CustomAttributes\Validations\StringComparerAttribute.cs" />
+    <Compile Include="CustomAttributes\Validations\PasswordSecuredAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\HTMLHelperExtensions.cs" />
     <Compile Include="Models\AuthViewModel.cs" />
     <Compile Include="Models\DataTableModel.cs" />
+    <Compile Include="Models\ExcelImport\UserImport.cs" />
     <Compile Include="Models\JQueryDataTableParams.cs" />
     <Compile Include="Models\PaymentViewModel.cs" />
     <Compile Include="Models\ReportOrdersViewModel.cs" />
@@ -1203,6 +1205,13 @@
     <Content Include="Images\p_big2.jpg" />
     <Content Include="Images\p_big3.jpg" />
     <Content Include="Images\zender_logo.png" />
+    <None Include="Scripts\template\plugins\validate\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\custom-validations\password-secured-validation.js" />
+    <Content Include="Scripts\custom-validations\string-comparer-validation.js" />
+    <Content Include="Scripts\template\plugins\validate\jquery.validate.js" />
+    <Content Include="Scripts\template\plugins\validate\jquery.validate.min.js" />
+    <Content Include="Scripts\template\plugins\validate\jquery.validate.unobtrusive.js" />
+    <Content Include="Scripts\template\plugins\validate\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\plugins\fileDownload\jquery.fileDownload.js" />
     <Content Include="Scripts\template\app\inspinia.js" />
     <Content Include="Scripts\template\app\skin.config.min.js" />
@@ -1549,7 +1558,6 @@
     <Content Include="Scripts\template\plugins\touchpunch\jquery.ui.touch-punch.min.js" />
     <Content Include="Scripts\template\plugins\touchspin\jquery.bootstrap-touchspin.min.js" />
     <Content Include="Scripts\template\plugins\typehead\bootstrap3-typeahead.min.js" />
-    <Content Include="Scripts\template\plugins\validate\jquery.validate.min.js" />
     <Content Include="Scripts\template\plugins\velocity\velocity.min.js" />
     <Content Include="Scripts\template\plugins\velocity\velocity.ui.min.js" />
     <Content Include="Scripts\template\plugins\video\responsible-video.js" />
@@ -1587,6 +1595,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\Base\" />
+    <Folder Include="Views\Shared\EditorTemplates\" />
     <Folder Include="Views\UserServices\" />
   </ItemGroup>
   <ItemGroup>
@@ -1652,8 +1661,15 @@
     <None Include="Properties\PublishProfiles\ensi-template - Web Deploy.pubxml" />
     <Content Include="Views\Payments\CreateTDC.cshtml" />
     <Content Include="Views\Payments\CreateSPEI.cshtml" />
+    <Content Include="Views\User\Import.cshtml" />
+    <Content Include="Views\Auth\ChangePassword.cshtml" />
+    <Content Include="Views\Shared\_SimpleLayout.cshtml" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ExcelObjectMapping\ExcelObjectMapping.csproj">
+      <Project>{89f9f036-0428-49a2-84f1-72851728183d}</Project>
+      <Name>ExcelObjectMapping</Name>
+    </ProjectReference>
     <ProjectReference Include="..\MVC_Project.Data\MVC_Project.Data.csproj">
       <Project>{347A6BFB-7CD3-4B7F-90AD-AB21950EF7AD}</Project>
       <Name>MVC_Project.Data</Name>
@@ -1665,6 +1681,10 @@
     <ProjectReference Include="..\MVC_Project.Integrations\MVC_Project.Integrations.csproj">
       <Project>{E616D7FC-E5A8-4E69-91E6-FF0760920CE8}</Project>
       <Name>MVC_Project.Integrations</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MVC_Project.FlashMessages\MVC_Project.FlashMessages.csproj">
+      <Project>{0ce135cb-4dc5-449d-be1d-28982188b260}</Project>
+      <Name>MVC_Project.FlashMessages</Name>
     </ProjectReference>
     <ProjectReference Include="..\MVC_Project.Utils\MVC_Project.Utils.csproj">
       <Project>{23B89C18-68C5-449F-ADED-E51A86DA6B52}</Project>
@@ -1692,7 +1712,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>True</UseIIS>
+          <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>52221</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>

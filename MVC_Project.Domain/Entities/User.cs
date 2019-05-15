@@ -12,6 +12,7 @@ namespace MVC_Project.Domain.Entities {
         public virtual string Email { get; set; }
         
         public virtual string Password { get; set; }
+        public virtual DateTime? PasswordExpiration { get; set; }
         public virtual Role Role { get; set; }
         public virtual IList<Permission> Permissions { get; set; }
         public virtual DateTime CreatedAt { get; set; }

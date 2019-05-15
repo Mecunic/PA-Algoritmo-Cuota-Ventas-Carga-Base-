@@ -1,17 +1,21 @@
-﻿using MVC_Project.Data.Helpers;
+﻿using ExcelEngine;
+using MVC_Project.Data.Helpers;
 using MVC_Project.Domain.Entities;
 using MVC_Project.Domain.Helpers;
 using MVC_Project.Domain.Services;
 using MVC_Project.Web.AuthManagement;
 using MVC_Project.Web.Models;
+using MVC_Project.Web.Models.ExcelImport;
 using MVC_Project.Web.Utils.Enums;
 using NHibernate;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Web;
 using System.Web.Mvc;
+using Utils;
 
 namespace MVC_Project.Web.Controllers
 {
@@ -36,6 +40,52 @@ namespace MVC_Project.Web.Controllers
                 Statuses = FilterStatusEnum.GetSelectListItems()
             };
             return View(model);
+        }
+        [Authorize]
+        public ActionResult Import()
+        {
+            UserImportViewModel model = new UserImportViewModel();
+            return View("Import", model);
+        }
+        [HttpPost, Authorize, ValidateAntiForgeryToken]
+        public ActionResult Import(UserImportViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                ResultExcelImporter<UserImport> result = ExcelImporterMapper.ReadExcel<UserImport>(new ExcelFileInputData
+                {
+                    ContentLength = model.ImportedFile.ContentLength,
+                    FileName = model.ImportedFile.FileName,
+                    InputStream = model.ImportedFile.InputStream
+                });
+                model.ImportResult = new List<UserRowImportResultViewModel>();
+                foreach (RowResult rowResult in result.ResultMapExcel.RowResults)
+                {
+                    UserRowImportResultViewModel userRowImportResultViewModel = new UserRowImportResultViewModel();
+                    userRowImportResultViewModel.Email = rowResult.RowsValues.Email;
+                    userRowImportResultViewModel.EmployeeNumber = rowResult.RowsValues.EmployeeNumber;
+                    userRowImportResultViewModel.Name = rowResult.RowsValues.Name;
+                    userRowImportResultViewModel.RowNumber = rowResult.Number;
+                    userRowImportResultViewModel.Messages = new List<string>();
+                    bool hasCustomError = false;
+                    User existingUser = _userService.FindBy(x => x.Email == userRowImportResultViewModel.Email).FirstOrDefault();
+                    if (existingUser != null && !String.IsNullOrWhiteSpace(userRowImportResultViewModel.Email))
+                    {
+                        userRowImportResultViewModel.Messages.Add("El correo electrónico del usuario ya se encuentra registrado");
+                    }
+                    hasCustomError = userRowImportResultViewModel.Messages.Any();
+                    if (rowResult.HasError)
+                    {
+                        userRowImportResultViewModel.Messages = userRowImportResultViewModel.Messages.Concat(rowResult.ErrorMessages).ToList();
+                    }
+                    if(!rowResult.HasError && !hasCustomError)
+                    {
+                        
+                        userRowImportResultViewModel.Messages.Add("Usuario registrado satisfactoriamente");
+                    }
+                }
+            }
+            return View("Import", model);
         }
 
         [HttpGet, Authorize]
@@ -108,8 +158,22 @@ namespace MVC_Project.Web.Controllers
         [HttpPost]
         public ActionResult Create(UserCreateViewModel userCreateViewModel)
         {
+            if(!String.IsNullOrWhiteSpace(userCreateViewModel.ConfirmPassword) 
+                && !String.IsNullOrWhiteSpace(userCreateViewModel.Password))
+            {
+                if(!userCreateViewModel.Password.Equals(userCreateViewModel.ConfirmPassword))
+                {
+                    ModelState.AddModelError("ConfirmPassword", "las cntraseñas no coinciden");
+                }
+            }
             if (ModelState.IsValid)
             {
+                // TODO: Add insert logic here
+                DateTime todayDate =  DateUtil.GetDateTimeNow();
+
+                string daysToExpirateDate = ConfigurationManager.AppSettings["DaysToExpirateDate"];
+                
+                DateTime passwordExpiration = todayDate.AddDays(Int32.Parse(daysToExpirateDate));
                 var user = new User
                 {
                     Uuid = Guid.NewGuid().ToString(),
@@ -117,6 +181,7 @@ namespace MVC_Project.Web.Controllers
                     LastName = userCreateViewModel.Apellidos,
                     Email = userCreateViewModel.Email,
                     Password = EncryptHelper.EncryptPassword(userCreateViewModel.Password),
+                    PasswordExpiration = passwordExpiration,
                     Role = new Role { Id = userCreateViewModel.Role },
                     CreatedAt = DateTime.Now,
                     UpdatedAt = DateTime.Now,
@@ -132,6 +197,7 @@ namespace MVC_Project.Web.Controllers
             }
             else
             {
+                userCreateViewModel.Roles = PopulateRoles();
                 return View("Create", userCreateViewModel);
             }
         }

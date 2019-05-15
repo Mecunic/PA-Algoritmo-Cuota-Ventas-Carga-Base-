@@ -1,5 +1,6 @@
 ﻿using MVC_Project.Data.Helpers;
 using MVC_Project.Domain.Services;
+using MVC_Project.FlashMessages;
 using MVC_Project.Utils;
 using MVC_Project.Web.AuthManagement;
 using MVC_Project.Web.AuthManagement.Models;
@@ -54,7 +55,8 @@ namespace MVC_Project.Web.Controllers
                         FirstName = user.FirstName,
                         LastName = user.LastName,
                         Email = user.Email,
-
+                        Uuid = user.Uuid,
+                        PasswordExpiration = user.PasswordExpiration,
                         Role = new Role
                         {
                             Code = user.Role.Code,
@@ -75,6 +77,28 @@ namespace MVC_Project.Web.Controllers
                     //UnitOfWork unitOfWork = new UnitOfWork();
                     //ISession session = unitOfWork.Session;
                     Authenticator.StoreAuthenticatedUser(authUser);
+
+                    if (user.PasswordExpiration.HasValue)
+                    {
+                        DateTime passwordExpiration = user.PasswordExpiration.Value;
+                        DateTime todayDate = DateUtil.GetDateTimeNow();
+                        if (user.PasswordExpiration.Value.Date < todayDate.Date)
+                        {
+                            return RedirectToAction("ChangePassword", "Auth");
+                        }
+                        string daysBeforeExpireToNotifyConfig = ConfigurationManager.AppSettings["DaysBeforeExpireToNotify"];
+                        int daysBeforeExpireToNotify = 0;
+                        if (Int32.TryParse(daysBeforeExpireToNotifyConfig, out daysBeforeExpireToNotify))
+                        {
+
+                            int daysLeft = ((TimeSpan)(passwordExpiration.Date - todayDate.Date)).Days + 1;
+                            if(daysLeft <= daysBeforeExpireToNotify)
+                            {
+                                string message = String.Format("Te queda(n) {0} día(s) para que tu contraseña expire", daysLeft);
+                                MensajeFlashHandler.RegistrarMensaje(message, TiposMensaje.Info);
+                            }
+                        }
+                    }
                     if (!string.IsNullOrEmpty(Request.Form["ReturnUrl"]))
                     {
                         return Redirect(Request.Form["ReturnUrl"]);
@@ -192,6 +216,73 @@ namespace MVC_Project.Web.Controllers
             ViewBag.Message = "Error en el token";
             return View("Login");
         }
+
+        [HttpGet, AllowAnonymous]
+        public ActionResult ChangePassword()
+        {
+            AuthUser authenticatedUser = Authenticator.AuthenticatedUser;
+            if (authenticatedUser == null)
+            {
+                return RedirectToAction("Login", "Auth");
+            }
+            return View("ChangePassword");
+        }
+
+        [HttpPost, AllowAnonymous, ValidateAntiForgeryToken]
+        public ActionResult ChangePassword(ChangePassword model)
+        {
+
+            AuthUser authenticatedUser = Authenticator.AuthenticatedUser;
+
+            if (authenticatedUser == null)
+            {
+                return RedirectToAction("Login", "Auth");
+            }
+            var user = _userService.FindBy(e => e.Uuid == authenticatedUser.Uuid).First();
+
+            if (!String.IsNullOrWhiteSpace(model.Password) && user != null)
+            {
+                string encriptedPass = EncryptHelper.EncryptPassword(model.Password);
+                if (user.Password == encriptedPass)
+                {
+                    ModelState.AddModelError("Password", "La contraseña ya ha sido utilizada");
+                }
+            }
+            if (ModelState.IsValid)
+            {
+                if (user != null)
+                {
+                    user.Password = EncryptHelper.EncryptPassword(model.Password);
+                    DateTime todayDate = DateUtil.GetDateTimeNow();
+                    string daysToExpirateDate = ConfigurationManager.AppSettings["DaysToExpirateDate"];
+                    DateTime passwordExpiration = todayDate.AddDays(Int32.Parse(daysToExpirateDate));
+                    user.PasswordExpiration = passwordExpiration;
+                    _userService.Update(user);
+                    AuthUser authUser = new AuthUser
+                    {
+                        FirstName = user.FirstName,
+                        LastName = user.LastName,
+                        Email = user.Email,
+                        Uuid = user.Uuid,
+                        PasswordExpiration = user.PasswordExpiration,
+                        Role = new Role
+                        {
+                            Code = user.Role.Code,
+                            Name = user.Role.Name
+                        },
+                        Permissions = user.Permissions.Select(p => new Permission
+                        {
+                            Action = p.Action,
+                            Controller = p.Controller,
+                            Module = p.Module
+                        }).ToList()
+                    };
+                    Authenticator.StoreAuthenticatedUser(authUser);
+                    return RedirectToAction("Index", "Home");
+                }
+            }
+            return View("ChangePassword", model);
+        }
         [HttpPost, AllowAnonymous]
         public ActionResult Reset(ResetPassword model)
         {
@@ -210,21 +301,29 @@ namespace MVC_Project.Web.Controllers
                 var resultado = _userService.FindBy(e => e.Uuid == model.Uuid).First();
                 if (resultado != null)
                 {
-                    resultado.Password = model.Password;
+                    resultado.Password = EncryptHelper.EncryptPassword(model.Password);
+                    DateTime todayDate = DateUtil.GetDateTimeNow();
+                    string daysToExpirateDate = ConfigurationManager.AppSettings["DaysToExpirateDate"];
+                    DateTime passwordExpiration = todayDate.AddDays(Int32.Parse(daysToExpirateDate));
+                    resultado.PasswordExpiration = passwordExpiration;
                     _userService.Update(resultado);
                     AuthUser authUser = new AuthUser
                     {
                         FirstName = resultado.FirstName,
                         LastName = resultado.LastName,
+                        Uuid = resultado.Uuid,
+                        PasswordExpiration = resultado.PasswordExpiration,
                         Email = resultado.Email,
                         Role = new Role
                         {
-                            Code = resultado.Role.Code
+                            Code = resultado.Role.Code,
+                            Name = resultado.Role.Name
                         },
                         Permissions = resultado.Permissions.Select(p => new Permission
                         {
                             Action = p.Action,
-                            Controller = p.Controller
+                            Controller = p.Controller,
+                            Module = p.Module
                         }).ToList()
                     };
                     UnitOfWork unitOfWork = new UnitOfWork();

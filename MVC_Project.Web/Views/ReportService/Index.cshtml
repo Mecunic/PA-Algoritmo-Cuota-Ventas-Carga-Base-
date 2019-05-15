@@ -61,6 +61,7 @@
                         <div class="col-xs-4">
                             <br />
                             <button type="button" class="btn btn-sm btn-primary btn-filter-Order"><i class="fas fa-search"></i> Buscar</button>
+                            <button type="button" id="BtnClearForm" class="btn btn-sm btn-primary"><i class="fas fa-eraser "></i> Limpiar</button>
                         </div>
                     </div>
                 }
@@ -102,7 +103,7 @@
 
     <script>
         $(function () {
-            var orders = new OrderIndexControlador('table', '@Url.Action("GetAllByFilter")',
+            var orders = new OrderIndexControlador('table', 'BtnClearForm','SearchForm', '@Url.Action("GetAllByFilter")',
 				'@Url.Action("ModalDetails")', '@Url.Action("ModalDeleteAction")');
             orders.init();
         });
