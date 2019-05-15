@@ -20,9 +20,9 @@ namespace MVC_Project.Web.AuthManagement
             {
 
                 DateTime todayDate = DateUtil.GetDateTimeNow();
-                if (authenticatedUser.PasswordExpiration < todayDate)
+                if (authenticatedUser.PasswordExpiration.HasValue && authenticatedUser.PasswordExpiration.Value.Date < todayDate.Date)
                 {
-                    filterContext.Result = new RedirectToRouteResult(new RouteValueDictionary(new { controller = "User", action = "ChangePassword" }));
+                    filterContext.Result = new RedirectToRouteResult(new RouteValueDictionary(new { controller = "Auth", action = "ChangePassword" }));
                     return;
                 }
                 filterContext.Result = new System.Web.Mvc.HttpStatusCodeResult((int)System.Net.HttpStatusCode.Forbidden);
@@ -40,7 +40,7 @@ namespace MVC_Project.Web.AuthManagement
             if (authenticatedUser != null)
             {
                 DateTime todayDate = DateUtil.GetDateTimeNow();
-                if (authenticatedUser.PasswordExpiration < todayDate)
+                if (authenticatedUser.PasswordExpiration.HasValue && authenticatedUser.PasswordExpiration.Value.Date < todayDate.Date)
                 {
                     return false;
                 }
