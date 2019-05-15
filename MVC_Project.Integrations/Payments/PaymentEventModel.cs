@@ -18,6 +18,7 @@ namespace MVC_Project.Integrations.PaymentsOpenPay
         public PaymentTransactionModel transaction { get; set; }
 
         public string verification_code { get; set; }
+        
     }
 
 
