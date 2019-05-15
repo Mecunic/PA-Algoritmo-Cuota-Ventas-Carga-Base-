@@ -56,6 +56,7 @@ namespace MVC_Project.Web.Controllers
             };
 
             payment = paymentProviderService.CreateBankTransferPayment(payment);
+            model.ChargeSuccess = payment.ChargeSuccess;
 
             if (payment.ChargeSuccess)
             {
@@ -128,6 +129,7 @@ namespace MVC_Project.Web.Controllers
 
             //Luego cobrar
             payment = paymentProviderService.CreateTDCPayment(payment);
+            model.ChargeSuccess = payment.ChargeSuccess;
 
             if (payment.ChargeSuccess)
             {
