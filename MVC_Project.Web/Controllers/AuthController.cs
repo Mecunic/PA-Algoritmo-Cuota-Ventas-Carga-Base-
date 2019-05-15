@@ -81,7 +81,7 @@ namespace MVC_Project.Web.Controllers
                     {
                         DateTime passwordExpiration = user.PasswordExpiration.Value;
                         DateTime todayDate = DateUtil.GetDateTimeNow();
-                        if (user.PasswordExpiration.Value < todayDate)
+                        if (user.PasswordExpiration.Value.Date < todayDate.Date)
                         {
                             return RedirectToAction("ChangePassword", "Auth");
                         }
@@ -247,7 +247,7 @@ namespace MVC_Project.Web.Controllers
                 string encriptedPass = EncryptHelper.EncryptPassword(model.Password);
                 if (user.Password == encriptedPass)
                 {
-                    ModelState.AddModelError("Password", "La contraseña ya ha sido utilizada previamente");
+                    ModelState.AddModelError("Password", "La contraseña ya ha sido utilizada");
                 }
             }
             if (ModelState.IsValid)
