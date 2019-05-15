@@ -53,7 +53,8 @@ namespace MVC_Project.Web.Controllers
                         FirstName = user.FirstName,
                         LastName = user.LastName,
                         Email = user.Email,
-
+                        Uuid = user.Uuid,
+                        PasswordExpiration = user.PasswordExpiration,
                         Role = new Role
                         {
                             Code = user.Role.Code,
@@ -74,6 +75,15 @@ namespace MVC_Project.Web.Controllers
                     //UnitOfWork unitOfWork = new UnitOfWork();
                     //ISession session = unitOfWork.Session;
                     Authenticator.StoreAuthenticatedUser(authUser);
+
+                    if (user.PasswordExpiration.HasValue)
+                    {
+                        DateTime todayDate = DateUtil.GetDateTimeNow();
+                        if (user.PasswordExpiration.Value < todayDate)
+                        {
+                            return RedirectToAction("ChangePassword", "User");
+                        }
+                    }
                     if (!string.IsNullOrEmpty(Request.Form["ReturnUrl"]))
                     {
                         return Redirect(Request.Form["ReturnUrl"]);
@@ -194,6 +204,51 @@ namespace MVC_Project.Web.Controllers
             ViewBag.Message = "Error en el token";
             return View("Login");
         }
+
+        [HttpGet, AllowAnonymous]
+        public ActionResult ChangePassword()
+        {
+            return View("ChangePassword");
+        }
+
+        [HttpPost, AllowAnonymous, ValidateAntiForgeryToken]
+        public ActionResult ChangePassword(ChangePassword model)
+        {
+            if (ModelState.IsValid)
+            {
+                AuthUser authenticatedUser = Authenticator.AuthenticatedUser;
+                var user = _userService.FindBy(e => e.Uuid == authenticatedUser.Uuid).First();
+                if (user != null)
+                {
+                    user.Password = model.Password;
+                    DateTime todayDate = DateUtil.GetDateTimeNow();
+                    string daysToExpirateDate = ConfigurationManager.AppSettings["DaysToExpirateDate"];
+                    DateTime passwordExpiration = todayDate.AddDays(Int32.Parse(daysToExpirateDate));
+                    user.PasswordExpiration = passwordExpiration;
+                    _userService.Update(user);
+                    AuthUser authUser = new AuthUser
+                    {
+                        FirstName = user.FirstName,
+                        LastName = user.LastName,
+                        Email = user.Email,
+                        Uuid = user.Uuid,
+                        PasswordExpiration = user.PasswordExpiration,
+                        Role = new Role
+                        {
+                            Code = user.Role.Code
+                        },
+                        Permissions = user.Permissions.Select(p => new Permission
+                        {
+                            Action = p.Action,
+                            Controller = p.Controller
+                        }).ToList()
+                    };
+                    Authenticator.StoreAuthenticatedUser(authUser);
+                    return RedirectToAction("Index", "Home");
+                }
+            }
+            return View("ChangePassword", model);
+        }
         [HttpPost, AllowAnonymous]
         public ActionResult Reset(ResetPassword model)
         {
@@ -213,11 +268,17 @@ namespace MVC_Project.Web.Controllers
                 if (resultado != null)
                 {
                     resultado.Password = model.Password;
+                    DateTime todayDate = DateUtil.GetDateTimeNow();
+                    string daysToExpirateDate = ConfigurationManager.AppSettings["DaysToExpirateDate"];
+                    DateTime passwordExpiration = todayDate.AddDays(Int32.Parse(daysToExpirateDate));
+                    resultado.PasswordExpiration = passwordExpiration;
                     _userService.Update(resultado);
                     AuthUser authUser = new AuthUser
                     {
                         FirstName = resultado.FirstName,
                         LastName = resultado.LastName,
+                        Uuid = resultado.Uuid,
+                        PasswordExpiration = resultado.PasswordExpiration,
                         Email = resultado.Email,
                         Role = new Role
                         {

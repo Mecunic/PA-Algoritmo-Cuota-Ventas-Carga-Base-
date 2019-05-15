@@ -10,10 +10,12 @@ using MVC_Project.Web.Utils.Enums;
 using NHibernate;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Web;
 using System.Web.Mvc;
+using Utils;
 
 namespace MVC_Project.Web.Controllers
 {
@@ -156,9 +158,22 @@ namespace MVC_Project.Web.Controllers
         [HttpPost]
         public ActionResult Create(UserCreateViewModel userCreateViewModel)
         {
+            if(!String.IsNullOrWhiteSpace(userCreateViewModel.ConfirmPassword) 
+                && !String.IsNullOrWhiteSpace(userCreateViewModel.Password))
+            {
+                if(!userCreateViewModel.Password.Equals(userCreateViewModel.ConfirmPassword))
+                {
+                    ModelState.AddModelError("ConfirmPassword", "las cntraseñas no coinciden");
+                }
+            }
             if (ModelState.IsValid)
             {
                 // TODO: Add insert logic here
+                DateTime todayDate =  DateUtil.GetDateTimeNow();
+
+                string daysToExpirateDate = ConfigurationManager.AppSettings["DaysToExpirateDate"];
+                
+                DateTime passwordExpiration = todayDate.AddDays(Int32.Parse(daysToExpirateDate));
                 var user = new User
                 {
                     Uuid = Guid.NewGuid().ToString(),
@@ -166,6 +181,7 @@ namespace MVC_Project.Web.Controllers
                     LastName = userCreateViewModel.Apellidos,
                     Email = userCreateViewModel.Email,
                     Password = EncryptHelper.EncryptPassword(userCreateViewModel.Password),
+                    PasswordExpiration = passwordExpiration,
                     Role = new Role { Id = userCreateViewModel.Role },
                     CreatedAt = DateTime.Now,
                     UpdatedAt = DateTime.Now,
@@ -180,6 +196,7 @@ namespace MVC_Project.Web.Controllers
             }
             else
             {
+                userCreateViewModel.Roles = PopulateRoles();
                 return View("Create", userCreateViewModel);
             }
         }

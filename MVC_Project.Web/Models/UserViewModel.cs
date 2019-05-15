@@ -65,7 +65,12 @@ namespace MVC_Project.Web.Models
 
         [Required]
         [Display(Name = "Contraseña")]
+        [DataType(DataType.Password)]
         public string Password { get; set; }
+        [Required]
+        [Display(Name = "Confirmar contraseña")]
+        [DataType(DataType.Password)]
+        public string ConfirmPassword { get; set; }
 
         [Display(Name = "Rol")]
         [Required]

@@ -30,4 +30,16 @@ namespace MVC_Project.Web.Models
         [Required, MinLength(8)]
         public string NewPassword { get; set; }
     }
+
+    public class ChangePassword
+    {
+        [Display(Name = "Nueva contraseña")]
+        [DataType(DataType.Password)]
+        [Required, MinLength(8)]
+        public string Password { get; set; }
+        [Display(Name = "Confirmar nueva contraseña")]
+        [DataType(DataType.Password)]
+        [Required, MinLength(8)]
+        public string ConfirmPassword { get; set; }
+    }
 }

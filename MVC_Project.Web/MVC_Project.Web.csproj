@@ -1644,6 +1644,8 @@
     <Content Include="Scripts\template\plugins\dataTables\lang\es_MX.json" />
     <Content Include="Views\ReportService\ModalDetalles.cshtml" />
     <Content Include="Views\User\Import.cshtml" />
+    <Content Include="Views\Auth\ChangePassword.cshtml" />
+    <Content Include="Views\Shared\_SimpleLayout.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ExcelObjectMapping\ExcelObjectMapping.csproj">
