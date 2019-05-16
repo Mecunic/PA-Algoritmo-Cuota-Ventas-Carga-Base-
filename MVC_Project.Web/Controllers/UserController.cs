@@ -182,6 +182,8 @@ namespace MVC_Project.Web.Controllers
                     Password = EncryptHelper.EncryptPassword(userCreateViewModel.Password),
                     PasswordExpiration = passwordExpiration,
                     Role = new Role { Id = userCreateViewModel.Role },
+                    Username = userCreateViewModel.Username,
+                    Language = userCreateViewModel.Language,
                     CreatedAt = DateTime.Now,
                     UpdatedAt = DateTime.Now,
                     Status = true
@@ -225,6 +227,8 @@ namespace MVC_Project.Web.Controllers
                 user.FirstName = model.Name;
                 user.LastName = model.Apellidos;
                 user.Email = model.Email;
+                user.Username = model.Username;
+                user.Language = model.Language;
                 _userService.Update(user);
                 return RedirectToAction("Index");
             }
@@ -232,6 +236,20 @@ namespace MVC_Project.Web.Controllers
             {
                 return View(model);
             }
+        }
+        [HttpGet]
+        public ActionResult EditPassword()
+        {
+            return View();
+        }
+        [HttpPost, ValidateAntiForgeryToken]
+        public ActionResult EditPassword(ChangePasswordViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+
+            }
+            return View(model);
         }
 
         // GET: User/Delete/5

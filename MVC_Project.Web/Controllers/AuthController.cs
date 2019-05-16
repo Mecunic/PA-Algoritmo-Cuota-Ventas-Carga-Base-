@@ -229,7 +229,7 @@ namespace MVC_Project.Web.Controllers
         }
 
         [HttpPost, AllowAnonymous, ValidateAntiForgeryToken]
-        public ActionResult ChangePassword(ChangePassword model)
+        public ActionResult ChangePassword(ChangePasswordViewModel model)
         {
 
             AuthUser authenticatedUser = Authenticator.AuthenticatedUser;

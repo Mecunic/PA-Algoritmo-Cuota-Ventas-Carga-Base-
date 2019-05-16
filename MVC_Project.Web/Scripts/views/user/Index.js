@@ -1,8 +1,9 @@
-﻿var UserIndexControlador = function (htmlTableId, baseUrl, modalEditAction, modalDeleteAction) {
+﻿var UserIndexControlador = function (htmlTableId, baseUrl, modalEditAction, modalDeleteAction, modalEditPasswordId) {
     var self = this;
     this.htmlTable = $('#' + htmlTableId);
     this.baseUrl = baseUrl;
     this.dataTable = {};
+    this.modalEditPassword = $('#' + modalEditPasswordId);
 
     this.init = function () {
         self.dataTable = this.htmlTable.DataTable({
@@ -44,6 +45,7 @@
                             '<button class="btn btn-light btn-active" title="Activar" style="margin-left:5px;"><span class="far fa-square"></span></button>';
                         var buttons = '<div class="btn-group" role="group" aria-label="Opciones">' +
                             deshabilitar +
+                            '<button class="btn btn-light btn-edit"><span class="fas fa-user-edit"></span></button>' +
                             '<button class="btn btn-light btn-edit"><span class="fas fa-edit"></span></button>' +
                             '</div>';
                         return buttons;

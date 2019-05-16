@@ -10,7 +10,8 @@ namespace MVC_Project.Domain.Entities {
         public virtual string FirstName { get; set; }
         public virtual string LastName { get; set; }
         public virtual string Email { get; set; }
-        
+        public virtual string Username { get; set; }
+        public virtual string Language { get; set; }
         public virtual string Password { get; set; }
         public virtual DateTime? PasswordExpiration { get; set; }
         public virtual Role Role { get; set; }

@@ -63,6 +63,12 @@ namespace MVC_Project.Web.Models
         [Required]
         public string Email { get; set; }
 
+        [Display(Name = "Nombre de usuario")]
+        public string Username { get; set; }
+
+        [Display(Name = "Idioma")]
+        public string Language { get; set; }
+
         [Required]
         [Display(Name = "Contraseña")]
         [DataType(DataType.Password)]
@@ -99,8 +105,11 @@ namespace MVC_Project.Web.Models
 
         public string Email { get; set; }
 
-        [Display(Name = "Contraseña")]
-        public string Password { get; set; }
+        [Display(Name = "Nombre de usuario")]
+        public string Username { get; set; }
+
+        [Display(Name = "Idioma")]
+        public string Language { get; set; }
 
         [Display(Name = "Rol")]
         public int Role { get; set; }

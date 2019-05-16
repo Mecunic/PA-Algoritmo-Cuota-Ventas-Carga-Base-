@@ -32,7 +32,7 @@ namespace MVC_Project.Web.Models
         public string NewPassword { get; set; }
     }
 
-    public class ChangePassword
+    public class ChangePasswordViewModel
     {
         [Display(Name = "Nueva contraseña")]
         [PasswordSecured(ErrorMessage = "La nueva contraseña debe contener al menos un número, mayúsculas, minúsculas y caracteres especiales")]
