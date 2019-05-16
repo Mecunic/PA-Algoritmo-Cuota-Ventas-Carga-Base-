@@ -21,6 +21,7 @@ namespace MVC_Project.Data.Mappings {
             Map(x => x.ExpiraToken).Column("expira_token").Nullable();
             Map(x => x.Token).Column("token").Nullable();
             Map(x => x.ApiKey).Column("apikey").Nullable();
+            Map(x => x.Language).Column("language").Nullable();
             Map(x => x.ExpiraApiKey).Column("expira_apikey").Nullable();
             Map(x=>x.LastLoginAt).Column("last_login_at").Nullable();
             Map(x => x.PasswordExpiration).Column("password_expiration").Nullable();

@@ -20,6 +20,8 @@ namespace MVC_Project.Domain.Entities {
         public virtual DateTime? RemovedAt { get; set; }
         public virtual Boolean Status { get; set; }
         public virtual string Token { get; set; }
+
+        public virtual string Language { get; set; }
         public virtual DateTime? ExpiraToken { get; set; }
         public virtual string ApiKey { get; set; }
         public virtual DateTime? ExpiraApiKey { get; set; }

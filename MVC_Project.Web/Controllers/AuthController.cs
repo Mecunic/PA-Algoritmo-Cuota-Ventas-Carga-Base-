@@ -1,6 +1,7 @@
 ﻿using MVC_Project.Data.Helpers;
 using MVC_Project.Domain.Services;
 using MVC_Project.FlashMessages;
+using MVC_Project.Resources;
 using MVC_Project.Utils;
 using MVC_Project.Web.App_Code;
 using MVC_Project.Web.AuthManagement;
@@ -31,10 +32,6 @@ namespace MVC_Project.Web.Controllers
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
         {
-
-            //Thread.CurrentThread.CurrentCulture = CultureInfo.GetCultureInfo("es-MX");
-            //Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo("es-MX");
-
             ViewBag.ReturnUrl = returnUrl;
             return View();
         }
@@ -62,6 +59,7 @@ namespace MVC_Project.Web.Controllers
                         FirstName = user.FirstName,
                         LastName = user.LastName,
                         Email = user.Email,
+                        Language = user.Language,
                         Uuid = user.Uuid,
                         PasswordExpiration = user.PasswordExpiration,
                         Role = new Role
@@ -75,15 +73,16 @@ namespace MVC_Project.Web.Controllers
                             Controller = p.Controller,
                             Module = p.Module
                         }).ToList()
-                        //Permissions = user.Permissions.Select(p => new Permission
-                        //{
-                        //    Action = p.Action,
-                        //    Controller = p.Controller
-                        //}).ToList()
                     };
-                    //UnitOfWork unitOfWork = new UnitOfWork();
-                    //ISession session = unitOfWork.Session;
+                    
+                    //Set user in sesion
                     Authenticator.StoreAuthenticatedUser(authUser);
+                    
+                    //Set Language
+                    if (!string.IsNullOrEmpty(authUser.Language))
+                    {
+                        new LanguageMngr().SetLanguage(authUser.Language);
+                    }
 
                     if (user.PasswordExpiration.HasValue)
                     {
@@ -101,7 +100,7 @@ namespace MVC_Project.Web.Controllers
                             int daysLeft = ((TimeSpan)(passwordExpiration.Date - todayDate.Date)).Days + 1;
                             if(daysLeft <= daysBeforeExpireToNotify)
                             {
-                                string message = String.Format("Te queda(n) {0} día(s) para que tu contraseña expire", daysLeft);
+                                string message = String.Format(ViewLabels.PASSWORD_EXPIRATION_MESSAGE, daysLeft);
                                 MensajeFlashHandler.RegistrarMensaje(message, TiposMensaje.Info);
                             }
                         }

@@ -1598,7 +1598,6 @@
     <Content Include="Views\Error\ShowError.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Views\Base\" />
     <Folder Include="Views\Shared\EditorTemplates\" />
     <Folder Include="Views\UserServices\" />
   </ItemGroup>

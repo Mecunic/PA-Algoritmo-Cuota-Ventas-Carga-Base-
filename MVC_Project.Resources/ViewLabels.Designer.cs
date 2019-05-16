@@ -88,11 +88,56 @@ namespace MVC_Project.Resources {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Log Out.
+        /// </summary>
+        public static string AUTH_LOGOUT {
+            get {
+                return ResourceManager.GetString("AUTH_LOGOUT", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Welcome to Template Project.
+        /// </summary>
+        public static string HOME_TITLE {
+            get {
+                return ResourceManager.GetString("HOME_TITLE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Catalogs.
+        /// </summary>
+        public static string MODULE_CATALOGS {
+            get {
+                return ResourceManager.GetString("MODULE_CATALOGS", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a User Management.
+        /// </summary>
+        public static string MODULE_MANAGEMENT {
+            get {
+                return ResourceManager.GetString("MODULE_MANAGEMENT", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Password.
         /// </summary>
         public static string PASSWORD {
             get {
                 return ResourceManager.GetString("PASSWORD", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Your password will expire in {0} days.
+        /// </summary>
+        public static string PASSWORD_EXPIRATION_MESSAGE {
+            get {
+                return ResourceManager.GetString("PASSWORD_EXPIRATION_MESSAGE", resourceCulture);
             }
         }
         
