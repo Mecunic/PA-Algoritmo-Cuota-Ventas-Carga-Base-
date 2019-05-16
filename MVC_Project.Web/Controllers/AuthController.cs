@@ -2,6 +2,7 @@
 using MVC_Project.Domain.Services;
 using MVC_Project.FlashMessages;
 using MVC_Project.Utils;
+using MVC_Project.Web.App_Code;
 using MVC_Project.Web.AuthManagement;
 using MVC_Project.Web.AuthManagement.Models;
 using MVC_Project.Web.Models;
@@ -9,7 +10,9 @@ using NHibernate;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Globalization;
 using System.Linq;
+using System.Threading;
 using System.Web.Mvc;
 
 namespace MVC_Project.Web.Controllers
@@ -28,6 +31,10 @@ namespace MVC_Project.Web.Controllers
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
         {
+
+            //Thread.CurrentThread.CurrentCulture = CultureInfo.GetCultureInfo("es-MX");
+            //Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo("es-MX");
+
             ViewBag.ReturnUrl = returnUrl;
             return View();
         }
@@ -347,6 +354,14 @@ namespace MVC_Project.Web.Controllers
                 .Select(k => new { propertyName = k, errorMessage = ModelState[k].Errors[0].ErrorMessage })
             });
 
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public ActionResult ChangeLanguage(string lang)
+        {
+            new LanguageMngr().SetLanguage(lang);
+            return RedirectToAction("Index", "Home");
         }
     }
 }

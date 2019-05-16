@@ -25,6 +25,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExcelObjectMapping", "Excel
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MVC_Project.FlashMessages", "MVC_Project.FlashMessages\MVC_Project.FlashMessages.csproj", "{0CE135CB-4DC5-449D-BE1D-28982188B260}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MVC_Project.Resources", "MVC_Project.Resources\MVC_Project.Resources.csproj", "{892E216B-0E16-45CE-856A-656FEBC50E52}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -75,6 +77,10 @@ Global
 		{0CE135CB-4DC5-449D-BE1D-28982188B260}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0CE135CB-4DC5-449D-BE1D-28982188B260}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0CE135CB-4DC5-449D-BE1D-28982188B260}.Release|Any CPU.Build.0 = Release|Any CPU
+		{892E216B-0E16-45CE-856A-656FEBC50E52}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{892E216B-0E16-45CE-856A-656FEBC50E52}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{892E216B-0E16-45CE-856A-656FEBC50E52}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{892E216B-0E16-45CE-856A-656FEBC50E52}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

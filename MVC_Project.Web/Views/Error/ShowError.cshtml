@@ -1,0 +1,8 @@
+﻿
+<h3 class="text-danger">@ViewBag.ErrorMessage</h3>
+
+@if (ViewBag.SignIn != null)
+{ 
+    <h4>@Html.ActionLink("Reintentar", "SignOut", "Account", null, null).</h4>
+}
+
