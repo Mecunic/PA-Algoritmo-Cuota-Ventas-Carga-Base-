@@ -168,7 +168,6 @@ namespace MVC_Project.Web.Controllers
             }
             if (ModelState.IsValid)
             {
-                // TODO: Add insert logic here
                 DateTime todayDate =  DateUtil.GetDateTimeNow();
 
                 string daysToExpirateDate = ConfigurationManager.AppSettings["DaysToExpirateDate"];
