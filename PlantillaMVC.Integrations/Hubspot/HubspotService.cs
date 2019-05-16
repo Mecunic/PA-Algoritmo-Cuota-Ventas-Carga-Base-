@@ -183,6 +183,7 @@ namespace PlantillaMVC.Integrations
         {
             RestRequest request = new RestRequest("/owners/v2/owners", Method.GET);
             request.AddParameter("hapikey", apiKey);
+            request.AddParameter("includeInactive", true);
             IRestResponse response = client.Execute(request);
             IList<HubspotOwnerModel> result = JsonConvert.DeserializeObject<IList<HubspotOwnerModel>>(response.Content);
             return result;
