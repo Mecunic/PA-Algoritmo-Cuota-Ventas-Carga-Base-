@@ -85,9 +85,11 @@
     <Compile Include="Class1.cs" />
     <Compile Include="Helpers\GenericUnitOfWork.cs" />
     <Compile Include="Helpers\UnitOfWork.cs" />
+    <Compile Include="Mappings\ConfigParamMap.cs" />
     <Compile Include="Mappings\CustomerMap.cs" />
     <Compile Include="Mappings\OrderItemsMap.cs" />
     <Compile Include="Mappings\OrderMap.cs" />
+    <Compile Include="Mappings\PaymentMap.cs" />
     <Compile Include="Mappings\PermissionMap.cs" />
     <Compile Include="Mappings\ProductoMap.cs" />
     <Compile Include="Mappings\RoleMap.cs" />

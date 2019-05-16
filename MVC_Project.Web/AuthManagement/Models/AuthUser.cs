@@ -7,6 +7,7 @@ namespace MVC_Project.Web.AuthManagement.Models
 {
     public class AuthUser
     {
+        public int Id { get; set; }
         public string FirstName { get; set; }
         public string Uuid { get; set; }
         public string LastName { get; set; }

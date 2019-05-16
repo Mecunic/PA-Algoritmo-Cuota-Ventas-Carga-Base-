@@ -92,7 +92,8 @@ namespace MVC_Project.API.Controllers.V1
                 user.Email = request.Email;
                 user.Password = EncryptHelper.EncryptPassword(request.Password);
                 user.Uuid = Guid.NewGuid().ToString();
-                user.Role = new Role { Id = 3 }; //ROL DE APP
+                //TODO:ESTO ESTA MAL, SE DEBE TRAER POR CODIGO DE ROLE
+                user.Role = new Role { Id = 3 }; //ROL DE APP 
                 user.Permissions = _roleService.GetById(user.Role.Id).Permissions.ToList();
                 user.CreatedAt = DateTime.Now;
                 user.UpdatedAt = DateTime.Now;

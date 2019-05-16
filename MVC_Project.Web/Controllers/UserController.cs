@@ -168,7 +168,6 @@ namespace MVC_Project.Web.Controllers
             }
             if (ModelState.IsValid)
             {
-                // TODO: Add insert logic here
                 DateTime todayDate =  DateUtil.GetDateTimeNow();
 
                 string daysToExpirateDate = ConfigurationManager.AppSettings["DaysToExpirateDate"];
@@ -185,6 +184,7 @@ namespace MVC_Project.Web.Controllers
                     Role = new Role { Id = userCreateViewModel.Role },
                     CreatedAt = DateTime.Now,
                     UpdatedAt = DateTime.Now,
+                    Status = true
                 };
                 var role = _roleService.GetById(user.Role.Id);
                 foreach (var permission in role.Permissions)

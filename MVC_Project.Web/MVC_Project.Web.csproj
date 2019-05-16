@@ -180,6 +180,7 @@
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\DashboardsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\PaymentsController.cs" />
     <Compile Include="Controllers\ReportServiceController.cs" />
     <Compile Include="Controllers\RoleController.cs" />
     <Compile Include="Controllers\UserController.cs" />
@@ -195,6 +196,7 @@
     <Compile Include="Models\DataTableModel.cs" />
     <Compile Include="Models\ExcelImport\UserImport.cs" />
     <Compile Include="Models\JQueryDataTableParams.cs" />
+    <Compile Include="Models\PaymentViewModel.cs" />
     <Compile Include="Models\ReportOrdersViewModel.cs" />
     <Compile Include="Models\RoleViewModel.cs" />
     <Compile Include="Models\RolPermission.cs" />
@@ -1190,6 +1192,12 @@
     <Content Include="Images\p6.jpg" />
     <Content Include="Images\p7.jpg" />
     <Content Include="Images\p8.jpg" />
+    <Content Include="Images\payments\cards1.png" />
+    <Content Include="Images\payments\cards2.png" />
+    <Content Include="Images\payments\cvv.png" />
+    <Content Include="Images\payments\openpay.png" />
+    <Content Include="Images\payments\radio_on.png" />
+    <Content Include="Images\payments\security.png" />
     <Content Include="Images\profile.jpg" />
     <Content Include="Images\profile_big.jpg" />
     <Content Include="Images\profile_small.jpg" />
@@ -1632,8 +1640,6 @@
     <Content Include="Views\Role\Index.cshtml" />
     <Content Include="Views\Role\Create.cshtml" />
     <Content Include="Views\Role\EditorTemplates\PermissionViewModel.cshtml" />
-    <None Include="Properties\PublishProfiles\ensi-template - FTP.pubxml" />
-    <None Include="Properties\PublishProfiles\ensi-template - Web Deploy.pubxml" />
     <Content Include="Views\Dashboards\Dashboard_1.cshtml" />
     <Content Include="Views\Dashboards\Dashboard_2.cshtml" />
     <Content Include="Views\Dashboards\Dashboard_3.cshtml" />
@@ -1651,6 +1657,10 @@
     <Content Include="Views\UserPermissions\Edit.cshtml" />
     <Content Include="Scripts\template\plugins\dataTables\lang\es_MX.json" />
     <Content Include="Views\ReportService\ModalDetalles.cshtml" />
+    <None Include="Properties\PublishProfiles\ensi-template - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\ensi-template - Web Deploy.pubxml" />
+    <Content Include="Views\Payments\CreateTDC.cshtml" />
+    <Content Include="Views\Payments\CreateSPEI.cshtml" />
     <Content Include="Views\User\Import.cshtml" />
     <Content Include="Views\Auth\ChangePassword.cshtml" />
     <Content Include="Views\Shared\_SimpleLayout.cshtml" />
@@ -1667,6 +1677,10 @@
     <ProjectReference Include="..\MVC_Project.Domain\MVC_Project.Domain.csproj">
       <Project>{AADE4A05-4CC5-4465-BD0F-B681FA698C97}</Project>
       <Name>MVC_Project.Domain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MVC_Project.Integrations\MVC_Project.Integrations.csproj">
+      <Project>{E616D7FC-E5A8-4E69-91E6-FF0760920CE8}</Project>
+      <Name>MVC_Project.Integrations</Name>
     </ProjectReference>
     <ProjectReference Include="..\MVC_Project.FlashMessages\MVC_Project.FlashMessages.csproj">
       <Project>{0ce135cb-4dc5-449d-be1d-28982188b260}</Project>
