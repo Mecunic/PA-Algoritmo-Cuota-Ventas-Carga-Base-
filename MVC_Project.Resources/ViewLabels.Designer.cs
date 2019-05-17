@@ -115,11 +115,38 @@ namespace MVC_Project.Resources {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Dashboards.
+        /// </summary>
+        public static string MODULE_DASHBOARDS {
+            get {
+                return ResourceManager.GetString("MODULE_DASHBOARDS", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a User Management.
         /// </summary>
         public static string MODULE_MANAGEMENT {
             get {
                 return ResourceManager.GetString("MODULE_MANAGEMENT", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Payments.
+        /// </summary>
+        public static string MODULE_PAYMENTS {
+            get {
+                return ResourceManager.GetString("MODULE_PAYMENTS", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Reports.
+        /// </summary>
+        public static string MODULE_REPORTS {
+            get {
+                return ResourceManager.GetString("MODULE_REPORTS", resourceCulture);
             }
         }
         

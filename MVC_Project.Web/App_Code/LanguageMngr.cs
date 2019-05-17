@@ -25,7 +25,11 @@ namespace MVC_Project.Web.App_Code
         {
             return AvailableLanguages[0].LanguageCultureName;
         }
-        public void SetLanguage(string lang)
+        public static void SetDefaultLanguage()
+        {
+            SetLanguage(GetDefaultLanguage());
+        }
+        public static void SetLanguage(string lang)
         {
             try
             {

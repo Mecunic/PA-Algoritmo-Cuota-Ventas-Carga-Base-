@@ -153,4 +153,13 @@
   <data name="MODULE_MANAGEMENT" xml:space="preserve">
     <value>User Management</value>
   </data>
+  <data name="MODULE_DASHBOARDS" xml:space="preserve">
+    <value>Dashboards</value>
+  </data>
+  <data name="MODULE_PAYMENTS" xml:space="preserve">
+    <value>Payments</value>
+  </data>
+  <data name="MODULE_REPORTS" xml:space="preserve">
+    <value>Reports</value>
+  </data>
 </root>

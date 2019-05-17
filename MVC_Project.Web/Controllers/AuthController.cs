@@ -77,11 +77,12 @@ namespace MVC_Project.Web.Controllers
                     
                     //Set user in sesion
                     Authenticator.StoreAuthenticatedUser(authUser);
-                    
+
                     //Set Language
+                    LanguageMngr.SetDefaultLanguage();
                     if (!string.IsNullOrEmpty(authUser.Language))
                     {
-                        new LanguageMngr().SetLanguage(authUser.Language);
+                        LanguageMngr.SetLanguage(authUser.Language);
                     }
 
                     if (user.PasswordExpiration.HasValue)
@@ -359,7 +360,7 @@ namespace MVC_Project.Web.Controllers
         [AllowAnonymous]
         public ActionResult ChangeLanguage(string lang)
         {
-            new LanguageMngr().SetLanguage(lang);
+            LanguageMngr.SetLanguage(lang);
             return RedirectToAction("Index", "Home");
         }
     }

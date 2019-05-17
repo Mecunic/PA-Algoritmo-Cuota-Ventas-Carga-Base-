@@ -64,7 +64,7 @@
             @if (user.HasAccessToModule("payments"))
             {
                 <li class="@Html.IsModuleSelected(user, "payments")">
-                    <a href="#"><i class="fa fa-money-bill"></i> <span class="nav-label" data-i18n="nav.dashboard">Pagos</span> <span class="fain arrow"></span></a>
+                    <a href="#"><i class="fa fa-money-bill"></i> <span class="nav-label" data-i18n="nav.dashboard">@ViewLabels.MODULE_PAYMENTS</span> <span class="fain arrow"></span></a>
                     <ul class="nav nav-second-level collapse @Html.IsSelected(controller: "Payments", cssClass: "in")">
                         <li class="@Html.IsSelected(action: "CreateTDC")"><a href="@Url.Action("CreateTDC", "Payments")">Pago con TDC</a></li>
                         <li class="@Html.IsSelected(action: "CreateSPEI")"><a href="@Url.Action("CreateSPEI", "Payments")">Pago SPEI</a></li>
@@ -75,7 +75,7 @@
             @if (user.HasAccessToModule("reports"))
             {
                 <li class="@Html.IsModuleSelected(user, "reports")">
-                    <a href="#"><i class="fa fa-bar-chart-o"></i> <span class="nav-label" data-i18n="nav.dashboard">Reportes</span> <span class="fain arrow"></span></a>
+                    <a href="#"><i class="fa fa-bar-chart-o"></i> <span class="nav-label" data-i18n="nav.dashboard">@ViewLabels.MODULE_REPORTS</span> <span class="fain arrow"></span></a>
                     <ul class="nav nav-second-level collapse @Html.IsSelected(controller: "Reports", cssClass: "in")">
                         <li class="@Html.IsSelected(action: "Dashboard_1")"><a href="@Url.Action("Index", "ReportService")">Reporte Ordenes</a></li>
                         <li class="@Html.IsSelected(action: "Dashboard_2")"><a href="@Url.Action("Report_2", "Dashboards")">Reporte 2</a></li>
@@ -86,7 +86,7 @@
             @if (user.HasAccessToModule("dashboards"))
             {
                 <li class="@Html.IsModuleSelected(user, "dashboards")">
-                    <a href="@Url.Action("Dashboard_1", "Dashboards")"><i class="fa fa-pie-chart"></i> <span class="nav-label" data-i18n="nav.dashboard">Dashboards</span> <span class="fain arrow"></span></a>
+                    <a href="@Url.Action("Dashboard_1", "Dashboards")"><i class="fa fa-pie-chart"></i> <span class="nav-label" data-i18n="nav.dashboard">@ViewLabels.MODULE_DASHBOARDS</span> <span class="fain arrow"></span></a>
                     <ul class="nav nav-second-level collapse @Html.IsSelected(controller: "Dashboards", cssClass: "in")">
                         <li class="@Html.IsSelected(action: "Dashboard_1")"><a href="@Url.Action("Dashboard_1", "Dashboards")">Dashboard v.1</a></li>
                         <li class="@Html.IsSelected(action: "Dashboard_2")"><a href="@Url.Action("Dashboard_2", "Dashboards")">Dashboard v.2</a></li>

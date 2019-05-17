@@ -38,16 +38,9 @@ namespace MVC_Project.Web.Controllers
             {
                 var userLanguage = Request.UserLanguages;
                 var userLang = userLanguage != null ? userLanguage[0] : "";
-                if (userLang != "")
-                {
-                    lang = userLang;
-                }
-                else
-                {
-                    lang = LanguageMngr.GetDefaultLanguage();
-                }
+                lang = string.IsNullOrEmpty(userLang) ? LanguageMngr.GetDefaultLanguage() : userLang;
             }
-            new LanguageMngr().SetLanguage(lang);
+            LanguageMngr.SetLanguage(lang);
             return base.BeginExecuteCore(callback, state);
         }
     }
