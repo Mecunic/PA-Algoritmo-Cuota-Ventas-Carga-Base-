@@ -167,6 +167,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="App_Code\LanguageMngr.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
@@ -179,6 +180,7 @@
     <Compile Include="Controllers\AuthController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\DashboardsController.cs" />
+    <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PaymentsController.cs" />
     <Compile Include="Controllers\ReportServiceController.cs" />
@@ -1595,9 +1597,11 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\User\EditPassword.cshtml" />
     <Content Include="Views\Shared\_ModalLayout.cshtml" />
+    <Content Include="Views\Error\GenericError.cshtml" />
+    <Content Include="Views\Error\ShowError.cshtml" />
+    <Content Include="Views\Payments\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Views\Base\" />
     <Folder Include="Views\Shared\EditorTemplates\" />
     <Folder Include="Views\UserServices\" />
   </ItemGroup>
@@ -1688,6 +1692,10 @@
     <ProjectReference Include="..\MVC_Project.FlashMessages\MVC_Project.FlashMessages.csproj">
       <Project>{0ce135cb-4dc5-449d-be1d-28982188b260}</Project>
       <Name>MVC_Project.FlashMessages</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MVC_Project.Resources\MVC_Project.Resources.csproj">
+      <Project>{892e216b-0e16-45ce-856a-656febc50e52}</Project>
+      <Name>MVC_Project.Resources</Name>
     </ProjectReference>
     <ProjectReference Include="..\MVC_Project.Utils\MVC_Project.Utils.csproj">
       <Project>{23B89C18-68C5-449F-ADED-E51A86DA6B52}</Project>

@@ -82,7 +82,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
     <Compile Include="Helpers\GenericUnitOfWork.cs" />
     <Compile Include="Helpers\UnitOfWork.cs" />
     <Compile Include="Mappings\ConfigParamMap.cs" />

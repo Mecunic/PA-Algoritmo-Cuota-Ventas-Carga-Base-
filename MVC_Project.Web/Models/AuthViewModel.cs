@@ -1,16 +1,19 @@
 ﻿using MVC_Project.Web.CustomAttributes.Validations;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Web;
+using MVC_Project.Resources;
 
 namespace MVC_Project.Web.Models
 {
     public class AuthViewModel
     {
-        [Display(Name = "Usuario")]
-        [Required, EmailAddress]
+        [Display(Name = "USERNAME", ResourceType = typeof(ViewLabels))]
+        [Required(ErrorMessageResourceType = typeof(ViewLabels), ErrorMessageResourceName = "UsernameRequired"), EmailAddress]
         public string Email { get; set; }
 
-        [Display(Name = "Contraseña")]
-        [Required, MinLength(8)]
+        [Display(Name = "PASSWORD", ResourceType = typeof(ViewLabels))]
+        [Required(ErrorMessageResourceType = typeof(ViewLabels), ErrorMessageResourceName = "PasswordRequired"), MinLength(8)]
         public string Password { get; set; }
     }
     public class RecoverPasswordViewModel

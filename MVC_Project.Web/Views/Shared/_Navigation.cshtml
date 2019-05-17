@@ -24,7 +24,7 @@
                     <li><a href="@Url.Action("Contacts", "AppViews")">Contacts</a></li>
                     <li><a href="@Url.Action("Inbox", "Mailbox")">Mailbox</a></li>*@
                         <li class="divider"></li>
-                        <li><a href="@Url.Action("Logout", "Auth")">Cerrar Sesi&oacute;n</a></li>
+                        <li><a href="@Url.Action("Logout", "Auth")">@ViewLabels.AUTH_LOGOUT</a></li>
                     </ul>
                 </div>
                 <div class="logo-element">
@@ -34,7 +34,7 @@
             @if (user.HasAccessToModule("admin"))
             {
                 <li class="@Html.IsModuleSelected(user, "admin")">
-                    <a href="#"><i class="fa fa-th-large"></i> <span class="nav-label" data-i18n="nav.dashboard">Administración</span> <span class="fain arrow"></span></a>
+                    <a href="#"><i class="fa fa-th-large"></i> <span class="nav-label" data-i18n="nav.dashboard">@ViewLabels.MODULE_MANAGEMENT</span> <span class="fain arrow"></span></a>
                     @if (user.HasAccessController("User"))
                     {
                         <ul class="nav nav-second-level collapse @Html.IsSelected(controller: "User", cssClass: "in")">
@@ -53,7 +53,7 @@
             @if (user.HasAccessToModule("catalogs"))
             {
                 <li class="@Html.IsModuleSelected(user, "catalogs")">
-                    <a href="#"><i class="fa fa-table"></i> <span class="nav-label" data-i18n="nav.dashboard">Catálogos</span> <span class="fain arrow"></span></a>
+                    <a href="#"><i class="fa fa-table"></i> <span class="nav-label" data-i18n="nav.dashboard">@ViewLabels.MODULE_CATALOGS</span> <span class="fain arrow"></span></a>
                     <ul class="nav nav-second-level collapse @Html.IsSelected(controller: "Catalogs", cssClass: "in")">
                         <li class="@Html.IsSelected(action: "Dashboard_1")"><a href="@Url.Action("Report_1", "Dashboards")">Catálogo 1</a></li>
                         <li class="@Html.IsSelected(action: "Dashboard_2")"><a href="@Url.Action("Report_2", "Dashboards")">Catálogo 2</a></li>
@@ -64,8 +64,9 @@
             @if (user.HasAccessToModule("payments"))
             {
                 <li class="@Html.IsModuleSelected(user, "payments")">
-                    <a href="#"><i class="fa fa-money-bill"></i> <span class="nav-label" data-i18n="nav.dashboard">Pagos</span> <span class="fain arrow"></span></a>
+                    <a href="#"><i class="fa fa-money-bill"></i> <span class="nav-label" data-i18n="nav.dashboard">@ViewLabels.MODULE_PAYMENTS</span> <span class="fain arrow"></span></a>
                     <ul class="nav nav-second-level collapse @Html.IsSelected(controller: "Payments", cssClass: "in")">
+                        <li class="@Html.IsSelected(action: "Index")"><a href="@Url.Action("Index", "Payments")">Mis Pagos</a></li>
                         <li class="@Html.IsSelected(action: "CreateTDC")"><a href="@Url.Action("CreateTDC", "Payments")">Pago con TDC</a></li>
                         <li class="@Html.IsSelected(action: "CreateSPEI")"><a href="@Url.Action("CreateSPEI", "Payments")">Pago SPEI</a></li>
                     </ul>
@@ -75,7 +76,7 @@
             @if (user.HasAccessToModule("reports"))
             {
                 <li class="@Html.IsModuleSelected(user, "reports")">
-                    <a href="#"><i class="fa fa-bar-chart-o"></i> <span class="nav-label" data-i18n="nav.dashboard">Reportes</span> <span class="fain arrow"></span></a>
+                    <a href="#"><i class="fa fa-bar-chart-o"></i> <span class="nav-label" data-i18n="nav.dashboard">@ViewLabels.MODULE_REPORTS</span> <span class="fain arrow"></span></a>
                     <ul class="nav nav-second-level collapse @Html.IsSelected(controller: "Reports", cssClass: "in")">
                         <li class="@Html.IsSelected(action: "Dashboard_1")"><a href="@Url.Action("Index", "ReportService")">Reporte Ordenes</a></li>
                         <li class="@Html.IsSelected(action: "Dashboard_2")"><a href="@Url.Action("Report_2", "Dashboards")">Reporte 2</a></li>
@@ -86,7 +87,7 @@
             @if (user.HasAccessToModule("dashboards"))
             {
                 <li class="@Html.IsModuleSelected(user, "dashboards")">
-                    <a href="@Url.Action("Dashboard_1", "Dashboards")"><i class="fa fa-pie-chart"></i> <span class="nav-label" data-i18n="nav.dashboard">Dashboards</span> <span class="fain arrow"></span></a>
+                    <a href="@Url.Action("Dashboard_1", "Dashboards")"><i class="fa fa-pie-chart"></i> <span class="nav-label" data-i18n="nav.dashboard">@ViewLabels.MODULE_DASHBOARDS</span> <span class="fain arrow"></span></a>
                     <ul class="nav nav-second-level collapse @Html.IsSelected(controller: "Dashboards", cssClass: "in")">
                         <li class="@Html.IsSelected(action: "Dashboard_1")"><a href="@Url.Action("Dashboard_1", "Dashboards")">Dashboard v.1</a></li>
                         <li class="@Html.IsSelected(action: "Dashboard_2")"><a href="@Url.Action("Dashboard_2", "Dashboards")">Dashboard v.2</a></li>

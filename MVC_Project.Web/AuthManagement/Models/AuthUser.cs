@@ -12,6 +12,7 @@ namespace MVC_Project.Web.AuthManagement.Models
         public string Uuid { get; set; }
         public string LastName { get; set; }
         public string Email { get; set; }
+        public string Language { get; set; }
         public Role Role { get; set; }
         public IList<Permission> Permissions { get; set; }
 

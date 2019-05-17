@@ -27,6 +27,14 @@ namespace MVC_Project.Web.Controllers
         }
 
         [Authorize]
+        public ActionResult Index()
+        {
+            PaymentViewModel model = new PaymentViewModel();
+
+            return View(model);
+        }
+
+        [Authorize]
         public ActionResult CreateTDC()
         {
             PaymentViewModel model = new PaymentViewModel();
