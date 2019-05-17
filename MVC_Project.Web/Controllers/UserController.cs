@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
+using System.Net;
 using System.Runtime.CompilerServices;
 using System.Web;
 using System.Web.Mvc;
@@ -238,16 +239,49 @@ namespace MVC_Project.Web.Controllers
             }
         }
         [HttpGet]
-        public ActionResult EditPassword()
+        public ActionResult EditPassword(string uuid)
         {
-            return View();
+            UserChangePasswordViewModel model = new UserChangePasswordViewModel {
+                Uuid = uuid,
+                Password = null,
+                ConfirmPassword = null
+            };
+            return View(model);
         }
         [HttpPost, ValidateAntiForgeryToken]
-        public ActionResult EditPassword(ChangePasswordViewModel model)
+        public ActionResult EditPassword(UserChangePasswordViewModel model)
         {
+            var user = _userService.FindBy(e => e.Uuid == model.Uuid).First();
+
+            ModelState.AddModelError("Password", "Prueba error de contraseña");
+
             if (ModelState.IsValid)
             {
-
+                if (user != null)
+                {
+                    user.Password = EncryptHelper.EncryptPassword(model.Password);
+                    DateTime todayDate = DateUtil.GetDateTimeNow();
+                    string daysToExpirateDate = ConfigurationManager.AppSettings["DaysToExpirateDate"];
+                    DateTime passwordExpiration = todayDate.AddDays(Int32.Parse(daysToExpirateDate));
+                    user.PasswordExpiration = passwordExpiration;
+                    _userService.Update(user);
+                    
+                }
+                if (Request.IsAjaxRequest())
+                {
+                    return Json(model);
+                }
+                return RedirectToAction("Index");
+            }
+            if (Request.IsAjaxRequest())
+            {
+                Response.StatusCode = 422;
+                return Json(new
+                {
+                    issue = model,
+                    errors = ModelState.Keys.Where(k => ModelState[k].Errors.Count > 0)
+                    .Select(k => new { propertyName = k, errorMessage = ModelState[k].Errors[0].ErrorMessage })
+                });
             }
             return View(model);
         }
