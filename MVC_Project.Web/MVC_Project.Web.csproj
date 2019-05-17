@@ -1596,6 +1596,7 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Error\GenericError.cshtml" />
     <Content Include="Views\Error\ShowError.cshtml" />
+    <Content Include="Views\Payments\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\Shared\EditorTemplates\" />
