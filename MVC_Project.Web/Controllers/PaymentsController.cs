@@ -35,6 +35,126 @@ namespace MVC_Project.Web.Controllers
         }
 
         [Authorize]
+        public ActionResult Checkout()
+        {
+            PaymentViewModel model = new PaymentViewModel();
+
+            //Simulado
+            model.OrderId = Guid.NewGuid().ToString().Substring(24);
+            model.Amount = Convert.ToInt32((new Random().NextDouble() * 10000));
+
+            return View(model);
+        }
+
+        [Authorize]
+        public ActionResult CreatePayment(PaymentViewModel model)
+        {
+            OpenPayService paymentProviderService = new OpenPayService();
+            PaymentModel payment = new PaymentModel()
+            {
+                ClientId = "avfwrv0q9x2binx9odgf",
+                OrderId = model.OrderId,
+                Amount = model.Amount,
+                Description = String.Format("Payment for Order Id # {0}", model.OrderId),
+                TokenId = model.TokenId,
+                DeviceSessionId = model.DeviceSessionId
+            };
+            model.ChargeSuccess = false;
+
+            #region Pagos con SPEI
+            if (model.PaymentMethod == PaymentMethod.BANK_ACCOUNT)
+            {
+                payment = paymentProviderService.CreateBankTransferPayment(payment);
+                model.ChargeSuccess = payment.ChargeSuccess;
+                if (payment.ChargeSuccess)
+                {
+                    //Primero guardar en BD
+                    Payment paymentBO = new Payment();
+                    paymentBO.CreationDate = DateUtil.GetDateTimeNow();
+                    paymentBO.User = new User() { Id = Authenticator.AuthenticatedUser.Id };
+                    paymentBO.Amount = model.Amount;
+                    paymentBO.OrderId = model.OrderId;
+                    paymentBO.ProviderId = payment.Id;
+                    paymentBO.Status = payment.Status;
+                    paymentBO.DueDate = payment.DueDate;
+                    paymentBO.Method = PaymentMethod.BANK_ACCOUNT;
+                    paymentBO.TransactionType = PaymentType.CHARGE;
+
+                    paymentBO.ConfirmationDate = null;
+
+                    _paymentService.Create(paymentBO);
+
+                    model.Id = payment.Id;
+                    model.Description = payment.Description;
+                    model.JsonData = payment.ResultData;
+                    model.DueDate = payment.DueDate;
+                    model.PaymentCardURL = payment.PaymentCardURL;
+                    model.BankName = payment.PaymentMethod.BankName;
+                    model.Clabe = payment.PaymentMethod.Clabe;
+                    model.Reference = payment.PaymentMethod.Reference;
+                    model.Name = payment.PaymentMethod.Name;
+                    model.Agreement = payment.PaymentMethod.Agreement;
+                }
+
+            }
+            #endregion
+
+            #region Pagos con Tarjeta
+            if (model.PaymentMethod == PaymentMethod.CARD)
+            {
+                //Primero en BD
+                Payment paymentBO = new Payment();
+                paymentBO.CreationDate = DateUtil.GetDateTimeNow();
+                paymentBO.User = new User() { Id = Authenticator.AuthenticatedUser.Id };
+                paymentBO.Amount = model.Amount;
+                paymentBO.OrderId = model.OrderId;
+                paymentBO.Status = PaymentStatus.IN_PROGRESS;
+                paymentBO.Method = PaymentMethod.CARD;
+                paymentBO.TransactionType = PaymentType.CHARGE;
+
+                paymentBO.ConfirmationDate = null;
+                _paymentService.Create(paymentBO);
+
+                //Luego cobrar
+                payment = paymentProviderService.CreateTDCPayment(payment);
+                model.ChargeSuccess = payment.ChargeSuccess;
+
+                if (payment.ChargeSuccess)
+                {
+                    //Luego actualizar
+                    paymentBO.ProviderId = payment.Id;
+                    paymentBO.Status = payment.Status;
+                    paymentBO.DueDate = payment.DueDate;
+                    paymentBO.LogData = payment.ResultData;
+                    _paymentService.Update(paymentBO);
+
+                    model.Id = payment.Id;
+                    model.Description = payment.Description;
+                    model.JsonData = payment.ResultData;
+                    model.DueDate = payment.DueDate;
+                    model.PaymentCardURL = payment.PaymentCardURL;
+                }
+                else
+                {
+                    paymentBO.Status = PaymentStatus.ERROR;
+                    paymentBO.LogData = payment.ResultData;
+                    _paymentService.Update(paymentBO);
+                    model.Description = payment.ResultData;
+                }
+            }
+            #endregion
+
+            if (!model.ChargeSuccess)
+            {
+                model.Description = payment.ResultData;
+            }
+
+            return View("CheckoutSuccess", model);
+        }
+
+        [Authorize]
+        [ValidateAntiForgeryToken]
+        [HttpPost]
         public ActionResult CreateTDC()
         {
             PaymentViewModel model = new PaymentViewModel();
@@ -130,7 +250,7 @@ namespace MVC_Project.Web.Controllers
             paymentBO.OrderId = model.OrderId;
             paymentBO.Status = PaymentStatus.IN_PROGRESS;
             paymentBO.Method = PaymentMethod.CARD;
-            paymentBO.TransactionType = "charge";
+            paymentBO.TransactionType = PaymentType.CHARGE;
 
             paymentBO.ConfirmationDate = null;
             _paymentService.Create(paymentBO);
@@ -153,7 +273,8 @@ namespace MVC_Project.Web.Controllers
                 model.JsonData = payment.ResultData;
                 model.DueDate = payment.DueDate;
                 model.PaymentCardURL = payment.PaymentCardURL;
-            } else
+            }
+            else
             {
                 paymentBO.Status = PaymentStatus.ERROR;
                 paymentBO.LogData = payment.ResultData;

@@ -11,21 +11,27 @@ namespace MVC_Project.Integrations.PaymentsOpenPay
 {
     public class OpenPayService
     {
+        bool IsProductionEnvironment;
+        string PublicKey;
         string OpenpayKey;
         string MerchantId;
         string DashboardURL;
-
+        string Agreement;
+        
         public OpenPayService()
         {
+            IsProductionEnvironment = Convert.ToBoolean(System.Configuration.ConfigurationManager.AppSettings["Payments.IsProductionEnvironment"]);
+            PublicKey = System.Configuration.ConfigurationManager.AppSettings["Payments.PublicKey"];
             OpenpayKey = System.Configuration.ConfigurationManager.AppSettings["Payments.OpenpayKey"];
             MerchantId = System.Configuration.ConfigurationManager.AppSettings["Payments.MerchantId"];
             DashboardURL = System.Configuration.ConfigurationManager.AppSettings["Payments.DashboardURL"];
+            Agreement = System.Configuration.ConfigurationManager.AppSettings["Payments.OpenpayAgreement"];
         }
 
         public PaymentModel CreateBankTransferPayment(PaymentModel payment)
         {
             OpenpayAPI openpayAPI = new OpenpayAPI(OpenpayKey, MerchantId);
-            openpayAPI.Production = false;
+            openpayAPI.Production = IsProductionEnvironment;
             try
             {
                 Customer customer = openpayAPI.CustomerService.Get(payment.ClientId);
@@ -57,7 +63,7 @@ namespace MVC_Project.Integrations.PaymentsOpenPay
                     Clabe = charge.PaymentMethod.CLABE,
                     Reference = charge.PaymentMethod.Reference,
                     Name = charge.PaymentMethod.Name,
-                    //Agreement = charge.PaymentMethod.
+                    Agreement = Agreement
                 };
 
             }
@@ -75,7 +81,7 @@ namespace MVC_Project.Integrations.PaymentsOpenPay
         public PaymentModel CreateTDCPayment(PaymentModel payment)
         {
             OpenpayAPI openpayAPI = new OpenpayAPI(OpenpayKey, MerchantId);
-            openpayAPI.Production = false;
+            openpayAPI.Production = IsProductionEnvironment;
 
             try
             {
@@ -101,7 +107,7 @@ namespace MVC_Project.Integrations.PaymentsOpenPay
                 payment.TransactionType = charge.TransactionType;
                 payment.PaymentCardURL = DashboardURL + "/spei-pdf/" + MerchantId + "/" + charge.Id;
                 payment.ResultData = charge.ToJson();
-
+                payment.ChargeSuccess = true;
             }
             catch (OpenpayException ex)
             {
