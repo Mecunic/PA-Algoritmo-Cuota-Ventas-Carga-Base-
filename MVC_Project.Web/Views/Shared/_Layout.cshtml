@@ -78,7 +78,7 @@
                 window.location = "@Url.Action("Login","Auth")";
             }
             else if (xhr.status == 403) {
-                alert("No tienes suficientes permisos para acceder a este recurso.");
+                toastr["error"]("No tienes suficientes permisos para acceder a este recurso.");
             }
             else if (xhr.status == 410) {
                 if (xhr.responseText) {
