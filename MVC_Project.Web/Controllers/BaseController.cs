@@ -24,5 +24,14 @@ namespace MVC_Project.Web.Controllers
             if (!filterContext.IsChildAction)
                 UnitOfWork.Commit();
         }
+
+        protected JsonResult JsonStatusGone(string message)
+        {
+            Response.StatusCode = (int)System.Net.HttpStatusCode.Gone;
+            return Json(new
+            {
+                Message = message
+            }, JsonRequestBehavior.AllowGet);
+        }
     }
 }

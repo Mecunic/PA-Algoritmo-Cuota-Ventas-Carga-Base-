@@ -71,7 +71,29 @@
     @Scripts.Render("~/plugins/slimScroll")
     @Scripts.Render("~/bundles/inspinia")
     @Scripts.Render("~/plugins/toastr")
-
+    <script type="text/javascript">
+        
+        $(document).ajaxError(function (e, xhr) {
+            if (xhr.status == 401) {
+                window.location = "@Url.Action("Login","Auth")";
+            }
+            else if (xhr.status == 403) {
+                alert("No tienes suficientes permisos para acceder a este recurso.");
+            }
+            else if (xhr.status == 410) {
+                if (xhr.responseText) {
+                    try {
+                        var jsonResponse = JSON.parse(xhr.responseText);
+                        if (jsonResponse.Message) {
+                            toastr["error"](jsonResponse.Message);
+                        }
+                    } catch (e) {
+                        toastr["error"](xhr.responseText);
+                    }
+                }
+            }
+        });
+    </script>
     <!-- Handler for local scripts -->
     @RenderSection("scripts", required: false)
 
