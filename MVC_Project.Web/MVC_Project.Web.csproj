@@ -1600,6 +1600,8 @@
     <Content Include="Views\Error\GenericError.cshtml" />
     <Content Include="Views\Error\ShowError.cshtml" />
     <Content Include="Views\Payments\Index.cshtml" />
+    <Content Include="Views\Payments\Checkout.cshtml" />
+    <Content Include="Views\Payments\CheckoutSuccess.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\Shared\EditorTemplates\" />
@@ -1723,11 +1725,13 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>False</UseIIS>
+          <UseIIS>True</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>52221</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:52221/</IISUrl>
+          <IISUrl>http://localhost:52222/</IISUrl>
+          <OverrideIISAppRootUrl>True</OverrideIISAppRootUrl>
+          <IISAppRootUrl>http://localhost:52222/</IISAppRootUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

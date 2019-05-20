@@ -67,6 +67,7 @@
                     <a href="#"><i class="fa fa-money-bill"></i> <span class="nav-label" data-i18n="nav.dashboard">@ViewLabels.MODULE_PAYMENTS</span> <span class="fain arrow"></span></a>
                     <ul class="nav nav-second-level collapse @Html.IsSelected(controller: "Payments", cssClass: "in")">
                         <li class="@Html.IsSelected(action: "Index")"><a href="@Url.Action("Index", "Payments")">Mis Pagos</a></li>
+                        <li class="@Html.IsSelected(action: "Checkout")"><a href="@Url.Action("Checkout", "Payments")">Checkout</a></li>
                         <li class="@Html.IsSelected(action: "CreateTDC")"><a href="@Url.Action("CreateTDC", "Payments")">Pago con TDC</a></li>
                         <li class="@Html.IsSelected(action: "CreateSPEI")"><a href="@Url.Action("CreateSPEI", "Payments")">Pago SPEI</a></li>
                     </ul>

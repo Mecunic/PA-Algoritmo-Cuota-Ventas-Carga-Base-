@@ -8,6 +8,9 @@ namespace MVC_Project.Web.Models
     public class PaymentViewModel
     {
         public string Id { get; set; }
+
+        public string PaymentMethod { get; set; }
+
         public string OrderId { get; set; }
         public decimal Amount { get; set; }
 
