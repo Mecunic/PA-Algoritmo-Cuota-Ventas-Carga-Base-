@@ -2,6 +2,7 @@
 using System;
 using System.Configuration;
 using System.Linq;
+using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
@@ -12,9 +13,31 @@ namespace MVC_Project.Web.AuthManagement
 {
     [AttributeUsageAttribute(AttributeTargets.Class | AttributeTargets.Method, Inherited = true, AllowMultiple = true)]
     public class AuthorizeUsersAttribute : AuthorizeAttribute
-    {                
+    {
+        private void HandleUnauthorizedAjaxRequest(AuthorizationContext filterContext)
+        {
+            var httpContext = filterContext.HttpContext;
+            var response = httpContext.Response;
+            var user = httpContext.User;
+            AuthUser authenticatedUser = Authenticator.AuthenticatedUser;
+            if (authenticatedUser == null || user.Identity.IsAuthenticated == false)
+                response.StatusCode = (int)HttpStatusCode.Unauthorized;
+            else
+            {
+                response.StatusCode = (int)HttpStatusCode.Forbidden;
+            }
+            response.SuppressFormsAuthenticationRedirect = true;
+            //response.End();
+            
+        }
         protected override void HandleUnauthorizedRequest(AuthorizationContext filterContext)
         {
+            if (filterContext.HttpContext.Request.IsAjaxRequest())
+            {
+                HandleUnauthorizedAjaxRequest(filterContext);
+                base.HandleUnauthorizedRequest(filterContext);
+                return;
+            }
             AuthUser authenticatedUser = Authenticator.AuthenticatedUser;
             if (authenticatedUser != null && filterContext.HttpContext.User.Identity.IsAuthenticated)
             {

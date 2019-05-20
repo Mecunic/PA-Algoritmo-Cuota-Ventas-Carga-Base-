@@ -164,25 +164,38 @@
                 var row = self.dataTable.row(tr);
                 var uuid = row.data().Uuid;
                 var action = modelEditPasswordAction + "?uuid=" + uuid;
-                self.modalEditPassword.find('.modal-body').load(action, function () {
+                self.modalEditPassword.find('.modal-body').load(action, function (response, status, xhr) {
+                    if (status == "error") {
+                        return;
+                    }
                     self.modalEditPassword.modal("show");
                     let form = $("#" + formEditPasswordId);
-                    console.log(form);
                     utils.actualizarValidaciones(form);
                     form.submit(function (e) {
                         e.preventDefault();
                         if (form.valid()) {
                             submitEditPassword(form).then(function (data) {
-
+                                form.find("span.field-validation-error").attr("class", "field-validation-valid");
+                                form.find("span.field-validation-error").empty();
+                                self.modalEditPassword.modal("hide");
+                                toastr["success"](data.Message);
                             }).catch(function (data) {
-                                console.log("Prueba --->", data);
                                 if (data.status == 422) {
                                     dataObj = data.responseJSON;
                                     dataObj.errors.forEach(function (error) {
-                                        $("span[data-valmsg-for='" + error.propertyName + "']").html(error.errorMessage);
+                                        let span = form.find("span[data-valmsg-for='" + error.propertyName + "']");
+                                        span.attr("class", "field-validation-error");
+                                        let idMessage = error.propertyName + "-error";
+                                        let spanMessage = span.find("#" + idMessage);
+                                        if (spanMessage.length <= 0) {
+                                            spanMessage = $("<span></span>");
+                                            spanMessage.attr('id', idMessage);
+                                            span.append(spanMessage);
+                                        }
+                                        spanMessage.html(error.errorMessage);
                                     });
                                 } else {
-
+                                    self.modalEditPassword.modal("hide");
                                 }
                             });
                         }

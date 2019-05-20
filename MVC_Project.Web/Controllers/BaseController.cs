@@ -25,7 +25,7 @@ namespace MVC_Project.Web.Controllers
             if (!filterContext.IsChildAction)
                 UnitOfWork.Commit();
         }
-
+        
         protected override IAsyncResult BeginExecuteCore(AsyncCallback callback, object state)
         {
             string lang = null;
@@ -42,6 +42,14 @@ namespace MVC_Project.Web.Controllers
             }
             LanguageMngr.SetLanguage(lang);
             return base.BeginExecuteCore(callback, state);
+        }
+        protected JsonResult JsonStatusGone(string message)
+        {
+            Response.StatusCode = (int)System.Net.HttpStatusCode.Gone;
+            return Json(new
+            {
+                Message = message
+            }, JsonRequestBehavior.AllowGet);
         }
     }
 }

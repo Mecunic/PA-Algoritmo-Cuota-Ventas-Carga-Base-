@@ -241,36 +241,64 @@ namespace MVC_Project.Web.Controllers
         [HttpGet]
         public ActionResult EditPassword(string uuid)
         {
+            var user = _userService.FindBy(e => e.Uuid == uuid).FirstOrDefault();
+            if (user == null)
+            {
+                string message = "El usuario ya no se encuentra disponible.";
+                if (Request.IsAjaxRequest())
+                {
+                    return JsonStatusGone(message);
+                }
+                else
+                {
+                    FlashMessages.MensajeFlashHandler.RegistrarMensaje(message, FlashMessages.TiposMensaje.Error);
+                    return RedirectToAction("Index");
+                }
+            }
             UserChangePasswordViewModel model = new UserChangePasswordViewModel {
                 Uuid = uuid,
                 Password = null,
                 ConfirmPassword = null
             };
+            if (Request.IsAjaxRequest())
+            {
+                return PartialView(model);
+            }
+
             return View(model);
         }
         [HttpPost, ValidateAntiForgeryToken]
         public ActionResult EditPassword(UserChangePasswordViewModel model)
         {
-            var user = _userService.FindBy(e => e.Uuid == model.Uuid).First();
-
-            ModelState.AddModelError("Password", "Prueba error de contraseña");
-
-            if (ModelState.IsValid)
+            var user = _userService.FindBy(e => e.Uuid == model.Uuid).FirstOrDefault();
+            if(user == null)
             {
-                if (user != null)
-                {
-                    user.Password = EncryptHelper.EncryptPassword(model.Password);
-                    DateTime todayDate = DateUtil.GetDateTimeNow();
-                    string daysToExpirateDate = ConfigurationManager.AppSettings["DaysToExpirateDate"];
-                    DateTime passwordExpiration = todayDate.AddDays(Int32.Parse(daysToExpirateDate));
-                    user.PasswordExpiration = passwordExpiration;
-                    _userService.Update(user);
-                    
-                }
+                string message = "El usuario ya no se encuentra disponible.";
                 if (Request.IsAjaxRequest())
                 {
-                    return Json(model);
+                    return JsonStatusGone(message);
                 }
+                else
+                {
+                    FlashMessages.MensajeFlashHandler.RegistrarMensaje(message, FlashMessages.TiposMensaje.Error);
+                    return RedirectToAction("Index");
+                }
+            }
+            if (ModelState.IsValid)
+            {
+                user.Password = EncryptHelper.EncryptPassword(model.Password);
+                DateTime todayDate = DateUtil.GetDateTimeNow();
+                DateTime passwordExpiration = todayDate.AddDays(-1);
+                user.PasswordExpiration = passwordExpiration;
+                _userService.Update(user);
+                string successMessage = "Contraseña del usuario ha sido actualizada.";
+                if (Request.IsAjaxRequest())
+                {
+                    return Json(new {
+                        Message = successMessage
+                    });
+                }
+                FlashMessages.MensajeFlashHandler.RegistrarMensaje(successMessage, FlashMessages.TiposMensaje.Success);
                 return RedirectToAction("Index");
             }
             if (Request.IsAjaxRequest())

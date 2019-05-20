@@ -10,7 +10,6 @@ namespace MVC_Project.Data.Mappings {
             Table("users");
             Id(x => x.Id).GeneratedBy.Identity().Column("id");
             Map(x => x.Uuid).Column("uuid").Not.Nullable();
-            Map(x => x.Username).Column("username").Nullable();
             Map(x => x.EmployeeIdentifier).Column("employee_identifier").Nullable();
             Map(x => x.MobileNumber).Column("mobile_number").Nullable();
             Map(x => x.Profile).Column("profile").Nullable();
