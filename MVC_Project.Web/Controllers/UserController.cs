@@ -244,7 +244,7 @@ namespace MVC_Project.Web.Controllers
             var user = _userService.FindBy(e => e.Uuid == uuid).FirstOrDefault();
             if (user == null)
             {
-                string message = "El usuario ya no se encuentra disponible.";
+                string message = Resources.ErrorMessages.UserNotAvailable;
                 if (Request.IsAjaxRequest())
                 {
                     return JsonStatusGone(message);
@@ -273,7 +273,7 @@ namespace MVC_Project.Web.Controllers
             var user = _userService.FindBy(e => e.Uuid == model.Uuid).FirstOrDefault();
             if(user == null)
             {
-                string message = "El usuario ya no se encuentra disponible.";
+                string message = Resources.ErrorMessages.UserNotAvailable;
                 if (Request.IsAjaxRequest())
                 {
                     return JsonStatusGone(message);
@@ -291,7 +291,7 @@ namespace MVC_Project.Web.Controllers
                 DateTime passwordExpiration = todayDate.AddDays(-1);
                 user.PasswordExpiration = passwordExpiration;
                 _userService.Update(user);
-                string successMessage = "Contraseña del usuario ha sido actualizada.";
+                string successMessage = Resources.Messages.UserPasswordUpdated;
                 if (Request.IsAjaxRequest())
                 {
                     return Json(new {

@@ -97,6 +97,15 @@ namespace MVC_Project.Resources {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Confirm new password.
+        /// </summary>
+        public static string CONFIRM_NEW_PASSWORD {
+            get {
+                return ResourceManager.GetString("CONFIRM_NEW_PASSWORD", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Welcome to Template Project.
         /// </summary>
         public static string HOME_TITLE {
@@ -147,6 +156,15 @@ namespace MVC_Project.Resources {
         public static string MODULE_REPORTS {
             get {
                 return ResourceManager.GetString("MODULE_REPORTS", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a New password.
+        /// </summary>
+        public static string NEW_PASSWORD {
+            get {
+                return ResourceManager.GetString("NEW_PASSWORD", resourceCulture);
             }
         }
         

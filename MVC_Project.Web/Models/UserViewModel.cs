@@ -96,15 +96,17 @@ namespace MVC_Project.Web.Models
     public class UserChangePasswordViewModel
     {
         public string Uuid { get; set; }
-        [Display(Name = "Nueva contraseña")]
-        [PasswordSecured(ErrorMessage = "La nueva contraseña debe contener al menos un número, mayúsculas, minúsculas y caracteres especiales")]
+        [Display(Name = "NEW_PASSWORD", ResourceType = typeof(Resources.ViewLabels))]
+        [PasswordSecured(ErrorMessageResourceName = "PasswordSecuredValidation", ErrorMessageResourceType = typeof(Resources.ErrorMessages))]
         [DataType(DataType.Password)]
-        [Required(ErrorMessage = "Campo obligatorio"), MinLength(8, ErrorMessage = "{0} debe ser mínimo de {1} caracteres")]
+        [Required(ErrorMessageResourceName = "RequiredValidation", ErrorMessageResourceType = typeof(Resources.ErrorMessages))]
+        [MinLength(8, ErrorMessageResourceName = "MinLengthValidation", ErrorMessageResourceType = typeof(Resources.ErrorMessages))]
         public string Password { get; set; }
-        [Display(Name = "Confirmar nueva contraseña")]
+        [Display(Name = "CONFIRM_NEW_PASSWORD", ResourceType = typeof(Resources.ViewLabels))]
         [DataType(DataType.Password)]
-        [StringComparer("Password", ErrorMessage = "Las contraseñas no coinciden")]
-        [Required(ErrorMessage = "Campo obligatorio"), MinLength(8, ErrorMessage = "{0} debe ser mínimo de {1} caracteres")]
+        [System.ComponentModel.DataAnnotations.Compare("Password", ErrorMessageResourceName = "CompareValidation", ErrorMessageResourceType = typeof(Resources.ErrorMessages))]
+        [Required(ErrorMessageResourceName = "RequiredValidation", ErrorMessageResourceType = typeof(Resources.ErrorMessages))]
+        [MinLength(8, ErrorMessageResourceName = "MinLengthValidation", ErrorMessageResourceType = typeof(Resources.ErrorMessages))]
         public string ConfirmPassword { get; set; }
     }
 
@@ -134,7 +136,7 @@ namespace MVC_Project.Web.Models
     public class UserImportViewModel
     {
         [Display(Name = "Subir archivo")]
-        [Required]
+        [Required(ErrorMessageResourceName = "RequiredValidation", ErrorMessageResourceType = typeof(Resources.ErrorMessages))]
         public HttpPostedFileBase ImportedFile { get; set; }
 
         public IList<UserRowImportResultViewModel> ImportResult { get; set; }
