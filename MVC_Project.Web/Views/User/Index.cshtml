@@ -35,7 +35,7 @@
                             <div class="col-xs-12">
                                 <button type="button" class="btn btn-sm btn-primary btn-filter-user pull-right"><i class="fas fa-search"></i> Buscar</button>
                             </div>
-                        </div>                        
+                        </div>
                     </div>
                 }
             </div>
@@ -58,16 +58,40 @@
         </div>
     </div>
 </div>
+
+<div id="modal-edit-password" class="modal fade hidden-print" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-centered" role="dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Cambiar Contraseña</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" id="btn-GuardarContasenia"><i class="fa fa-envelope"></i> Guardar</button>
+                <button type="button" class="btn btn-secondary" id="btn-CloseCE" data-dismiss="modal"><i class="fas fa-ban"></i> Cerrar</button>
+            </div>
+            }
+        </div>
+    </div>
+</div>
 @section scripts{
     @Scripts.Render("~/plugins/dataTables")
     @Scripts.Render("~/plugins/fullCalendar")
+    @Scripts.Render("~/plugins/validate")
+    @Scripts.Render("~/plugins/validateUnobtrusive")
     <script src="~/Scripts/template/Utils.js"></script>
     <script src="~/Scripts/views/User/Index.js"></script>
 
     <script>
         $(function () {
             var usuarios = new UserIndexControlador('table', '@Url.Action("GetAllByFilter")',
-				'@Url.Action("ModalEditAction")', '@Url.Action("ModalDeleteAction")');
+                '@Url.Action("ModalEditAction")', '@Url.Action("ModalDeleteAction")',
+                '@Url.Action("EditPassword")', 'modal-edit-password', 'changePassForm', 'btn-GuardarContasenia');
             usuarios.init();
         });
 

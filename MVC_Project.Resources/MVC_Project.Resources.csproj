@@ -5,6 +5,36 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Update="en\ViewLabels.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ViewLabels.resx</DependentUpon>
+    </Compile>
+    <Compile Update="ErrorMessages.Designer.cs">
+      <DependentUpon>ErrorMessages.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="ErrorMessages.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ErrorMessages.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Messages.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Messages.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Messages.es-MX.Designer.cs">
+      <DependentUpon>Messages - Copia.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="Messages.es-MX.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Messages.es-MX.resx</DependentUpon>
+    </Compile>
     <Compile Update="ViewLabels.Designer.cs">
       <DependentUpon>ViewLabels.resx</DependentUpon>
       <DesignTime>True</DesignTime>
@@ -18,8 +48,27 @@
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Update="en\ViewLabels.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ViewLabels.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="ErrorMessages.es-MX.resx">
+      <LastGenOutput>ErrorMessages.Designer.cs</LastGenOutput>
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="ErrorMessages.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ErrorMessages.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Messages.es-MX.resx">
+      <LastGenOutput>Messages.Designer.cs</LastGenOutput>
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Messages.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Messages.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Update="ViewLabels.es-MX.resx">
-      <LastGenOutput>ViewLabels.es-MX.Designer.cs</LastGenOutput>
       <Generator>PublicResXFileCodeGenerator</Generator>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>

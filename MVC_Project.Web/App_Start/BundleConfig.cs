@@ -53,6 +53,10 @@ namespace MVC_Project.Web
             bundles.Add(new ScriptBundle("~/plugins/peity").Include(
                       "~/Scripts/template/plugins/peity/jquery.peity.min.js"));
 
+            // Peity
+            bundles.Add(new ScriptBundle("~/plugins/bluebird").Include(
+                      "~/Scripts/template/plugins/bluebird/bluebird.min.js"));
+
             // Video responsible
             bundles.Add(new ScriptBundle("~/plugins/videoResponsible").Include(
                       "~/Scripts/template/plugins/video/responsible-video.js"));

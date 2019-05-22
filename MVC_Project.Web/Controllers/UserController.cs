@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
+using System.Net;
 using System.Runtime.CompilerServices;
 using System.Web;
 using System.Web.Mvc;
@@ -182,6 +183,8 @@ namespace MVC_Project.Web.Controllers
                     Password = EncryptHelper.EncryptPassword(userCreateViewModel.Password),
                     PasswordExpiration = passwordExpiration,
                     Role = new Role { Id = userCreateViewModel.Role },
+                    Username = userCreateViewModel.Username,
+                    Language = userCreateViewModel.Language,
                     CreatedAt = DateTime.Now,
                     UpdatedAt = DateTime.Now,
                     Status = true
@@ -225,6 +228,8 @@ namespace MVC_Project.Web.Controllers
                 user.FirstName = model.Name;
                 user.LastName = model.Apellidos;
                 user.Email = model.Email;
+                user.Username = model.Username;
+                user.Language = model.Language;
                 _userService.Update(user);
                 return RedirectToAction("Index");
             }
@@ -232,6 +237,81 @@ namespace MVC_Project.Web.Controllers
             {
                 return View(model);
             }
+        }
+        [HttpGet]
+        public ActionResult EditPassword(string uuid)
+        {
+            var user = _userService.FindBy(e => e.Uuid == uuid).FirstOrDefault();
+            if (user == null)
+            {
+                string message = Resources.ErrorMessages.UserNotAvailable;
+                if (Request.IsAjaxRequest())
+                {
+                    return JsonStatusGone(message);
+                }
+                else
+                {
+                    FlashMessages.MensajeFlashHandler.RegistrarMensaje(message, FlashMessages.TiposMensaje.Error);
+                    return RedirectToAction("Index");
+                }
+            }
+            UserChangePasswordViewModel model = new UserChangePasswordViewModel {
+                Uuid = uuid,
+                Password = null,
+                ConfirmPassword = null
+            };
+            if (Request.IsAjaxRequest())
+            {
+                return PartialView(model);
+            }
+
+            return View(model);
+        }
+        [HttpPost, ValidateAntiForgeryToken]
+        public ActionResult EditPassword(UserChangePasswordViewModel model)
+        {
+            var user = _userService.FindBy(e => e.Uuid == model.Uuid).FirstOrDefault();
+            if(user == null)
+            {
+                string message = Resources.ErrorMessages.UserNotAvailable;
+                if (Request.IsAjaxRequest())
+                {
+                    return JsonStatusGone(message);
+                }
+                else
+                {
+                    FlashMessages.MensajeFlashHandler.RegistrarMensaje(message, FlashMessages.TiposMensaje.Error);
+                    return RedirectToAction("Index");
+                }
+            }
+            if (ModelState.IsValid)
+            {
+                user.Password = EncryptHelper.EncryptPassword(model.Password);
+                DateTime todayDate = DateUtil.GetDateTimeNow();
+                DateTime passwordExpiration = todayDate.AddDays(-1);
+                user.PasswordExpiration = passwordExpiration;
+                _userService.Update(user);
+                string successMessage = Resources.Messages.UserPasswordUpdated;
+                if (Request.IsAjaxRequest())
+                {
+                    return Json(new {
+                        Message = successMessage
+                    });
+                }
+                FlashMessages.MensajeFlashHandler.RegistrarMensaje(successMessage, FlashMessages.TiposMensaje.Success);
+                return RedirectToAction("Index");
+            }
+            if (Request.IsAjaxRequest())
+            {
+                Response.StatusCode = 422;
+                return Json(new
+                {
+                    issue = model,
+                    errors = ModelState.Keys.Where(k => ModelState[k].Errors.Count > 0)
+                    .Select(k => new { propertyName = k, errorMessage = ModelState[k].Errors[0].ErrorMessage })
+                });
+            }
+            return View(model);
         }
 
         // GET: User/Delete/5

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MVC_Project.Web.CustomAttributes.Validations;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -63,6 +64,12 @@ namespace MVC_Project.Web.Models
         [Required]
         public string Email { get; set; }
 
+        [Display(Name = "Nombre de usuario")]
+        public string Username { get; set; }
+
+        [Display(Name = "Idioma")]
+        public string Language { get; set; }
+
         [Required]
         [Display(Name = "Contraseña")]
         [DataType(DataType.Password)]
@@ -86,6 +93,22 @@ namespace MVC_Project.Web.Models
         [Display(Name = "Nombre")]
         public string Name { get; set; }
     }
+    public class UserChangePasswordViewModel
+    {
+        public string Uuid { get; set; }
+        [Display(Name = "NEW_PASSWORD", ResourceType = typeof(Resources.ViewLabels))]
+        [PasswordSecured(ErrorMessageResourceName = "PasswordSecuredValidation", ErrorMessageResourceType = typeof(Resources.ErrorMessages))]
+        [DataType(DataType.Password)]
+        [Required(ErrorMessageResourceName = "RequiredValidation", ErrorMessageResourceType = typeof(Resources.ErrorMessages))]
+        [MinLength(8, ErrorMessageResourceName = "MinLengthValidation", ErrorMessageResourceType = typeof(Resources.ErrorMessages))]
+        public string Password { get; set; }
+        [Display(Name = "CONFIRM_NEW_PASSWORD", ResourceType = typeof(Resources.ViewLabels))]
+        [DataType(DataType.Password)]
+        [System.ComponentModel.DataAnnotations.Compare("Password", ErrorMessageResourceName = "CompareValidation", ErrorMessageResourceType = typeof(Resources.ErrorMessages))]
+        [Required(ErrorMessageResourceName = "RequiredValidation", ErrorMessageResourceType = typeof(Resources.ErrorMessages))]
+        [MinLength(8, ErrorMessageResourceName = "MinLengthValidation", ErrorMessageResourceType = typeof(Resources.ErrorMessages))]
+        public string ConfirmPassword { get; set; }
+    }
 
     public class UserEditViewModel
     {
@@ -99,8 +122,11 @@ namespace MVC_Project.Web.Models
 
         public string Email { get; set; }
 
-        [Display(Name = "Contraseña")]
-        public string Password { get; set; }
+        [Display(Name = "Nombre de usuario")]
+        public string Username { get; set; }
+
+        [Display(Name = "Idioma")]
+        public string Language { get; set; }
 
         [Display(Name = "Rol")]
         public int Role { get; set; }
@@ -110,7 +136,7 @@ namespace MVC_Project.Web.Models
     public class UserImportViewModel
     {
         [Display(Name = "Subir archivo")]
-        [Required]
+        [Required(ErrorMessageResourceName = "RequiredValidation", ErrorMessageResourceType = typeof(Resources.ErrorMessages))]
         public HttpPostedFileBase ImportedFile { get; set; }
 
         public IList<UserRowImportResultViewModel> ImportResult { get; set; }

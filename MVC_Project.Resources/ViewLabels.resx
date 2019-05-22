@@ -162,4 +162,10 @@
   <data name="MODULE_REPORTS" xml:space="preserve">
     <value>Reports</value>
   </data>
+  <data name="CONFIRM_NEW_PASSWORD" xml:space="preserve">
+    <value>Confirm new password</value>
+  </data>
+  <data name="NEW_PASSWORD" xml:space="preserve">
+    <value>New password</value>
+  </data>
 </root>

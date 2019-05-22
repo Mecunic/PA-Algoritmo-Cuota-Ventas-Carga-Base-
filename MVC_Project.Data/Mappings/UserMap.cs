@@ -10,7 +10,6 @@ namespace MVC_Project.Data.Mappings {
             Table("users");
             Id(x => x.Id).GeneratedBy.Identity().Column("id");
             Map(x => x.Uuid).Column("uuid").Not.Nullable();
-            Map(x => x.Username).Column("username").Nullable();
             Map(x => x.EmployeeIdentifier).Column("employee_identifier").Nullable();
             Map(x => x.MobileNumber).Column("mobile_number").Nullable();
             Map(x => x.Profile).Column("profile").Nullable();
@@ -28,6 +27,7 @@ namespace MVC_Project.Data.Mappings {
             Map(x => x.Language).Column("language").Nullable();
             Map(x => x.ExpiraApiKey).Column("expira_apikey").Nullable();
             Map(x=>x.LastLoginAt).Column("last_login_at").Nullable();
+            Map(x => x.Username).Column("username").Nullable();
             Map(x => x.PasswordExpiration).Column("password_expiration").Nullable();
             References(x => x.Role).Column("role_id");
             HasManyToMany(x => x.Permissions)

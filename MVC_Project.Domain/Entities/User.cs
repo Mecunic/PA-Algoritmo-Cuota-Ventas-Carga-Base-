@@ -11,6 +11,7 @@ namespace MVC_Project.Domain.Entities {
         public virtual string LastName { get; set; }
         public virtual string Email { get; set; }
         public virtual string Username { get; set; }
+        public virtual string Language { get; set; }
         public virtual string Password { get; set; }
         public virtual string EmployeeIdentifier { get; set; }
         public virtual string MobileNumber { get; set; }
@@ -23,8 +24,6 @@ namespace MVC_Project.Domain.Entities {
         public virtual DateTime? RemovedAt { get; set; }
         public virtual Boolean Status { get; set; }
         public virtual string Token { get; set; }
-
-        public virtual string Language { get; set; }
         public virtual DateTime? ExpiraToken { get; set; }
         public virtual string ApiKey { get; set; }
         public virtual DateTime? ExpiraApiKey { get; set; }
