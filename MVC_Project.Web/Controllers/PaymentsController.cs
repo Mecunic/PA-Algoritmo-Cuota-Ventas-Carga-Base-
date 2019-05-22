@@ -19,11 +19,13 @@ namespace MVC_Project.Web.Controllers
     {
         private PaymentService _paymentService;
         private UserService _userService;
+        private int TransferExpirationDays;
 
         public PaymentsController(PaymentService paymentService, UserService userService)
         {
             _paymentService = paymentService;
             _userService = userService;
+            TransferExpirationDays = Convert.ToInt32(System.Configuration.ConfigurationManager.AppSettings["Payments.TransferExpirationDays"]);
         }
 
         [Authorize]
@@ -39,7 +41,7 @@ namespace MVC_Project.Web.Controllers
         {
             PaymentViewModel model = new PaymentViewModel();
 
-            //Simulado
+            //Simular datos
             model.OrderId = Guid.NewGuid().ToString().Substring(24);
             model.Amount = Convert.ToInt32((new Random().NextDouble() * 10000));
 
@@ -47,131 +49,25 @@ namespace MVC_Project.Web.Controllers
         }
 
         [Authorize]
-        public ActionResult CreatePayment(PaymentViewModel model)
+        [ValidateAntiForgeryToken]
+        public ActionResult CheckoutProceed(PaymentViewModel model)
         {
-            OpenPayService paymentProviderService = new OpenPayService();
-            PaymentModel payment = new PaymentModel()
-            {
-                ClientId = "avfwrv0q9x2binx9odgf",
-                OrderId = model.OrderId,
-                Amount = model.Amount,
-                Description = String.Format("Payment for Order Id # {0}", model.OrderId),
-                TokenId = model.TokenId,
-                DeviceSessionId = model.DeviceSessionId
-            };
-            model.ChargeSuccess = false;
-
-            #region Pagos con SPEI
+            //Esto puede hacerse dinamico
             if (model.PaymentMethod == PaymentMethod.BANK_ACCOUNT)
             {
-                payment = paymentProviderService.CreateBankTransferPayment(payment);
-                model.ChargeSuccess = payment.ChargeSuccess;
-                if (payment.ChargeSuccess)
-                {
-                    //Primero guardar en BD
-                    Payment paymentBO = new Payment();
-                    paymentBO.CreationDate = DateUtil.GetDateTimeNow();
-                    paymentBO.User = new User() { Id = Authenticator.AuthenticatedUser.Id };
-                    paymentBO.Amount = model.Amount;
-                    paymentBO.OrderId = model.OrderId;
-                    paymentBO.ProviderId = payment.Id;
-                    paymentBO.Status = payment.Status;
-                    paymentBO.DueDate = payment.DueDate;
-                    paymentBO.Method = PaymentMethod.BANK_ACCOUNT;
-                    paymentBO.TransactionType = PaymentType.CHARGE;
-
-                    paymentBO.ConfirmationDate = null;
-
-                    _paymentService.Create(paymentBO);
-
-                    model.Id = payment.Id;
-                    model.Description = payment.Description;
-                    model.JsonData = payment.ResultData;
-                    model.DueDate = payment.DueDate;
-                    model.PaymentCardURL = payment.PaymentCardURL;
-                    model.BankName = payment.PaymentMethod.BankName;
-                    model.Clabe = payment.PaymentMethod.Clabe;
-                    model.Reference = payment.PaymentMethod.Reference;
-                    model.Name = payment.PaymentMethod.Name;
-                    model.Agreement = payment.PaymentMethod.Agreement;
-                }
-
+                model.DueDate = DateUtil.GetDateTimeNow().AddDays(TransferExpirationDays);
+                return View("CreateSPEI", model);
             }
-            #endregion
-
-            #region Pagos con Tarjeta
             if (model.PaymentMethod == PaymentMethod.CARD)
             {
-                //Primero en BD
-                Payment paymentBO = new Payment();
-                paymentBO.CreationDate = DateUtil.GetDateTimeNow();
-                paymentBO.User = new User() { Id = Authenticator.AuthenticatedUser.Id };
-                paymentBO.Amount = model.Amount;
-                paymentBO.OrderId = model.OrderId;
-                paymentBO.Status = PaymentStatus.IN_PROGRESS;
-                paymentBO.Method = PaymentMethod.CARD;
-                paymentBO.TransactionType = PaymentType.CHARGE;
-
-                paymentBO.ConfirmationDate = null;
-                _paymentService.Create(paymentBO);
-
-                //Luego cobrar
-                payment = paymentProviderService.CreateTDCPayment(payment);
-                model.ChargeSuccess = payment.ChargeSuccess;
-
-                if (payment.ChargeSuccess)
-                {
-                    //Luego actualizar
-                    paymentBO.ProviderId = payment.Id;
-                    paymentBO.Status = payment.Status;
-                    paymentBO.DueDate = payment.DueDate;
-                    paymentBO.LogData = payment.ResultData;
-                    _paymentService.Update(paymentBO);
-
-                    model.Id = payment.Id;
-                    model.Description = payment.Description;
-                    model.JsonData = payment.ResultData;
-                    model.DueDate = payment.DueDate;
-                    model.PaymentCardURL = payment.PaymentCardURL;
-                }
-                else
-                {
-                    paymentBO.Status = PaymentStatus.ERROR;
-                    paymentBO.LogData = payment.ResultData;
-                    _paymentService.Update(paymentBO);
-                    model.Description = payment.ResultData;
-                }
+                return View("CreateTDC", model);
             }
-            #endregion
-
-            if (!model.ChargeSuccess)
-            {
-                model.Description = payment.ResultData;
-            }
-
-            return View("CheckoutSuccess", model);
+            return RedirectToAction("Index", "Error");
         }
 
+        [HttpPost]
         [Authorize]
         [ValidateAntiForgeryToken]
-        [HttpPost]
-        public ActionResult CreateTDC()
-        {
-            PaymentViewModel model = new PaymentViewModel();
-
-            return View(model);
-        }
-
-        [Authorize]
-        public ActionResult CreateSPEI()
-        {
-            PaymentViewModel model = new PaymentViewModel();
-            model.OrderId = Guid.NewGuid().ToString().Substring(24);
-            return View(model);
-        }
-
-        [HttpPost]
-        [Authorize]
         public ActionResult CreateSPEI(PaymentViewModel model)
         {
             OpenPayService paymentProviderService = new OpenPayService();
@@ -180,7 +76,8 @@ namespace MVC_Project.Web.Controllers
                 ClientId = "avfwrv0q9x2binx9odgf",
                 OrderId = model.OrderId,
                 Amount = model.Amount,
-                Description = "Pago test con SPEI"
+                DueDate = DateUtil.GetDateTimeNow().AddDays(TransferExpirationDays),
+                Description = String.Format("Payment for Order Id # {0}", model.OrderId),
             };
 
             payment = paymentProviderService.CreateBankTransferPayment(payment);
@@ -218,19 +115,17 @@ namespace MVC_Project.Web.Controllers
             {
                 model.Description = payment.ResultData;
             }
-            
-            return View("CreateSPEI", model);
+
+            //return View("CreateSPEI", model);
+            return View("CheckoutSuccess", model);
         }
 
         [HttpPost]
         [Authorize]
+        [ValidateAntiForgeryToken]
         public ActionResult CreateTDC(PaymentViewModel model)
         {
             OpenPayService paymentProviderService = new OpenPayService();
-
-            //Simulado
-            model.OrderId = Guid.NewGuid().ToString().Substring(24);
-            model.Amount = Convert.ToInt32( (new Random().NextDouble() * 10000) );
 
             PaymentModel payment = new PaymentModel()
             {
@@ -239,7 +134,9 @@ namespace MVC_Project.Web.Controllers
                 Amount = model.Amount,
                 TokenId = model.TokenId,
                 DeviceSessionId = model.DeviceSessionId,
-                Description = "Pago test con TDC"
+                Description = String.Format("Payment for Order Id # {0}", model.OrderId),
+                Use3DSecure = true,
+                RedirectUrl = "http://localhost:52222/Payments/SecureVerification"
             };
 
             //Primero en BD
@@ -257,6 +154,7 @@ namespace MVC_Project.Web.Controllers
 
             //Luego cobrar
             payment = paymentProviderService.CreateTDCPayment(payment);
+            
             model.ChargeSuccess = payment.ChargeSuccess;
 
             if (payment.ChargeSuccess)
@@ -282,10 +180,25 @@ namespace MVC_Project.Web.Controllers
                 model.Description = payment.ResultData;
             }
 
-            return View("CreateTDC", model);
+            if (payment.PaymentMethod != null && !string.IsNullOrEmpty(payment.PaymentMethod.RedirectUrl))
+            {
+                return Redirect(payment.PaymentMethod.RedirectUrl);
+            }
+
+            //return View("CreateTDC", model);
+            return View("CheckoutSuccess", model);
         }
 
-        // GET: Payments
+
+        [AllowAnonymous]
+        [ValidateInput(false)]
+        public ActionResult SecureVerification(string id)
+        {
+            //Payment payment = _paymentService.GetByOrderTransaction(id, null);
+            
+            return new HttpStatusCodeResult(HttpStatusCode.OK);
+        }
+        
         [AllowAnonymous]
         [HttpPost]
         [ValidateInput(false)]
@@ -335,5 +248,134 @@ namespace MVC_Project.Web.Controllers
 
             return new HttpStatusCodeResult(HttpStatusCode.OK);
         }
+
+        //[Authorize]
+        //public ActionResult CreatePayment(PaymentViewModel model)
+        //{
+        //    OpenPayService paymentProviderService = new OpenPayService();
+        //    PaymentModel payment = new PaymentModel()
+        //    {
+        //        ClientId = "avfwrv0q9x2binx9odgf",
+        //        OrderId = model.OrderId,
+        //        Amount = model.Amount,
+        //        Description = String.Format("Payment for Order Id # {0}", model.OrderId),
+        //        TokenId = model.TokenId,
+        //        DeviceSessionId = model.DeviceSessionId
+        //    };
+        //    model.ChargeSuccess = false;
+
+        //    #region Pagos con SPEI
+        //    if (model.PaymentMethod == PaymentMethod.BANK_ACCOUNT)
+        //    {
+        //        payment = paymentProviderService.CreateBankTransferPayment(payment);
+        //        model.ChargeSuccess = payment.ChargeSuccess;
+        //        if (payment.ChargeSuccess)
+        //        {
+        //            //Primero guardar en BD
+        //            Payment paymentBO = new Payment();
+        //            paymentBO.CreationDate = DateUtil.GetDateTimeNow();
+        //            paymentBO.User = new User() { Id = Authenticator.AuthenticatedUser.Id };
+        //            paymentBO.Amount = model.Amount;
+        //            paymentBO.OrderId = model.OrderId;
+        //            paymentBO.ProviderId = payment.Id;
+        //            paymentBO.Status = payment.Status;
+        //            paymentBO.DueDate = payment.DueDate;
+        //            paymentBO.Method = PaymentMethod.BANK_ACCOUNT;
+        //            paymentBO.TransactionType = PaymentType.CHARGE;
+
+        //            paymentBO.ConfirmationDate = null;
+
+        //            _paymentService.Create(paymentBO);
+
+        //            model.Id = payment.Id;
+        //            model.Description = payment.Description;
+        //            model.JsonData = payment.ResultData;
+        //            model.DueDate = payment.DueDate;
+        //            model.PaymentCardURL = payment.PaymentCardURL;
+        //            model.BankName = payment.PaymentMethod.BankName;
+        //            model.Clabe = payment.PaymentMethod.Clabe;
+        //            model.Reference = payment.PaymentMethod.Reference;
+        //            model.Name = payment.PaymentMethod.Name;
+        //            model.Agreement = payment.PaymentMethod.Agreement;
+        //        }
+
+        //    }
+        //    #endregion
+
+        //    #region Pagos con Tarjeta
+        //    if (model.PaymentMethod == PaymentMethod.CARD)
+        //    {
+        //        //Primero en BD
+        //        Payment paymentBO = new Payment();
+        //        paymentBO.CreationDate = DateUtil.GetDateTimeNow();
+        //        paymentBO.User = new User() { Id = Authenticator.AuthenticatedUser.Id };
+        //        paymentBO.Amount = model.Amount;
+        //        paymentBO.OrderId = model.OrderId;
+        //        paymentBO.Status = PaymentStatus.IN_PROGRESS;
+        //        paymentBO.Method = PaymentMethod.CARD;
+        //        paymentBO.TransactionType = PaymentType.CHARGE;
+
+        //        paymentBO.ConfirmationDate = null;
+        //        _paymentService.Create(paymentBO);
+
+        //        //Luego cobrar
+        //        payment = paymentProviderService.CreateTDCPayment(payment);
+        //        model.ChargeSuccess = payment.ChargeSuccess;
+
+        //        if (payment.ChargeSuccess)
+        //        {
+        //            //Luego actualizar
+        //            paymentBO.ProviderId = payment.Id;
+        //            paymentBO.Status = payment.Status;
+        //            paymentBO.DueDate = payment.DueDate;
+        //            paymentBO.LogData = payment.ResultData;
+        //            _paymentService.Update(paymentBO);
+
+        //            model.Id = payment.Id;
+        //            model.Description = payment.Description;
+        //            model.JsonData = payment.ResultData;
+        //            model.DueDate = payment.DueDate;
+        //            model.PaymentCardURL = payment.PaymentCardURL;
+        //        }
+        //        else
+        //        {
+        //            paymentBO.Status = PaymentStatus.ERROR;
+        //            paymentBO.LogData = payment.ResultData;
+        //            _paymentService.Update(paymentBO);
+        //            model.Description = payment.ResultData;
+        //        }
+        //    }
+        //    #endregion
+
+        //    if (!model.ChargeSuccess)
+        //    {
+        //        model.Description = payment.ResultData;
+        //    }
+
+        //    return View("CheckoutSuccess", model);
+        //}
+
+
+        //[Authorize]
+        //[ValidateAntiForgeryToken]
+        //[HttpGet]
+        //public ActionResult CreateTDC()
+        //{
+        //    PaymentViewModel model = new PaymentViewModel();
+
+        //    return View(model);
+        //}
+
+        //[Authorize]
+        //[HttpGet]
+        //public ActionResult CreateSPEI()
+        //{
+        //    PaymentViewModel model = new PaymentViewModel();
+        //    model.OrderId = Guid.NewGuid().ToString().Substring(24);
+        //    return View(model);
+        //}
+
+        // GET: Payments
+
     }
 }

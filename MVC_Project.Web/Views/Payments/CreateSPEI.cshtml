@@ -20,54 +20,29 @@
                 <div class="ibox-content">
                     <div class="row">
                         <div class="col-sm-6 b-r">
-                            <h3 class="m-t-none m-b">Capture los datos</h3>
+                            <h3 class="m-t-none m-b">Confirme los datos</h3>
                             @using (Html.BeginForm("CreateSPEI", "Payments", FormMethod.Post, new { @id = "CreateForm", @role = "form" }))
                             {
+                                @Html.AntiForgeryToken()
+                                @Html.HiddenFor(m => m.OrderId)
+                                @Html.HiddenFor(m => m.Amount)
                                 <div class="form-group">
-                                    <label>ID Orden / Transacción (Única)</label>
-                                    @Html.TextBoxFor(m => m.OrderId, new { @class = "form-control", placeholder = "ID Orden / Transacción", @required = "required" })
+                                    <label>ID Orden / Transacción (Única):</label>
+                                    @Model.OrderId
                                 </div>
                                 <div class="form-group">
-                                    <label>Monto</label>
-                                    <input type="number" name="Amount" required="required" placeholder="Monto" class="form-control" autocomplete="off">
+                                    <label>Monto:</label>
+                                    @Model.Amount
+                                </div>
+                                <div class="form-group">
+                                    <label>Fecha de Vencimiento:</label>
+                                    @Model.DueDate
                                 </div>
                                 <div>
-                                    <button class="btn btn-sm btn-primary float-right m-t-n-xs" type="submit"><strong>Pagar</strong></button>
+                                    <button class="btn btn-sm btn-primary float-right m-t-n-xs" type="submit"><strong>Generar Comprobante</strong></button>
                                 </div>
                             }
                         </div>
-                        @if (!string.IsNullOrEmpty(Model.Id))
-                        {
-                            <div class="col-sm-6">
-                                <b>ID Transacción:</b> @Html.Raw(Model.Id)
-                                <br />
-                                <b>ID Orden:</b> @Html.Raw(Model.OrderId)
-                                <br />
-                                <b>Monto:</b> @Html.Raw(Model.Amount)
-                                <br />
-                                <b>Fecha de Vencimiento:</b> @Html.Raw(Model.DueDate)
-                                <br />
-                                <b>Descripción:</b> @Html.Raw(Model.Description)
-                                <br />
-                                <b>Banco:</b> @Html.Raw(Model.BankName)
-                                <br />
-                                <b>CLABE:</b> @Html.Raw(Model.Clabe)
-                                <br />
-                                <b>Referencia:</b> @Html.Raw(Model.Reference)
-                                <br />
-                                <b>Nombre:</b> @Html.Raw(Model.Name)
-                                <br />
-                                <b>Ficha de Pago:</b> <a href="@Html.Raw(Model.PaymentCardURL)" target="_blank" class="btn btn-block">Descarga</a>
-                                <br />
-                            </div>
-                        }
-                        else
-                        {
-                            <div class="col-sm-6">
-                                <b>Descripción:</b> @Html.Raw(Model.Description)
-                                <br />
-                            </div>
-                        }
                     </div>
                 </div>
             </div>

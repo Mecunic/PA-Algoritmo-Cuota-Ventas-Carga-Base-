@@ -33,6 +33,10 @@ namespace MVC_Project.Integrations.PaymentsOpenPay
 
         public bool ChargeSuccess { get; set; }
 
+        public bool Use3DSecure { get; set; }
+        
+        public string RedirectUrl { get; set; }
+
         public string Description { get; set; }
 
         public PaymentMethodModel PaymentMethod { get; set; }
@@ -49,6 +53,8 @@ namespace MVC_Project.Integrations.PaymentsOpenPay
 
         public string Name { get; set; }
         public string Agreement { get; set; }
+
+        public string RedirectUrl { get; set; }
     }
 
         public static class PaymentMethod

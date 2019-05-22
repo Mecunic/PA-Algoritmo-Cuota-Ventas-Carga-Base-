@@ -40,7 +40,7 @@ namespace MVC_Project.Integrations.PaymentsOpenPay
                 {
                     OrderId = payment.OrderId,
                     Amount = payment.Amount,
-                    DueDate = DateTime.Now.AddDays(2),
+                    DueDate = payment.DueDate,
                     Method = PaymentMethod.BANK_ACCOUNT,
                     Description = payment.Description,
                     Customer = customer
@@ -96,7 +96,9 @@ namespace MVC_Project.Integrations.PaymentsOpenPay
                     OrderId = payment.OrderId,
                     Description = payment.Description,
                     DeviceSessionId = payment.DeviceSessionId,
-                    Customer = customer
+                    Customer = customer,
+                    Use3DSecure = payment.Use3DSecure,
+                    RedirectUrl = payment.RedirectUrl
                 };
                 
                 Charge charge = openpayAPI.ChargeService.Create(request);
@@ -108,6 +110,22 @@ namespace MVC_Project.Integrations.PaymentsOpenPay
                 payment.PaymentCardURL = DashboardURL + "/spei-pdf/" + MerchantId + "/" + charge.Id;
                 payment.ResultData = charge.ToJson();
                 payment.ChargeSuccess = true;
+
+                if (charge.PaymentMethod!=null && charge.PaymentMethod.Type == "redirect")
+                {
+                    payment.PaymentMethod = new PaymentMethodModel
+                    {
+                        Type = charge.PaymentMethod.Type,
+                        BankName = charge.PaymentMethod.BankName,
+                        Clabe = charge.PaymentMethod.CLABE,
+                        Reference = charge.PaymentMethod.Reference,
+                        Name = charge.PaymentMethod.Name,
+                        Agreement = Agreement,
+                        RedirectUrl = charge.PaymentMethod.Url
+                    };
+                    
+                }
+
             }
             catch (OpenpayException ex)
             {

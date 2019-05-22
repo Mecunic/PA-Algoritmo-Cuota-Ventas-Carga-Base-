@@ -275,6 +275,8 @@
         @using (Html.BeginForm("CreateTDC", "Payments", FormMethod.Post, new { @id = "payment-form", @role = "form" }))
         {
             @Html.AntiForgeryToken()
+            @Html.HiddenFor(m => m.OrderId)
+            @Html.HiddenFor(m => m.Amount)
             <input type="hidden" name="TokenId" id="token_id">
             <div class="pymnt-itm card active">
                 <h2>Tarjeta de crédito o débito</h2>
@@ -327,8 +329,8 @@
             //OpenPay.setId('mzdtln0bmtms6o3kck8f');
             //OpenPay.setApiKey('pk_f0660ad5a39f4912872e24a7a660370c');
 
-            OpenPay.setId('mxcdqesyvproizgrfuhg');
-            OpenPay.setApiKey('pk_5d7892633e144d67a844853ce0e342f9');
+            OpenPay.setId('@System.Configuration.ConfigurationManager.AppSettings["Payments.MerchantId"]');
+            OpenPay.setApiKey('@System.Configuration.ConfigurationManager.AppSettings["Payments.PublicKey"]');
 
             OpenPay.setSandboxMode(true);
             //Se genera el id de dispositivo

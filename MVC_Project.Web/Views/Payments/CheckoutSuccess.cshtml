@@ -1,6 +1,6 @@
 ﻿
 @{
-    ViewBag.Title = "CheckoutSuccess";
+    ViewBag.Title = "Checkout Finished";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -10,7 +10,14 @@
 
             <div class="ibox ">
                 <div class="ibox-title">
-                    <h5>Your order has been paid successfully!</h5>
+                    @if (Model.ChargeSuccess)
+                    {
+                        <h5>Your order has been charged successfully!</h5>
+                    }
+                    else
+                    {
+                        <h5>We had a problem with your order!</h5>
+                    }
                     <div class="ibox-tools">
                         <a class="collapse-link">
                             <i class="fa fa-chevron-up"></i>
