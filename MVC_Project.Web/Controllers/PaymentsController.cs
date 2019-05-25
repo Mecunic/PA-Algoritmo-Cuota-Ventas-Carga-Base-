@@ -1,6 +1,6 @@
 ﻿using MVC_Project.Domain.Entities;
 using MVC_Project.Domain.Services;
-using MVC_Project.Integrations.PaymentsOpenPay;
+using MVC_Project.Integrations.Payments;
 using MVC_Project.Utils;
 using MVC_Project.Web.AuthManagement;
 using MVC_Project.Web.Models;
@@ -20,12 +20,18 @@ namespace MVC_Project.Web.Controllers
         private PaymentService _paymentService;
         private UserService _userService;
         private int TransferExpirationDays;
+        private IPaymentServiceProvider paymentProviderService;
+        private bool UseSelective3DSecure;
+        private string GlobalClientId;
 
         public PaymentsController(PaymentService paymentService, UserService userService)
         {
             _paymentService = paymentService;
             _userService = userService;
             TransferExpirationDays = Convert.ToInt32(System.Configuration.ConfigurationManager.AppSettings["Payments.TransferExpirationDays"]);
+            UseSelective3DSecure = Convert.ToBoolean(System.Configuration.ConfigurationManager.AppSettings["Payments.UseSelective3DSecure"]);
+            GlobalClientId = System.Configuration.ConfigurationManager.AppSettings["Payments.OpenpayGeneralClientId"];
+            paymentProviderService = new OpenPayService();
         }
 
         [Authorize]
@@ -70,10 +76,9 @@ namespace MVC_Project.Web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult CreateSPEI(PaymentViewModel model)
         {
-            OpenPayService paymentProviderService = new OpenPayService();
             PaymentModel payment = new PaymentModel()
             {
-                ClientId = "avfwrv0q9x2binx9odgf",
+                ClientId = GlobalClientId,
                 OrderId = model.OrderId,
                 Amount = model.Amount,
                 DueDate = DateUtil.GetDateTimeNow().AddDays(TransferExpirationDays),
@@ -110,6 +115,7 @@ namespace MVC_Project.Web.Controllers
                 model.Clabe = payment.PaymentMethod.Clabe;
                 model.Reference = payment.PaymentMethod.Reference;
                 model.Name = payment.PaymentMethod.Name;
+                model.Name = payment.PaymentMethod.Agreement;
             }
             else
             {
@@ -125,17 +131,14 @@ namespace MVC_Project.Web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult CreateTDC(PaymentViewModel model)
         {
-            OpenPayService paymentProviderService = new OpenPayService();
-
             PaymentModel payment = new PaymentModel()
             {
-                ClientId = "avfwrv0q9x2binx9odgf",
+                ClientId = GlobalClientId,
                 OrderId = model.OrderId,
                 Amount = model.Amount,
                 TokenId = model.TokenId,
                 DeviceSessionId = model.DeviceSessionId,
                 Description = String.Format("Payment for Order Id # {0}", model.OrderId),
-                Use3DSecure = true,
                 RedirectUrl = "http://localhost:52222/Payments/SecureVerification"
             };
 
@@ -154,6 +157,13 @@ namespace MVC_Project.Web.Controllers
 
             //Luego cobrar
             payment = paymentProviderService.CreateTDCPayment(payment);
+
+            //Si hubiera reintento, probar Antifraude
+            if (UseSelective3DSecure && !payment.ChargeSuccess & payment.ResultCode == PaymentError.ANTI_FRAUD)
+            {
+                payment.Use3DSecure = true;
+                payment = paymentProviderService.CreateTDCPayment(payment);
+            }
             
             model.ChargeSuccess = payment.ChargeSuccess;
 
@@ -180,6 +190,9 @@ namespace MVC_Project.Web.Controllers
                 model.Description = payment.ResultData;
             }
 
+            //
+            Session.Add("Payments.PaymentModel", model);
+
             if (payment.PaymentMethod != null && !string.IsNullOrEmpty(payment.PaymentMethod.RedirectUrl))
             {
                 return Redirect(payment.PaymentMethod.RedirectUrl);
@@ -194,9 +207,12 @@ namespace MVC_Project.Web.Controllers
         [ValidateInput(false)]
         public ActionResult SecureVerification(string id)
         {
-            //Payment payment = _paymentService.GetByOrderTransaction(id, null);
+            Payment payment = _paymentService.GetByProviderId(id);
+
+            PaymentViewModel model = (PaymentViewModel)Session["Payments.PaymentModel"];
+
+            return View("CheckoutSuccess", model);
             
-            return new HttpStatusCodeResult(HttpStatusCode.OK);
         }
         
         [AllowAnonymous]
@@ -220,8 +236,8 @@ namespace MVC_Project.Web.Controllers
                         System.Diagnostics.Trace.TraceInformation("\t\t Order Id: " + paymentEvent.transaction.order_id);
                         System.Diagnostics.Trace.TraceInformation("\t\t Authorization: " + paymentEvent.transaction.authorization);
 
-                        Payment payment = _paymentService.GetByOrderTransaction(paymentEvent.transaction.order_id, paymentEvent.transaction.id);
-                        User user = _userService.GetById(payment.User.Id);
+                        Payment payment = _paymentService.GetByOrderId(paymentEvent.transaction.order_id);
+                        User user = payment.User;//_userService.GetById(payment.User.Id);
                         
                         if (payment!=null)
                         {
@@ -230,13 +246,16 @@ namespace MVC_Project.Web.Controllers
                             payment.LogData = rawJSON;
                             if (paymentEvent.type == PaymentEventStatus.CHARGE_SUCCEEDED)
                             {
-                                payment.ConfirmationDate = DateUtil.GetDateTimeNow();
+                                payment.ConfirmationDate = DateUtil.GetDateTimeNow(); //lo tomamos cuando llega el evento
                                 payment.AuthorizationCode = paymentEvent.transaction.authorization;
 
                                 Dictionary<string, string> customParams = new Dictionary<string, string>();
                                 customParams.Add("param1", user.FirstName);
                                 customParams.Add("param2", paymentEvent.transaction.order_id);
                                 customParams.Add("param3", payment.AuthorizationCode);
+                                customParams.Add("param4", paymentEvent.transaction.id);
+                                customParams.Add("param5", payment.ConfirmationDate.Value.ToString(Constants.DATE_FORMAT) );
+                                customParams.Add("param6", string.Format("{0:#.00}", payment.Amount));
                                 NotificationUtil.SendNotification(user.Email, customParams, Constants.NOT_TEMPLATE_CHARGESUCCESS);
                             }
                             _paymentService.Update(payment);

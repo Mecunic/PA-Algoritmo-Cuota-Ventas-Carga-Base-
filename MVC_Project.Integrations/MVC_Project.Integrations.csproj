@@ -58,6 +58,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Azure\AzureBlobService.cs" />
+    <Compile Include="Payments\IPaymentServiceProvider.cs" />
     <Compile Include="Payments\OpenPayService.cs" />
     <Compile Include="Payments\PaymentEventModel.cs" />
     <Compile Include="Payments\PaymentModel.cs" />

@@ -1,4 +1,5 @@
-﻿using Openpay;
+﻿using MVC_Project.Integrations.Payments;
+using Openpay;
 using Openpay.Entities;
 using Openpay.Entities.Request;
 using System;
@@ -7,16 +8,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MVC_Project.Integrations.PaymentsOpenPay
+namespace MVC_Project.Integrations.Payments
 {
-    public class OpenPayService
+    public class OpenPayService : IPaymentServiceProvider
     {
-        bool IsProductionEnvironment;
-        string PublicKey;
-        string OpenpayKey;
-        string MerchantId;
-        string DashboardURL;
-        string Agreement;
+        readonly bool IsProductionEnvironment;
+        readonly string PublicKey;
+        readonly string OpenpayKey;
+        readonly string MerchantId;
+        readonly string DashboardURL;
+        readonly string Agreement;
         
         public OpenPayService()
         {
@@ -70,6 +71,7 @@ namespace MVC_Project.Integrations.PaymentsOpenPay
             catch (OpenpayException ex)
             {
                 payment.ChargeSuccess = false;
+                payment.ResultCode = ex.ErrorCode;
                 payment.ResultData = ex.Description;
                 payment.ResultCategory = ex.Category;
             }
@@ -111,7 +113,7 @@ namespace MVC_Project.Integrations.PaymentsOpenPay
                 payment.ResultData = charge.ToJson();
                 payment.ChargeSuccess = true;
 
-                if (charge.PaymentMethod!=null && charge.PaymentMethod.Type == "redirect")
+                if (charge.PaymentMethod!=null /*&& charge.PaymentMethod.Type == "redirect"*/)
                 {
                     payment.PaymentMethod = new PaymentMethodModel
                     {
@@ -130,6 +132,7 @@ namespace MVC_Project.Integrations.PaymentsOpenPay
             catch (OpenpayException ex)
             {
                 payment.ChargeSuccess = false;
+                payment.ResultCode = ex.ErrorCode;
                 payment.ResultData = ex.Description;
                 payment.ResultCategory = ex.Category;
             }

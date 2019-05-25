@@ -84,6 +84,7 @@ namespace MVC_Project.Web
                 Response.Redirect(string.Format("~/Error/{0}", action));
             }
 
+
             if (exception != null)
             {
                 Response.Write("<h2>Error Global en la Aplicación</h2>\n");

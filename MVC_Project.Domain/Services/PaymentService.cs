@@ -21,10 +21,17 @@ namespace MVC_Project.Domain.Services
             _repository = baseRepository;
         }
 
-        public Payment GetByOrderTransaction(string OrderId, string ProviderId)
+        public Payment GetByOrderId(string OrderId)
         {
-            var payments = _repository.Session.QueryOver<Payment>().Where( x=> x.OrderId == OrderId /*&& x.ProviderId == ProviderId*/);
+            var payments = _repository.Session.QueryOver<Payment>().Where( x=> x.OrderId == OrderId);
             return payments.List().FirstOrDefault();
         }
+
+        public Payment GetByProviderId(string ProviderId)
+        {
+            var payments = _repository.Session.QueryOver<Payment>().Where(x=> x.ProviderId == ProviderId);
+            return payments.List().FirstOrDefault();
+        }
+
     }
 }

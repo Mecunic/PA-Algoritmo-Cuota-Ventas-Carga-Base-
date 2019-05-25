@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MVC_Project.Integrations.PaymentsOpenPay
+namespace MVC_Project.Integrations.Payments
 {
     public class PaymentModel
     {
@@ -28,6 +28,8 @@ namespace MVC_Project.Integrations.PaymentsOpenPay
         public string DeviceSessionId { get; set; }
         
         public string ResultData { get; set; }
+
+        public int ResultCode { get; set; }
 
         public string ResultCategory{ get; set; }
 
@@ -70,6 +72,14 @@ namespace MVC_Project.Integrations.PaymentsOpenPay
            IN_PROGRESS = "in_progress",
            COMPLETED = "completed",
            ERROR = "Error";
+    }
+
+    public static class PaymentError
+    {
+        public const int
+           ANTI_FRAUD = 3005,
+           REJECTED = 3001
+           ;
     }
 
     public static class PaymentEventStatus
