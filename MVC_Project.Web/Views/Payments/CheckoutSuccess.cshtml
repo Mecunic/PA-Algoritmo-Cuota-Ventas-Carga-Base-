@@ -1,4 +1,5 @@
-﻿
+﻿@model  MVC_Project.Web.Models.PaymentViewModel
+@using MVC_Project.Integrations.Payments;
 @{
     ViewBag.Title = "Checkout Finished";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -29,26 +30,32 @@
                         @if (!string.IsNullOrEmpty(Model.Id))
                         {
                             <div class="col-sm-12">
+                                <b>Tipo:</b> @Html.Raw(Model.PaymentMethod)
+                                <br />
                                 <b>ID Transacción:</b> @Html.Raw(Model.Id)
                                 <br />
                                 <b>ID Orden:</b> @Html.Raw(Model.OrderId)
                                 <br />
                                 <b>Monto:</b> @Html.Raw(Model.Amount)
                                 <br />
-                                <b>Fecha de Vencimiento:</b> @Html.Raw(Model.DueDate)
-                                <br />
                                 <b>Descripción:</b> @Html.Raw(Model.Description)
                                 <br />
-                                <b>Banco:</b> @Html.Raw(Model.BankName)
-                                <br />
-                                <b>CLABE:</b> @Html.Raw(Model.Clabe)
-                                <br />
-                                <b>Referencia:</b> @Html.Raw(Model.Name)
-                                <br />
-                                <b>Convenio:</b> @Html.Raw(Model.Agreement)
-                                <br />
-                                <b>Ficha de Pago:</b> <a href="@Html.Raw(Model.PaymentCardURL)" target="_blank" class="btn btn-block">Descarga</a>
-                                <br />
+
+                                @if (Model.PaymentMethod == PaymentMethod.BANK_ACCOUNT)
+                                {
+                                    <b>Fecha de Vencimiento:</b> @Html.Raw(Model.DueDate)
+                                    <br />
+                                    <b>Banco:</b> @Html.Raw(Model.BankName)
+                                    <br />
+                                    <b>CLABE:</b> @Html.Raw(Model.Clabe)
+                                    <br />
+                                    <b>Referencia:</b> @Html.Raw(Model.Name)
+                                    <br />
+                                    <b>Convenio:</b> @Html.Raw(Model.Agreement)
+                                    <br />
+                                    <b>Ficha de Pago:</b> <a href="@Html.Raw(Model.PaymentCardURL)" target="_blank" class="btn btn-block">Descarga</a>
+                                    <br />
+                                }
                             </div>
                         }
                         else
@@ -57,11 +64,11 @@
                                 <b>Descripción:</b> @Html.Raw(Model.Description)
                                 <br />
                             </div>
-                }
+                        }
                     </div>
-               </div>
+                </div>
+            </div>
         </div>
-      </div>
-  </div>
+    </div>
 </div>
 

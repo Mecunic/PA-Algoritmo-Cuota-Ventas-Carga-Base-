@@ -23,6 +23,7 @@ namespace MVC_Project.Web.Controllers
         private IPaymentServiceProvider paymentProviderService;
         private bool UseSelective3DSecure;
         private string GlobalClientId;
+        private string SecureVerificationURL;
 
         public PaymentsController(PaymentService paymentService, UserService userService)
         {
@@ -31,6 +32,7 @@ namespace MVC_Project.Web.Controllers
             TransferExpirationDays = Convert.ToInt32(System.Configuration.ConfigurationManager.AppSettings["Payments.TransferExpirationDays"]);
             UseSelective3DSecure = Convert.ToBoolean(System.Configuration.ConfigurationManager.AppSettings["Payments.UseSelective3DSecure"]);
             GlobalClientId = System.Configuration.ConfigurationManager.AppSettings["Payments.OpenpayGeneralClientId"];
+            SecureVerificationURL = System.Configuration.ConfigurationManager.AppSettings["Payments.SecureVerificationURL"];
             paymentProviderService = new OpenPayService();
         }
 
@@ -85,6 +87,7 @@ namespace MVC_Project.Web.Controllers
                 Description = String.Format("Payment for Order Id # {0}", model.OrderId),
             };
 
+            model.PaymentMethod = PaymentMethod.BANK_ACCOUNT;
             payment = paymentProviderService.CreateBankTransferPayment(payment);
             model.ChargeSuccess = payment.ChargeSuccess;
 
@@ -115,7 +118,7 @@ namespace MVC_Project.Web.Controllers
                 model.Clabe = payment.PaymentMethod.Clabe;
                 model.Reference = payment.PaymentMethod.Reference;
                 model.Name = payment.PaymentMethod.Name;
-                model.Name = payment.PaymentMethod.Agreement;
+                model.Agreement = payment.PaymentMethod.Agreement;
             }
             else
             {
@@ -139,7 +142,7 @@ namespace MVC_Project.Web.Controllers
                 TokenId = model.TokenId,
                 DeviceSessionId = model.DeviceSessionId,
                 Description = String.Format("Payment for Order Id # {0}", model.OrderId),
-                RedirectUrl = "http://localhost:52222/Payments/SecureVerification"
+                RedirectUrl = SecureVerificationURL
             };
 
             //Primero en BD
@@ -156,6 +159,7 @@ namespace MVC_Project.Web.Controllers
             _paymentService.Create(paymentBO);
 
             //Luego cobrar
+            model.PaymentMethod = PaymentMethod.CARD;
             payment = paymentProviderService.CreateTDCPayment(payment);
 
             //Si hubiera reintento, probar Antifraude
