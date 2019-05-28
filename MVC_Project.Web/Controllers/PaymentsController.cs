@@ -24,6 +24,7 @@ namespace MVC_Project.Web.Controllers
         private bool UseSelective3DSecure;
         private string GlobalClientId;
         private string SecureVerificationURL;
+        private string OpenpayWebhookKey;
 
         public PaymentsController(PaymentService paymentService, UserService userService)
         {
@@ -33,6 +34,7 @@ namespace MVC_Project.Web.Controllers
             UseSelective3DSecure = Convert.ToBoolean(System.Configuration.ConfigurationManager.AppSettings["Payments.UseSelective3DSecure"]);
             GlobalClientId = System.Configuration.ConfigurationManager.AppSettings["Payments.OpenpayGeneralClientId"];
             SecureVerificationURL = System.Configuration.ConfigurationManager.AppSettings["Payments.SecureVerificationURL"];
+            OpenpayWebhookKey = System.Configuration.ConfigurationManager.AppSettings["Payments.OpenpayWebhookKey"];
             paymentProviderService = new OpenPayService();
         }
 
@@ -142,7 +144,8 @@ namespace MVC_Project.Web.Controllers
                 TokenId = model.TokenId,
                 DeviceSessionId = model.DeviceSessionId,
                 Description = String.Format("Payment for Order Id # {0}", model.OrderId),
-                RedirectUrl = SecureVerificationURL
+                RedirectUrl = SecureVerificationURL,
+                Use3DSecure = true
             };
 
             //Primero en BD
@@ -224,6 +227,13 @@ namespace MVC_Project.Web.Controllers
         [ValidateInput(false)]
         public ActionResult Tracking()
         {
+
+            string urlKey = Request.QueryString["k"];
+            if (string.IsNullOrWhiteSpace(urlKey) || urlKey != OpenpayWebhookKey)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
             System.IO.StreamReader reader = new System.IO.StreamReader(HttpContext.Request.InputStream);
             string rawJSON = reader.ReadToEnd();
             System.Diagnostics.Trace.TraceInformation("PaymentsController [rawJSON] : " + rawJSON); // For debugging to the Azure Streaming logs
