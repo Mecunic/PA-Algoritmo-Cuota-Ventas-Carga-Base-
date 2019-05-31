@@ -13,9 +13,9 @@ namespace MVC_Project.Data.Mappings
         public RolePermissionMap()
         {
             Table("permission_role");
-            Id(x => x.Id).GeneratedBy.Identity().Column("id");
-            References(x => x.Role).Column("role_id");
-            References(x => x.Permission).Column("permission_id");
+            Id(x => x.Id).GeneratedBy.Identity().Column("PermissionRoleId");
+            References(x => x.Role).Column("RoleId");
+            References(x => x.Permission).Column("PermissionId");
         }
     }
 }

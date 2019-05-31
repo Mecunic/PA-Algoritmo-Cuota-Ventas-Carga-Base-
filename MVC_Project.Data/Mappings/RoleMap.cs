@@ -8,7 +8,7 @@ namespace MVC_Project.Data.Mappings {
 
         public RoleMap() {
             Table("roles");
-            Id(x => x.Id).GeneratedBy.Identity().Column("id");
+            Id(x => x.Id).GeneratedBy.Identity().Column("RoleId");
             Map(x => x.Code).Column("code").Not.Nullable();
             Map(x => x.Name).Column("name").Not.Nullable();
             Map(x => x.Uuid).Column("uuid").Not.Nullable();
@@ -17,8 +17,8 @@ namespace MVC_Project.Data.Mappings {
             Map(x => x.UpdatedAt).Column("updated_at").Not.Nullable();
             Map(x => x.RemovedAt).Column("removed_at").Nullable();
             Map(x => x.Status).Column("status").Nullable();
-            HasMany(x => x.Users).Inverse().Cascade.All().KeyColumn("role_id");
-            HasManyToMany(x => x.Permissions).Cascade.All().Table("permission_role").ParentKeyColumn("role_id").ChildKeyColumn("permission_id");
+            HasMany(x => x.Users).Inverse().Cascade.All().KeyColumn("RoleId");
+            HasManyToMany(x => x.Permissions).Cascade.All().Table("permission_role").ParentKeyColumn("RoleId").ChildKeyColumn("PermissionId");
         }
     }
 }

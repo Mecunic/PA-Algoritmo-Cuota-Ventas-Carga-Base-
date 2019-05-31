@@ -8,7 +8,7 @@ namespace MVC_Project.Data.Mappings {
 
         public PermissionMap() {
             Table("permissions");
-            Id(x => x.Id).GeneratedBy.Identity().Column("id");            
+            Id(x => x.Id).GeneratedBy.Identity().Column("PermissionId");            
             Map(x => x.Description).Column("description").Not.Nullable();
             Map(x => x.Controller).Column("controller").Not.Nullable();
             Map(x => x.Action).Column("action").Not.Nullable();

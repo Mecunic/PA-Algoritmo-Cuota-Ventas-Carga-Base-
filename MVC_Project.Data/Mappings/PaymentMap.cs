@@ -14,7 +14,7 @@ namespace MVC_Project.Data.Mappings
         {
             Schema("dbo");
             Table("payments");
-            Id(x => x.Id).GeneratedBy.Identity().Column("id");
+            Id(x => x.Id).GeneratedBy.Identity().Column("PaymentId");
             Map(x => x.CreationDate).Column("creation_date").Not.Nullable();
             Map(x => x.OrderId).Column("order_id").Nullable();
             Map(x => x.Method).Column("method").Nullable();
@@ -26,7 +26,7 @@ namespace MVC_Project.Data.Mappings
             Map(x => x.AuthorizationCode).Column("authorization_code").Nullable();
             Map(x => x.DueDate).Column("due_date").Nullable();
             Map(x => x.LogData).Column("log_data").Nullable();
-            References(x => x.User).Column("user_id");
+            References(x => x.User).Column("UserId");
         }
     }
 }

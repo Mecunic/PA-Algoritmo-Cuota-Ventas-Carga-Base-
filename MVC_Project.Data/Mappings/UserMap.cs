@@ -8,7 +8,7 @@ namespace MVC_Project.Data.Mappings {
 
         public UserMap() {
             Table("users");
-            Id(x => x.Id).GeneratedBy.Identity().Column("id");
+            Id(x => x.Id).GeneratedBy.Identity().Column("UserId");
             Map(x => x.Uuid).Column("uuid").Not.Nullable();
             Map(x => x.EmployeeIdentifier).Column("employee_identifier").Nullable();
             Map(x => x.MobileNumber).Column("mobile_number").Nullable();
@@ -29,12 +29,12 @@ namespace MVC_Project.Data.Mappings {
             Map(x=>x.LastLoginAt).Column("last_login_at").Nullable();
             Map(x => x.Username).Column("username").Nullable();
             Map(x => x.PasswordExpiration).Column("password_expiration").Nullable();
-            References(x => x.Role).Column("role_id");
+            References(x => x.Role).Column("RoleId");
             HasManyToMany(x => x.Permissions)
                 .Cascade.SaveUpdate()
                 .Table("permission_user")
-                .ParentKeyColumn("user_id")
-                .ChildKeyColumn("permission_id");
+                .ParentKeyColumn("UserId")
+                .ChildKeyColumn("PermissionId");
         }
     }
 }
