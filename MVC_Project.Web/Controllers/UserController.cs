@@ -10,6 +10,7 @@ using MVC_Project.Web.Utils.Enums;
 using NHibernate;
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Configuration;
 using System.Linq;
 using System.Net;
@@ -94,10 +95,10 @@ namespace MVC_Project.Web.Controllers
         {
             try
             {
-                var users = _userService.FilterBy(filtros);
-                IList<UserData> UsuariosResponse = new List<UserData>();
-
-                foreach (var user in users)
+                NameValueCollection filtersValues = HttpUtility.ParseQueryString(filtros);
+                var results = _userService.FilterBy(filtersValues, param.iDisplayStart, param.iDisplayLength);
+                IList<UserData> dataResponse = new List<UserData>();
+                foreach (var user in results.Item1)
                 {
                     UserData userData = new UserData();
                     userData.Name = user.FirstName + " " + user.LastName;
@@ -108,15 +109,15 @@ namespace MVC_Project.Web.Controllers
                     userData.Status = user.Status;
                     userData.Uuid = user.Uuid;
                     userData.LastLoginAt = user.LastLoginAt;
-                    UsuariosResponse.Add(userData);
+                    dataResponse.Add(userData);
                 }
                 return Json(new
                 {
                     success = true,
                     param.sEcho,
-                    iTotalRecords = UsuariosResponse.Count(),
-                    iTotalDisplayRecords = 20,
-                    aaData = UsuariosResponse
+                    iTotalRecords = dataResponse.Count(),
+                    iTotalDisplayRecords = results.Item2,
+                    aaData = dataResponse
                 }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)

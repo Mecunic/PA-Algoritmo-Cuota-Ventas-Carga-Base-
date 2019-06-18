@@ -3,10 +3,12 @@ using MVC_Project.Domain.Services;
 using MVC_Project.Integrations.Payments;
 using MVC_Project.Utils;
 using MVC_Project.Web.AuthManagement;
+using MVC_Project.Web.AuthManagement.Models;
 using MVC_Project.Web.Models;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -171,7 +173,7 @@ namespace MVC_Project.Web.Controllers
                 payment.Use3DSecure = true;
                 payment = paymentProviderService.CreateTDCPayment(payment);
             }
-            
+
             model.ChargeSuccess = payment.ChargeSuccess;
 
             if (payment.ChargeSuccess)
@@ -215,11 +217,62 @@ namespace MVC_Project.Web.Controllers
         public ActionResult SecureVerification(string id)
         {
             Payment payment = _paymentService.GetByProviderId(id);
-
             PaymentViewModel model = (PaymentViewModel)Session["Payments.PaymentModel"];
-
             return View("CheckoutSuccess", model);
-            
+        }
+
+        [HttpGet, Authorize]
+        public JsonResult GetAllByFilter(JQueryDataTableParams param, string filtros)
+        {
+            try
+            {
+                AuthUser authUser = Authenticator.AuthenticatedUser;
+
+                NameValueCollection filtersValues = HttpUtility.ParseQueryString(filtros);
+                filtersValues["UserId"] = "-1";
+                if (authUser.Role.Code != Constants.ROLE_ADMIN)
+                {
+                    filtersValues["UserId"] = Convert.ToString(authUser.Id);
+                }
+
+                var payments = _paymentService.FilterBy(filtersValues, param.iDisplayStart, param.iDisplayLength);
+
+                IList<PaymentViewModel> dataResponse = new List<PaymentViewModel>();
+                foreach (var payment in payments.Item1)
+                {
+                    PaymentViewModel resultData = new PaymentViewModel
+                    {
+                        Id = Convert.ToString( payment.Id ),
+                        OrderId = payment.OrderId,
+                        Amount = payment.Amount,
+                        PaymentMethod = payment.Method,
+                        ProviderId = payment.ProviderId,
+                        Status = payment.Status,
+                        CreationDate = payment.CreationDate.ToString(Constants.DATE_FORMAT),
+                        ConfirmationDate = payment.ConfirmationDate.HasValue?payment.ConfirmationDate.Value.ToString(Constants.DATE_FORMAT):"",
+                        User = payment.User.Email
+                    };
+                    dataResponse.Add(resultData);
+                }
+                return Json(new
+                {
+                    success = true,
+                    param.sEcho,
+                    iTotalRecords = dataResponse.Count(),
+                    iTotalDisplayRecords = payments.Item2,
+                    aaData = dataResponse
+                }, JsonRequestBehavior.AllowGet);
+
+            }
+            catch (Exception ex)
+            {
+                return new JsonResult
+                {
+                    Data = new { Mensaje = new { title = "Error", message = ex.Message } },
+                    JsonRequestBehavior = JsonRequestBehavior.AllowGet,
+                    MaxJsonLength = Int32.MaxValue
+                };
+            }
         }
         
         [AllowAnonymous]

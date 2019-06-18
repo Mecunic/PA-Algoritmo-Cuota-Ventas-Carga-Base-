@@ -1,9 +1,11 @@
 ﻿using MVC_Project.Domain.Entities;
 using MVC_Project.Domain.Repositories;
+using MVC_Project.Utils;
 using NHibernate;
 using NHibernate.Criterion;
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
@@ -27,23 +29,34 @@ namespace MVC_Project.Domain.Services
             _repository = baseRepository;
         }
 
-        public IEnumerable<User> FilterBy(string filtros)
+        public Tuple<IEnumerable<User>, int>  FilterBy(NameValueCollection filtersValue, int? skip, int? take)
         {
-            filtros = filtros.Replace("[", "").Replace("]", "").Replace("\\", "").Replace("\"", "");
-            var filters = filtros.Split(',').ToList();
-            var filterSearchString = filters[0];
-            var filterStatus = filters[1];
-            var users = _repository.Session.QueryOver<User>();
-            if (!string.IsNullOrWhiteSpace(filterSearchString))
+            string FilterName = filtersValue.Get("Name").Trim();
+            int FilterStatus = Convert.ToInt32(filtersValue.Get("Status").Trim());
+
+            var query = _repository.Session.QueryOver<User>();
+            if (!string.IsNullOrWhiteSpace(FilterName))
             {
-                users = users.Where(user => user.Email.IsInsensitiveLike("%" + filterSearchString + "%") || user.FirstName.IsInsensitiveLike("%" + filterSearchString + "%") || user.LastName.IsInsensitiveLike("%" + filterSearchString + "%"));
+                query = query.Where(user => user.Email.IsInsensitiveLike("%" + FilterName + "%") || user.FirstName.IsInsensitiveLike("%" + FilterName + "%") || user.LastName.IsInsensitiveLike("%" + FilterName + "%"));
             }
-            if (filterStatus != "2")
+            if (FilterStatus != Constants.SEARCH_ALL)
             {
-                bool status = filterStatus == "1" ? true : false;
-                users = users.Where(user => user.Status == status);
+                bool FilterStatusBool = Convert.ToBoolean(FilterStatus);
+                query = query.Where(user => user.Status == FilterStatusBool);
             }
-            return users.OrderBy(u => u.CreatedAt).Desc.List();
+            var count = query.RowCount();
+
+            if (skip.HasValue)
+            {
+                query.Skip(skip.Value);
+            }
+
+            if (take.HasValue)
+            {
+                query.Take(take.Value);
+            }
+            var list = query.OrderBy(u => u.CreatedAt).Desc.List();
+            return new Tuple<IEnumerable<User>, int>(list, count);
         }
     }
 }

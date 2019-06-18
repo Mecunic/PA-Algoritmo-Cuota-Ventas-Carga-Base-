@@ -147,42 +147,42 @@ namespace MVC_Project.Web.Controllers
             }
         }
 
-        [HttpGet, Authorize]
-        public JsonResult GetAllByFilter(JQueryDataTableParams param, string filtros)
-        {
-            try
-            {
-                var users = _userService.FilterBy(filtros);
-                IList<UserPermissionData> UsuariosResponse = new List<UserPermissionData>();
-                foreach (var user in users)
-                {
-                    UserPermissionData userData = new UserPermissionData();
-                    userData.Name = user.FirstName + " " + user.LastName;
-                    userData.Email = user.Email;
-                    userData.CreatedAt = user.CreatedAt;
-                    userData.UpdatedAt = user.UpdatedAt;
-                    userData.Status = user.Status;
-                    userData.Uuid = user.Uuid;
-                    UsuariosResponse.Add(userData);
-                }
-                return Json(new
-                {
-                    success = true,
-                    param.sEcho,
-                    iTotalRecords = UsuariosResponse.Count(),
-                    iTotalDisplayRecords = 10,
-                    aaData = UsuariosResponse
-                }, JsonRequestBehavior.AllowGet);
-            }
-            catch (Exception ex)
-            {
-                return new JsonResult
-                {
-                    Data = new { Mensaje = new { title = "Error", message = ex.Message } },
-                    JsonRequestBehavior = JsonRequestBehavior.AllowGet,
-                    MaxJsonLength = Int32.MaxValue
-                };
-            }
-        }
+        //[HttpGet, Authorize]
+        //public JsonResult GetAllByFilter(JQueryDataTableParams param, string filtros)
+        //{
+        //    try
+        //    {
+        //        var users = _userService.FilterBy(filtros, param.iDisplayStart, param.iDisplayLength);
+        //        IList<UserPermissionData> UsuariosResponse = new List<UserPermissionData>();
+        //        foreach (var user in users)
+        //        {
+        //            UserPermissionData userData = new UserPermissionData();
+        //            userData.Name = user.FirstName + " " + user.LastName;
+        //            userData.Email = user.Email;
+        //            userData.CreatedAt = user.CreatedAt;
+        //            userData.UpdatedAt = user.UpdatedAt;
+        //            userData.Status = user.Status;
+        //            userData.Uuid = user.Uuid;
+        //            UsuariosResponse.Add(userData);
+        //        }
+        //        return Json(new
+        //        {
+        //            success = true,
+        //            param.sEcho,
+        //            iTotalRecords = UsuariosResponse.Count(),
+        //            iTotalDisplayRecords = 10,
+        //            aaData = UsuariosResponse
+        //        }, JsonRequestBehavior.AllowGet);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return new JsonResult
+        //        {
+        //            Data = new { Mensaje = new { title = "Error", message = ex.Message } },
+        //            JsonRequestBehavior = JsonRequestBehavior.AllowGet,
+        //            MaxJsonLength = Int32.MaxValue
+        //        };
+        //    }
+        //}
     }
 }

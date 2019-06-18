@@ -37,5 +37,14 @@ namespace MVC_Project.Web.Models
         public string Agreement { get; set; }
 
         public bool ChargeSuccess { get; set; }
+
+        //FOR DISPLAY RESULTS
+        public string CreationDate { get; set; }
+        public string ConfirmationDate { get; set; }
+        public string ProviderId { get; set; }
+        public string Status { get; set; }
+        public string User { get; set; }
+        public string FilterInitialDate { get; set; }
+        public string FilterEndDate { get; set; }
     }
 }

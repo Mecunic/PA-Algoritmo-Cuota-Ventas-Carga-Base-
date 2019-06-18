@@ -115,6 +115,15 @@ namespace MVC_Project.Resources {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Results.
+        /// </summary>
+        public static string LABEL_RESULTS {
+            get {
+                return ResourceManager.GetString("LABEL_RESULTS", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Catalogs.
         /// </summary>
         public static string MODULE_CATALOGS {

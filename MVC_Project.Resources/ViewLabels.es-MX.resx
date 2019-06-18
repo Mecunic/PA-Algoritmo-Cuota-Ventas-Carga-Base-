@@ -168,4 +168,7 @@
   <data name="NEW_PASSWORD" xml:space="preserve">
     <value>Nueva contraseña</value>
   </data>
+  <data name="LABEL_RESULTS" xml:space="preserve">
+    <value>Resultados</value>
+  </data>
 </root>

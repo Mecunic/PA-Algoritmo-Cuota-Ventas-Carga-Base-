@@ -1,8 +1,11 @@
 ﻿using MVC_Project.Domain.Entities;
 using MVC_Project.Domain.Repositories;
+using MVC_Project.Utils;
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
+using NHibernate.Criterion;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -33,5 +36,47 @@ namespace MVC_Project.Domain.Services
             return payments.List().FirstOrDefault();
         }
 
+        public Tuple<IEnumerable<Payment>, int> FilterBy(NameValueCollection filtersValue, int? skip, int? take)
+        {
+            var query = _repository.Session.QueryOver<Payment>();
+
+            
+            string FilterOrder = filtersValue.Get("OrderId").Trim();
+            string FilterInitialDate = filtersValue.Get("FilterInitialDate").Trim();
+            string FilterEndDate = filtersValue.Get("FilterEndDate").Trim();
+            int FilterUser = Convert.ToInt32(filtersValue.Get("UserId").Trim());
+
+            DateTime? initialDate = DateUtil.ToDateTime(FilterInitialDate, Constants.DATE_FORMAT);
+            DateTime? endDate = DateUtil.ToDateTime(FilterEndDate, Constants.DATE_FORMAT);
+
+            if (FilterUser > 0)
+            {
+                query = query.Where(x => x.User.Id == FilterUser);
+            }
+            if (!string.IsNullOrWhiteSpace(FilterOrder))
+            {
+                query = query.Where(x => x.OrderId.IsInsensitiveLike("%" + FilterOrder + "%"));
+            }
+            if (initialDate.HasValue)
+            {
+                query = query.Where(x=>x.CreationDate >= initialDate.Value);
+            }
+            if (endDate.HasValue)
+            {
+                query = query.Where(x => x.CreationDate <= endDate.Value);
+            }
+            var count = query.RowCount();
+            if (skip.HasValue)
+            {
+                query.Skip(skip.Value);
+            }
+            if (take.HasValue)
+            {
+                query.Take(take.Value);
+            }
+            var list = query.OrderBy(u => u.CreationDate).Desc.List();
+
+            return new Tuple<IEnumerable<Payment>, int>(list, count);
+        }
     }
 }

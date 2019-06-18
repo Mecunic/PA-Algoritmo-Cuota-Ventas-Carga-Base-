@@ -10,7 +10,7 @@ namespace MVC_Project.Web.Utils.Enums
     {
         public static readonly FilterStatusEnum INACTIVE = new FilterStatusEnum(0, "Inactivo");
         public static readonly FilterStatusEnum ACTIVE = new FilterStatusEnum(1, "Activo");
-        public static readonly FilterStatusEnum ALL = new FilterStatusEnum(2, "Todos");
+        public static readonly FilterStatusEnum ALL = new FilterStatusEnum(MVC_Project.Utils.Constants.SEARCH_ALL, "Todos");
 
         private FilterStatusEnum(int id, string name) : base(id, name)
         {

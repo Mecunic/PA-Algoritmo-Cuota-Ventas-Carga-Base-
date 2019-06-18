@@ -13,6 +13,8 @@ namespace MVC_Project.Utils
     {
         public static readonly string AUTHENTICATED_USER_PROFILE = "ddc30589-80ba-48e6-88ec-6454350f2cd7_USER_PROFILE";
 
+        public static readonly int SEARCH_ALL = -1;
+
         //ROLE CODES
         public static readonly string ROLE_ADMIN = "ADMIN";
         public static readonly string ROLE_EMPLOYEE = "EMP";

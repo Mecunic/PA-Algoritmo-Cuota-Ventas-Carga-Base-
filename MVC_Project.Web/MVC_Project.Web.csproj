@@ -1566,6 +1566,7 @@
     <Content Include="Scripts\template\plugins\video\responsible-video.js" />
     <Content Include="Scripts\template\plugins\wow\wow.min.js" />
     <Content Include="Scripts\template\Utils.js" />
+    <Content Include="Scripts\views\Payments\Index.js" />
     <Content Include="Scripts\views\Reports\OrderIndex.js" />
     <Content Include="Scripts\views\Rol\Index.js" />
     <Content Include="Scripts\views\UserPermission\Index.js" />

@@ -23,7 +23,7 @@
                 { data: 'RoleName', title: "Rol" },
                 { data: 'Name', title: "Nombre" },
                 {
-                    data: null, orderName: "CreatedAt", title: "Fecha Creación", autoWidth: false, className: "dt-center td-actions thead-dark",
+                    data: null, orderName: "CreatedAt", title: "Fecha de Creación", autoWidth: false, className: "dt-center td-actions thead-dark",
                     render: function (data, type, row, meta) {
                         if (data.CreatedAt !== null && data.CreatedAt !== "") {
                             return moment(data.CreatedAt).format('DD-MMM-YYYY');
@@ -32,7 +32,7 @@
                     }
                 },
                 {
-                    data: null, orderName: "UpdatedAt", title: "Fecha último acceso", autoWidth: false, className: "dt-center td-actions thead-dark",
+                    data: null, orderName: "UpdatedAt", title: "Último Acceso", autoWidth: false, className: "dt-center td-actions thead-dark",
                     render: function (data, type, row, meta) {
                         if (data.LastLoginAt !== null && data.LastLoginAt !== "") {
                             return moment(data.LastLoginAt).format('DD-MMM-YYYY');
@@ -48,8 +48,8 @@
                             '<button class="btn btn-light btn-active" title="Activar" style="margin-left:5px;"><span class="far fa-square"></span></button>';
                         var buttons = '<div class="btn-group" role="group" aria-label="Opciones">' +
                             deshabilitar +
-                            '<button class="btn btn-light btn-edit"><span class="fas fa-user-edit"></span></button>' +
-                            '<button class="btn btn-light btn-edit-password"><span class="fas fa-edit"></span></button>' +
+                            '<button class="btn btn-light btn-edit" title="Editar Usuario"><span class="fas fa-user-edit"></span></button>' +
+                            '<button class="btn btn-light btn-edit-password" title="Cambiar Contraseña"><span class="fas fa-key"></span></button>' +
                             '</div>';
                         return buttons;
                     }
@@ -57,8 +57,7 @@
             ],
             "fnServerData": function (sSource, aoData, fnCallback) {
                 aoData.push({ "name": "sSortColumn", "value": this.fnSettings().aoColumns[this.fnSettings().aaSorting[0][0]].orderName });
-                aoData.push({ "name": "filtros", "value": getFiltros("form#SearchForm") });
-
+                aoData.push({ "name": "filtros", "value": $('form#SearchForm').serialize() });
                 $.getJSON(sSource, aoData, function (json) {
                     fnCallback(json);
                 });
@@ -241,17 +240,6 @@
                     reject(jqXHR);
                 });
             });
-        }
-        function getFiltros(form) {
-            var $inputs = $(form + ' [filtro="true"]');
-            var nFiltros = $inputs.length;
-            var filtros = [];
-            for (i = 1; i <= nFiltros; i++) {                
-                var input = $.grep($inputs, function (item) { return $(item).attr('filtro-order') == i; });
-                filtros.push($(input).val());
-            }
-
-            return JSON.stringify(filtros);
         }
     }
 }
