@@ -21,8 +21,4 @@
             }
         });
     }
-
-    this.reloadTable = function () {
-        self.dataTable.ajax.reload();
-    }
 }

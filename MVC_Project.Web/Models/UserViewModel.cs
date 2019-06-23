@@ -64,8 +64,11 @@ namespace MVC_Project.Web.Models
         [Required]
         public string Email { get; set; }
 
-        [Display(Name = "Nombre de usuario")]
+        [Display(Name = "Usuario")]
         public string Username { get; set; }
+
+        [Display(Name = "Teléfono Móvil")]
+        public string MobileNumber { get; set; }
 
         [Display(Name = "Idioma")]
         public string Language { get; set; }
@@ -122,8 +125,11 @@ namespace MVC_Project.Web.Models
 
         public string Email { get; set; }
 
-        [Display(Name = "Nombre de usuario")]
+        [Display(Name = "Usuario")]
         public string Username { get; set; }
+
+        [Display(Name = "Teléfono Móvil")]
+        public string MobileNumber { get; set; }
 
         [Display(Name = "Idioma")]
         public string Language { get; set; }

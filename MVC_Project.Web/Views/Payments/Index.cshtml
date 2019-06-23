@@ -107,7 +107,7 @@
                 $("#SearchForm").each(function () {
                     this.reset();
                 });
-                tableCtrl.reloadTable();
+                $('#table').DataTable().draw();
             });
 
             $('#btnExportar').on('click', function (e) {

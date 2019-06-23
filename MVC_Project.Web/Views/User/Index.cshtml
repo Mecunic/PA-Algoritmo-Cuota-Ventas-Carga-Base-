@@ -33,7 +33,11 @@
                             </div>
 
                             <div class="col-xs-12">
-                                <button type="button" class="btn btn-sm btn-primary btn-filter-user pull-right"><i class="fas fa-search"></i> Buscar</button>
+                                <span class="pull-right">
+                                    <button type="button" id="btnSearchForm" class="btn btn-sm btn-primary btn-filter"><i class="fas fa-search"></i> Buscar</button>
+                                    &nbsp;
+                                    <button type="button" id="btnClearForm" class="btn btn-sm btn-default"><i class="fas fa-eraser "></i> Limpiar</button>
+                                </span>
                             </div>
                         </div>
                     </div>
@@ -89,13 +93,20 @@
 
     <script>
         $(function () {
-            var usuarios = new UserIndexControlador('table', '@Url.Action("GetAllByFilter")',
+            var tableCtrl = new UserIndexControlador('table', '@Url.Action("GetAllByFilter")',
                 '@Url.Action("ModalEditAction")', '@Url.Action("ModalDeleteAction")',
                 '@Url.Action("EditPassword")', 'modal-edit-password', 'changePassForm', 'btn-GuardarContasenia');
-            usuarios.init();
+            tableCtrl.init();
         });
 
-        $(".btn-filter-user").click(function () {
+        $("#btnClearForm").click(function () {
+            $("#SearchForm").each(function () {
+                this.reset();
+            });
+            $('#table').DataTable().draw();
+        });
+
+        $(".btn-filter").click(function () {
             $('#table').DataTable().draw();
         });
     </script>

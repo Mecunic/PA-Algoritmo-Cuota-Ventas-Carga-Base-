@@ -179,6 +179,7 @@
     <Compile Include="AuthManagement\Models\AuthUser.cs" />
     <Compile Include="Controllers\AuthController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
+    <Compile Include="Controllers\CalendarController.cs" />
     <Compile Include="Controllers\DashboardsController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -1603,6 +1604,7 @@
     <Content Include="Views\Payments\Index.cshtml" />
     <Content Include="Views\Payments\Checkout.cshtml" />
     <Content Include="Views\Payments\CheckoutSuccess.cshtml" />
+    <Content Include="Views\Calendar\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\Shared\EditorTemplates\" />

@@ -43,7 +43,7 @@ namespace MVC_Project.Web.AuthManagement.Models
             if (this.Permissions != null && this.Permissions.Count > 0)
             {
                 var per = from ap in this.Permissions where ap.Controller == controller select ap;
-                return per.First<Permission>().Module;
+                return per.Count() > 0 ? per.First<Permission>().Module : string.Empty;
             }
             return string.Empty;
         }

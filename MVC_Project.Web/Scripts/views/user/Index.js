@@ -44,10 +44,12 @@
                     data: null,
                     className: 'personal-options',
                     render: function (data) {
-                        var deshabilitar = data.Status ? '<button class="btn btn-light btn-delete" title="Desactivar" style="margin-left:5px;"><span class="far fa-check-square "></span></button>' :
-                            '<button class="btn btn-light btn-active" title="Activar" style="margin-left:5px;"><span class="far fa-square"></span></button>';
+                        var deshabilitarBtns = data.Status ?
+                            '<button class="btn btn-light btn-change-status" title="Desactivar" style="margin-left:5px;"><span class="far fa-check-square "></span></button>' :
+                            '<button class="btn btn-light btn-change-status" title="Activar" style="margin-left:5px;"><span class="far fa-square"></span></button>';
+
                         var buttons = '<div class="btn-group" role="group" aria-label="Opciones">' +
-                            deshabilitar +
+                            deshabilitarBtns +
                             '<button class="btn btn-light btn-edit" title="Editar Usuario"><span class="fas fa-user-edit"></span></button>' +
                             '<button class="btn btn-light btn-edit-password" title="Cambiar Contraseña"><span class="fas fa-key"></span></button>' +
                             '</div>';
@@ -65,7 +67,7 @@
         });
 
         $(this.htmlTable, "tbody").on('click',
-            'td.personal-options .btn-group .btn-active',
+            'td.personal-options .btn-group .btn-change-status',
             function () {
                 var tr = $(this).closest('tr');
                 var row = self.dataTable.row(tr);
@@ -73,7 +75,7 @@
 
                 swal({
                     title: "Confirmación",
-                    text: "¿Desea activar al usuario?",
+                    text: "¿Desea cambiar el estado del usuario?",
                     showCancelButton: true,
                     confirmButtonClass: "btn-danger",
                     confirmButtonText: "Aceptar",
@@ -87,7 +89,7 @@
                                 type: 'POST',
                                 async: true,
                                 data: { uuid: id },
-                                url: '/User/Delete',
+                                url: '/User/ChangeStatus',
                                 success: function (data) {
                                     if (!data) {
                                         swal({
@@ -96,7 +98,7 @@
                                             text: data.Mensaje.Contenido
                                         })
                                     } else {
-                                        swal("Estatus cambiado!");
+                                        swal("Registro actualizado");
                                         self.dataTable.ajax.reload();
                                     }
                                 },
@@ -105,53 +107,7 @@
                                 }
                             });
                         } else {
-                            swal("Cancelado", "Operación cancelada", "error");
-                        }
-                    });
-            });
-
-        $(this.htmlTable, "tbody").on('click',
-            'td.personal-options .btn-group .btn-delete',
-            function () {
-                var tr = $(this).closest('tr');
-                var row = self.dataTable.row(tr);
-                var id = row.data().Uuid;
-
-                swal({
-                    title: "Confirmación",
-                    text: "¿Desea inactivar al usuario?",
-                    showCancelButton: true,
-                    confirmButtonClass: "btn-danger",
-                    confirmButtonText: "Aceptar",
-                    cancelButtonText: "Cancelar",
-                    closeOnConfirm: false,
-                    closeOnCancel: false
-                },
-                    function (isConfirm) {
-                        if (isConfirm) {
-                            $.ajax({
-                                type: 'POST',
-                                async: true,
-                                data: { uuid: id },
-                                url: '/User/Delete',
-                                success: function (data) {
-                                    if (!data) {
-                                        swal({
-                                            type: 'error',
-                                            title: data.Mensaje.Titulo,
-                                            text: data.Mensaje.Contenido
-                                        })
-                                    } else {
-                                        swal("Estatus cambiado!");
-                                        self.dataTable.ajax.reload();
-                                    }
-                                },
-                                error: function (xhr) {
-                                    console.log('error');
-                                }
-                            });
-                        } else {
-                            swal("Cancelado", "Operación cancelada", "error");
+                            swal.close();
                         }
                     });
             });
@@ -225,6 +181,7 @@
                 form.appendChild(input);
                 form.submit();
             });
+
         function submitEditPassword(form) {
             let url = form.attr("action");
             let method = form.attr("method");

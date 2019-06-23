@@ -32,7 +32,7 @@ namespace MVC_Project.Web.Controllers
             _roleService = roleService;
         }
 
-        // GET: User
+        [Authorize]
         public ActionResult Index()
         {
             UserViewModel model = new UserViewModel
@@ -131,13 +131,7 @@ namespace MVC_Project.Web.Controllers
             }
         }
 
-        // GET: User/Details/5
-        public ActionResult Details(int id)
-        {
-            return View();
-        }
-
-        // GET: User/Create
+        [Authorize]
         public ActionResult Create()
         {
             var userCreateViewModel = new UserCreateViewModel { Roles = PopulateRoles() };
@@ -156,8 +150,7 @@ namespace MVC_Project.Web.Controllers
             return rolesList;
         }
 
-        // POST: User/Create
-        [HttpPost]
+        [Authorize, HttpPost, ValidateAntiForgeryToken, ValidateInput(true)]
         public ActionResult Create(UserCreateViewModel userCreateViewModel)
         {
             if(!String.IsNullOrWhiteSpace(userCreateViewModel.ConfirmPassword) 
@@ -165,7 +158,7 @@ namespace MVC_Project.Web.Controllers
             {
                 if(!userCreateViewModel.Password.Equals(userCreateViewModel.ConfirmPassword))
                 {
-                    ModelState.AddModelError("ConfirmPassword", "las cntraseñas no coinciden");
+                    ModelState.AddModelError("ConfirmPassword", "Las contraseñas no coinciden");
                 }
             }
             if (ModelState.IsValid)
@@ -181,6 +174,7 @@ namespace MVC_Project.Web.Controllers
                     FirstName = userCreateViewModel.Name,
                     LastName = userCreateViewModel.Apellidos,
                     Email = userCreateViewModel.Email,
+                    MobileNumber = userCreateViewModel.MobileNumber,
                     Password = EncryptHelper.EncryptPassword(userCreateViewModel.Password),
                     PasswordExpiration = passwordExpiration,
                     Role = new Role { Id = userCreateViewModel.Role },
@@ -205,7 +199,7 @@ namespace MVC_Project.Web.Controllers
             }
         }
 
-        // GET: User/Edit/5
+        [Authorize]
         public ActionResult Edit(string uuid)
         {
             User user = _userService.FindBy(x => x.Uuid == uuid).First();
@@ -219,8 +213,7 @@ namespace MVC_Project.Web.Controllers
             return View(model);
         }
 
-        // POST: User/Edit/5
-        [HttpPost]
+        [Authorize, HttpPost, ValidateAntiForgeryToken, ValidateInput(true)]
         public ActionResult Edit(UserEditViewModel model, FormCollection collection)
         {
             try
@@ -229,6 +222,7 @@ namespace MVC_Project.Web.Controllers
                 user.FirstName = model.Name;
                 user.LastName = model.Apellidos;
                 user.Email = model.Email;
+                user.MobileNumber = model.MobileNumber;
                 user.Username = model.Username;
                 user.Language = model.Language;
                 _userService.Update(user);
@@ -314,33 +308,20 @@ namespace MVC_Project.Web.Controllers
             }
             return View(model);
         }
-
-        // GET: User/Delete/5
-        public ActionResult Delete(string uuid)
-        {
-            return View();
-        }
-
-        // POST: User/Delete/5
-        [HttpPost]
-        public ActionResult Delete(string uuid, FormCollection collection)
+        
+        [HttpPost, Authorize]
+        public ActionResult ChangeStatus(string uuid, FormCollection collection)
         {
             try
             {
-                var users = _userService.FindBy(x => x.Uuid == uuid).First();
-                if (users != null)
+                var user = _userService.FindBy(x => x.Uuid == uuid).First();
+                if (user != null)
                 {
-                    if (users.Status == true)
-                    {
-                        users.Status = false;
-                    }
-                    else
-                    {
-                        users.Status = true;
-                    }
+                    user.Status = !user.Status;
+                    _userService.Update(user);
+                    return Json(true, JsonRequestBehavior.AllowGet);
                 }
-                _userService.Update(users);
-                return Json(true, JsonRequestBehavior.AllowGet);
+                return Json(false, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {
