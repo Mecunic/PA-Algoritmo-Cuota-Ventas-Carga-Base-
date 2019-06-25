@@ -6,6 +6,7 @@
 - NHibernate + Fluent
 - Unity (IoC)
 - Base de datos default: Azure SQL Server
+- Plantilla responsiva Front-End Inspinia con Bootstrap 3.0
 - Jobs: Hangfire
 
 ### Características
