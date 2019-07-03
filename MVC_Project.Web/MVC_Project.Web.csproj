@@ -196,6 +196,7 @@
     </Compile>
     <Compile Include="Helpers\HTMLHelperExtensions.cs" />
     <Compile Include="Models\AuthViewModel.cs" />
+    <Compile Include="Models\CalendarViewModel.cs" />
     <Compile Include="Models\DataTableModel.cs" />
     <Compile Include="Models\ExcelImport\UserImport.cs" />
     <Compile Include="Models\JQueryDataTableParams.cs" />
@@ -1212,6 +1213,7 @@
     <Content Include="Scripts\custom-validations\password-secured-validation.js" />
     <Content Include="Scripts\custom-validations\string-comparer-validation.js" />
     <Content Include="Scripts\template\plugins\bluebird\bluebird.min.js" />
+    <Content Include="Scripts\template\plugins\fullcalendar\lang\es.js" />
     <Content Include="Scripts\template\plugins\validate\jquery.validate.js" />
     <Content Include="Scripts\template\plugins\validate\jquery.validate.min.js" />
     <Content Include="Scripts\template\plugins\validate\jquery.validate.unobtrusive.js" />

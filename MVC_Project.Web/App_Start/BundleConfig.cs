@@ -159,7 +159,8 @@ namespace MVC_Project.Web
             // fullCalendar
             bundles.Add(new ScriptBundle("~/plugins/fullCalendar").Include(
                       "~/Scripts/template/plugins/fullcalendar/moment.min.js",
-                      "~/Scripts/template/plugins/fullcalendar/fullcalendar.min.js"));
+                      "~/Scripts/template/plugins/fullcalendar/fullcalendar.min.js",
+                      "~/Scripts/template/plugins/fullcalendar/lang/es.js"));
 
             // vectorMap
             bundles.Add(new ScriptBundle("~/plugins/vectorMap").Include(
