@@ -24,6 +24,8 @@ namespace MVC_Project.Utils
 
         public static string DATE_FORMAT_DAY_MONTH = "dd/MM";
         public static string DATE_FORMAT = "dd/MM/yyyy";
+        //public static string DATE_FORMAT_CALENDAR = "yyyy-MM-dd HH:mm";
+        public static string DATE_FORMAT_CALENDAR = "dd/MM/yyyy HH:mm";
         public static string TIMEZONE_UTC = "UTC";
        
 
