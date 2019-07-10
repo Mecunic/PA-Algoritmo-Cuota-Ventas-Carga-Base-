@@ -97,6 +97,7 @@ namespace PlantillaMVC.Jobs.Jobs
                                     string statusMessage = "SUCCESS";
                                     bool hasError = false;
                                     StringBuilder errorMessage = new StringBuilder();
+                                    
                                     if (!FiltroDeal.Contains(DealStage))
                                     {
                                         strResultado.Append(" * Paso 1 ");

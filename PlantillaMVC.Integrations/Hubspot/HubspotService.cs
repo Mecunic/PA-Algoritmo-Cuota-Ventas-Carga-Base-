@@ -334,6 +334,7 @@ namespace PlantillaMVC.Integrations
         {
             RestRequest request = new RestRequest("/contacts/v1/lists/all/contacts/all", Method.GET);
             request.AddParameter("hapikey", apiKey);
+            request.AddParameter("formSubmissionMode", "all");
             if (limit > 0) request.AddParameter("count", limit);
             if (offset > 0) request.AddParameter("vidOffset", offset);
             IRestResponse response = client.Execute(request);
