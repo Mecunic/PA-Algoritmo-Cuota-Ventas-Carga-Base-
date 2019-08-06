@@ -97,6 +97,15 @@ namespace MVC_Project.Resources {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Clean.
+        /// </summary>
+        public static string CLEAN {
+            get {
+                return ResourceManager.GetString("CLEAN", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Confirm new password.
         /// </summary>
         public static string CONFIRM_NEW_PASSWORD {
@@ -201,6 +210,15 @@ namespace MVC_Project.Resources {
         public static string PasswordRequired {
             get {
                 return ResourceManager.GetString("PasswordRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Search.
+        /// </summary>
+        public static string SEARCH {
+            get {
+                return ResourceManager.GetString("SEARCH", resourceCulture);
             }
         }
         

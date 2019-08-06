@@ -113,8 +113,7 @@ namespace MCV_Project.Integrations.Azure
             }
             return fileSize;
         }
-
-
+        
         public static System.IO.Stream DownloadFile(string containerName, string Url)
         {
             string SASToken = CloudConfigurationManager.GetSetting("StorageSASToken");

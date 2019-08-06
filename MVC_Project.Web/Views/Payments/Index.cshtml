@@ -16,7 +16,7 @@
                 @using (Html.BeginForm("GetAllByFilter", "Payments", FormMethod.Post, new { @id = "SearchForm" }))
                 {
                     <div class="ibox-title">
-                        <h5>Buscar</h5>
+                        <h5>@ViewLabels.LABEL_SEARCH</h5>
                     </div>
                     <div class="ibox-content clearfix">
                         <div class="row">
@@ -41,9 +41,9 @@
                             </div>
                             <div class="col-xs-12">
                                 <span class="pull-right">
-                                    <button type="button" id="btnSearchForm" class="btn btn-sm btn-primary btn-filter"><i class="fas fa-search"></i> Buscar</button>
+                                    <button type="button" id="btnSearchForm" class="btn btn-sm btn-primary btn-filter"><i class="fas fa-search"></i> @ViewLabels.LABEL_SEARCH</button>
                                     &nbsp;
-                                    <button type="button" id="btnClearForm" class="btn btn-sm btn-default"><i class="fas fa-eraser "></i> Limpiar</button>
+                                    <button type="button" id="btnClearForm" class="btn btn-sm btn-default"><i class="fas fa-eraser "></i> @ViewLabels.LABEL_CLEAN</button>
                                 </span>
                             </div>
                         </div>

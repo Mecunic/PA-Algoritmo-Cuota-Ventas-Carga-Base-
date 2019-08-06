@@ -171,4 +171,10 @@
   <data name="LABEL_RESULTS" xml:space="preserve">
     <value>Results</value>
   </data>
+  <data name="CLEAN" xml:space="preserve">
+    <value>Clean</value>
+  </data>
+  <data name="SEARCH" xml:space="preserve">
+    <value>Search</value>
+  </data>
 </root>
