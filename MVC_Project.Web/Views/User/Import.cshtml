@@ -1,7 +1,7 @@
 ﻿@model MVC_Project.Web.Models.UserImportViewModel
 
 @{
-    ViewBag.Title = "Crear Usuario";
+    ViewBag.Title = "Importar Usuarios";
 }
 
 @section Styles {
@@ -9,17 +9,6 @@
 }
 
 <div class="row wrapper border-bottom white-bg page-heading">
-    <div class="col-sm-4">
-        <h2>Importar</h2>
-        <ol class="breadcrumb">
-            <li>
-                @Html.ActionLink("Usuarios", "Index")
-            </li>
-            <li class="active">
-                <strong>Importar usuarios</strong>
-            </li>
-        </ol>
-    </div>
     <div class="col-sm-8">
         <div class="title-action">
             @Html.ActionLink("Regresar al listado", "Index", null, new { @class = "btn btn-primary" })
@@ -36,7 +25,7 @@
                 </div>
                 <div class="ibox-content">
 
-                    <p class="alert alert-info"> 
+                    <p class="alert alert-info">
                         Tamaño máximo de carga de archivos del servidor: <b>10M</b>
                         <br />
                         Tipo de archivos aceptados: <b>XLSX, XLS</b>

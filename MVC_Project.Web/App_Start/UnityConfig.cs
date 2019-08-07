@@ -3,6 +3,7 @@ using MVC_Project.Data.Repositories;
 using MVC_Project.Domain.Helpers;
 using MVC_Project.Domain.Repositories;
 using MVC_Project.Domain.Services;
+using MVC_Project.Integrations.Storage;
 using System;
 
 using Unity;
@@ -53,6 +54,7 @@ namespace MVC_Project.Web
             container.RegisterType<IAuthService, AuthService>();
             container.RegisterType<IPaymentService, PaymentService>();
             container.RegisterType<IEventService, EventService>();
+            container.RegisterType<IStorageServiceProvider, AzureBlobService>();
         }
     }
 }

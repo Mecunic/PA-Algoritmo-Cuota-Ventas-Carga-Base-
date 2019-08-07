@@ -186,6 +186,7 @@
     <Compile Include="Controllers\PaymentsController.cs" />
     <Compile Include="Controllers\ReportServiceController.cs" />
     <Compile Include="Controllers\RoleController.cs" />
+    <Compile Include="Controllers\StorageController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Controllers\UserPermissionsController.cs" />
     <Compile Include="Controllers\UserServicesController.cs" />
@@ -1657,6 +1658,7 @@
     <Content Include="Views\Payments\Checkout.cshtml" />
     <Content Include="Views\Payments\CheckoutSuccess.cshtml" />
     <Content Include="Views\Calendar\Index.cshtml" />
+    <Content Include="Views\Storage\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\Shared\EditorTemplates\" />

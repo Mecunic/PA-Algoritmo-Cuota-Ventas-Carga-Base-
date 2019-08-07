@@ -9,12 +9,12 @@ using Microsoft.WindowsAzure.Storage; // Namespace for CloudStorageAccount
 using Microsoft.WindowsAzure.Storage.Blob;
 using System.IO; // Namespace for Blob storage types
 
-namespace MCV_Project.Integrations.Azure
+namespace MVC_Project.Integrations.Storage
 {
-    public class AzureBlobService
+    public class AzureBlobService : IStorageServiceProvider
     {
 
-        public static Tuple<string, string> UploadPublicFile(System.IO.Stream fileStream, string fileName, string containerName, string folder = "")
+        public Tuple<string, string> UploadPublicFile(System.IO.Stream fileStream, string fileName, string containerName, string folder = "")
         {
             CloudStorageAccount storageAccount = CloudStorageAccount.Parse(CloudConfigurationManager.GetSetting("StorageConnectionString"));
 

@@ -146,6 +146,10 @@ namespace MVC_Project.Web.Models
         public HttpPostedFileBase ImportedFile { get; set; }
 
         public IList<UserRowImportResultViewModel> ImportResult { get; set; }
+
+        public string FinalUrl { get; set; }
+
+        public string StorageProvider { get; set; }
     }
     public class UserRowImportResultViewModel
     {

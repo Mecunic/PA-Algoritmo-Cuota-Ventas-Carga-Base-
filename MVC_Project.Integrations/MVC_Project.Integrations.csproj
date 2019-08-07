@@ -63,13 +63,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AWS\AWSBlobService.cs" />
-    <Compile Include="Azure\AzureBlobService.cs" />
+    <Compile Include="Storage\AWSBlobService.cs" />
+    <Compile Include="Storage\AzureBlobService.cs" />
     <Compile Include="Payments\IPaymentServiceProvider.cs" />
     <Compile Include="Payments\OpenPayService.cs" />
     <Compile Include="Payments\PaymentEventModel.cs" />
     <Compile Include="Payments\PaymentModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Storage\IStorageServiceProvider.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
