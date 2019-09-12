@@ -9,6 +9,7 @@ namespace MVC_Project.Domain.Services {
     #region Interfaces  
     public interface IRoleService : IService<Role>
     {
+        IList<Role> ObtenerRoles(string filtros);
     }
     #endregion
 

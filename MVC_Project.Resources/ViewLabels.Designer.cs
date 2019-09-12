@@ -124,11 +124,29 @@ namespace MVC_Project.Resources {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Clean.
+        /// </summary>
+        public static string LABEL_CLEAN {
+            get {
+                return ResourceManager.GetString("LABEL_CLEAN", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Results.
         /// </summary>
         public static string LABEL_RESULTS {
             get {
                 return ResourceManager.GetString("LABEL_RESULTS", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Search.
+        /// </summary>
+        public static string LABEL_SEARCH {
+            get {
+                return ResourceManager.GetString("LABEL_SEARCH", resourceCulture);
             }
         }
         

@@ -16,14 +16,12 @@ namespace MVC_Project.Web.Controllers
 
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
-            if (!filterContext.IsChildAction)
-                UnitOfWork.BeginTransaction();
+            if (!filterContext.IsChildAction) UnitOfWork.BeginTransaction();
         }
 
         protected override void OnResultExecuted(ResultExecutedContext filterContext)
         {
-            if (!filterContext.IsChildAction)
-                UnitOfWork.Commit();
+            if (!filterContext.IsChildAction) UnitOfWork.Commit();
         }
         
         protected override IAsyncResult BeginExecuteCore(AsyncCallback callback, object state)

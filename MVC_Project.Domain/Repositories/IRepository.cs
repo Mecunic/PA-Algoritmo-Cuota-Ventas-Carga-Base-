@@ -1,6 +1,7 @@
 ﻿using MVC_Project.Domain.Entities;
 using NHibernate;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 
@@ -10,9 +11,9 @@ namespace MVC_Project.Domain.Repositories
     {
         ISession Session { get; }
 
-        IQueryable<T> GetAll();
+        IEnumerable<T> GetAll();
 
-        IQueryable<T> FindBy(Expression<Func<T, bool>> predicate);
+        IEnumerable<T> FindBy(Expression<Func<T, bool>> predicate);
 
         T GetById(int id);
 

@@ -14,6 +14,11 @@ namespace MVC_Project.Domain.Services
 
     public interface IOrderService : IService<Order>
     {
+        IList<Order> FilterBy(string filtros, int? skip, int? take);
+        IList<Store> FilterStore();
+        IList<Staff> FilterStaff();
+        IList<OrderItems> OrdenDetail(int orderId);
+        int TotalFilterBy(string filtros, int? skip, int? take);
     }
 
     #endregion Interfaces

@@ -19,16 +19,16 @@ namespace MVC_Project.Web.Controllers
 
     public class PaymentsController : BaseController
     {
-        private PaymentService _paymentService;
-        private UserService _userService;
-        private int TransferExpirationDays;
+        private IPaymentService _paymentService;
+        private IUserService _userService;
         private IPaymentServiceProvider paymentProviderService;
+        private int TransferExpirationDays;
         private bool UseSelective3DSecure;
         private string GlobalClientId;
         private string SecureVerificationURL;
         private string OpenpayWebhookKey;
 
-        public PaymentsController(PaymentService paymentService, UserService userService)
+        public PaymentsController(IPaymentService paymentService, IUserService userService)
         {
             _paymentService = paymentService;
             _userService = userService;
@@ -147,7 +147,7 @@ namespace MVC_Project.Web.Controllers
                 DeviceSessionId = model.DeviceSessionId,
                 Description = String.Format("Payment for Order Id # {0}", model.OrderId),
                 RedirectUrl = SecureVerificationURL,
-                Use3DSecure = true
+                //Use3DSecure = true
             };
 
             //Primero en BD

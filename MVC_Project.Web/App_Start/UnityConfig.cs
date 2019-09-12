@@ -7,6 +7,7 @@ using MVC_Project.Integrations.Storage;
 using System;
 
 using Unity;
+using Unity.AspNet.Mvc;
 using Unity.Lifetime;
 
 namespace MVC_Project.Web
@@ -48,13 +49,14 @@ namespace MVC_Project.Web
             // container.LoadConfiguration();
 
             // container.RegisterType<IProductRepository, ProductRepository>();
-            container.RegisterType<IUnitOfWork, UnitOfWork>(new HierarchicalLifetimeManager());
+            container.RegisterType<IUnitOfWork, UnitOfWork>(new PerRequestLifetimeManager());
             container.RegisterType(typeof(IRepository<>), typeof(Repository<>));
             container.RegisterType(typeof(IService<>), typeof(ServiceBase<>));
+            container.RegisterType<IUserService, UserService>();
             container.RegisterType<IAuthService, AuthService>();
             container.RegisterType<IPaymentService, PaymentService>();
             container.RegisterType<IEventService, EventService>();
-            container.RegisterType<IStorageServiceProvider, AzureBlobService>();
+            //container.RegisterType<IStorageServiceProvider, AzureBlobService>();
         }
     }
 }

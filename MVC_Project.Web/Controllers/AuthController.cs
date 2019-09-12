@@ -21,9 +21,9 @@ namespace MVC_Project.Web.Controllers
     public class AuthController : BaseController
     {
         private IAuthService _authService;
-        private UserService _userService;
+        private IUserService _userService;
 
-        public AuthController(IAuthService authService, UserService userService)
+        public AuthController(IAuthService authService, IUserService userService)
         {
             _authService = authService;
             _userService = userService;

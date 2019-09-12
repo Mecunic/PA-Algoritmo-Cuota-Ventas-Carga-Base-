@@ -13,6 +13,9 @@ namespace MVC_Project.Domain.Services
 {
     public interface IPaymentService : IService<Payment>
     {
+        Payment GetByOrderId(string OrderId);
+        Payment GetByProviderId(string ProviderId);
+        Tuple<IEnumerable<Payment>, int> FilterBy(NameValueCollection filtersValue, int? skip, int? take);
     }
 
     public class PaymentService : ServiceBase<Payment>, IPaymentService

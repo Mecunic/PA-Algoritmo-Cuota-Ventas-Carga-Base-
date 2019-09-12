@@ -39,7 +39,7 @@ namespace MVC_Project.Data.Helpers
 
         public void BeginTransaction()
         {
-            Session = _sessionFactory.OpenSession();
+             if (Session!=null && Session.IsOpen) Session = _sessionFactory.OpenSession();
             _transaction = Session.BeginTransaction();
         }
 
@@ -55,7 +55,7 @@ namespace MVC_Project.Data.Helpers
                 if (_transaction != null && _transaction.IsActive)
                     _transaction.Rollback();
 
-                throw;
+                //throw;
             }
             finally
             {

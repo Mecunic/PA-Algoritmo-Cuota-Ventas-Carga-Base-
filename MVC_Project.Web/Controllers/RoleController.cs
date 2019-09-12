@@ -13,11 +13,11 @@ namespace MVC_Project.Web.Controllers
 {
     public class RoleController : BaseController
     {
-        private RoleService _roleService;
-        private PermissionService _permissionService;
-        private RolePermissionService _rolePermissionService;
+        private IRoleService _roleService;
+        private IPermissionService _permissionService;
+        private IRolePermissionService _rolePermissionService;
 
-        public RoleController(RoleService roleService, PermissionService permissionService, RolePermissionService rolePermissionService)
+        public RoleController(IRoleService roleService, IPermissionService permissionService, IRolePermissionService rolePermissionService)
         {
             _roleService = roleService;
             _permissionService = permissionService;

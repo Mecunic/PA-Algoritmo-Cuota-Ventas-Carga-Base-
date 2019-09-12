@@ -17,9 +17,9 @@ namespace MVC_Project.Web.Controllers
     [Authorize]
     public class ReportServiceController : BaseController
     {
-        private OrderService _orderService;
+        private IOrderService _orderService;
 
-        public ReportServiceController(OrderService orderService, RoleService roleService)
+        public ReportServiceController(IOrderService orderService, IRoleService roleService)
         {
             _orderService = orderService;
         }

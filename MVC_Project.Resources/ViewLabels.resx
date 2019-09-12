@@ -177,4 +177,10 @@
   <data name="SEARCH" xml:space="preserve">
     <value>Search</value>
   </data>
+  <data name="LABEL_SEARCH" xml:space="preserve">
+    <value>Search</value>
+  </data>
+  <data name="LABEL_CLEAN" xml:space="preserve">
+    <value>Clean</value>
+  </data>
 </root>

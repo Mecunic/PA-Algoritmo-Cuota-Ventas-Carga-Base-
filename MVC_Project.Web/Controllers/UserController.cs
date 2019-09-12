@@ -24,10 +24,10 @@ namespace MVC_Project.Web.Controllers
 {
     public class UserController : BaseController
     {
-        private UserService _userService;
-        private RoleService _roleService;
+        private IUserService _userService;
+        private IRoleService _roleService;
 
-        public UserController(UserService userService, RoleService roleService)
+        public UserController(IUserService userService, IRoleService roleService)
         {
             _userService = userService;
             _roleService = roleService;

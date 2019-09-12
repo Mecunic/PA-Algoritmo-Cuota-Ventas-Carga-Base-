@@ -16,13 +16,13 @@ namespace MVC_Project.API
 
         public override void OnActionExecuting(HttpActionContext actionContext)
         {
-            UnitOfWork = actionContext.Request.GetDependencyScope().GetService(typeof(IUnitOfWork)) as IUnitOfWork;
-            UnitOfWork.BeginTransaction();
+            //UnitOfWork = actionContext.Request.GetDependencyScope().GetService(typeof(IUnitOfWork)) as IUnitOfWork;
+            //UnitOfWork.BeginTransaction();
         }
 
         public override void OnActionExecuted(HttpActionExecutedContext actionExecutedContext)
         {
-            UnitOfWork = actionExecutedContext.Request.GetDependencyScope().GetService(typeof(IUnitOfWork)) as IUnitOfWork;
+            /*UnitOfWork = actionExecutedContext.Request.GetDependencyScope().GetService(typeof(IUnitOfWork)) as IUnitOfWork;
             if(actionExecutedContext.Exception == null)
             { 
                 UnitOfWork.Commit();
@@ -30,7 +30,7 @@ namespace MVC_Project.API
             else
             {
                 UnitOfWork.Rollback();
-            }
+            }*/
         }
     }
 }

@@ -25,21 +25,23 @@ namespace MVC_Project.Data.Repositories
         public void Create(T entity)
         {
             Session.Save(entity);
+            Session.Flush();
         }
 
         public void Delete(int id)
         {
             Session.Delete(Session.Load<T>(id));
+            Session.Flush();
         }
 
-        public IQueryable<T> FindBy(Expression<Func<T, bool>> predicate)
+        public IEnumerable<T> FindBy(Expression<Func<T, bool>> predicate)
         {
-            return Session.Query<T>().Where(predicate);
+            return Session.Query<T>().Where(predicate).ToList<T>();
         }
 
-        public IQueryable<T> GetAll()
+        public IEnumerable<T> GetAll()
         {
-            return Session.Query<T>();
+            return Session.Query<T>().ToList<T>();
         }
 
         public T GetById(int id)
@@ -50,6 +52,7 @@ namespace MVC_Project.Data.Repositories
         public void Update(T entity)
         {
             Session.Update(entity);
+            Session.Flush();
         }
     }
 }
