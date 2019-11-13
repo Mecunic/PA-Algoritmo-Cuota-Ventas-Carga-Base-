@@ -28,14 +28,6 @@ namespace MVC_Project.Web.Controllers
         public ActionResult Index()
         {
             RoleViewModel roles = new RoleViewModel();
-            //var roles = _roleService.GetAll().Select(role => new RoleViewModel
-            //{
-            //    Id = role.Id,
-            //    Name = role.Name,
-            //    Description = role.Description,
-            //    CreatedAt = role.CreatedAt,
-            //    UpdatedAt = role.UpdatedAt
-            //});
             return View(roles);
         }
         [HttpGet, Authorize]

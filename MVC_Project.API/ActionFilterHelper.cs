@@ -6,7 +6,6 @@ using System.Web;
 using System.Web.Http.Controllers;
 using System.Web.Http.Filters;
 using System.Net.Http;
-using Unity.Attributes;
 
 namespace MVC_Project.API
 {

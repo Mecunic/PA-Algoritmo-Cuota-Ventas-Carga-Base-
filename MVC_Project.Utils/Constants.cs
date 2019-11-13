@@ -27,7 +27,7 @@ namespace MVC_Project.Utils
         //public static string DATE_FORMAT_CALENDAR = "yyyy-MM-dd HH:mm";
         public static string DATE_FORMAT_CALENDAR = "dd/MM/yyyy HH:mm";
         public static string TIMEZONE_UTC = "UTC";
-       
+        public static int HOURS_EXPIRATION_KEY = 6;
 
         // Uuids de templates sendgrid
         public static string NOT_TEMPLATE_WELCOME = "51d34567-1960-4501-8e89-e349c18275e6";

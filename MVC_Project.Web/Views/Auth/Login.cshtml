@@ -32,9 +32,11 @@
     <div class="middle-box text-center loginscreen  animated fadeInDown">
         <div>
             <div>
-                <h1 class="logo-name">ST</h1>
+                @*<h1 class="logo-name">ST</h1>*@
+                <img src="~/Images/logo_default2.png" width="300" />
             </div>
-            <h3>@System.Web.Configuration.WebConfigurationManager.AppSettings["AppName"]</h3>
+            <h3>Portal Administrativo Megafleet</h3>
+            @*<h3>@System.Web.Configuration.WebConfigurationManager.AppSettings["AppName"]</h3>*@
 
             @if (!string.IsNullOrEmpty(ViewBag.Error))
             {

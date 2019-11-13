@@ -43,20 +43,20 @@ namespace MVC_Project.API.Controllers.V1
                     messages.Add(new MessageResponse { Type = MessageType.error.ToString("G"), Description = "El usuario no existe o contraseña inválida." });
                     return CreateErrorResponse(null, messages);
                 }
-                if(authUser.Role.Code != "APP_USER")
+                if(authUser.Role.Code != Constants.ROLE_APP_USER)
                 {
                     messages.Add(new MessageResponse { Type = MessageType.error.ToString("G"), Description = "El usuario no cuenta con acceso al app." });
                     return CreateErrorResponse(null, messages);
                 }
                 var user = _userService.FindBy(x => x.Uuid == authUser.Uuid).First();
-                var expiration = DateTime.UtcNow.AddHours(6);
+                var expiration = DateTime.UtcNow.AddHours(Constants.HOURS_EXPIRATION_KEY);
                 user.ApiKey = Guid.NewGuid().ToString();
                 user.ExpiraApiKey = expiration;
                 _userService.Update(user);
                 var response = new AuthUserResponse
                 {
                     ApiKey = user.ApiKey,
-                    ApiKeyExpiration = expiration.ToString("yyyy/MM/dd HH:mm:ss"),
+                    ApiKeyExpiration = expiration.ToString(Constants.DATE_FORMAT_CALENDAR),
                     UserData = new AuthUser
                     {
                         Uuid = user.Uuid,

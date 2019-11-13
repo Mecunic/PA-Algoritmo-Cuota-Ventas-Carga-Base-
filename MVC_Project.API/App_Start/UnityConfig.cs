@@ -6,6 +6,7 @@ using MVC_Project.Domain.Services;
 using System;
 
 using Unity;
+using Unity.AspNet.Mvc;
 using Unity.Lifetime;
 
 namespace MVC_Project.API
@@ -46,7 +47,8 @@ namespace MVC_Project.API
             // Make sure to add a Unity.Configuration to the using statements.
             // container.LoadConfiguration();
             // container.RegisterType<IProductRepository, ProductRepository>();
-            container.RegisterType<IUnitOfWork, UnitOfWork>(new HierarchicalLifetimeManager());
+            //container.RegisterType<IUnitOfWork, UnitOfWork>(new HierarchicalLifetimeManager());
+            container.RegisterType<IUnitOfWork, UnitOfWork>(new PerRequestLifetimeManager());
             container.RegisterType(typeof(IRepository<>), typeof(Repository<>));
             container.RegisterType(typeof(IService<>), typeof(ServiceBase<>));
             container.RegisterType<IUserService, UserService>();
