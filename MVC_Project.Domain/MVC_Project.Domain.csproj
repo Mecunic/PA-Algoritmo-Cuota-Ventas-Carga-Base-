@@ -58,6 +58,8 @@
     <Compile Include="Entities\OrderItems.cs" />
     <Compile Include="Entities\Payment.cs" />
     <Compile Include="Entities\Permission.cs" />
+    <Compile Include="Entities\Process.cs" />
+    <Compile Include="Entities\ProcessExecution.cs" />
     <Compile Include="Entities\Producto.cs" />
     <Compile Include="Entities\Role.cs" />
     <Compile Include="Entities\RolePermission.cs" />
@@ -73,6 +75,7 @@
     <Compile Include="Services\OrderService.cs" />
     <Compile Include="Services\PaymentService.cs" />
     <Compile Include="Services\PermissionService.cs" />
+    <Compile Include="Services\ProcessService.cs" />
     <Compile Include="Services\RolePermissionService.cs" />
     <Compile Include="Services\ServiceBase.cs" />
     <Compile Include="Services\IService.cs" />
