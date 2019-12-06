@@ -5,23 +5,23 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using Unity.Attributes;
+//using Unity.Attributes;
 
 namespace MVC_Project.Web.Controllers
 {
     public class BaseController : Controller
     {
-        [Dependency]
-        public IUnitOfWork UnitOfWork { get; set; }
+        //[Dependency]
+        //public IUnitOfWork UnitOfWork { get; set; }
 
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
-            if (!filterContext.IsChildAction) UnitOfWork.BeginTransaction();
+            //if (!filterContext.IsChildAction) UnitOfWork.BeginTransaction();
         }
 
         protected override void OnResultExecuted(ResultExecutedContext filterContext)
         {
-            if (!filterContext.IsChildAction) UnitOfWork.Commit();
+            //if (!filterContext.IsChildAction) UnitOfWork.Commit();
         }
         
         protected override IAsyncResult BeginExecuteCore(AsyncCallback callback, object state)
