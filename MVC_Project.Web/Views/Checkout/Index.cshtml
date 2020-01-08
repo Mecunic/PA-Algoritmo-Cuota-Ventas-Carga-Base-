@@ -281,10 +281,20 @@
 </head>
 <body>
     <div class="bkng-tb-cntnt">
+        <b>Aplicación:</b> @Model.AppName
+        <br />
+        <b>ID Orden:</b> @Model.OrderId
+        <br />
+        <b>Cantidad:</b> @Model.Amount
+        <br />
+        <b>Descripción:</b> @Model.Description
+        <br />
+
         <div class="pymnts">
             @using (Html.BeginForm("ProceedTDC", "Checkout", FormMethod.Post, new { @id = "payment-form", @role = "form" }))
             {
                 @Html.AntiForgeryToken()
+                @Html.HiddenFor(m => m.AppKey)
                 @Html.HiddenFor(m => m.OrderId)
                 @Html.HiddenFor(m => m.Amount)
                 @Html.HiddenFor(m => m.Description)
@@ -344,8 +354,8 @@
     <script type="text/javascript">
         $(document).ready(function () {
 
-            OpenPay.setId('@System.Configuration.ConfigurationManager.AppSettings["Payments.MerchantId"]');
-            OpenPay.setApiKey('@System.Configuration.ConfigurationManager.AppSettings["Payments.PublicKey"]');
+            OpenPay.setId('@Model.MerchantId');
+            OpenPay.setApiKey('@Model.PublicKey');
             OpenPay.setSandboxMode(!@System.Configuration.ConfigurationManager.AppSettings["Payments.IsProductionEnvironment"].ToString());
 
             //Se genera el id de dispositivo

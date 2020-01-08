@@ -13,25 +13,29 @@ namespace MVC_Project.Integrations.Payments
     public class OpenPayService : IPaymentServiceProvider
     {
         readonly bool IsProductionEnvironment;
-        readonly string PublicKey;
-        readonly string OpenpayKey;
-        readonly string MerchantId;
-        readonly string DashboardURL;
         readonly string Agreement;
-        
+
+        public string DashboardURL { set; get; }
+        public string MerchantId { set; get; }
+        public string PublicKey { set; get; }
+        public string PrivateKey { get; set; }
+
         public OpenPayService()
         {
             IsProductionEnvironment = Convert.ToBoolean(System.Configuration.ConfigurationManager.AppSettings["Payments.IsProductionEnvironment"]);
+            /*
             PublicKey = System.Configuration.ConfigurationManager.AppSettings["Payments.PublicKey"];
-            OpenpayKey = System.Configuration.ConfigurationManager.AppSettings["Payments.OpenpayKey"];
+            PrivateKey = System.Configuration.ConfigurationManager.AppSettings["Payments.OpenpayKey"];
             MerchantId = System.Configuration.ConfigurationManager.AppSettings["Payments.MerchantId"];
             DashboardURL = System.Configuration.ConfigurationManager.AppSettings["Payments.DashboardURL"];
             Agreement = System.Configuration.ConfigurationManager.AppSettings["Payments.OpenpayAgreement"];
+            */
         }
+
 
         public PaymentModel CreateBankTransferPayment(PaymentModel payment)
         {
-            OpenpayAPI openpayAPI = new OpenpayAPI(OpenpayKey, MerchantId);
+            OpenpayAPI openpayAPI = new OpenpayAPI(PrivateKey, MerchantId);
             openpayAPI.Production = IsProductionEnvironment;
             try
             {
@@ -82,7 +86,7 @@ namespace MVC_Project.Integrations.Payments
 
         public PaymentModel CreateTDCPayment(PaymentModel payment)
         {
-            OpenpayAPI openpayAPI = new OpenpayAPI(OpenpayKey, MerchantId);
+            OpenpayAPI openpayAPI = new OpenpayAPI(PrivateKey, MerchantId);
             openpayAPI.Production = IsProductionEnvironment;
 
             try

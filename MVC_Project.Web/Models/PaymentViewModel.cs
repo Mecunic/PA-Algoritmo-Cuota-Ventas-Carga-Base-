@@ -7,6 +7,9 @@ namespace MVC_Project.Web.Models
 {
     public class PaymentViewModel
     {
+        public string AppKey { get; set; }
+
+        public string AppName { get; set; }
         public string Id { get; set; }
 
         public string PaymentMethod { get; set; }
@@ -46,5 +49,9 @@ namespace MVC_Project.Web.Models
         public string User { get; set; }
         public string FilterInitialDate { get; set; }
         public string FilterEndDate { get; set; }
+
+        //FOR OPENPAY
+        public string PublicKey { get; set; }
+        public string MerchantId { get; set; }
     }
 }

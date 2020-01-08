@@ -57,6 +57,7 @@
     <Compile Include="Entities\Order.cs" />
     <Compile Include="Entities\OrderItems.cs" />
     <Compile Include="Entities\Payment.cs" />
+    <Compile Include="Entities\PaymentApplication.cs" />
     <Compile Include="Entities\Permission.cs" />
     <Compile Include="Entities\Process.cs" />
     <Compile Include="Entities\ProcessExecution.cs" />

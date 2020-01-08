@@ -7,11 +7,12 @@ using MVC_Project.Resources;
 
 namespace MVC_Project.Web.Controllers
 {
+    [AllowAnonymous]
     public class ErrorController : Controller
     {
-        public ActionResult ShowError(string errorMessage, string signIn)
+        [AllowAnonymous]
+        public ActionResult ShowError(string errorMessage)
         {
-            //ViewBag.SignIn = signIn;
             ViewBag.ErrorMessage = errorMessage;
             return View();
         }
@@ -37,13 +38,15 @@ namespace MVC_Project.Web.Controllers
 
         public ViewResult PageNotFound()
         {
-            TempData["ErrorMessage"] = "La página solicitada no existe.";
+            string msg = Convert.ToString( Session["Global.ErrorMessage"] );
+            TempData["ErrorMessage"] = String.Format("La página solicitada no existe: {0}", msg);
             return View("GenericError");
         }
 
         public ViewResult InternalError()
         {
-            TempData["ErrorMessage"] = "Error de procesamiento interno en servidor.";
+            string msg = Convert.ToString(Session["Global.ErrorMessage"]);
+            TempData["ErrorMessage"] = String.Format("Error de procesamiento interno en servidor: {0}", msg);
             return View("GenericError");
         }
     }

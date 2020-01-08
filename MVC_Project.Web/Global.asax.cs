@@ -63,6 +63,7 @@ namespace MVC_Project.Web
 
             if (httpException != null)
             {
+                Session["Global.ErrorMessage"] = httpException.Message;
                 if (exception.Message.Contains("NoCatch") || exception.Message.Contains("maxUrlLength"))
                     return;
 

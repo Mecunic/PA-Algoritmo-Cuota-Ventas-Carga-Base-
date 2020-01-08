@@ -6,6 +6,7 @@ using MVC_Project.Web.AuthManagement;
 using MVC_Project.Web.Models;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -21,7 +22,7 @@ namespace MVC_Project.Web.Controllers
         private IPaymentServiceProvider paymentProviderService;
         private int TransferExpirationDays;
         private bool UseSelective3DSecure;
-        private string GlobalClientId;
+        //private string GlobalClientId;
         private string SecureVerificationURL;
         private string OpenpayWebhookKey;
 
@@ -31,7 +32,7 @@ namespace MVC_Project.Web.Controllers
             _userService = userService;
             TransferExpirationDays = Convert.ToInt32(System.Configuration.ConfigurationManager.AppSettings["Payments.TransferExpirationDays"]);
             UseSelective3DSecure = Convert.ToBoolean(System.Configuration.ConfigurationManager.AppSettings["Payments.UseSelective3DSecure"]);
-            GlobalClientId = System.Configuration.ConfigurationManager.AppSettings["Payments.OpenpayGeneralClientId"];
+            //GlobalClientId = System.Configuration.ConfigurationManager.AppSettings["Payments.OpenpayGeneralClientId"];
             SecureVerificationURL = System.Configuration.ConfigurationManager.AppSettings["Payments.SecureVerificationURL"];
             OpenpayWebhookKey = System.Configuration.ConfigurationManager.AppSettings["Payments.OpenpayWebhookKey"];
             paymentProviderService = new OpenPayService();
@@ -42,9 +43,11 @@ namespace MVC_Project.Web.Controllers
         public ActionResult Test()
         {
             //Simular datos
+            String appKey = "96700712-ba90-4c68-8a9a-0f51b158f745";
             String newOrderId = Guid.NewGuid().ToString().Substring(24);
             PaymentViewModel model = new PaymentViewModel
             {
+                AppKey = appKey,
                 OrderId = newOrderId,
                 Amount = Convert.ToInt32((new Random().NextDouble() * 10000)),
                 Description = String.Format("Payment for Order Id # {0}", newOrderId)
@@ -56,7 +59,29 @@ namespace MVC_Project.Web.Controllers
         [HttpPost]
         public ActionResult Index(PaymentViewModel model)
         {
-            //TODO: Validar los paramestros del request
+            if (string.IsNullOrWhiteSpace(model.AppKey))
+            {
+                return RedirectToAction("ShowError", "Error", new { errorMessage = "Error en los parámetros enviados: Parámetro AppKey no enviado" });
+            }
+            if (string.IsNullOrWhiteSpace(model.OrderId))
+            {
+                return RedirectToAction("ShowError", "Error", new { errorMessage = "Error en los parámetros enviados: Parámetro OrderId no enviado" });
+            }
+            if (model.Amount <= 0)
+            {
+                return RedirectToAction("ShowError", "Error", new { errorMessage = "Error en los parámetros enviados: Amount debe ser decimal" });
+            }
+            PaymentApplication paymentApp = _paymentService.GetPaymentApplicationByKey(model.AppKey);
+            if (paymentApp == null)
+            {
+                return RedirectToAction("ShowError", "Error", new { errorMessage = string.Format("Error, no se encuentra la aplicación registrada con el appKey={0}", model.AppKey) });
+            }
+
+            model.AppName = paymentApp.Name;
+
+            model.MerchantId = paymentApp.MerchantId;
+            model.PublicKey = paymentApp.PublicKey;
+
             return View("Index", model);
         }
 
@@ -65,10 +90,16 @@ namespace MVC_Project.Web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult ProceedTDC(PaymentViewModel model)
         {
+            //Setear variables del conector
+            PaymentApplication paymentApp = _paymentService.GetPaymentApplicationByKey(model.AppKey);
+            paymentProviderService.MerchantId = paymentApp.MerchantId;
+            paymentProviderService.PublicKey = paymentApp.PublicKey;
+            paymentProviderService.PrivateKey = paymentApp.PrivateKey;
 
+            //Crear modelo
             PaymentModel payment = new PaymentModel()
             {
-                ClientId = GlobalClientId,
+                ClientId = paymentApp.ClientId,
                 OrderId = model.OrderId,
                 Amount = model.Amount,
                 Description = model.Description,
@@ -81,7 +112,7 @@ namespace MVC_Project.Web.Controllers
             //Primero en BD
             Payment paymentBO = new Payment();
             paymentBO.CreationDate = DateUtil.GetDateTimeNow();
-            paymentBO.User = new User() { Id = 8 }; //TODO: Sacar el usuario del config
+            paymentBO.User = paymentApp.User;
             paymentBO.Amount = model.Amount;
             paymentBO.OrderId = model.OrderId;
             paymentBO.Status = PaymentStatus.IN_PROGRESS;
@@ -130,14 +161,62 @@ namespace MVC_Project.Web.Controllers
             //
             Session.Add("Payments.PaymentModel", model);
 
-            if (payment.PaymentMethod != null && !string.IsNullOrEmpty(payment.PaymentMethod.RedirectUrl))
+            //if (payment.PaymentMethod != null && !string.IsNullOrEmpty(payment.PaymentMethod.RedirectUrl))
+            //{
+            //    return Redirect(payment.PaymentMethod.RedirectUrl);
+            //}
+            if (paymentApp.ReturnURL != null && !string.IsNullOrEmpty(paymentApp.ReturnURL))
             {
-                return Redirect(payment.PaymentMethod.RedirectUrl);
+                FormCollection formCollection = new FormCollection
+                {
+                    { "payment_id", paymentBO.ProviderId },
+                    { "status", paymentBO.Status }
+                };
+                
+                //SendPostRequest(paymentApp.ReturnURL, formCollection);
+                return Content("<form action='" + paymentApp.ReturnURL + "' id='frmReturnURL' method='POST'>" +
+                    "<input type='hidden' name='Id' value='" + paymentBO.Id + "' />" +
+                    "<input type='hidden' name='ProviderId' value='" + paymentBO.ProviderId + "' />" +
+                    "<input type='hidden' name='CreationDate' value='" + paymentBO.CreationDate + "' />" +
+                    "<input type='hidden' name='Status' value='" + paymentBO.Status + "' />" +
+                    "<input type='hidden' name='Amount' value='" + paymentBO.Amount + "' />" +
+                    "<input type='hidden' name='OrderId' value='" + paymentBO.OrderId + "' />" +
+                    "<input type='hidden' name='Method' value='" + paymentBO.Method + "' />" +
+                    "<input type='hidden' name='TransactionType' value='" + paymentBO.TransactionType + "' />" +
+                    "</form>" +
+                    "<script>document.getElementById('frmReturnURL').submit();</script>");
             }
 
             return View("Test");
         }
 
-        
+        [AllowAnonymous]
+        [HttpPost]
+        public ActionResult TestResult(FormCollection formCollection)
+        {
+            Dictionary<string, string> formValues = formCollection.AllKeys.ToDictionary(k => k, v => formCollection[v]);
+            ViewData["ResultValues"] = formValues;
+            return View();
+        }
+
+        public static System.Net.WebResponse SendPostRequest(string url, FormCollection data)
+        {
+
+            //Data parameter Example
+            //string data = "name=" + value
+
+            System.Net.WebRequest httpRequest = System.Net.HttpWebRequest.Create(url);
+            httpRequest.Method = "POST";
+            httpRequest.ContentType = "application/x-www-form-urlencoded";
+            httpRequest.ContentLength = data.ToString().Length;
+
+            var streamWriter = new StreamWriter(httpRequest.GetRequestStream());
+            streamWriter.Write(data.ToString());
+            streamWriter.Close();
+
+            return httpRequest.GetResponse();
+        }
+
+       
     }
 }

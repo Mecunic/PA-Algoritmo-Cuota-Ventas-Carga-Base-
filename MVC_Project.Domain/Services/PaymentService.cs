@@ -15,6 +15,7 @@ namespace MVC_Project.Domain.Services
     {
         Payment GetByOrderId(string OrderId);
         Payment GetByProviderId(string ProviderId);
+        PaymentApplication GetPaymentApplicationByKey(string appKey);
         Tuple<IEnumerable<Payment>, int> FilterBy(NameValueCollection filtersValue, int? skip, int? take);
     }
 
@@ -37,6 +38,12 @@ namespace MVC_Project.Domain.Services
         {
             var payments = _repository.Session.QueryOver<Payment>().Where(x=> x.ProviderId == ProviderId);
             return payments.List().FirstOrDefault();
+        }
+
+        public PaymentApplication GetPaymentApplicationByKey(string appKey)
+        {
+            var payments = _repository.Session.QueryOver<PaymentApplication>().Where(x => x.AppKey == appKey);
+            return payments.List().Count() > 0 ? payments.List().First() : null;
         }
 
         public Tuple<IEnumerable<Payment>, int> FilterBy(NameValueCollection filtersValue, int? skip, int? take)
