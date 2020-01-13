@@ -14,6 +14,21 @@ namespace MVC_Project.Utils
         /// </summary>
         public Cryptography(){ }
 
+        public static string EncryptPassword(string password)
+        {
+            using (SHA256 sha256Hash = SHA256.Create())
+            {
+                byte[] bytes = sha256Hash.ComputeHash(Encoding.UTF8.GetBytes(password));
+
+                StringBuilder builder = new StringBuilder();
+                for (int i = 0; i < bytes.Length; i++)
+                {
+                    builder.Append(bytes[i].ToString("x2"));
+                }
+                return builder.ToString();
+            }
+        }
+
         private static RijndaelManaged GetRijndaelManaged(string salt)
         {
             var saltBytes = Encoding.ASCII.GetBytes(salt);
