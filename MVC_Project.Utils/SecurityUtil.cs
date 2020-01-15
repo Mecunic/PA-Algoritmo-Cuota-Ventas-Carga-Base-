@@ -7,12 +7,11 @@ using System.Configuration;
 
 namespace MVC_Project.Utils
 {
-    public class Cryptography
+    public class SecurityUtil
     {
         /// <summary>
         /// Empty constructor
         /// </summary>
-        public Cryptography(){ }
 
         public static string EncryptPassword(string password)
         {

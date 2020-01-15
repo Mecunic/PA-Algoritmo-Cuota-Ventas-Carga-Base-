@@ -177,7 +177,6 @@
     <Compile Include="App_Start\UnityMvcActivator.cs" />
     <Compile Include="AuthManagement\Authenticator.cs" />
     <Compile Include="AuthManagement\AuthorizeUsersAttribute.cs" />
-    <Compile Include="AuthManagement\EncryptHelper.cs" />
     <Compile Include="AuthManagement\Models\AuthUser.cs" />
     <Compile Include="Controllers\AuthController.cs" />
     <Compile Include="Controllers\BaseController.cs" />

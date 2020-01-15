@@ -1,4 +1,5 @@
-﻿using MVC_Project.Domain.Entities;
+﻿using MVC_Project.Desktop.Helpers;
+using MVC_Project.Domain.Entities;
 using MVC_Project.Domain.Services;
 using System;
 using System.Collections.Generic;
@@ -15,14 +16,15 @@ namespace MVC_Project.Desktop
 {
     public partial class LoginForm : Form
     {
-        [Dependency]
-        public IUserService _userService { get; set; }
-        [Dependency("AuthService")]
-        public IAuthService AuthService { get; set; }
-        public LoginForm(/*IUserService userService,*/ IAuthService _authService)
+
+        private IUserService _userService;
+
+        private IAuthService _authService;
+
+        public LoginForm()
         {
-            //_userService = userService;
-            AuthService = _authService;
+
+            _authService = UnityHelper.Resolve<IAuthService>();
             InitializeComponent();
         }
 
@@ -34,8 +36,8 @@ namespace MVC_Project.Desktop
                 return;
             }
 
-            string pass = Utils.Cryptography.EncryptPassword(txtPassword.Text.Trim());
-            User user = AuthService.Authenticate(txtUsername.Text.Trim(), pass);
+            string pass = Utils.SecurityUtil.EncryptPassword(txtPassword.Text.Trim());
+            User user = _authService.Authenticate(txtUsername.Text.Trim(), pass);
 
             if (user == null)
             {
@@ -44,9 +46,26 @@ namespace MVC_Project.Desktop
             }
             else
             {
+                AuthUser authUser = new AuthUser()
+                {
+                    Id = user.Id,
+                    Email = user.Email,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    Uuid = user.Uuid
+                };
+                Authenticator.SetCurrentUser(authUser);
                 this.Hide();
                 MainForm mainForm = new MainForm();
                 mainForm.Show();
+            }
+        }
+
+        private void CheckEnterKeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == (char)Keys.Return)
+            {
+                btnLogin_Click(null, null);
             }
         }
     }

@@ -4,6 +4,7 @@ using MVC_Project.Domain.Entities;
 using MVC_Project.Domain.Helpers;
 using MVC_Project.Domain.Services;
 using MVC_Project.Integrations.Storage;
+using MVC_Project.Utils;
 using MVC_Project.Web.AuthManagement;
 using MVC_Project.Web.Models;
 using MVC_Project.Web.Models.ExcelImport;
@@ -18,7 +19,6 @@ using System.Net;
 using System.Runtime.CompilerServices;
 using System.Web;
 using System.Web.Mvc;
-using Utils;
 
 namespace MVC_Project.Web.Controllers
 {
@@ -176,13 +176,13 @@ namespace MVC_Project.Web.Controllers
                     LastName = userCreateViewModel.Apellidos,
                     Email = userCreateViewModel.Email,
                     MobileNumber = userCreateViewModel.MobileNumber,
-                    Password = EncryptHelper.EncryptPassword(userCreateViewModel.Password),
+                    Password = SecurityUtil.EncryptPassword(userCreateViewModel.Password),
                     PasswordExpiration = passwordExpiration,
                     Role = new Role { Id = userCreateViewModel.Role },
                     Username = userCreateViewModel.Username,
                     Language = userCreateViewModel.Language,
-                    CreatedAt = DateTime.Now,
-                    UpdatedAt = DateTime.Now,
+                    CreatedAt = todayDate,
+                    UpdatedAt = todayDate,
                     Status = true
                 };
                 var role = _roleService.GetById(user.Role.Id);
@@ -282,7 +282,7 @@ namespace MVC_Project.Web.Controllers
             }
             if (ModelState.IsValid)
             {
-                user.Password = EncryptHelper.EncryptPassword(model.Password);
+                user.Password = SecurityUtil.EncryptPassword(model.Password);
                 DateTime todayDate = DateUtil.GetDateTimeNow();
                 DateTime passwordExpiration = todayDate.AddDays(-1);
                 user.PasswordExpiration = passwordExpiration;

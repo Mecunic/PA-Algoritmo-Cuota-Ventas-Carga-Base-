@@ -43,7 +43,7 @@ namespace MVC_Project.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = _authService.Authenticate(model.Email, EncryptHelper.EncryptPassword(model.Password));
+                var user = _authService.Authenticate(model.Email, SecurityUtil.EncryptPassword(model.Password));
                 if (user != null)
                 {
                     if (!user.Status)
@@ -249,7 +249,7 @@ namespace MVC_Project.Web.Controllers
 
             if (!String.IsNullOrWhiteSpace(model.Password) && user != null)
             {
-                string encriptedPass = EncryptHelper.EncryptPassword(model.Password);
+                string encriptedPass = SecurityUtil.EncryptPassword(model.Password);
                 if (user.Password == encriptedPass)
                 {
                     ModelState.AddModelError("Password", "La contraseña ya ha sido utilizada");
@@ -259,7 +259,7 @@ namespace MVC_Project.Web.Controllers
             {
                 if (user != null)
                 {
-                    user.Password = EncryptHelper.EncryptPassword(model.Password);
+                    user.Password = SecurityUtil.EncryptPassword(model.Password);
                     DateTime todayDate = DateUtil.GetDateTimeNow();
                     string daysToExpirateDate = ConfigurationManager.AppSettings["DaysToExpirateDate"];
                     DateTime passwordExpiration = todayDate.AddDays(Int32.Parse(daysToExpirateDate));
@@ -308,7 +308,7 @@ namespace MVC_Project.Web.Controllers
                 var resultado = _userService.FindBy(e => e.Uuid == model.Uuid).First();
                 if (resultado != null)
                 {
-                    resultado.Password = EncryptHelper.EncryptPassword(model.Password);
+                    resultado.Password = SecurityUtil.EncryptPassword(model.Password);
                     DateTime todayDate = DateUtil.GetDateTimeNow();
                     string daysToExpirateDate = ConfigurationManager.AppSettings["DaysToExpirateDate"];
                     DateTime passwordExpiration = todayDate.AddDays(Int32.Parse(daysToExpirateDate));

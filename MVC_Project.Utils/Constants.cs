@@ -17,7 +17,7 @@ namespace MVC_Project.Utils
 
         //ROLE CODES
         public static readonly string ROLE_ADMIN = "ADMIN";
-        public static readonly string ROLE_EMPLOYEE = "EMP";
+        public static readonly string ROLE_EMPLOYEE = "EMPLOYEE";
         public static readonly string ROLE_APP_USER = "APP_USER";
 
         //public static string STORAGE_MAIN_CONTAINER = ConfigurationManager.AppSettings["StorageMainContainer"];

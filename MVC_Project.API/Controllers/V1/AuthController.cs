@@ -1,5 +1,4 @@
 ﻿using Microsoft.Web.Http;
-using MVC_Project.API.AuthManagement;
 using MVC_Project.API.Models.Api_Request;
 using MVC_Project.API.Models.Api_Response;
 using MVC_Project.Domain.Entities;
@@ -37,7 +36,7 @@ namespace MVC_Project.API.Controllers.V1
             try
             {
                 List<MessageResponse> messages = new List<MessageResponse>();
-                var authUser = _authService.Authenticate(request.Username, EncryptHelper.EncryptPassword(request.Password));
+                var authUser = _authService.Authenticate(request.Username, SecurityUtil.EncryptPassword(request.Password));
                 if(authUser == null || !authUser.Status)
                 {
                     messages.Add(new MessageResponse { Type = MessageType.error.ToString("G"), Description = "El usuario no existe o contraseña inválida." });
@@ -90,7 +89,7 @@ namespace MVC_Project.API.Controllers.V1
                 user.FirstName = request.FirstName;
                 user.LastName = request.LastName;
                 user.Email = request.Email;
-                user.Password = EncryptHelper.EncryptPassword(request.Password);
+                user.Password = SecurityUtil.EncryptPassword(request.Password);
                 user.Uuid = Guid.NewGuid().ToString();
                 //TODO:ESTO ESTA MAL, SE DEBE TRAER POR CODIGO DE ROLE
                 user.Role = new Role { Id = 3 }; //ROL DE APP 
