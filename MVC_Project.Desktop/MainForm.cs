@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using MVC_Project.Desktop.Helpers;
+using MVC_Project.Desktop.Reports;
 
 namespace MVC_Project.Desktop
 {
@@ -52,6 +53,13 @@ namespace MVC_Project.Desktop
             AdminUsersForm usersForm = new AdminUsersForm();
             usersForm.MdiParent = this;
             usersForm.Show();
+        }
+
+        private void reporteDePagosToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            PaymentsReport reportForm = new PaymentsReport();
+            reportForm.MdiParent = this;
+            reportForm.Show();
         }
     }
 }

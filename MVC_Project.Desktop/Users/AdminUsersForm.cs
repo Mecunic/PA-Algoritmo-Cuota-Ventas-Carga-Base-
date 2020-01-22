@@ -4,6 +4,7 @@ using MVC_Project.Domain.Entities;
 using MVC_Project.Domain.Services;
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
@@ -81,6 +82,36 @@ namespace MVC_Project.Desktop
                 userForm.MdiParent = this.MdiParent;
                 userForm.Show();
             }
+        }
+
+        private void btnSearch_Click(object sender, EventArgs e)
+        {
+            if (!string.IsNullOrWhiteSpace(txtSearch.Text))
+            {
+                NameValueCollection filtersValue = new NameValueCollection();
+                filtersValue.Add("name", txtSearch.Text.Trim());
+                filtersValue.Add("status", "-1");
+                var results = _userService.FilterBy(filtersValue, null, null);
+                dtvUsers.DataSource = results.Item1;
+            }
+            else
+            {
+                dtvUsers.DataSource = _userService.GetAll();
+            }
+        }
+
+        private void CheckEnterKeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == (char)Keys.Return)
+            {
+                btnSearch_Click(null, null);
+            }
+        }
+
+        private void btnClean_Click(object sender, EventArgs e)
+        {
+            txtSearch.Text = string.Empty;
+            btnSearch_Click(null, null);
         }
     }
 }
