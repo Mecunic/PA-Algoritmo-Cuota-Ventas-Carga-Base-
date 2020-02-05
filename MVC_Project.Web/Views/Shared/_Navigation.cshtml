@@ -61,22 +61,25 @@
                 </li>
             }
 
-            <li class="">
-                <a href="#"><i class="fa fa-car"></i> <span class="nav-label" data-i18n="nav.dashboard">Seguros y Mantenimientos</span> <span class="fain arrow"></span></a>
-                <ul class="nav nav-second-level collapse in">
-                    <li class=""><a href="#">Gestión de Unidades</a></li>
-                    <li class=""><a href="#">Control de Mantenimientos</a></li>
-                    <li class=""><a href="#">Control de Seguros</a></li>
-                </ul>
-            </li>
+            @if (user.HasAccessToModule("checkin"))
+            {
+                <li class="">
+                    <a href="#"><i class="fa fa-car"></i> <span class="nav-label" data-i18n="nav.dashboard">Seguros y Mantenimientos</span> <span class="fain arrow"></span></a>
+                    <ul class="nav nav-second-level collapse in">
+                        <li class=""><a href="#">Gestión de Unidades</a></li>
+                        <li class=""><a href="#">Control de Mantenimientos</a></li>
+                        <li class=""><a href="#">Control de Seguros</a></li>
+                    </ul>
+                </li>
+            }
 
             @if (user.HasAccessToModule("reports"))
             {
                 <li class="@Html.IsModuleSelected(user, "reports")">
                     <a href="#"><i class="fa fa-bar-chart-o"></i> <span class="nav-label" data-i18n="nav.dashboard">@ViewLabels.MODULE_REPORTS</span> <span class="fain arrow"></span></a>
                     <ul class="nav nav-second-level collapse @Html.IsSelected(controller: "Reports", cssClass: "in")">
-                        <li class="@Html.IsSelected(action: "Dashboard_1")"><a href="@Url.Action("Index", "ReportService")">Reporte Ordenes</a></li>
-                        <li class="@Html.IsSelected(action: "Dashboard_2")"><a href="@Url.Action("Report_2", "Dashboards")">Reporte 2</a></li>
+                        <li class="@Html.IsSelected(action: "ReportService")"><a href="@Url.Action("Index", "ReportService")">Reporte de &Oacute;rdenes</a></li>
+                        @*<li class="@Html.IsSelected(action: "Dashboard_2")"><a href="@Url.Action("Report_2", "Dashboards")">Reporte 2</a></li>*@
                     </ul>
                 </li>
             }

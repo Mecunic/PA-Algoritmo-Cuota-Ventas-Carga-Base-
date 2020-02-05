@@ -57,6 +57,7 @@ namespace MVC_Project.Web
             container.RegisterType<IAuthService, AuthService>();
             container.RegisterType<IPaymentService, PaymentService>();
             container.RegisterType<IEventService, EventService>();
+            container.RegisterType<IOrderService, OrderService>();
             //container.RegisterType<IStorageServiceProvider, AzureBlobService>();
         }
     }

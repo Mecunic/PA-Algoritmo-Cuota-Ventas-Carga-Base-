@@ -26,7 +26,7 @@
             searching: false,
             ordering: false,
             columns: [
-                { data: 'Id', title: "Id", visible: false },
+                { data: 'Id', title: "Folio", visible: true },
                 { data: 'Cliente', title: "Cliente" },
                 { data: 'Estatus', title: "Estatus" },
                 { data: 'Tienda', title: "Tienda" },
@@ -81,7 +81,7 @@
             function () {
                 var tr = $(this).closest('tr');
                 var row = self.dataTable.row(tr);
-                self._modal.find('.modal-content').load(self.modalDetail + "?orderId=" + row.data().Id,
+                self._modal.find('.modal-body').load(self.modalDetail + "?orderId=" + row.data().Id,
                     function () {
                         self._modal.modal('show');
                         //$("#btn-actionDescuento-edit").on("click",

@@ -79,6 +79,7 @@ namespace MVC_Project.Web.Controllers
                 {
                     OrdersData orderData = new OrdersData();
                     orderData.Id = order.Id;
+                    orderData.Estatus = Convert.ToString( order.OrderStatus );
                     orderData.Cliente = order.Customer.FirstName;
                     orderData.CreatedAt = order.CreatedAt;
                     orderData.ShipperAt = order.RequiredAt;
@@ -148,7 +149,11 @@ namespace MVC_Project.Web.Controllers
         [HttpGet]
         public ActionResult ModalDetails(int orderId)
         {
-            IList <ReportOrdersDetail> model = new List<ReportOrdersDetail>();
+            OrdersData model = new OrdersData();
+            Order orderBO = _orderService.GetById(orderId);
+            model.Id = orderBO.Id;
+
+            IList <ReportOrdersDetail> modelDetail = new List<ReportOrdersDetail>();
             IList<OrderItems> details = _orderService.OrdenDetail(orderId);
             foreach(OrderItems order in details)
             {
@@ -158,9 +163,9 @@ namespace MVC_Project.Web.Controllers
                 Dato.Cantidad = order.Cantidad;
                 Dato.Descuento = order.Descuento;
                 Dato.Precio = order.PrecioLista;
-                model.Add(Dato);
-
+                modelDetail.Add(Dato);
             }
+            model.DetailItems = modelDetail;
             return PartialView("ModalDetalles", model);
         }
     }

@@ -1,35 +1,31 @@
-﻿@model  IEnumerable<MVC_Project.Web.Models.ReportOrdersDetail>
+﻿@model  MVC_Project.Web.Models.OrdersData
 <div class="row">
-    
     <div class="col-lg-12">
-        <h2>Detalle de orden</h2>
+        <h2>Detalle de &Oacute;rden @Model.Id</h2>
         <div class="ibox float-e-margins">
-
             <div class="ibox-title">
                 <h5>Resultado</h5>
             </div>
             <div class="ibox-content">
-
                 <table class="table table-striped">
                     <tr>
                         <th>
-                            @Html.DisplayNameFor(model => model.Id)
+                            No.
                         </th>
                         <th>
-                            @Html.DisplayNameFor(model => model.Nombre)
+                            Nombre
                         </th>
                         <th>
-                            @Html.DisplayNameFor(model => model.Precio)
+                            Precio
                         </th>
                         <th>
-                            @Html.DisplayNameFor(model => model.Cantidad)
+                            Cantidad
                         </th>
                         <th>
-                            @Html.DisplayNameFor(model => model.Descuento)
+                            Descuento
                         </th>
                     </tr>
-
-                    @foreach (var item in Model)
+                    @foreach (var item in Model.DetailItems)
                     {
                         <tr>
                             <td>
@@ -51,7 +47,6 @@
                     }
                 </table>
             </div>
-
         </div>
     </div>
 </div>

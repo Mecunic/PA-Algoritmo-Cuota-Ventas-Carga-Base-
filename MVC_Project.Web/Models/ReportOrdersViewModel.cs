@@ -27,11 +27,14 @@ namespace MVC_Project.Web.Models
         public DateTime ShipperAt { get; set; }
         public string Tienda { get; set; }
         public string Vendedor { get; set; }
+
+        public IList<ReportOrdersDetail> DetailItems { get; set; }
     }
     public class ExportOrdersViewModel : OrdersData
     {
         public string FechaPagoFormateada { get; set; }
     }
+
     public class ReportOrdersDetail
     {
         public int Id { get; set; }
