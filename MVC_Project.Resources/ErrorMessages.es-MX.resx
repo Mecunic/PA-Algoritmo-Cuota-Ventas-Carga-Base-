@@ -139,9 +139,12 @@
     <value>El campo {0} debe ser mayor o igual a {1}</value>
   </data>
   <data name="UserNotAvailable" xml:space="preserve">
-    <value>El usuario ya no se encuentra disponible.</value>
+    <value>El usuario ya no se encuentra registrado</value>
   </data>
   <data name="UserWithoutPermissions" xml:space="preserve">
-    <value>No tienes suficientes permisos para acceder a este recurso.</value>
+    <value>No tienes suficientes permisos para acceder a este recurso</value>
+  </data>
+  <data name="UserInactive" xml:space="preserve">
+    <value>El usuario no se encuentra activo</value>
   </data>
 </root>

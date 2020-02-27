@@ -230,7 +230,7 @@ namespace MVC_Project.Web.Controllers
 
                 NameValueCollection filtersValues = HttpUtility.ParseQueryString(filtros);
                 filtersValues["UserId"] = "-1";
-                if (authUser.Role.Code != Constants.ROLE_ADMIN)
+                if (authUser.Role.Code != Constants.ROLE_ADMIN || authUser.Role.Code != Constants.ROLE_IT_SUPPORT)
                 {
                     filtersValues["UserId"] = Convert.ToString(authUser.Id);
                 }

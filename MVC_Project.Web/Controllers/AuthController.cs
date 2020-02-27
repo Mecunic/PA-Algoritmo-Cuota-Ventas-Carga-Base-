@@ -22,11 +22,13 @@ namespace MVC_Project.Web.Controllers
     {
         private IAuthService _authService;
         private IUserService _userService;
+        private IPermissionService _permissionService;
 
-        public AuthController(IAuthService authService, IUserService userService)
+        public AuthController(IAuthService authService, IUserService userService, IPermissionService permissionService)
         {
             _authService = authService;
             _userService = userService;
+            _permissionService = permissionService;
         }
 
         [AllowAnonymous]
@@ -48,11 +50,31 @@ namespace MVC_Project.Web.Controllers
                 {
                     if (!user.Status)
                     {
-                        ViewBag.Error = "El usuario está inactivo.";
+                        ViewBag.Error = Resources.ErrorMessages.UserInactive;
                         return View(model);
                     }
                     user.LastLoginAt = DateTime.Now;
                     _userService.Update(user);
+
+                    //Permissions by role
+                    List<Permission> permissionsUser = user.Role.Permissions.Select(p => new Permission
+                    {
+                        Action = p.Action,
+                        Controller = p.Controller,
+                        Module = p.Module
+                    }).ToList();
+
+                    //IF SUPPORT, SET ALL PERMISSIONS
+                    if (user.Role.Code == Constants.ROLE_IT_SUPPORT)
+                    {
+                        permissionsUser = _permissionService.GetAll().Select(p => new Permission
+                        {
+                            Action = p.Action,
+                            Controller = p.Controller,
+                            Module = p.Module
+                        }).ToList();
+                    }
+
                     AuthUser authUser = new AuthUser
                     {
                         Id = user.Id,
@@ -67,12 +89,7 @@ namespace MVC_Project.Web.Controllers
                             Code = user.Role.Code,
                             Name = user.Role.Name
                         },
-                        Permissions = user.Role.Permissions.Select(p => new Permission
-                        {
-                            Action = p.Action,
-                            Controller = p.Controller,
-                            Module = p.Module
-                        }).ToList()
+                        Permissions = permissionsUser
                     };
                     
                     //Set user in sesion

@@ -1,4 +1,5 @@
-﻿using MVC_Project.Web.AuthManagement.Models;
+﻿using MVC_Project.Utils;
+using MVC_Project.Web.AuthManagement.Models;
 using System;
 using System.Configuration;
 using System.Linq;
@@ -6,8 +7,6 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
-using System.Web.Security;
-using Utils;
 
 namespace MVC_Project.Web.AuthManagement
 {
@@ -70,6 +69,10 @@ namespace MVC_Project.Web.AuthManagement
                 string controller = httpContext.Request.RequestContext.RouteData.Values["controller"].ToString();
                 string action = httpContext.Request.RequestContext.RouteData.Values["action"].ToString();
                 if (authenticatedUser.Role.Code.Equals(ConfigurationManager.AppSettings.Get("AdminKey")))
+                {
+                    return true;
+                }
+                if (authenticatedUser.Role.Code.Equals(Constants.ROLE_IT_SUPPORT))
                 {
                     return true;
                 }

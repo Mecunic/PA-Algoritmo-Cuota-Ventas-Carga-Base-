@@ -16,10 +16,11 @@ namespace MVC_Project.Utils
         public static readonly int SEARCH_ALL = -1;
 
         //ROLE CODES
+        public static readonly string ROLE_IT_SUPPORT = "IT_SUPPORT";
         public static readonly string ROLE_ADMIN = "ADMIN";
         public static readonly string ROLE_EMPLOYEE = "EMPLOYEE";
         public static readonly string ROLE_APP_USER = "APP_USER";
-
+        
         //public static string STORAGE_MAIN_CONTAINER = ConfigurationManager.AppSettings["StorageMainContainer"];
 
         public static string DATE_FORMAT_DAY_MONTH = "dd/MM";

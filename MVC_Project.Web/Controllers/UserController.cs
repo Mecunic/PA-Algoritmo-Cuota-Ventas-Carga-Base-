@@ -209,6 +209,7 @@ namespace MVC_Project.Web.Controllers
             model.Name = user.FirstName;
             model.Apellidos = user.LastName;
             model.Email = user.Email;
+            model.MobileNumber = user.MobileNumber;
             model.Roles = PopulateRoles();
             model.Role = user.Role.Id;
             return View(model);

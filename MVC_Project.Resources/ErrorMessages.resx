@@ -141,4 +141,7 @@
   <data name="UserWithoutPermissions" xml:space="preserve">
     <value>You don't have enough permissions to access this resource.</value>
   </data>
+  <data name="UserInactive" xml:space="preserve">
+    <value>The user is not active</value>
+  </data>
 </root>

@@ -115,6 +115,15 @@ namespace MVC_Project.Resources {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a The user is not active.
+        /// </summary>
+        public static string UserInactive {
+            get {
+                return ResourceManager.GetString("UserInactive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a The user is no longer available.
         /// </summary>
         public static string UserNotAvailable {
