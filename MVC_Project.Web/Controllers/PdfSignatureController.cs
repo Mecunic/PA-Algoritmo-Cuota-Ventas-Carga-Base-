@@ -1,6 +1,9 @@
-﻿using MigraDoc.DocumentObjectModel;
+﻿using Ghostscript.NET;
+using Ghostscript.NET.Rasterizer;
+using MigraDoc.DocumentObjectModel;
 using MigraDoc.Rendering;
 using System;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Web.Mvc;
 
@@ -18,6 +21,42 @@ namespace MVC_Project.Web.Controllers
         [AllowAnonymous]
         [HttpPost]
         public ActionResult GeneratePdf(string signature)
+        {
+            MemoryStream stream = this.CreateSignedPDF(signature);
+            var pdfContent = stream.ToArray();
+            stream.Dispose();
+            return File(pdfContent, "application/pdf", "signed.pdf");
+        }
+
+        [AllowAnonymous]
+        [HttpPost]
+        public ActionResult GenerateJpeg(string signature)
+        {
+            MemoryStream pdfStream = this.CreateSignedPDF(signature);
+
+            int desired_x_dpi = 96;
+            int desired_y_dpi = 96;
+
+            //Reference to Ghostscript
+            string path = Server.MapPath("~/Libs/gsdll32.dll");
+            GhostscriptVersionInfo gvi = new GhostscriptVersionInfo(@path);
+
+            using (var rasterizer = new GhostscriptRasterizer())
+            {
+                rasterizer.Open(pdfStream, gvi, true);
+
+                //Only get first page
+                var img = rasterizer.GetPage(desired_x_dpi, desired_y_dpi, 1);
+                MemoryStream imageStream = new MemoryStream();
+                img.Save(imageStream, ImageFormat.Jpeg);
+                pdfStream.Dispose();
+                var imageContent = imageStream.ToArray();
+                imageStream.Dispose();
+                return File(imageContent, "image/jpeg", "signed.jpeg");
+            }
+        }
+
+        private MemoryStream CreateSignedPDF(string signature)
         {
             //Create PDF Document
             Document document = new Document();
@@ -63,7 +102,7 @@ namespace MVC_Project.Web.Controllers
             var encodedImage = signature.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries)[1];
             var image = section.AddImage("base64:" + encodedImage);
             image.Width = "10cm";
-            image.Left = "3cm";            
+            image.Left = "3cm";
 
             //Render PDF document
             PdfDocumentRenderer pdfRenderer = new PdfDocumentRenderer(false);
@@ -73,8 +112,8 @@ namespace MVC_Project.Web.Controllers
             //Download PDF file
             MemoryStream stream = new MemoryStream();
             pdfRenderer.PdfDocument.Save(stream, false);
-            return File(stream.ToArray(), "application/pdf", "signed.pdf");
 
+            return stream;
         }
     }
 }
