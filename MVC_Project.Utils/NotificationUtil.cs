@@ -24,9 +24,9 @@ namespace MVC_Project.Utils
             {
                 Type = "EMAIL",
                 Provider = "SENDGRID",
-                Template = template, //"51d34567-1960-4501-8e89-e349c18275e6",
-                CustomParams = customParams, //new Dictionary<string, string>() { { "param1", userBO.FirstName }, { "param2", "http://localhost:2683/Account/Confirmation?Uuid=" } },
-                Recipients = recipients, //new List<string> { userBO.Email },
+                Template = template, 
+                CustomParams = customParams, 
+                Recipients = recipients,
                 ProviderAuthParams = authParams,
             });
         }

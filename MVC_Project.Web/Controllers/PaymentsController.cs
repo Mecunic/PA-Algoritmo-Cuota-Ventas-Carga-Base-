@@ -27,11 +27,15 @@ namespace MVC_Project.Web.Controllers
         private string GlobalClientId;
         private string SecureVerificationURL;
         private string OpenpayWebhookKey;
+        private string AppKey;
 
         public PaymentsController(IPaymentService paymentService, IUserService userService)
         {
             _paymentService = paymentService;
             _userService = userService;
+
+            AppKey = "96700712-ba90-4c68-8a9a-0f51b158f745";
+
             TransferExpirationDays = Convert.ToInt32(System.Configuration.ConfigurationManager.AppSettings["Payments.TransferExpirationDays"]);
             UseSelective3DSecure = Convert.ToBoolean(System.Configuration.ConfigurationManager.AppSettings["Payments.UseSelective3DSecure"]);
             GlobalClientId = System.Configuration.ConfigurationManager.AppSettings["Payments.OpenpayGeneralClientId"];
@@ -68,10 +72,15 @@ namespace MVC_Project.Web.Controllers
             if (model.PaymentMethod == PaymentMethod.BANK_ACCOUNT)
             {
                 model.DueDate = DateUtil.GetDateTimeNow().AddDays(TransferExpirationDays);
-                return View("CreateSPEI", model);
+                return CreateSPEI(model);
+                //return View("CreateSPEI", model);
             }
             if (model.PaymentMethod == PaymentMethod.CARD)
             {
+                //Setear variables del conector
+                PaymentApplication paymentApp = _paymentService.GetPaymentApplicationByKey(AppKey);
+                model.MerchantId = paymentApp.MerchantId;
+                model.PublicKey = paymentApp.PublicKey;
                 return View("CreateTDC", model);
             }
             return RedirectToAction("Index", "Error");
@@ -82,13 +91,20 @@ namespace MVC_Project.Web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult CreateSPEI(PaymentViewModel model)
         {
+            //Setear variables del conector
+            PaymentApplication paymentApp = _paymentService.GetPaymentApplicationByKey(AppKey);
+            paymentProviderService.MerchantId = paymentApp.MerchantId;
+            paymentProviderService.PublicKey = paymentApp.PublicKey;
+            paymentProviderService.PrivateKey = paymentApp.PrivateKey;
+            paymentProviderService.DashboardURL = paymentApp.DashboardURL;
+
             PaymentModel payment = new PaymentModel()
             {
-                ClientId = GlobalClientId,
+                ClientId = paymentApp.ClientId,
                 OrderId = model.OrderId,
                 Amount = model.Amount,
                 DueDate = DateUtil.GetDateTimeNow().AddDays(TransferExpirationDays),
-                Description = String.Format("Payment for Order Id # {0}", model.OrderId),
+                Description = String.Format("Pago de orden {0}", model.OrderId),
             };
 
             model.PaymentMethod = PaymentMethod.BANK_ACCOUNT;
@@ -103,6 +119,7 @@ namespace MVC_Project.Web.Controllers
                 paymentBO.User = new User() { Id = Authenticator.AuthenticatedUser.Id };
                 paymentBO.Amount = model.Amount;
                 paymentBO.OrderId = model.OrderId;
+                paymentBO.ConfirmationEmail = model.ConfirmationEmail;
                 paymentBO.ProviderId = payment.Id;
                 paymentBO.Status = payment.Status;
                 paymentBO.DueDate = payment.DueDate;
@@ -138,14 +155,21 @@ namespace MVC_Project.Web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult CreateTDC(PaymentViewModel model)
         {
+            //Setear variables del conector
+            PaymentApplication paymentApp = _paymentService.GetPaymentApplicationByKey(AppKey);
+            paymentProviderService.MerchantId = paymentApp.MerchantId;
+            paymentProviderService.PublicKey = paymentApp.PublicKey;
+            paymentProviderService.PrivateKey = paymentApp.PrivateKey;
+            paymentProviderService.DashboardURL = paymentApp.DashboardURL;
+
             PaymentModel payment = new PaymentModel()
             {
-                ClientId = GlobalClientId,
+                ClientId = paymentApp.ClientId,
                 OrderId = model.OrderId,
                 Amount = model.Amount,
                 TokenId = model.TokenId,
                 DeviceSessionId = model.DeviceSessionId,
-                Description = String.Format("Payment for Order Id # {0}", model.OrderId),
+                Description = String.Format("Pago de orden {0}", model.OrderId),
                 RedirectUrl = SecureVerificationURL,
                 //Use3DSecure = true
             };
@@ -156,6 +180,7 @@ namespace MVC_Project.Web.Controllers
             paymentBO.User = new User() { Id = Authenticator.AuthenticatedUser.Id };
             paymentBO.Amount = model.Amount;
             paymentBO.OrderId = model.OrderId;
+            paymentBO.ConfirmationEmail = model.ConfirmationEmail;
             paymentBO.Status = PaymentStatus.IN_PROGRESS;
             paymentBO.Method = PaymentMethod.CARD;
             paymentBO.TransactionType = PaymentType.CHARGE;
@@ -230,7 +255,7 @@ namespace MVC_Project.Web.Controllers
 
                 NameValueCollection filtersValues = HttpUtility.ParseQueryString(filtros);
                 filtersValues["UserId"] = "-1";
-                if (authUser.Role.Code != Constants.ROLE_ADMIN || authUser.Role.Code != Constants.ROLE_IT_SUPPORT)
+                if (authUser.Role.Code != Constants.ROLE_ADMIN && authUser.Role.Code != Constants.ROLE_IT_SUPPORT)
                 {
                     filtersValues["UserId"] = Convert.ToString(authUser.Id);
                 }
@@ -248,8 +273,8 @@ namespace MVC_Project.Web.Controllers
                         PaymentMethod = payment.Method,
                         ProviderId = payment.ProviderId,
                         Status = payment.Status,
-                        CreationDate = payment.CreationDate.ToString(Constants.DATE_FORMAT),
-                        ConfirmationDate = payment.ConfirmationDate.HasValue?payment.ConfirmationDate.Value.ToString(Constants.DATE_FORMAT):"",
+                        CreationDate = payment.CreationDate.ToString(Constants.DATE_FORMAT_CALENDAR),
+                        ConfirmationDate = payment.ConfirmationDate.HasValue?payment.ConfirmationDate.Value.ToString(Constants.DATE_FORMAT_CALENDAR) :"",
                         User = payment.User.Email
                     };
                     dataResponse.Add(resultData);
@@ -303,30 +328,32 @@ namespace MVC_Project.Web.Controllers
                         System.Diagnostics.Trace.TraceInformation("\t\t Order Id: " + paymentEvent.transaction.order_id);
                         System.Diagnostics.Trace.TraceInformation("\t\t Authorization: " + paymentEvent.transaction.authorization);
 
-                        Payment payment = _paymentService.GetByOrderId(paymentEvent.transaction.order_id);
-                        User user = payment.User;//_userService.GetById(payment.User.Id);
+                        Payment paymentBO = _paymentService.GetByOrderId(paymentEvent.transaction.order_id);
+                        User user = paymentBO.User;//_userService.GetById(payment.User.Id);
                         
-                        if (payment!=null)
+                        if (paymentBO != null)
                         {
-                            System.Diagnostics.Trace.TraceInformation("\t\t Payment BO ID: " + payment.Id);
-                            payment.Status = paymentEvent.transaction.status;
-                            payment.LogData = rawJSON;
+                            System.Diagnostics.Trace.TraceInformation("\t\t Payment BO ID: " + paymentBO.Id);
+                            paymentBO.Status = paymentEvent.transaction.status;
+                            paymentBO.LogData = rawJSON;
                             if (paymentEvent.type == PaymentEventStatus.CHARGE_SUCCEEDED)
                             {
-                                payment.ConfirmationDate = DateUtil.GetDateTimeNow(); //lo tomamos cuando llega el evento
-                                payment.AuthorizationCode = paymentEvent.transaction.authorization;
+                                paymentBO.ConfirmationDate = DateUtil.GetDateTimeNow(); //lo tomamos cuando llega el evento
+                                paymentBO.AuthorizationCode = paymentEvent.transaction.authorization;
 
                                 Dictionary<string, string> customParams = new Dictionary<string, string>();
                                 customParams.Add("param1", user.FirstName);
                                 customParams.Add("param2", paymentEvent.transaction.order_id);
-                                customParams.Add("param3", payment.AuthorizationCode);
+                                customParams.Add("param3", paymentBO.AuthorizationCode);
                                 customParams.Add("param4", paymentEvent.transaction.id);
-                                customParams.Add("param5", payment.ConfirmationDate.Value.ToString(Constants.DATE_FORMAT) );
-                                customParams.Add("param6", string.Format("{0:#.00}", payment.Amount));
-                                NotificationUtil.SendNotification(user.Email, customParams, Constants.NOT_TEMPLATE_CHARGESUCCESS);
+                                customParams.Add("param5", paymentBO.ConfirmationDate.Value.ToString(Constants.DATE_FORMAT) );
+                                customParams.Add("param6", string.Format("{0:#.00}", paymentBO.Amount));
+                                customParams.Add("param7", paymentBO.Method);
+                                string confirmationEmail = !string.IsNullOrWhiteSpace(paymentBO.ConfirmationEmail) ? paymentBO.ConfirmationEmail : user.Email;
+                                NotificationUtil.SendNotification(confirmationEmail, customParams, Constants.NOT_TEMPLATE_CHARGESUCCESS);
                             }
-                            _paymentService.Update(payment);
-                            System.Diagnostics.Trace.TraceInformation("\t\t Payment BO Status Updated: " + payment.Status);
+                            _paymentService.Update(paymentBO);
+                            System.Diagnostics.Trace.TraceInformation("\t\t Payment BO Status Updated: " + paymentBO.Status);
                         }
                     }
                 }

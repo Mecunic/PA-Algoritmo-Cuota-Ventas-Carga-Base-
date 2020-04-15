@@ -1,6 +1,7 @@
 ﻿@model  MVC_Project.Web.Models.PaymentViewModel
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Pago con Tarjeta";
 }
 
 
@@ -277,6 +278,7 @@
             @Html.AntiForgeryToken()
             @Html.HiddenFor(m => m.OrderId)
             @Html.HiddenFor(m => m.Amount)
+            @Html.HiddenFor(m => m.ConfirmationEmail)
             <input type="hidden" name="TokenId" id="token_id">
             <div class="pymnt-itm card active">
                 <h2>Tarjeta de crédito o débito</h2>
@@ -326,8 +328,8 @@
     <script type="text/javascript">
         $(document).ready(function () {
             
-            OpenPay.setId('@System.Configuration.ConfigurationManager.AppSettings["Payments.MerchantId"]');
-            OpenPay.setApiKey('@System.Configuration.ConfigurationManager.AppSettings["Payments.PublicKey"]');
+            OpenPay.setId('@Model.MerchantId');
+            OpenPay.setApiKey('@Model.PublicKey');
             OpenPay.setSandboxMode(!@System.Configuration.ConfigurationManager.AppSettings["Payments.IsProductionEnvironment"].ToString());
 
             //Se genera el id de dispositivo

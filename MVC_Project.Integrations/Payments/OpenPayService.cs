@@ -24,10 +24,10 @@ namespace MVC_Project.Integrations.Payments
         {
             IsProductionEnvironment = Convert.ToBoolean(System.Configuration.ConfigurationManager.AppSettings["Payments.IsProductionEnvironment"]);
             /*
+            DashboardURL = System.Configuration.ConfigurationManager.AppSettings["Payments.DashboardURL"];
             PublicKey = System.Configuration.ConfigurationManager.AppSettings["Payments.PublicKey"];
             PrivateKey = System.Configuration.ConfigurationManager.AppSettings["Payments.OpenpayKey"];
             MerchantId = System.Configuration.ConfigurationManager.AppSettings["Payments.MerchantId"];
-            DashboardURL = System.Configuration.ConfigurationManager.AppSettings["Payments.DashboardURL"];
             Agreement = System.Configuration.ConfigurationManager.AppSettings["Payments.OpenpayAgreement"];
             */
         }

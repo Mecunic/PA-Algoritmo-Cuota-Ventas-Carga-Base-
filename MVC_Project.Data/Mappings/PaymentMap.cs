@@ -26,6 +26,7 @@ namespace MVC_Project.Data.Mappings
             Map(x => x.AuthorizationCode).Column("authorization_code").Nullable();
             Map(x => x.DueDate).Column("due_date").Nullable();
             Map(x => x.LogData).Column("log_data").Nullable();
+            Map(x => x.ConfirmationEmail).Column("confirmation_email").Nullable();
             References(x => x.User).Column("UserId");
         }
     }

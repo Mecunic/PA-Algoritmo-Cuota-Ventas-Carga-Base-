@@ -32,6 +32,8 @@ namespace MVC_Project.Domain.Entities
 
         public virtual string TransactionType { get; set; }
 
+        public virtual string ConfirmationEmail { get; set; }
+
         public virtual User User { get; set; }
     }
 }

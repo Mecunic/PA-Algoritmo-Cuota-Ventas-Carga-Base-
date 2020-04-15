@@ -26,6 +26,7 @@
                                 @Html.AntiForgeryToken()
                                 @Html.HiddenFor(m => m.OrderId)
                                 @Html.HiddenFor(m => m.Amount)
+                                @Html.HiddenFor(m => m.ConfirmationEmail)
                                 <div class="form-group">
                                     <label>ID Orden / Transacción (Única):</label>
                                     @Model.OrderId

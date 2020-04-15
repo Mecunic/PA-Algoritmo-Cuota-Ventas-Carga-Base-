@@ -25,7 +25,7 @@ namespace MVC_Project.Web.Controllers
             MemoryStream stream = this.CreateSignedPDF(signature);
             var pdfContent = stream.ToArray();
             stream.Dispose();
-            return File(pdfContent, "application/pdf", "signed.pdf");
+            return File(pdfContent, "application/pdf", "Contrato-9202390.pdf");
         }
 
         [AllowAnonymous]
@@ -52,7 +52,7 @@ namespace MVC_Project.Web.Controllers
                 pdfStream.Dispose();
                 var imageContent = imageStream.ToArray();
                 imageStream.Dispose();
-                return File(imageContent, "image/jpeg", "signed.jpeg");
+                return File(imageContent, "image/jpeg", "Contrato-9202390.jpeg");
             }
         }
 
@@ -82,8 +82,12 @@ namespace MVC_Project.Web.Controllers
             //Create document section
             Section section = document.AddSection();
 
+            //Logo
+            string pathLogo = Server.MapPath("~/Images/Anytime_Fitness_logo.png");
+            section.AddImage(pathLogo);
+
             //Add elements to section
-            Paragraph paragraph = section.AddParagraph("Lorem Ipsum", "Heading1");
+            Paragraph paragraph = section.AddParagraph("Contrato 9202390", "Heading1");
             paragraph.Format.Alignment = ParagraphAlignment.Center;
 
             paragraph = section.AddParagraph();
@@ -93,7 +97,7 @@ namespace MVC_Project.Web.Controllers
                 "eleifend venenatis. Suspendisse faucibus nibh non est molestie, eu pretium ligula facilisis. Etiam laoreet venenatis eros " +
                 "vitae dictum. Proin faucibus eget magna non accumsan. Proin cursus congue velit imperdiet tempor. Donec eu diam ac sem facilisis " +
                 "tristique vitae et arcu. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.");
-            paragraph.Format.SpaceAfter = "13cm";
+            paragraph.Format.SpaceAfter = "10cm";
 
             paragraph = section.AddParagraph("Firma", "Heading3");
             paragraph.Format.Alignment = ParagraphAlignment.Center;

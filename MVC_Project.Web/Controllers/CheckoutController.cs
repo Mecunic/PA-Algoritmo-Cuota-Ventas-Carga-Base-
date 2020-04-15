@@ -50,7 +50,7 @@ namespace MVC_Project.Web.Controllers
                 AppKey = appKey,
                 OrderId = newOrderId,
                 Amount = Convert.ToInt32((new Random().NextDouble() * 10000)),
-                Description = String.Format("Payment for Order Id # {0}", newOrderId)
+                Description = String.Format("Pago de orden # {0}", newOrderId)
             };
             return View("Test", model);
         }
@@ -78,11 +78,83 @@ namespace MVC_Project.Web.Controllers
             }
 
             model.AppName = paymentApp.Name;
-
             model.MerchantId = paymentApp.MerchantId;
             model.PublicKey = paymentApp.PublicKey;
 
-            return View("Index", model);
+            if (model.PaymentMethod == PaymentMethod.CARD)
+            {
+                return View("Index", model);
+            }
+            if (model.PaymentMethod == PaymentMethod.BANK_ACCOUNT)
+            {
+                return ProceedSPEI(model);
+            }
+            return View();
+        }
+
+
+        [AllowAnonymous]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult ProceedSPEI(PaymentViewModel model)
+        {
+            //Setear variables del conector
+            PaymentApplication paymentApp = _paymentService.GetPaymentApplicationByKey(model.AppKey);
+            paymentProviderService.MerchantId = paymentApp.MerchantId;
+            paymentProviderService.PublicKey = paymentApp.PublicKey;
+            paymentProviderService.PrivateKey = paymentApp.PrivateKey;
+            paymentProviderService.DashboardURL = paymentApp.DashboardURL;
+
+            PaymentModel payment = new PaymentModel()
+            {
+                ClientId = paymentApp.ClientId,
+                OrderId = model.OrderId,
+                Amount = model.Amount,
+                DueDate = DateUtil.GetDateTimeNow().AddDays(TransferExpirationDays),
+                Description = model.Description,
+            };
+
+            model.PaymentMethod = PaymentMethod.BANK_ACCOUNT;
+            payment = paymentProviderService.CreateBankTransferPayment(payment);
+            model.ChargeSuccess = payment.ChargeSuccess;
+            if (payment.ChargeSuccess)
+            {
+                //Primero guardar en BD
+                Payment paymentBO = new Payment();
+                paymentBO.CreationDate = DateUtil.GetDateTimeNow();
+                paymentBO.User = paymentApp.User;
+                paymentBO.Amount = model.Amount;
+                paymentBO.OrderId = model.OrderId;
+                paymentBO.ConfirmationEmail = model.ConfirmationEmail;
+                paymentBO.ProviderId = payment.Id;
+                paymentBO.Status = payment.Status;
+                paymentBO.DueDate = payment.DueDate;
+                paymentBO.Method = PaymentMethod.BANK_ACCOUNT;
+                paymentBO.TransactionType = PaymentType.CHARGE;
+
+                paymentBO.ConfirmationDate = null;
+
+                _paymentService.Create(paymentBO);
+
+                model.Id = payment.Id;
+                model.Description = payment.Description;
+                model.JsonData = payment.ResultData;
+                model.DueDate = payment.DueDate;
+                model.PaymentCardURL = payment.PaymentCardURL;
+                model.BankName = payment.PaymentMethod.BankName;
+                model.Clabe = payment.PaymentMethod.Clabe;
+                model.Reference = payment.PaymentMethod.Reference;
+                model.Name = payment.PaymentMethod.Name;
+                model.Agreement = payment.PaymentMethod.Agreement;
+
+                return RedirectPermanent(payment.PaymentCardURL);
+
+            }
+            else
+            {
+                model.Description = payment.ResultData;
+                return null;
+            }
         }
 
         [AllowAnonymous]
@@ -115,10 +187,10 @@ namespace MVC_Project.Web.Controllers
             paymentBO.User = paymentApp.User;
             paymentBO.Amount = model.Amount;
             paymentBO.OrderId = model.OrderId;
+            paymentBO.ConfirmationEmail = model.ConfirmationEmail;
             paymentBO.Status = PaymentStatus.IN_PROGRESS;
             paymentBO.Method = PaymentMethod.CARD;
             paymentBO.TransactionType = PaymentType.CHARGE;
-
             paymentBO.ConfirmationDate = null;
             _paymentService.Create(paymentBO);
 
@@ -198,25 +270,6 @@ namespace MVC_Project.Web.Controllers
             ViewData["ResultValues"] = formValues;
             return View();
         }
-
-        public static System.Net.WebResponse SendPostRequest(string url, FormCollection data)
-        {
-
-            //Data parameter Example
-            //string data = "name=" + value
-
-            System.Net.WebRequest httpRequest = System.Net.HttpWebRequest.Create(url);
-            httpRequest.Method = "POST";
-            httpRequest.ContentType = "application/x-www-form-urlencoded";
-            httpRequest.ContentLength = data.ToString().Length;
-
-            var streamWriter = new StreamWriter(httpRequest.GetRequestStream());
-            streamWriter.Write(data.ToString());
-            streamWriter.Close();
-
-            return httpRequest.GetResponse();
-        }
-
-       
+        
     }
 }

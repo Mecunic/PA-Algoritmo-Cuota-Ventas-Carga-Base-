@@ -41,6 +41,8 @@ namespace MVC_Project.Web.Models
 
         public bool ChargeSuccess { get; set; }
 
+        public string ConfirmationEmail { get; set; }
+
         //FOR DISPLAY RESULTS
         public string CreationDate { get; set; }
         public string ConfirmationDate { get; set; }

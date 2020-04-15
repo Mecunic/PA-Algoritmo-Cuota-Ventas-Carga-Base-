@@ -289,6 +289,8 @@
         <br />
         <b>Descripción:</b> @Model.Description
         <br />
+        <b>Email de Confirmacion:</b> @Model.ConfirmationEmail
+        <br />
 
         <div class="pymnts">
             @using (Html.BeginForm("ProceedTDC", "Checkout", FormMethod.Post, new { @id = "payment-form", @role = "form" }))
@@ -298,6 +300,7 @@
                 @Html.HiddenFor(m => m.OrderId)
                 @Html.HiddenFor(m => m.Amount)
                 @Html.HiddenFor(m => m.Description)
+                @Html.HiddenFor(m => m.ConfirmationEmail)
                 <input type="hidden" name="TokenId" id="token_id">
                 <div class="pymnt-itm card active">
                     <h2>Tarjeta de crédito o débito</h2>
@@ -381,9 +384,6 @@
 
         });
     </script>
-
-
-
 
 </body>
 </html>
