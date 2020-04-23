@@ -2,7 +2,6 @@
 @{
     Layout = null;
     string emailRegex = @"^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}" + @"\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\" + @".)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$";
-    //string emailRegex = @"^[a-z0-9_\\+-]+(\\.[a-z0-9_\\+-]+)*@[a-z0-9-]+(\\.[a-z0-9]+)*\\.([a-z]{2,6})$";
     string mensaje = ViewBag.mensajeError;
 }
 <div class="modal-header">
@@ -18,7 +17,7 @@
         <div class="form-horizontal">
             <div class="form-group">
                 <div class="col-md-8">
-                    <label class="control-label">Ingrese cuenta de correo</label>
+                    <label class="control-label">Ingrese su cuenta de correo</label>
                     @*pattern = "@emailRegex",*@
                     @Html.TextBoxFor(x => x.Email, new { @class = "form-control", maxlength = "150", required = "required", title = "Ingrese un correo electrónico." })
                     @*<input type="email" id="correoCuenta" class="form-control" maxlength="150" pattern="@emailRegex" title="Campo Requerido" required />*@
