@@ -29,6 +29,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MVC_Project.Resources", "MV
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MVC_Project.Desktop", "MVC_Project.Desktop\MVC_Project.Desktop.csproj", "{79A95018-BE6D-4533-A9FB-18FA69E1264C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MVC_Project.WebBackend", "MVC_Project.WebBackend\MVC_Project.WebBackend.csproj", "{A3C31666-97AB-4135-873B-68402863530D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -87,6 +89,10 @@ Global
 		{79A95018-BE6D-4533-A9FB-18FA69E1264C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{79A95018-BE6D-4533-A9FB-18FA69E1264C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{79A95018-BE6D-4533-A9FB-18FA69E1264C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A3C31666-97AB-4135-873B-68402863530D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A3C31666-97AB-4135-873B-68402863530D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A3C31666-97AB-4135-873B-68402863530D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A3C31666-97AB-4135-873B-68402863530D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
