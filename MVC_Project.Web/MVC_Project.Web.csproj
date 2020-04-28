@@ -1810,7 +1810,7 @@
       <Name>MVC_Project.FlashMessages</Name>
     </ProjectReference>
     <ProjectReference Include="..\MVC_Project.Resources\MVC_Project.Resources.csproj">
-      <Project>{892e216b-0e16-45ce-856a-656febc50e52}</Project>
+      <Project>{1946dcf4-c3da-43e2-9a38-35db04db2d92}</Project>
       <Name>MVC_Project.Resources</Name>
     </ProjectReference>
     <ProjectReference Include="..\MVC_Project.Utils\MVC_Project.Utils.csproj">

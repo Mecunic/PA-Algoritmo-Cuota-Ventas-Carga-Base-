@@ -52,6 +52,7 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -147,15 +148,32 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App_Code\LanguageMngr.cs" />
+    <Compile Include="App_Code\LanguageMngr.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="AuthManagement\Authenticator.cs" />
+    <Compile Include="AuthManagement\AuthorizeUsersAttribute.cs" />
+    <Compile Include="AuthManagement\Models\AuthUser.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="CustomAttributes\Validations\PasswordSecuredAttribute.cs" />
+    <Compile Include="CustomAttributes\Validations\StringComparerAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\HTMLHelperExtensions.cs" />
+    <Compile Include="Models\AuthViewModel.cs" />
+    <Compile Include="Models\CalendarViewModel.cs" />
+    <Compile Include="Models\DataTableModel.cs" />
+    <Compile Include="Models\ExcelImport\UserImport.cs" />
+    <Compile Include="Models\JQueryDataTableParams.cs" />
+    <Compile Include="Models\PaymentViewModel.cs" />
+    <Compile Include="Models\ReportOrdersViewModel.cs" />
+    <Compile Include="Models\RoleViewModel.cs" />
+    <Compile Include="Models\RolPermission.cs" />
+    <Compile Include="Models\UserPermissionViewModel.cs" />
+    <Compile Include="Models\UserProfile.cs" />
+    <Compile Include="Models\UserViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -1158,6 +1176,9 @@
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
+    <Content Include="Libs\gsdll32.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\demo\chartjs-demo.js" />
@@ -1488,7 +1509,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\font-awesome\fonts\fontawesome-webfont.eot" />
@@ -1585,6 +1605,36 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ExcelObjectMapping\ExcelObjectMapping.csproj">
+      <Project>{89f9f036-0428-49a2-84f1-72851728183d}</Project>
+      <Name>ExcelObjectMapping</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MVC_Project.Data\MVC_Project.Data.csproj">
+      <Project>{347a6bfb-7cd3-4b7f-90ad-ab21950ef7ad}</Project>
+      <Name>MVC_Project.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MVC_Project.Domain\MVC_Project.Domain.csproj">
+      <Project>{aade4a05-4cc5-4465-bd0f-b681fa698c97}</Project>
+      <Name>MVC_Project.Domain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MVC_Project.FlashMessages\MVC_Project.FlashMessages.csproj">
+      <Project>{0ce135cb-4dc5-449d-be1d-28982188b260}</Project>
+      <Name>MVC_Project.FlashMessages</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MVC_Project.Integrations\MVC_Project.Integrations.csproj">
+      <Project>{e616d7fc-e5a8-4e69-91e6-ff0760920ce8}</Project>
+      <Name>MVC_Project.Integrations</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MVC_Project.Resources\MVC_Project.Resources.csproj">
+      <Project>{1946dcf4-c3da-43e2-9a38-35db04db2d92}</Project>
+      <Name>MVC_Project.Resources</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MVC_Project.Utils\MVC_Project.Utils.csproj">
+      <Project>{23b89c18-68c5-449f-aded-e51a86da6b52}</Project>
+      <Name>MVC_Project.Utils</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
