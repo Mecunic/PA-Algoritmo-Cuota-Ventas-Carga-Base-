@@ -20,7 +20,7 @@ namespace MVC_Project.Data.Helpers
             _sessionFactory = Fluently.Configure()
                 .Database(
                 MsSqlConfiguration.MsSql2012.ConnectionString(
-                    conection => conection.FromConnectionStringWithKey("testConectionString")))
+                    conection => conection.FromConnectionStringWithKey("DBConnectionString")))
                 .Mappings(m => m.FluentMappings.AddFromAssemblyOf<UserMap>())
                 .Mappings(m => m.FluentMappings.AddFromAssemblyOf<RoleMap>())
                 .Mappings(m => m.FluentMappings.AddFromAssemblyOf<PermissionMap>())
