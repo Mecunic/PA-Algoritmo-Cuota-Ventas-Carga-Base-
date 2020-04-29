@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace MVC_Project.Web.Models
+namespace MVC_Project.WebBackend.Models
 {
     [Serializable]
     public class UserProfile

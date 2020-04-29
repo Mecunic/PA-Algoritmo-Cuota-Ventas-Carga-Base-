@@ -14,7 +14,7 @@
     <link href="~/Content/css/animate.css" rel="stylesheet">
     <link href="~/Content/css/style.css" rel="stylesheet">
     <link href="~/Content/css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css" rel="stylesheet">
-    
+
     @if (IsSectionDefined("Styles"))
     {@RenderSection("Styles", required: false)}
 
@@ -28,24 +28,18 @@
         @Html.Partial("_Navigation")
 
         <div id="page-wrapper" class="gray-bg">
-            
-                <!-- Top Navbar -->
-                @Html.Partial("_TopNavbar")
-            
+
+            <!-- Top Navbar -->
+            @Html.Partial("_TopNavbar")
+
             <div class="row wrapper border-bottom white-bg page-heading">
                 <div class="col-lg-10">
-                    <h2>@ViewBag.Title</h2>                    
-                </div>                
+                    <h2>@ViewBag.Title</h2>
+                </div>
             </div>
 
-            <div class="wrapper wrapper-content animated fadeInRight">
-                <div class="row">
-                    <div class="col-12">
-                        <!-- Main view  -->
-                        @RenderBody()
-                    </div>
-                </div>
-            </div>            
+            <!-- Main view  -->
+            @RenderBody()
 
             <!-- Footer -->
             @Html.Partial("_Footer")
