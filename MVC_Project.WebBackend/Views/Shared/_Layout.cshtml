@@ -14,8 +14,7 @@
     <link href="~/Content/css/animate.css" rel="stylesheet">
     <link href="~/Content/css/style.css" rel="stylesheet">
     <link href="~/Content/css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css" rel="stylesheet">
-
-    <!-- Add local styles, mostly for plugins css file -->
+    
     @if (IsSectionDefined("Styles"))
     {@RenderSection("Styles", required: false)}
 
@@ -23,44 +22,36 @@
 
 <body>
 
-    <div id="wrapper" class="">
+    <div id="wrapper">
 
-        <!-- Top Navbar -->
+        <!-- Left navigation bar -->
         @Html.Partial("_Navigation")
 
         <div id="page-wrapper" class="gray-bg">
-
-            <div class="row border-bottom">
+            
                 <!-- Top Navbar -->
                 @Html.Partial("_TopNavbar")
-            </div>
+            
             <div class="row wrapper border-bottom white-bg page-heading">
                 <div class="col-lg-10">
-                    <h2>@ViewBag.Title</h2>
-                    @*<ol class="breadcrumb">
-                    <li class="breadcrumb-item">
-                        <a href="index.html">Home</a>
-                    </li>
-                    <li class="breadcrumb-item">
-                        <a>Forms</a>
-                    </li>
-                    <li class="breadcrumb-item active">
-                        <strong>Basic Form</strong>
-                    </li>
-                </ol>*@
-                </div>
-                <div class="col-lg-2">
-
-                </div>
+                    <h2>@ViewBag.Title</h2>                    
+                </div>                
             </div>
 
-            <!-- Main view  -->
-            @RenderBody()
+            <div class="wrapper wrapper-content animated fadeInRight">
+                <div class="row">
+                    <div class="col-12">
+                        <!-- Main view  -->
+                        @RenderBody()
+                    </div>
+                </div>
+            </div>            
 
             <!-- Footer -->
             @Html.Partial("_Footer")
 
         </div>
+
     </div>
 
 

@@ -1,4 +1,4 @@
-﻿//using MVC_Project.Web.AuthManagement.Models;
+﻿using MVC_Project.Web.AuthManagement.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,12 +27,12 @@ namespace MVC_Project.WebBackend.Helpers {
                 cssClass : String.Empty;
         }
 
-        /*public static string IsModuleSelected(this HtmlHelper html, AuthUser authUser, string module)
+        public static string IsModuleSelected(this HtmlHelper html, AuthUser authUser, string module)
         {
             string cssClass = "active";
             string currentController = (string)html.ViewContext.RouteData.Values["controller"];
             return authUser.GetControllerModule(currentController) == module ? cssClass : String.Empty;
-        }*/
+        }
 
         public static string PageClass(this HtmlHelper html) {
             string currentAction = (string)html.ViewContext.RouteData.Values["action"];
