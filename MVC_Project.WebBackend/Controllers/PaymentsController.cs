@@ -2,9 +2,9 @@
 using MVC_Project.Domain.Services;
 using MVC_Project.Integrations.Payments;
 using MVC_Project.Utils;
-using MVC_Project.Web.AuthManagement;
-using MVC_Project.Web.AuthManagement.Models;
-using MVC_Project.Web.Models;
+using MVC_Project.WebBackend.AuthManagement;
+using MVC_Project.WebBackend.AuthManagement.Models;
+using MVC_Project.WebBackend.Models;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -14,7 +14,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 
-namespace MVC_Project.Web.Controllers
+namespace MVC_Project.WebBackend.Controllers
 {
 
     public class PaymentsController : BaseController
@@ -35,7 +35,7 @@ namespace MVC_Project.Web.Controllers
             _userService = userService;
 
             AppKey = System.Configuration.ConfigurationManager.AppSettings["Payments.DefaultAppKey"];
-
+            
             TransferExpirationDays = Convert.ToInt32(System.Configuration.ConfigurationManager.AppSettings["Payments.TransferExpirationDays"]);
             UseSelective3DSecure = Convert.ToBoolean(System.Configuration.ConfigurationManager.AppSettings["Payments.UseSelective3DSecure"]);
             GlobalClientId = System.Configuration.ConfigurationManager.AppSettings["Payments.OpenpayGeneralClientId"];
