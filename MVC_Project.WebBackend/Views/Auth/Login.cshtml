@@ -1,4 +1,4 @@
-﻿@model MVC_Project.Web.Models.AuthViewModel
+﻿@model MVC_Project.BackendWeb.Models.AuthViewModel
 @{
     Layout = null;
 }
@@ -57,7 +57,12 @@
                 <span class="help-block"></span>
                 <button type="submit" class="btn btn-primary block full-width m-b">@ViewLabels.AUTH_LOGIN_SUBMIT</button>
                 <span class="help-block"></span>
-                <a type="button" onclick="javascript:Validar()" class="btn btn-sm btn-white btn-block" data-target="#modal-containerRecupera" data-toggle="modal">@ViewLabels.AUTH_LOGIN_RECOVERPASS</a>
+
+                <a href="javascript:void(0);" onclick="javascript:resetPassModal();" data-target="#modal-containerRecupera" data-toggle="modal"><small>@ViewLabels.AUTH_LOGIN_RECOVERPASS</small></a>
+
+                <p class="text-muted text-center"><small>Do not have an account?</small></p>
+                <a class="btn btn-sm btn-white btn-block" href="@Url.Action("Index", "Register")">Create an account</a>
+
             }
         </div>
     </div>
@@ -68,37 +73,23 @@
         </div>
     </div>
 
-
     <!-- Mainly scripts -->
     <script src="~/Scripts/jquery-3.1.1.min.js"></script>
     <script src="~/Scripts/popper.min.js"></script>
     <script src="~/Scripts/bootstrap.js"></script>
-
+    <script src="/Scripts/plugins/validate/jquery.validate.min.js"></script>
 </body>
 </html>
 
-
-@if (ViewBag.Message != null)
-{
-    <script type="text/javascript">
-            swal({
-                title: "Operacion exitosa!",
-                text: '@(ViewBag.Message)',
-                html: true
-            });
-    </script>
-}
-
 <script>
 
-    function Validar() {
+    function resetPassModal() {
         $("#modal-containerRecupera").find('.modal-content').load("@Url.Action("RecuperarContrasena")", function () {
-
             $("#modal-containerRecupera").modal("show");
             $("#btn-RecuperaCE").on("click",
                 function (e) {
                     e.preventDefault();
-                    debugger;
+                    //debugger;
                     var validate = $('form#recupera-cuenta-form').validate();
                     console.log($('#recupera-cuenta-form').valid())
                     if (!$('#recupera-cuenta-form').valid()) {
@@ -106,9 +97,7 @@
                         return;
                     }
                     $("#modal-containerRecupera form#recupera-cuenta-form button#btn-RecuperaCE").hide();
-
                     $('#recupera-cuenta-form').submit();
-
                 });
         });
     }

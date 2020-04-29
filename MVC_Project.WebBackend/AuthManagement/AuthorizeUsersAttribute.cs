@@ -1,5 +1,5 @@
 ﻿using MVC_Project.Utils;
-using MVC_Project.Web.AuthManagement.Models;
+using MVC_Project.WebBackend.AuthManagement.Models;
 using System;
 using System.Configuration;
 using System.Linq;
@@ -8,7 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 
-namespace MVC_Project.Web.AuthManagement
+namespace MVC_Project.WebBackend.AuthManagement
 {
     [AttributeUsageAttribute(AttributeTargets.Class | AttributeTargets.Method, Inherited = true, AllowMultiple = true)]
     public class AuthorizeUsersAttribute : AuthorizeAttribute
