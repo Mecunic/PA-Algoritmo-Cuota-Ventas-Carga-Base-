@@ -1,0 +1,73 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title> @System.Web.Configuration.WebConfigurationManager.AppSettings["AppName"] | Registro </title>
+
+    <link href="~/Content/css/bootstrap.min.css" rel="stylesheet">
+    <link href="~/fonts/font-awesome/css/font-awesome.css" rel="stylesheet">
+    <link href="~/Content/css/plugins/iCheck/custom.css" rel="stylesheet">
+    <link href="~/Content/css/animate.css" rel="stylesheet">
+    <link href="~/Content/css/style.css" rel="stylesheet">
+</head>
+
+<body class="gray-bg">
+
+    <div class="middle-box text-center loginscreen   animated fadeInDown">
+        <div>
+            <div>
+                <img src="~/Images/logos/logo_default.png" width="300" />
+            </div>
+            <h3>Register to @System.Web.Configuration.WebConfigurationManager.AppSettings["AppName"]</h3>
+            <p>Crea tu cuenta de manera sencilla.</p>
+            <form class="m-t" role="form" action="login.html">
+                <div class="form-group">
+                    <input type="text" class="form-control" placeholder="Nombre" required="">
+                </div>
+                <div class="form-group">
+                    <input type="text" class="form-control" placeholder="Apellido(s)" required="">
+                </div>
+                <div class="form-group">
+                    <input type="email" class="form-control" placeholder="Correo Electrónico" required="">
+                </div>
+                <div class="form-group">
+                    <input type="password" class="form-control" placeholder="Password" required="">
+                </div>
+                <div class="form-group">
+                    <input type="password" class="form-control" placeholder="Confirmar Password" required="">
+                </div>
+                <div class="form-group">
+                    <div class="checkbox i-checks"><label> <input type="checkbox"><i></i> Acepto t&eacute;rminos y condiciones </label></div>
+                </div>
+                <button type="submit" class="btn btn-primary block full-width m-b">Registrarse</button>
+
+                <p class="text-muted text-center"><small>Ya tienes cuenta?</small></p>
+                <a class="btn btn-sm btn-white btn-block" href="@Url.Action("Login", "Auth")">Iniciar Sesi&oacute;n</a>
+            </form>
+        </div>
+    </div>
+
+    <!-- Mainly scripts -->
+    <script src="~/Scripts/jquery-3.1.1.min.js"></script>
+    <script src="~/Scripts/popper.min.js"></script>
+    <script src="~/Scripts/bootstrap.js"></script>
+    <!-- iCheck -->
+    <script src="~/Scripts/plugins/iCheck/icheck.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('.i-checks').iCheck({
+                checkboxClass: 'icheckbox_square-green',
+                radioClass: 'iradio_square-green',
+            });
+        });
+    </script>
+</body>
+
+</html>

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace MVC_Project.Web.AuthManagement.Models
+namespace MVC_Project.WebBackend.AuthManagement.Models
 {
     public class AuthUser
     {

@@ -1,8 +1,8 @@
-﻿using MVC_Project.Web.AuthManagement.Models;
+﻿using MVC_Project.WebBackend.AuthManagement.Models;
 using System.Web;
 using System.Web.Security;
 
-namespace MVC_Project.Web.AuthManagement
+namespace MVC_Project.WebBackend.AuthManagement
 {
     public class Authenticator
     {

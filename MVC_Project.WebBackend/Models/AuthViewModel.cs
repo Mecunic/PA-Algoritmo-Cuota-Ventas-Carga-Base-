@@ -1,10 +1,8 @@
 ﻿using MVC_Project.Web.CustomAttributes.Validations;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
 using MVC_Project.Resources;
 
-namespace MVC_Project.Web.Models
+namespace MVC_Project.BackendWeb.Models
 {
     public class AuthViewModel
     {
