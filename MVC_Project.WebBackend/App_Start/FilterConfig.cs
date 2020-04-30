@@ -1,4 +1,5 @@
 ﻿using System.Web;
+using MVC_Project.WebBackend.AuthManagement;
 using System.Web.Mvc;
 
 namespace MVC_Project.WebBackend
@@ -8,6 +9,7 @@ namespace MVC_Project.WebBackend
         public static void RegisterGlobalFilters(GlobalFilterCollection filters)
         {
             filters.Add(new HandleErrorAttribute());
+            filters.Add(new AuthorizeUsersAttribute());
         }
     }
 }

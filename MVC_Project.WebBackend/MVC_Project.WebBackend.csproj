@@ -182,6 +182,7 @@
     <Compile Include="Controllers\AuthController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\CheckoutController.cs" />
+    <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PaymentsController.cs" />
     <Compile Include="Controllers\RegisterController.cs" />
@@ -197,6 +198,7 @@
     <Compile Include="Models\ExcelImport\UserImport.cs" />
     <Compile Include="Models\JQueryDataTableParams.cs" />
     <Compile Include="Models\PaymentViewModel.cs" />
+    <Compile Include="Models\RegisterViewModel.cs" />
     <Compile Include="Models\ReportOrdersViewModel.cs" />
     <Compile Include="Models\RoleViewModel.cs" />
     <Compile Include="Models\RolPermission.cs" />
@@ -1637,7 +1639,7 @@
     <Content Include="Views\Shared\_Footer.cshtml" />
     <Content Include="Views\Auth\ChangePassword.cshtml" />
     <Content Include="Views\Auth\Login.cshtml" />
-    <Content Include="Views\Auth\RecuperarContrasena.cshtml" />
+    <Content Include="Views\Auth\_RequestPasswordModal.cshtml" />
     <Content Include="Views\Auth\ResetPassword.cshtml" />
     <Content Include="Views\Register\Index.cshtml" />
     <Content Include="Views\Checkout\Index.cshtml" />
@@ -1648,6 +1650,9 @@
     <Content Include="Views\Payments\CreateSPEI.cshtml" />
     <Content Include="Views\Payments\CreateTDC.cshtml" />
     <Content Include="Views\Payments\Index.cshtml" />
+    <Content Include="Views\Error\GenericError.cshtml" />
+    <Content Include="Views\Error\ShowError.cshtml" />
+    <Content Include="Views\Shared\_SimpleLayout.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />

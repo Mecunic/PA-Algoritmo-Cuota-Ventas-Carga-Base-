@@ -1,4 +1,5 @@
-﻿@{
+﻿@model MVC_Project.WebBackend.Models.RegisterViewModel
+@{
     Layout = null;
 }
 <!DOCTYPE html>
@@ -12,10 +13,15 @@
     <title> @System.Web.Configuration.WebConfigurationManager.AppSettings["AppName"] | Registro </title>
 
     <link href="~/Content/css/bootstrap.min.css" rel="stylesheet">
-    <link href="~/fonts/font-awesome/css/font-awesome.css" rel="stylesheet">
     <link href="~/Content/css/plugins/iCheck/custom.css" rel="stylesheet">
     <link href="~/Content/css/animate.css" rel="stylesheet">
     <link href="~/Content/css/style.css" rel="stylesheet">
+
+    @Styles.Render("~/font-awesome/css")
+    @Scripts.Render("~/font-awesome/js")
+
+    @Styles.Render("~/plugins/sweetAlertStyles")
+    @Scripts.Render("~/plugins/sweetAlert")
 </head>
 
 <body class="gray-bg">
@@ -27,31 +33,33 @@
             </div>
             <h3>Register to @System.Web.Configuration.WebConfigurationManager.AppSettings["AppName"]</h3>
             <p>Crea tu cuenta de manera sencilla.</p>
-            <form class="m-t" role="form" action="login.html">
-                <div class="form-group">
-                    <input type="text" class="form-control" placeholder="Nombre" required="">
-                </div>
-                <div class="form-group">
-                    <input type="text" class="form-control" placeholder="Apellido(s)" required="">
-                </div>
-                <div class="form-group">
-                    <input type="email" class="form-control" placeholder="Correo Electrónico" required="">
-                </div>
-                <div class="form-group">
-                    <input type="password" class="form-control" placeholder="Password" required="">
-                </div>
-                <div class="form-group">
-                    <input type="password" class="form-control" placeholder="Confirmar Password" required="">
-                </div>
-                <div class="form-group">
-                    <div class="checkbox i-checks"><label> <input type="checkbox"><i></i> Acepto t&eacute;rminos y condiciones </label></div>
-                </div>
-                <button type="submit" class="btn btn-primary block full-width m-b">Registrarse</button>
+            @using (Html.BeginForm("CreateAccount", "Register", FormMethod.Post, new { @class = "m-t", role = "form" }))
+            {
+                @Html.AntiForgeryToken()
+                    <div class="form-group">
+                        @Html.TextBoxFor(m => m.FistName, new { @class = "form-control", type = "text", @autocomplete = "off", placeholder = "Nombre", @required = "required" })
+                    </div>
+                    <div class="form-group">
+                        @Html.TextBoxFor(m => m.FistName, new { @class = "form-control", type = "text", @autocomplete = "off", placeholder = "Apellido(s)", @required = "required" })
+                    </div>
+                    <div class="form-group">
+                        @Html.TextBoxFor(m => m.Email, new { @class = "form-control", type = "email", @autocomplete = "off", placeholder = @ViewLabels.USERNAME, @required = "required" })
+                    </div>
+                    <div class="form-group">
+                        @Html.PasswordFor(m => m.Password, new { @class = "form-control", type = "password", @autocomplete = "off", placeholder = @ViewLabels.PASSWORD, @required = "required" })
+                    </div>
+                    <div class="form-group">
+                        @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control", type = "password", @autocomplete = "off", placeholder = @ViewLabels.CONFIRM_NEW_PASSWORD, @required = "required" })
+                    </div>
+                    <div class="form-group">
+                        <div class="checkbox i-checks"><label> <input type="checkbox"><i></i> Acepto t&eacute;rminos y condiciones </label></div>
+                    </div>
+                    <button type="submit" class="btn btn-primary block full-width m-b">Registrarse</button>
 
-                <p class="text-muted text-center"><small>Ya tienes cuenta?</small></p>
-                <a class="btn btn-sm btn-white btn-block" href="@Url.Action("Login", "Auth")">Iniciar Sesi&oacute;n</a>
-            </form>
-        </div>
+                    <p class="text-muted text-center"><small>Ya tienes cuenta?</small></p>
+                    <a class="btn btn-sm btn-white btn-block" href="@Url.Action("Login", "Auth")">Iniciar Sesi&oacute;n</a>
+             }
+       </div>
     </div>
 
     <!-- Mainly scripts -->

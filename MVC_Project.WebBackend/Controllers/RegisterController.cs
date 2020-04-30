@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MVC_Project.WebBackend.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -13,5 +14,18 @@ namespace MVC_Project.WebBackend.Controllers
         {
             return View();
         }
+
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public ActionResult CreateAccount(RegisterViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+
+            }
+            return View(model);
+        }
+                
     }
 }

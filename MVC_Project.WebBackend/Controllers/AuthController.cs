@@ -2,7 +2,7 @@
 using MVC_Project.FlashMessages;
 using MVC_Project.Resources;
 using MVC_Project.Utils;
-using MVC_Project.Web.App_Code;
+using MVC_Project.WebBackend.App_Code;
 using MVC_Project.WebBackend.AuthManagement;
 using MVC_Project.WebBackend.AuthManagement.Models;
 using MVC_Project.BackendWeb.Models;
@@ -141,13 +141,13 @@ namespace MVC_Project.WebBackend.Controllers
             return RedirectToAction("Login", "Auth");
         }
         [AllowAnonymous]
-        public ActionResult RecuperarContrasena()
+        public ActionResult ResetPassword()
         {
             ViewBag.mensajeError = string.Empty;
-            return PartialView("RecuperarContrasena");
+            return PartialView("_RequestPasswordModal");
         }
         [HttpPost, AllowAnonymous]
-        public ActionResult RecuperarContrasena(RecoverPasswordViewModel model)
+        public ActionResult ResetPassword(RecoverPasswordViewModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -176,7 +176,6 @@ namespace MVC_Project.WebBackend.Controllers
                     customParams.Add("param2", link);
                     NotificationUtil.SendNotification(resultado.Email, customParams, Constants.NOT_TEMPLATE_PASSWORDRECOVER );
                     _userService.Update(resultado);
-
                     //MensajesFlash.MensajeFlashHandler.RegistrarMensaje(ImpuestoPredial.Resource.Recursos.OperacionExitosa);
                     ViewBag.Message = "Solicitud realizada";
                     return View("Login");

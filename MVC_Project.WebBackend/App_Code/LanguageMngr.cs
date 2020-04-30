@@ -5,7 +5,7 @@ using System.Threading;
 using System.Linq;
 using System.Web;
 
-namespace MVC_Project.Web.App_Code
+namespace MVC_Project.WebBackend.App_Code
 {
     public class LanguageMngr
     {
