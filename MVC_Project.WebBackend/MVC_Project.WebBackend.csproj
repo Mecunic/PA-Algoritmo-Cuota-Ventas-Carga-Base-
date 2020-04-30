@@ -1664,15 +1664,12 @@
     <Content Include="Views\Payments\CreateSPEI.cshtml" />
     <Content Include="Views\Payments\CreateTDC.cshtml" />
     <Content Include="Views\Payments\Index.cshtml" />
-<<<<<<< .mine
     <Content Include="Views\Error\GenericError.cshtml" />
     <Content Include="Views\Error\ShowError.cshtml" />
     <Content Include="Views\Shared\_SimpleLayout.cshtml" />
-=======
     <Content Include="Views\User\Create.cshtml" />
     <Content Include="Views\User\DataTableUser.cshtml" />
     <Content Include="Views\User\Edit.cshtml" />
->>>>>>> .theirs
     <Content Include="Views\User\EditPassword.cshtml" />
     <Content Include="Views\User\Import.cshtml" />
     <Content Include="Views\User\Index.cshtml" />
