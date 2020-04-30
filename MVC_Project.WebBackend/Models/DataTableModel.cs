@@ -4,7 +4,7 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.Web;
 
-namespace MVC_Project.Web.Models
+namespace MVC_Project.WebBackend.Models
 {
     [DataContract]
     public class DataTableModel
@@ -19,7 +19,7 @@ namespace MVC_Project.Web.Models
         public DataTableFields[] Columns { get; set; }
 
         [DataMember(Name = "order")]
-        public MVC_Project.Web.Models.DataTableFields.DataTableOrder[] Order { get; set; }
+        public DataTableFields.DataTableOrder[] Order { get; set; }
     }
 
     [DataContract]

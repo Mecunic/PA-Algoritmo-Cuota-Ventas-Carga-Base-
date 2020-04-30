@@ -11,7 +11,6 @@
             orderMulti: false,
             searching: false,
             ordering: false,
-            responsive: true,
             columns: columns,
             "fnServerData": function (sSource, aoData, fnCallback) {
                 aoData.push({ "name": "sSortColumn", "value": this.fnSettings().aoColumns[this.fnSettings().aaSorting[0][0]].orderName });

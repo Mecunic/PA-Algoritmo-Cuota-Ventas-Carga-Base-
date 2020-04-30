@@ -7,7 +7,7 @@ using System.Runtime.Serialization;
 using System.Web;
 using System.Web.Mvc;
 
-namespace MVC_Project.Web.Models
+namespace MVC_Project.WebBackend.Models
 {
     public class DataTableUsersModel
     {
