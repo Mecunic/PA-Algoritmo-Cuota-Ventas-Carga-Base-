@@ -1084,6 +1084,18 @@ ul.nav-second-level {
 .arrow {
   float: right;
 }
+.fain.arrow {
+    font-family: 'Font Awesome 5 Free';
+}
+
+    .fain.arrow:before {
+        content: "\f053";
+    }
+
+.active > a > .fain.arrow:before {
+    content: "\f078";
+}
+
 .fa.arrow:before {
   content: "\f104";
 }

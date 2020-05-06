@@ -19,13 +19,13 @@ namespace MVC_Project.WebBackend.Controllers
         private IAuthService _authService;
         private IUserService _userService;
         private IPermissionService _permissionService;
-
+      
         public AuthController(IAuthService authService, IUserService userService, IPermissionService permissionService)
         {
             _authService = authService;
             _userService = userService;
             _permissionService = permissionService;
-        }
+         }
 
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)

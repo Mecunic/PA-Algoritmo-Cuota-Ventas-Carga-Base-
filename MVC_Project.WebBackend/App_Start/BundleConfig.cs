@@ -8,6 +8,14 @@ namespace MVC_Project.WebBackend
         // Para obtener más información sobre las uniones, visite https://go.microsoft.com/fwlink/?LinkId=301862
         public static void RegisterBundles(BundleCollection bundles)
         {
+            // CSS style (bootstrap/inspinia)
+            bundles.Add(new StyleBundle("~/Content/template/css").Include(
+                          "~/Content/template/bootstrap.min.css",
+                          "~/Content/template/plugins/iCheck/custom.css",
+                          "~/Content/template/animate.css",
+                          "~/Content/template/style.css"));
+           
+
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
                         "~/Scripts/jquery-{version}.js"));
 
