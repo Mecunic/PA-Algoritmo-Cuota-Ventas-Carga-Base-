@@ -35,21 +35,19 @@ namespace MVC_Project.WebBackend
             //DataTables
             bundles.Add(new StyleBundle("~/plugins/dataTablesStyles").Include(
                       "~/Content/css/plugins/dataTables/datatables.min.css"));
-
-
+            
             bundles.Add(new StyleBundle("~/font-awesome/css").Include(
                       "~/fonts/font-awesome/all.css"));
 
             // dataTables css styles
             bundles.Add(new StyleBundle("~/plugins/dataTablesStyles").Include(
                       "~/Content/css/plugins/dataTables/datatables.min.css"));
-
-
+            
             //Scripts
             //DataTables
             bundles.Add(new ScriptBundle("~/plugins/dataTables").Include(
-                      "~/Scripts/plugins/dataTables/datatables.min.js"));
-
+                      "~/Scripts/plugins/dataTables/datatables.min.js",
+                      "~/Scripts/plugins/dataTables/dataTables.bootstrap4.min.js"));
             
             //FullCalendar
             bundles.Add(new ScriptBundle("~/plugins/fullCalendar").Include(
