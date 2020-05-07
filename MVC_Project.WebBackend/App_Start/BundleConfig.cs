@@ -13,6 +13,7 @@ namespace MVC_Project.WebBackend
                           "~/Content/template/bootstrap.min.css",
                           "~/Content/template/plugins/iCheck/custom.css",
                           "~/Content/template/animate.css",
+                          "~/Content/Te/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css",
                           "~/Content/template/style.css"));
            
 
@@ -30,7 +31,7 @@ namespace MVC_Project.WebBackend
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
                       "~/Scripts/bootstrap.js"));
 
-            bundles.Add(new StyleBundle("~/Content/css").Include(
+            bundles.Add(new StyleBundle("~/Content/template").Include(
                       "~/Content/bootstrap.css",
                       "~/Content/site.css"));
 
@@ -42,14 +43,10 @@ namespace MVC_Project.WebBackend
             //Estilos
             //DataTables
             bundles.Add(new StyleBundle("~/plugins/dataTablesStyles").Include(
-                      "~/Content/css/plugins/dataTables/datatables.min.css"));
+                      "~/Content/template/plugins/dataTables/datatables.min.css"));          
             
             bundles.Add(new StyleBundle("~/font-awesome/css").Include(
                       "~/fonts/font-awesome/all.css"));
-
-            // dataTables css styles
-            bundles.Add(new StyleBundle("~/plugins/dataTablesStyles").Include(
-                      "~/Content/css/plugins/dataTables/datatables.min.css"));
             
             //Scripts
             //DataTables
@@ -89,6 +86,13 @@ namespace MVC_Project.WebBackend
             // Sweet alert
             bundles.Add(new ScriptBundle("~/plugins/sweetAlert").Include(
                       "~/Scripts/plugins/sweetalert/sweetalert.min.js"));
+
+            // chosen css styles
+            bundles.Add(new StyleBundle("~/Content/template/plugins/chosen/chosenStyles").Include(
+                      "~/Content/template/plugins/chosen/bootstrap-chosen.css"));
+            // chosen css styles
+            bundles.Add(new ScriptBundle("~/plugins/chosen").Include(
+                      "~/Scripts/plugins/chosen/chosen.jquery.js"));
 
             //Custom
             bundles.Add(new ScriptBundle("~/custom/utils").Include(

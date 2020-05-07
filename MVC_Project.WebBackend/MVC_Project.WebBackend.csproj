@@ -255,6 +255,10 @@
     <Content Include="Content\template\plugins\bootstrapTour\bootstrap-tour.min.css" />
     <Content Include="Content\template\plugins\c3\c3.min.css" />
     <Content Include="Content\template\plugins\chartist\chartist.min.css" />
+    <Content Include="Content\template\plugins\chosen\bootstrap-chosen.css" />
+    <Content Include="Content\template\plugins\chosen\chosen-sprite%402x.png" />
+    <Content Include="Content\template\plugins\chosen\chosen-sprite.png" />
+    <Content Include="Content\template\plugins\chosen\chosen.css" />
     <Content Include="Content\template\plugins\clockpicker\clockpicker.css" />
     <Content Include="Content\template\plugins\codemirror\ambiance.css" />
     <Content Include="Content\template\plugins\codemirror\codemirror.css" />
@@ -1315,6 +1319,7 @@
     <Content Include="Scripts\plugins\c3\c3.min.js" />
     <Content Include="Scripts\plugins\chartist\chartist.min.js" />
     <Content Include="Scripts\plugins\chartJs\Chart.min.js" />
+    <Content Include="Scripts\plugins\chosen\chosen.jquery.js" />
     <Content Include="Scripts\plugins\clipboard\clipboard.min.js" />
     <Content Include="Scripts\plugins\clockpicker\clockpicker.js" />
     <Content Include="Scripts\plugins\codemirror\codemirror.js" />
