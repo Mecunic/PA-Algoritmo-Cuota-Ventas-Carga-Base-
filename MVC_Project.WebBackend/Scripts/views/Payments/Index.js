@@ -12,6 +12,7 @@
             searching: false,
             ordering: false,
             columns: columns,
+            responsive: true,
             "fnServerData": function (sSource, aoData, fnCallback) {
                 aoData.push({ "name": "sSortColumn", "value": this.fnSettings().aoColumns[this.fnSettings().aaSorting[0][0]].orderName });
                 aoData.push({ "name": "filtros", "value": $('form#SearchForm').serialize() });
