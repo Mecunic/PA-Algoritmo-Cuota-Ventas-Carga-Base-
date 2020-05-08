@@ -13,7 +13,7 @@ namespace MVC_Project.WebBackend
                           "~/Content/template/bootstrap.min.css",
                           "~/Content/template/plugins/iCheck/custom.css",
                           "~/Content/template/animate.css",
-                          "~/Content/Te/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css",
+                          "~/Content/template/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css",
                           "~/Content/template/style.css"));
            
 
@@ -62,7 +62,7 @@ namespace MVC_Project.WebBackend
 
             // dataPicker styles
             bundles.Add(new StyleBundle("~/plugins/dataPickerStyles").Include(
-                      "~/Content/css/plugins/datapicker/datepicker3.css"));
+                      "~/Content/template/plugins/datapicker/datepicker3.css"));
 
             // dataPicker
             bundles.Add(new ScriptBundle("~/plugins/dataPicker").Include(
@@ -70,7 +70,7 @@ namespace MVC_Project.WebBackend
 
             // Sweet alert Styless
             bundles.Add(new StyleBundle("~/plugins/sweetAlertStyles").Include(
-                      "~/Content/css/plugins/sweetalert/sweetalert.css"));
+                      "~/Content/template/plugins/sweetalert/sweetalert.css"));
 
             //Validate
             bundles.Add(new ScriptBundle("~/plugins/validate").Include(

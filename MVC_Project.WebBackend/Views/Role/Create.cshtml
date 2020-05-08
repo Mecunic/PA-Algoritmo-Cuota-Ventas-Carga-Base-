@@ -38,18 +38,18 @@
                         <div class="form-horizontal">
                             @Html.ValidationSummary(true)
 
-                            <div class="form-group">
-                                @Html.LabelFor(model => model.Name, new { @class = "control-label col-md-2" })
+                            <div class="form-group row">
+                                @Html.LabelFor(model => model.Name, new { @class = "col-form-label control-label col-md-2" })
                                 <div class="col-md-10">
-                                    @Html.EditorFor(model => model.Name)
+                                    @Html.EditorFor(model => model.Name, new { @class = "form-control"})
                                     @Html.ValidationMessageFor(model => model.Name)
                                 </div>
                             </div>
 
                             @Html.EditorFor(x => x.Permissions)
 
-                            <div class="form-group">
-                                <div class="col-md-offset-2 col-md-10">
+                            <div class="form-group row">
+                                <div class="offset-md-2 col-md-10">
                                     <input type="submit" value="Crear" class="btn btn-primary" />
                                     @Html.ActionLink("Cancelar", "Index", null, new { @class = "btn btn-white" })
                                 </div>

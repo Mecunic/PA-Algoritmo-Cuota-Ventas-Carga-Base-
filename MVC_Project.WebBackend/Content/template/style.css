@@ -2134,6 +2134,13 @@ label {
   box-shadow: none;
 }
 /* PAGINATIN */
+.pagination {
+    display: inline-block;
+}
+
+    .pagination > li {
+        display: inline;
+    }
 .pagination > .active > a,
 .pagination > .active > span,
 .pagination > .active > a:hover,
@@ -2144,6 +2151,7 @@ label {
   cursor: default;
   z-index: 2;
 }
+
 .pagination > li > a,
 .pagination > li > span {
   background-color: #FFFFFF;

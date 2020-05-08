@@ -19,17 +19,18 @@
                         <h5>Búsqueda</h5>
                     </div>
                     <div class="ibox-content clearfix">
-                        <div class="col-xs-4">
-                            <div class="form-group">
-                                <label>Rol</label>
-                                @Html.TextBoxFor(m => m.Name, new { @Class = "form-control form-control-sm txtFiltro", maxlength = "100", filtro = "true", filtro_order = "1" })
+                        <div class="row">
+                            <div class="col-sm-6 col-lg-4">
+                                <div class="form-group">
+                                    <label>Rol</label>
+                                    @Html.TextBoxFor(m => m.Name, new { @Class = "form-control form-control-sm txtFiltro", maxlength = "100", filtro = "true", filtro_order = "1" })
+                                </div>
                             </div>
-                        </div>
-
-                        <div class="col-xs-4">
-                            <br />
-                            <button type="button" class="btn btn-sm btn-primary btn-filter-rol"><i class="fas fa-search"></i> Buscar</button>
-                            @*<button class="btn btn-primary" onclick="javascript:sendSearchForm();"><span class="fas fa-search"></span>&nbsp;Buscar</button>*@
+                            <div class="col-sm-6 col-lg-4">
+                                <br />
+                                <button type="button" class="btn btn-sm btn-primary btn-filter-rol"><i class="fas fa-search"></i> Buscar</button>
+                                @*<button class="btn btn-primary" onclick="javascript:sendSearchForm();"><span class="fas fa-search"></span>&nbsp;Buscar</button>*@
+                            </div>
                         </div>
                     </div>
                 }
@@ -56,7 +57,7 @@
     @Scripts.Render("~/plugins/dataTables")
     @Scripts.Render("~/plugins/fullCalendar")
     @Scripts.Render("~/custom/Utils")
-    @Scripts.Render("~/views/rol")    
+    @Scripts.Render("~/views/rol")
 
     <script>
         $(function () {
