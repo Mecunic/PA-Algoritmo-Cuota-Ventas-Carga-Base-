@@ -2238,7 +2238,7 @@ label {
 }
 .fc-button {
   color: inherit;
-  border: 1px solid #e7eaec;
+  border: 1px solid #e7eaec !important;
   cursor: pointer;
   display: inline-block;
   height: 1.9em;
@@ -2249,9 +2249,9 @@ label {
   white-space: nowrap;
 }
 .fc-state-active {
-  background-color: #1ab394;
-  border-color: #1ab394;
-  color: #ffffff;
+  background-color: #1ab394 !important;
+  border-color: #1ab394 !important;
+  color: #ffffff !important;
 }
 .fc-header-title h2 {
   font-size: 16px;

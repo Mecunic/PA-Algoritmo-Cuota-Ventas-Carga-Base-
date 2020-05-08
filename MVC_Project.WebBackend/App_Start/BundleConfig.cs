@@ -53,12 +53,16 @@ namespace MVC_Project.WebBackend
             bundles.Add(new ScriptBundle("~/plugins/dataTables").Include(
                       "~/Scripts/plugins/dataTables/datatables.min.js",
                       "~/Scripts/plugins/dataTables/dataTables.bootstrap4.min.js"));
-            
+
+
+            // fullCalendar styles
+            bundles.Add(new StyleBundle("~/plugins/fullCalendarStyles").Include(
+                      "~/Content/template/plugins/fullcalendar/fullcalendar.css"));
             //FullCalendar
             bundles.Add(new ScriptBundle("~/plugins/fullCalendar").Include(
                       "~/Scripts/plugins/fullcalendar/moment.min.js",
-                      "~/Scripts/plugins/fullcalendar/fullcalendar.min.js"));
-                        //"~/Scripts/plugins/fullcalendar/lang/es.js"));
+                      "~/Scripts/plugins/fullcalendar/fullcalendar.min.js", //));
+                      "~/Scripts/plugins/fullcalendar/lang/es.js"));
 
             // dataPicker styles
             bundles.Add(new StyleBundle("~/plugins/dataPickerStyles").Include(

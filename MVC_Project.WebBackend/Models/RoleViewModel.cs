@@ -34,6 +34,8 @@ namespace MVC_Project.WebBackend.Models
     {
         [Display(Name = "Nombre")]
         public string Name { get; set; }
+        [Display(Name = "Código")]
+        public string Code { get; set; }
 
         public IEnumerable<PermissionViewModel> Permissions { get; set; }
     }
@@ -42,6 +44,8 @@ namespace MVC_Project.WebBackend.Models
         public int Id { get; set; }
         [Display(Name = "Nombre")]
         public string Name { get; set; }
+        [Display(Name = "Código")]
+        public string Code { get; set; }
 
         public IEnumerable<PermissionViewModel> Permissions { get; set; }
     }

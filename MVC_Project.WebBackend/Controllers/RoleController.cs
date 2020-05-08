@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using MVC_Project.WebBackend.Models;
+using MVC_Project.Utils;
+using System.Configuration;
 
 namespace MVC_Project.WebBackend.Controllers
 {
@@ -94,14 +96,41 @@ namespace MVC_Project.WebBackend.Controllers
         }
 
         // POST: Role/Create
-        [HttpPost]
-        public ActionResult Create(FormCollection collection)
-        {
+        //[HttpPost]
+        [Authorize, HttpPost, ValidateAntiForgeryToken, ValidateInput(true)]
+        public ActionResult Create(RoleCreateViewModel roleCreateViewModel)
+        {          
             if (ModelState.IsValid)
             {
+                DateTime todayDate = DateUtil.GetDateTimeNow();      
+                var role = new Role
+                {
+                    Uuid = Guid.NewGuid().ToString(),
+                    Name = roleCreateViewModel.Name,
+                    Code = roleCreateViewModel.Code,
+                    Description = roleCreateViewModel.Name,
+                    CreatedAt = todayDate,
+                    UpdatedAt = todayDate,
+                    Status = true
+                };
+                _roleService.Create(role);
+
+                IList<PermissionViewModel> permisosNuevos = roleCreateViewModel.Permissions.Where(x => x.Assigned == true).ToList();                
+                foreach (PermissionViewModel permisoNuevo in permisosNuevos)
+                {
+                    RolePermission rolePermission = new RolePermission();
+                    rolePermission.Role = new Role { Id = role.Id };
+                    rolePermission.Permission = new Permission { Id = permisoNuevo.Id };
+                    _rolePermissionService.Create(rolePermission);
+                }
+               
                 return RedirectToAction("Index");
             }
-            return View();
+            else
+            {
+                roleCreateViewModel = new RoleCreateViewModel { Permissions = PopulatePermissions() };
+                return View("Create", roleCreateViewModel);
+            }
         }
 
         // GET: Role/Edit/5
@@ -112,6 +141,7 @@ namespace MVC_Project.WebBackend.Controllers
             RoleEditViewModel model = new RoleEditViewModel();
             model.Id = role.Id;
             model.Name = role.Name;
+            model.Code = role.Code;
             IEnumerable<PermissionViewModel> permisos = PopulatePermissions();
             foreach (PermissionViewModel permiso in permisos)
             {
@@ -132,6 +162,10 @@ namespace MVC_Project.WebBackend.Controllers
             try
             {
                 Role role = _roleService.FindBy(x => x.Id == model.Id).First();
+                //role.Name = model.Name;
+                //role.Code = model.Code;
+                //_roleService.Update(role);
+
                 IList<Permission> permissions = role.Permissions;
                 IList<PermissionViewModel> permisosNuevos = model.Permissions.Where(x => x.Assigned == true).ToList();
                 var query = permisosNuevos.Where(p => !permissions.Any(l => p.Id == l.Id)); //permisosNuevos.Where(x => permissions.Contains(x.Id));
