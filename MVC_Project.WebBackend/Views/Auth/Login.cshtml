@@ -43,6 +43,13 @@
                 </div>
             }
 
+            @if (!string.IsNullOrEmpty(ViewBag.Message))
+            {
+                <div class="col-lg-12">
+                    <div class="alert alert-info" role="alert">@ViewBag.Message</div>
+                </div>
+            }
+
             <p>@ViewLabels.AUTH_LOGIN_TITLE</p>
             @using (Html.BeginForm("Login", "Auth", FormMethod.Post, new { @class = "m-t", role = "form" }))
             {
