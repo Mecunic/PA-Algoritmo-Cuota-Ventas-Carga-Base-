@@ -109,8 +109,7 @@
             }, "las contraseñas no coinciden"
         );
         $.validator.addMethod("ConfirmTermTrue",
-            function (value, element) {
-                console.log(value, element)
+            function (value, element) {                
                 return $("input[type='checkbox']").is(":checked")
             }, ""
         );
