@@ -42,9 +42,25 @@
             </div>
             <h3>Register to @System.Web.Configuration.WebConfigurationManager.AppSettings["AppName"]</h3>
             <p>Crea tu cuenta de manera sencilla.</p>
+
+            @if (!string.IsNullOrEmpty(ViewBag.Error))
+            {
+                <div class="col-lg-12">
+                    <div class="alert alert-danger" role="alert">@ViewBag.Error</div>
+                </div>
+            }
+
             @using (Html.BeginForm("CreateAccount", "Register", FormMethod.Post, new { @class = "m-t", role = "form", @id = "RegisterForm" }))
             {
                 @Html.AntiForgeryToken()
+
+                @*@if (!string.IsNullOrEmpty(ViewBag.Message))
+            {
+                <div class="col-lg-12">
+                    <div class="alert alert-info" role="alert">@ViewBag.Message</div>
+                </div>
+            }*@
+
                 <div class="form-group">
                     @Html.TextBoxFor(m => m.FistName, new { @class = "form-control", type = "text", @autocomplete = "off", placeholder = "Nombre", @required = "required" })
                 </div>
@@ -95,7 +111,7 @@
         $.validator.addMethod("ConfirmTermTrue",
             function (value, element) {
                 console.log(value, element)
-                return value == $("input[type='checkbox']").is(":checked")
+                return $("input[type='checkbox']").is(":checked")
             }, ""
         );
 

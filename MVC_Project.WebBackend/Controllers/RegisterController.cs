@@ -44,36 +44,46 @@ namespace MVC_Project.WebBackend.Controllers
 
             if (ModelState.IsValid)
             {
-                DateTime todayDate = DateUtil.GetDateTimeNow();
+                var UserVal = _userService.FindBy(x => x.Email == model.Email).FirstOrDefault();
 
-                string daysToExpirateDate = ConfigurationManager.AppSettings["DaysToExpirateDate"];           
-                DateTime passwordExpiration = todayDate.AddDays(Int32.Parse(daysToExpirateDate));
-
-                var availableRoles = _roleService.GetAll();
-                var role = availableRoles.Where(x => x.Code == "EMPLOYEE").FirstOrDefault();
-
-                var user = new User
+                if (UserVal == null)
                 {
-                    Uuid = Guid.NewGuid().ToString(),
-                    FirstName = model.FistName,
-                    LastName = model.LastName,
-                    Email = model.Email,
-                    Password = SecurityUtil.EncryptPassword(model.Password),
-                    PasswordExpiration = passwordExpiration,
-                    Username = model.Email,
-                    CreatedAt = todayDate,
-                    UpdatedAt = todayDate,
-                    Status = true,
-                    Role = new Role { Id = role.Id }
-                };
-                
-                foreach (var permission in role.Permissions)
-                {
-                    user.Permissions.Add(permission);
+                    DateTime todayDate = DateUtil.GetDateTimeNow();
+
+                    string daysToExpirateDate = ConfigurationManager.AppSettings["DaysToExpirateDate"];
+                    DateTime passwordExpiration = todayDate.AddDays(Int32.Parse(daysToExpirateDate));
+
+                    var availableRoles = _roleService.GetAll();
+                    var role = availableRoles.Where(x => x.Code == "EMPLOYEE").FirstOrDefault();
+
+                    var user = new User
+                    {
+                        Uuid = Guid.NewGuid().ToString(),
+                        FirstName = model.FistName,
+                        LastName = model.LastName,
+                        Email = model.Email,
+                        Password = SecurityUtil.EncryptPassword(model.Password),
+                        PasswordExpiration = passwordExpiration,
+                        Username = model.Email,
+                        CreatedAt = todayDate,
+                        UpdatedAt = todayDate,
+                        Status = true,
+                        Role = new Role { Id = role.Id }
+                    };
+
+                    foreach (var permission in role.Permissions)
+                    {
+                        user.Permissions.Add(permission);
+                    }
+                    _userService.Create(user);
+                    //ViewBag.Message = "Usuario registrado";
+                    return RedirectToAction("Login", "Auth");
                 }
-                _userService.Create(user);
-                ViewBag.Message = "Usuario registrado";
-                return RedirectToAction("Login", "Auth");
+                else
+                {
+                    ViewBag.Error = "Ya existe el usuario con el Email registrado.";
+                    return View("Index", model);
+                }                
             }
             else
             {                
