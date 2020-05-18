@@ -31,9 +31,9 @@ namespace MVC_Project.WebBackend.Models
     }
 
     public class RoleCreateViewModel
-    {
+    {        
         [Display(Name = "Nombre")]
-        public string Name { get; set; }
+        public string Name { get; set; }       
         [Display(Name = "Código")]
         public string Code { get; set; }
 
