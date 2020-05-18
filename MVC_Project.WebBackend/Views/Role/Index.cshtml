@@ -67,6 +67,13 @@
             roles.init();
         });
 
+        $(window).keydown(function (event) {
+            if (event.keyCode == 13) {
+                event.preventDefault();
+                return false;
+            }
+        });
+
         $("#btnClearForm").click(function () {
             $("#SearchForm").each(function () {
                 this.reset();
