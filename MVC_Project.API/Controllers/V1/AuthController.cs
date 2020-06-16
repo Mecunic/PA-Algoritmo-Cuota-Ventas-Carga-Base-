@@ -79,8 +79,8 @@ namespace MVC_Project.API.Controllers.V1
             try
             {
                 List<MessageResponse> messages = new List<MessageResponse>();
-                var currentUsers = _userService.GetAll();
-                if(currentUsers.Any(x => x.Email == request.Email))
+                var currentUsers = _userService.FindBy(x => x.Email == request.Email);
+                if(currentUsers.Count() > 0)
                 {
                     messages.Add(new MessageResponse { Type = MessageType.error.ToString("G"), Description = "El correo electrónico proporcionado ya se encuentra registrado." });
                     return CreateErrorResponse(null, messages);

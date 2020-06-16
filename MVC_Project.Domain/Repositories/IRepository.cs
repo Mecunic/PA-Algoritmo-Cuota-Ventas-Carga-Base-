@@ -17,6 +17,8 @@ namespace MVC_Project.Domain.Repositories
 
         T GetById(int id);
 
+        T GetByUuid(string uuid);
+
         void Create(T entity);
 
         void Update(T entity);

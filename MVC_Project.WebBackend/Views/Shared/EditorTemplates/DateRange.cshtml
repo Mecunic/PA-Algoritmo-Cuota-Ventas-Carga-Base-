@@ -1,0 +1,27 @@
+﻿@model MVC_Project.WebBackend.Models.DateRangeViewModel
+@{
+    var cssClass = ViewData["cssClass"];
+    var fieldName = ViewData.TemplateInfo.HtmlFieldPrefix;
+}
+<div class="input-group input-daterange">
+    @{
+
+    }
+    <input class="@cssClass text-box single-line" id="@(fieldName)Initial" name="@(fieldName)Initial" readonly="readonly" type="text" value="" />
+    <div class="input-group-prepend">
+        <span class="input-group-text">
+            <i class="fas fa-calendar"></i>
+        </span>
+        <span class="input-group-text">&nbsp;a&nbsp;</span>
+    </div>
+    <input Class="@cssClass text-box single-line" id="@(fieldName)End" name="@(fieldName)End" readonly="readonly" type="text" value="" />
+    <div class="input-group-append">
+        <span class="input-group-text">
+            <i class="fas fa-calendar"></i>
+        </span>
+    </div>
+</div>
+<script>
+    //$('#@(fieldName)Initial').datepicker({ language: 'es', format: 'dd/mm/yyyy' });
+    //$('#@(fieldName)End').datepicker({ language: 'es', format: 'dd/mm/yyyy' });
+</script>

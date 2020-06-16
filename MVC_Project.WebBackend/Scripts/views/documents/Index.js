@@ -1,13 +1,11 @@
-﻿var PaymentsIndexControlador = function (baseUrl, columns) {
-    var self = this;
-    this.htmlTable = $('#tblResults');
-    this.baseUrl = baseUrl;
+﻿var DocumentsIndexControlador = function (baseUrl, columns) {
+
     this.init = function () {
-        //INICIAMOS DATATABLE
-        self.dataTable = this.htmlTable.DataTable({
+
+        $('#tblResults').DataTable({
             "bProcessing": true,
             "bServerSide": true,
-            "sAjaxSource": this.baseUrl,
+            "sAjaxSource": baseUrl,
             orderMulti: false,
             searching: false,
             ordering: false,
@@ -21,5 +19,20 @@
                 });
             }
         });
+        
+        $('#FilterDateInitial').datepicker({ language: 'es', format: 'dd/mm/yyyy' });
+        $('#FilterDateEnd').datepicker({ language: 'es', format: 'dd/mm/yyyy' });
+
+        $(".btn-filter").click(function () {
+            $('#tblResults').DataTable().draw();
+        });
+
+        $("#btnClearForm").click(function () {
+            $("#SearchForm").each(function () {
+                this.reset();
+            });
+            $('#tblResults').DataTable().draw();
+        });
+
     }
 }

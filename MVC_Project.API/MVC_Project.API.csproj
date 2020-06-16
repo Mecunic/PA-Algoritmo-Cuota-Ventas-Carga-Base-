@@ -180,6 +180,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ActionFilterHelper.cs" />
+    <Compile Include="App_Code\AuthorizeApiKeyAttribute.cs" />
+    <Compile Include="App_Code\InMemoryMultipartFormDataStreamProvider.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
@@ -220,12 +222,14 @@
     <Compile Include="Controllers\V1\BaseApiController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\V1\AuthController.cs" />
+    <Compile Include="Controllers\V1\DocumentsController.cs" />
     <Compile Include="Controllers\V1\UsersController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\ApiResponse.cs" />
+    <Compile Include="Models\Api_Request\DocumentRequest.cs" />
     <Compile Include="Models\Api_Request\LoginRequest.cs" />
     <Compile Include="Models\Api_Request\RegisterRequest.cs" />
     <Compile Include="Models\Api_Request\ResetPassRequest.cs" />
@@ -312,6 +316,10 @@
     <ProjectReference Include="..\MVC_Project.Domain\MVC_Project.Domain.csproj">
       <Project>{AADE4A05-4CC5-4465-BD0F-B681FA698C97}</Project>
       <Name>MVC_Project.Domain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MVC_Project.Integrations\MVC_Project.Integrations.csproj">
+      <Project>{E616D7FC-E5A8-4E69-91E6-FF0760920CE8}</Project>
+      <Name>MVC_Project.Integrations</Name>
     </ProjectReference>
     <ProjectReference Include="..\MVC_Project.Utils\MVC_Project.Utils.csproj">
       <Project>{23b89c18-68c5-449f-aded-e51a86da6b52}</Project>

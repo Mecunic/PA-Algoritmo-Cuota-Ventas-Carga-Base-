@@ -52,6 +52,7 @@
   <ItemGroup>
     <Compile Include="Entities\ConfigParam.cs" />
     <Compile Include="Entities\Customer.cs" />
+    <Compile Include="Entities\Document.cs" />
     <Compile Include="Entities\Event.cs" />
     <Compile Include="Entities\IEntity.cs" />
     <Compile Include="Entities\Order.cs" />
@@ -71,6 +72,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\IRepository.cs" />
     <Compile Include="Services\AuthService.cs" />
+    <Compile Include="Services\DocumentService.cs" />
     <Compile Include="Services\EventService.cs" />
     <Compile Include="Services\IAuthService.cs" />
     <Compile Include="Services\OrderService.cs" />

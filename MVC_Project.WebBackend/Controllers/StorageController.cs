@@ -25,7 +25,7 @@ namespace MVC_Project.WebBackend.Controllers
             if (model.StorageProvider == "aws") storageService = new AWSBlobService();
             if (storageService != null)
             {
-                string myBucketName = System.Configuration.ConfigurationManager.AppSettings["AWSBucketName"];
+                string myBucketName = System.Configuration.ConfigurationManager.AppSettings["ContainerBucketName"];
                 Tuple<string, string> resultUpload = storageService.UploadPublicFile(model.ImportedFile.InputStream, model.ImportedFile.FileName, myBucketName);
                 model.FinalUrl = resultUpload.Item1;
             }

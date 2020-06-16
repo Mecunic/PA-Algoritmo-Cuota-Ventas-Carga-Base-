@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
@@ -49,8 +50,9 @@ namespace MVC_Project.WebBackend.Models
         public string ProviderId { get; set; }
         public string Status { get; set; }
         public string User { get; set; }
-        public string FilterInitialDate { get; set; }
-        public string FilterEndDate { get; set; }
+        
+        [UIHint("DateRange")]
+        public DateRangeViewModel FilterDate { get; set; }
 
         //FOR OPENPAY
         public string PublicKey { get; set; }

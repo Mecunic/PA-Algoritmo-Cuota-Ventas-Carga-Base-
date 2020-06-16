@@ -21,8 +21,10 @@
     <UseIISExpress>true</UseIISExpress>
     <Use64BitIISExpress />
     <IISExpressSSLPort />
-    <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
-    <IISExpressWindowsAuthentication>disabled</IISExpressWindowsAuthentication>
+    <IISExpressAnonymousAuthentication>
+    </IISExpressAnonymousAuthentication>
+    <IISExpressWindowsAuthentication>
+    </IISExpressWindowsAuthentication>
     <IISExpressUseClassicPipelineMode />
     <UseGlobalApplicationHostFile />
     <NuGetPackageImportStamp>
@@ -199,7 +201,9 @@
     <Compile Include="Helpers\HTMLHelperExtensions.cs" />
     <Compile Include="Models\AuthViewModel.cs" />
     <Compile Include="Models\CalendarViewModel.cs" />
+    <Compile Include="Models\CustomEditorsViewModels.cs" />
     <Compile Include="Models\DataTableModel.cs" />
+    <Compile Include="Models\DocumentViewModel.cs" />
     <Compile Include="Models\ExcelImport\UserImport.cs" />
     <Compile Include="Models\JQueryDataTableParams.cs" />
     <Compile Include="Models\PaymentViewModel.cs" />
@@ -1664,13 +1668,17 @@
     <Content Include="Scripts\plugins\video\responsible-video.js" />
     <Content Include="Scripts\plugins\wow\wow.min.js" />
     <Content Include="Scripts\popper.min.js" />
+    <Content Include="Scripts\views\documents\Index.js" />
     <Content Include="Scripts\views\Payments\Index.js" />
     <Content Include="Scripts\views\PdfSignature\Index.js" />
     <Content Include="Scripts\views\Reports\OrderIndex.js" />
     <Content Include="Scripts\views\rol\Index.js" />
+    <Content Include="Scripts\views\template\ReporteIndex.js" />
     <Content Include="Scripts\views\UserPermission\Index.js" />
     <Content Include="Scripts\views\user\Index.js" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
@@ -1755,6 +1763,9 @@
     <Content Include="Views\Storage\Index.cshtml" />
     <Content Include="Views\Documents\Index.cshtml" />
     <Content Include="Views\Calendar\Index.cshtml" />
+    <None Include="Properties\PublishProfiles\ensi-template - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\ensi-template - Web Deploy.pubxml" />
+    <Content Include="Views\Shared\EditorTemplates\DateRange.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />

@@ -14,6 +14,8 @@ namespace MVC_Project.Domain.Services
 
         M GetById(int id);
 
+        M GetByUuid(string uuid);
+
         void Create(M entity);
 
         void Update(M entity);

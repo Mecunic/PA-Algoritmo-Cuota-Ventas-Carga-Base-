@@ -52,12 +52,12 @@ namespace MVC_Project.Domain.Services
 
             
             string FilterOrder = filtersValue.Get("OrderId").Trim();
-            string FilterInitialDate = filtersValue.Get("FilterInitialDate").Trim();
-            string FilterEndDate = filtersValue.Get("FilterEndDate").Trim();
+            string FilterDateInitial = filtersValue.Get("FilterDateInitial").Trim();
+            string FilterDateEnd = filtersValue.Get("FilterDateEnd").Trim();
             int FilterUser = Convert.ToInt32(filtersValue.Get("UserId").Trim());
 
-            DateTime? initialDate = DateUtil.ToDateTime(FilterInitialDate, Constants.DATE_FORMAT);
-            DateTime? endDate = DateUtil.ToDateTime(FilterEndDate, Constants.DATE_FORMAT);
+            DateTime? initialDate = DateUtil.ToDateTime(FilterDateInitial, Constants.DATE_FORMAT);
+            DateTime? endDate = DateUtil.ToDateTime(FilterDateEnd, Constants.DATE_FORMAT);
 
             if (FilterUser > 0)
             {

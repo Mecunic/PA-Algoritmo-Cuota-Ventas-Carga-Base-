@@ -7,7 +7,7 @@ namespace MVC_Project.Data.Mappings {
     public class UserMap : ClassMap<User> {
 
         public UserMap() {
-            Table("users");
+            Table("dbo.users");
             Id(x => x.Id).GeneratedBy.Identity().Column("UserId");
             Map(x => x.Uuid).Column("uuid").Not.Nullable();
             Map(x => x.EmployeeIdentifier).Column("employee_identifier").Nullable();

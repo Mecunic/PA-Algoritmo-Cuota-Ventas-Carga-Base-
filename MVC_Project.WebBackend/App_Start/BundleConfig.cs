@@ -98,6 +98,17 @@ namespace MVC_Project.WebBackend
             bundles.Add(new ScriptBundle("~/plugins/chosen").Include(
                       "~/Scripts/plugins/chosen/chosen.jquery.js"));
 
+
+            //Estilos
+            //Dropzone
+            bundles.Add(new StyleBundle("~/plugins/dropzoneStyles").Include(
+                      "~/Content/template/plugins/dropzone/basic.css", "~/Content/template/plugins/dropzone/dropzone.css"));
+
+            //Scripts
+            //Dropzone
+            bundles.Add(new ScriptBundle("~/plugins/dropzone").Include(
+                      "~/Scripts/plugins/dropzone/dropzone.js"));
+
             //Custom
             bundles.Add(new ScriptBundle("~/custom/utils").Include(
                       "~/Scripts/custom/Utils.js"));

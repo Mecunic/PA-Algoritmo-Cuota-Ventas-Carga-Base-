@@ -43,6 +43,11 @@ namespace MVC_Project.Domain.Services
             return _baseRepository.GetById(id);
         }
 
+        public M GetByUuid(string uuid)
+        {
+            return _baseRepository.GetByUuid(uuid);
+        }
+
         public void Update(M entity)
         {
             _baseRepository.Update(entity);

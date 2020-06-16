@@ -34,7 +34,7 @@ namespace MVC_Project.Integrations.Storage
             return new Tuple<string, string>(blockBlob.StorageUri.PrimaryUri.ToString(), uuid);
         }
 
-        public static Tuple<string, string> UploadFile(System.IO.Stream fileStream, string fileName, string containerName, string folder = "")
+        public Tuple<string, string> UploadPrivateFile(System.IO.Stream fileStream, string fileName, string containerName, string folder = "")
         {
             CloudStorageAccount storageAccount = CloudStorageAccount.Parse(CloudConfigurationManager.GetSetting("StorageConnectionString"));
 
