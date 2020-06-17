@@ -11,6 +11,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
@@ -37,10 +38,56 @@ namespace MVC_Project.API.Controllers.V1
             containerBucketName = System.Configuration.ConfigurationManager.AppSettings["ContainerBucketName"];
         }
 
+
         [HttpPost]
         [Route("add")]
         [AuthorizeApiKey]
-        public async Task<HttpResponseMessage> AddDocument(/*DocumentRequest request*/)
+        public HttpResponseMessage AddDocuments([FromBody] DocumentRequest request)
+        {
+            try
+            {
+                List<MessageResponse> messages = new List<MessageResponse>();
+                int UserId = Convert.ToInt32(Thread.CurrentPrincipal.Identity.Name);
+
+                foreach (DocumentObject documentObj in request.Documents)
+                {
+                    if (!string.IsNullOrWhiteSpace(documentObj.Base64))
+                    {
+                        string fileName = documentObj.Name;
+                        var data = Convert.FromBase64String(documentObj.Base64);
+                        MemoryStream ms = new MemoryStream(data);
+                        Tuple<string, string> tupleUrl = storageService.UploadPublicFile(ms, fileName, containerBucketName);
+                        Document newDoc = new Document()
+                        {
+                            Name = fileName,
+                            CreationDate = DateUtil.GetDateTimeNow(),
+                            Type = documentObj.Type,
+                            URL = tupleUrl.Item1,
+                            Uuid = tupleUrl.Item2,
+                            User = new User() { Id = UserId }
+                        };
+                        _documentService.Create(newDoc);
+                        messages.Add(new MessageResponse { Type = MessageType.info.ToString("G"), Description = string.Format("Documento agregado correctamente: {0}", newDoc.Name) });
+                    }
+                    else
+                    {
+                        messages.Add(new MessageResponse { Type = MessageType.error.ToString("G"), Description = string.Format("No se encontró el contenido del documento: {0}", documentObj.Name) });
+                    }
+                    
+                }
+
+                return CreateResponse(messages);
+            }
+            catch (Exception e)
+            {
+                return CreateErrorResponse(e, null);
+            }
+        }
+
+        [HttpPost]
+        [Route("addStream")]
+        [AuthorizeApiKey]
+        public async Task<HttpResponseMessage> AddDocumentStream(/*DocumentRequest request*/)
         {
             var provider = await Request.Content.ReadAsMultipartAsync(new InMemoryMultipartFormDataStreamProvider());
             try
@@ -50,8 +97,8 @@ namespace MVC_Project.API.Controllers.V1
                     throw new HttpResponseException(HttpStatusCode.UnsupportedMediaType);
                 }
                 string apiKey = Request.Headers.Authorization.ToString();
-
                 User user = _userService.FindBy(x => x.ApiKey == apiKey).FirstOrDefault();
+
                 List<MessageResponse> messages = new List<MessageResponse>();
 
                 IList<HttpContent> files = provider.Files;
@@ -61,7 +108,7 @@ namespace MVC_Project.API.Controllers.V1
                     string fileStr = await fileContent.ReadAsStringAsync();
                     string fileName = string.Format("IMG-{0}-{1}.jpg", "test", 1);
                     Tuple<string, string> tupleUrl = storageService.UploadPublicFile(file, fileName, containerBucketName);
-                    byte[] inputBytes = System.Text.Encoding.ASCII.GetBytes(fileStr);
+                    //byte[] inputBytes = System.Text.Encoding.ASCII.GetBytes(fileStr);
                     Document newDoc = new Document()
                     {
                         Name = fileName,

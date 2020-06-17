@@ -75,5 +75,17 @@ namespace MVC_Project.Data.Helpers
                 Session.Dispose();
             }
         }
+
+        public void Dispose()
+        {
+            try
+            {
+                if (Session != null) Session.Dispose();
+            }
+            finally
+            {
+
+            }
+        }
     }
 }

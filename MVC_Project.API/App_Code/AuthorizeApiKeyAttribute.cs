@@ -1,10 +1,18 @@
 ﻿using MVC_Project.API.Models;
 using MVC_Project.API.Models.Api_Response;
+using MVC_Project.Data.Helpers;
+using MVC_Project.Data.Repositories;
+using MVC_Project.Domain.Entities;
+using MVC_Project.Domain.Helpers;
+using MVC_Project.Domain.Repositories;
+using MVC_Project.Domain.Services;
+using MVC_Project.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Security.Principal;
 using System.Web;
 using System.Web.Http.Controllers;
 using System.Web.Http.Filters;
@@ -29,36 +37,19 @@ namespace MVC_Project.API
                 return;
             }
             string apiKey = filterContext.Request.Headers.Authorization.ToString();
-            //using (ISession session = NHibernateHelper.OpenSession())
-            //{
-            //    UsersBL usersBL = new UsersBL(session);
-            //    var usuario = usersBL.GetUsersByApikey(apiKey);
-            //    if (usuario == null)
-            //    {
-            //        mensajesError.Add(new Message { Tipo = "E", Mensaje = Resources.MENSAJES_API.ERROR_HEADER_AUTH_INVALID });
-            //        filterContext.Response = filterContext.Request.CreateResponse(HttpStatusCode.Forbidden, new ApiResponse<List<Message>>()
-            //        {
-            //            Result = "Error",
-            //            ResponseData = mensajesError,
-            //            StatusCode = (int)HttpStatusCode.Forbidden,
-            //            ErrorMessage = mensajesError.First().Mensaje
-            //        });
-            //        return;
-            //    }
-            //    DateTime dateNow = DateUtil.GetDateTimeNow();
-            //    if (string.IsNullOrEmpty(usuario.ApiKeyExpiration) || DateTime.ParseExact(usuario.ApiKeyExpiration, "yyyy-MM-dd HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture) < dateNow)
-            //    {
-            //        mensajesError.Add(new Message { Tipo = "E", Mensaje = Resources.MENSAJES_API.ERROR_HEADER_AUTH_INVALID });
-            //        filterContext.Response = filterContext.Request.CreateResponse(HttpStatusCode.Forbidden, new ApiResponse<List<Message>>()
-            //        {
-            //            Result = "Error",
-            //            ResponseData = mensajesError,
-            //            StatusCode = (int)HttpStatusCode.Forbidden,
-            //            ErrorMessage = mensajesError.First().Mensaje
-            //        });
-            //        return;
-            //    }
-            //}
+            using (IUnitOfWork unitOfWork = new UnitOfWork())
+            {
+                IRepository<User> repository = new Repository<User>(unitOfWork);
+                IUserService userService = new UserService(repository);
+                User user = userService.FindBy(x => x.ApiKey == apiKey).FirstOrDefault();
+                DateTime now = DateUtil.GetDateTimeNow();
+                if (user == null || (user.ExpiraApiKey.HasValue && user.ExpiraApiKey.Value < now))
+                {
+                    filterContext.Response = filterContext.Request.CreateResponse(HttpStatusCode.Unauthorized, new { message = "Invalid authorization token" });
+                    return;
+                }
+                filterContext.RequestContext.Principal = new GenericPrincipal(new GenericIdentity(user.Id.ToString()), null);
+            }
         }
     }
 }
