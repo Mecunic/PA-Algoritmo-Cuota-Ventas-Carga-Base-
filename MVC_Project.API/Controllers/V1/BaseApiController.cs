@@ -6,6 +6,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Threading;
 using System.Web.Http;
 using System.Web.Mvc;
 
@@ -13,6 +14,10 @@ namespace MVC_Project.API.Controllers
 {
     public class BaseApiController : ApiController
     {
+        public int GetUserId()
+        {
+            return Convert.ToInt32(Thread.CurrentPrincipal.Identity.Name);
+        }
         public HttpResponseMessage CreateResponse<T>(T data) where T : class
         {
             var response = new ApiResponse<T>()

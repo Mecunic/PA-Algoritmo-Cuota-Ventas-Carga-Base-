@@ -47,7 +47,7 @@ namespace MVC_Project.API.Controllers.V1
             try
             {
                 List<MessageResponse> messages = new List<MessageResponse>();
-                int UserId = Convert.ToInt32(Thread.CurrentPrincipal.Identity.Name);
+                int UserId = GetUserId();
 
                 foreach (DocumentObject documentObj in request.Documents)
                 {
@@ -84,51 +84,50 @@ namespace MVC_Project.API.Controllers.V1
             }
         }
 
-        [HttpPost]
-        [Route("addStream")]
-        [AuthorizeApiKey]
-        public async Task<HttpResponseMessage> AddDocumentStream(/*DocumentRequest request*/)
-        {
-            var provider = await Request.Content.ReadAsMultipartAsync(new InMemoryMultipartFormDataStreamProvider());
-            try
-            {
-                if (!Request.Content.IsMimeMultipartContent())
-                {
-                    throw new HttpResponseException(HttpStatusCode.UnsupportedMediaType);
-                }
-                string apiKey = Request.Headers.Authorization.ToString();
-                User user = _userService.FindBy(x => x.ApiKey == apiKey).FirstOrDefault();
+        //[HttpPost]
+        //[Route("addStream")]
+        //[AuthorizeApiKey]
+        //public async Task<HttpResponseMessage> AddDocumentStream(/*DocumentRequest request*/)
+        //{
+        //    var provider = await Request.Content.ReadAsMultipartAsync(new InMemoryMultipartFormDataStreamProvider());
+        //    try
+        //    {
+        //        if (!Request.Content.IsMimeMultipartContent())
+        //        {
+        //            throw new HttpResponseException(HttpStatusCode.UnsupportedMediaType);
+        //        }
+        //        int UserId = GetUserId();
 
-                List<MessageResponse> messages = new List<MessageResponse>();
+        //        List<MessageResponse> messages = new List<MessageResponse>();
 
-                IList<HttpContent> files = provider.Files;
-                foreach (HttpContent fileContent in files)
-                {
-                    Stream file = await fileContent.ReadAsStreamAsync();
-                    string fileStr = await fileContent.ReadAsStringAsync();
-                    string fileName = string.Format("IMG-{0}-{1}.jpg", "test", 1);
-                    Tuple<string, string> tupleUrl = storageService.UploadPublicFile(file, fileName, containerBucketName);
-                    //byte[] inputBytes = System.Text.Encoding.ASCII.GetBytes(fileStr);
-                    Document newDoc = new Document()
-                    {
-                        Name = fileName,
-                        CreationDate = DateUtil.GetDateTimeNow(),
-                        Type = "Otro",
-                        URL = tupleUrl.Item1,
-                        Uuid = tupleUrl.Item2,
-                        User = user
-                    };
-                    _documentService.Create(newDoc);
-                    messages.Add(new MessageResponse { Type = MessageType.info.ToString("G"), Description = string.Format("Documento agregado correctamente: {0}", newDoc.Name) });
-                }
+        //        IList<HttpContent> files = provider.Files;
+        //        foreach (HttpContent fileContent in files)
+        //        {
+        //            Stream file = await fileContent.ReadAsStreamAsync();
+        //            string fileStr = await fileContent.ReadAsStringAsync();
+        //            string fileName = string.Format("IMG-{0}-{1}.jpg", "test", 1);
+        //            Tuple<string, string> tupleUrl = storageService.UploadPublicFile(file, fileName, containerBucketName);
+        //            //byte[] inputBytes = System.Text.Encoding.ASCII.GetBytes(fileStr);
+        //            Document newDoc = new Document()
+        //            {
+        //                Name = fileName,
+        //                CreationDate = DateUtil.GetDateTimeNow(),
+        //                Type = "Otro",
+        //                URL = tupleUrl.Item1,
+        //                Uuid = tupleUrl.Item2,
+        //                User = new User() { Id = UserId }
+        //            };
+        //            _documentService.Create(newDoc);
+        //            messages.Add(new MessageResponse { Type = MessageType.info.ToString("G"), Description = string.Format("Documento agregado correctamente: {0}", newDoc.Name) });
+        //        }
                 
-                return CreateResponse(messages);
-            }
-            catch (Exception e)
-            {
-                return CreateErrorResponse(e, null);
-            }
-        }
+        //        return CreateResponse(messages);
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        return CreateErrorResponse(e, null);
+        //    }
+        //}
 
     }
 }
