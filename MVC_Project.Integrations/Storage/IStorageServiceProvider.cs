@@ -9,5 +9,7 @@ namespace MVC_Project.Integrations.Storage
     public interface IStorageServiceProvider
     {
         Tuple<string, string> UploadPublicFile(System.IO.Stream fileStream, string fileName, string containerName, string folder = "");
+
+        Tuple<string, string> UploadPrivateFile(System.IO.Stream fileStream, string fileName, string containerName, string folder = "");
     }
 }

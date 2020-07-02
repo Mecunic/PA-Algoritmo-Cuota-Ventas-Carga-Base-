@@ -51,9 +51,11 @@ namespace MVC_Project.API.Controllers.V1
 
                 foreach (DocumentObject documentObj in request.Documents)
                 {
+                    bool validContent = false;
+                    string fileName = documentObj.Name;
                     if (!string.IsNullOrWhiteSpace(documentObj.Base64))
                     {
-                        string fileName = documentObj.Name;
+                        validContent = true;
                         var data = Convert.FromBase64String(documentObj.Base64);
                         MemoryStream ms = new MemoryStream(data);
                         Tuple<string, string> tupleUrl = storageService.UploadPublicFile(ms, fileName, containerBucketName);
@@ -67,16 +69,80 @@ namespace MVC_Project.API.Controllers.V1
                             User = new User() { Id = UserId }
                         };
                         _documentService.Create(newDoc);
-                        messages.Add(new MessageResponse { Type = MessageType.info.ToString("G"), Description = string.Format("Documento agregado correctamente: {0}", newDoc.Name) });
+                        messages.Add(new MessageResponse
+                        {
+                            Type = MessageType.info.ToString("G"),
+                            Description = string.Format("Documento agregado correctamente: {0} UUID: {1} URL: {2}", newDoc.Name, newDoc.Uuid, newDoc.URL),
+                        });
                     }
-                    else
+                    if (!string.IsNullOrWhiteSpace(documentObj.URL))
+                    {
+                        validContent = true;
+                        Document newDoc = new Document()
+                        {
+                            Name = fileName,
+                            CreationDate = DateUtil.GetDateTimeNow(),
+                            Type = documentObj.Type,
+                            URL = documentObj.URL,
+                            Uuid = Guid.NewGuid().ToString(),
+                            User = new User() { Id = UserId }
+                        };
+                        _documentService.Create(newDoc);
+                        messages.Add(new MessageResponse
+                        {
+                            Type = MessageType.info.ToString("G"),
+                            Description = string.Format("Documento agregado correctamente: {0} UUID: {1} URL: {2}", newDoc.Name, newDoc.Uuid, newDoc.URL),
+                        });
+                    }
+                    if (!validContent)
                     {
                         messages.Add(new MessageResponse { Type = MessageType.error.ToString("G"), Description = string.Format("No se encontró el contenido del documento: {0}", documentObj.Name) });
                     }
-                    
+
                 }
 
                 return CreateResponse(messages);
+            }
+            catch (Exception e)
+            {
+                return CreateErrorResponse(e, null);
+            }
+        }
+
+        [HttpGet]
+        [Route("{uuid}")]
+        [AuthorizeApiKey]
+        public HttpResponseMessage GetDocument(string uuid)
+        {
+            try
+            {
+                Document document = _documentService.FindBy(x => x.Uuid == uuid).First();
+                if (document != null && !string.IsNullOrWhiteSpace(document.URL))
+                {
+                    string SASToken = System.Configuration.ConfigurationManager.AppSettings["StorageSASToken"];
+
+                    var client = new WebClient();
+                    var content = client.DownloadData(document.URL + SASToken);
+                    var stream = new MemoryStream(content);
+                    var base64 = Convert.ToBase64String(stream.ToArray());
+
+                    DocumentObject documentObj = new DocumentObject()
+                    {
+                        Uuid = document.Uuid,
+                        Name = document.Name,
+                        URL = document.URL,
+                        Type = document.Type,
+                        Base64 = base64
+                    };
+                    return CreateResponse(documentObj);
+                }
+                else
+                {
+                    List<MessageResponse> messages = new List<MessageResponse>();
+                    messages.Add(new MessageResponse { Type = MessageType.error.ToString("G"), Description = string.Format("No se encontró el documento con Uuid: {0}", uuid) });
+                    return CreateResponse(messages);
+                }
+                
             }
             catch (Exception e)
             {

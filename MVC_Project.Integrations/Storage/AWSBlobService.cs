@@ -53,5 +53,11 @@ namespace MVC_Project.Integrations.Storage
                 return null;
             }
         }
+
+        public Tuple<string, string> UploadPrivateFile(Stream fileStream, string fileName, string containerName, string folder)
+        {
+            throw new NotImplementedException();
+        }
+        
     }
 }

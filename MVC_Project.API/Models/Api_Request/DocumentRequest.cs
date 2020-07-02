@@ -12,6 +12,7 @@ namespace MVC_Project.API.Models.Api_Request
 
     public class DocumentObject
     {
+        public string Uuid { set; get; }
         public string Name { set; get; }
         public string Type { set; get; }
 
