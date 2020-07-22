@@ -6,7 +6,7 @@
 - NHibernate + Fluent
 - Unity (IoC)
 - Base de datos default: Azure SQL Server
-- Plantilla responsiva Front-End Inspinia con Bootstrap 3.0
+- Plantilla responsiva Front-End Inspinia con Bootstrap 4.0
 - Jobs: Hangfire
 
 ### Características
@@ -21,7 +21,7 @@
 	- Ejemplo de reporte con exportación a CSV
 	- Ejemplo de importación de archivo Excel (xlsx)
 - Integraciones
-	- Integración con Azure Storage para manejo de archivos
+	- Integración con Azure Storage y Amazon para manejo de archivos
 	- Integración con proveedor de pagos OpenPay
 - Jobs
 	- Ejemplo de job con Hangfire
