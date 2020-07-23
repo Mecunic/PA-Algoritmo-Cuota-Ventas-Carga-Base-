@@ -241,6 +241,15 @@ namespace MVC_Project.Resources {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Register.
+        /// </summary>
+        public static string REGISTER_ACCOUNT {
+            get {
+                return ResourceManager.GetString("REGISTER_ACCOUNT", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Search.
         /// </summary>
         public static string SEARCH {

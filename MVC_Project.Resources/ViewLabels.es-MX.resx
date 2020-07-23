@@ -186,4 +186,7 @@
   <data name="HAVE_ACCOUNT" xml:space="preserve">
     <value>Quiero registrarme</value>
   </data>
+  <data name="REGISTER_ACCOUNT" xml:space="preserve">
+    <value>Crear una cuenta</value>
+  </data>
 </root>
