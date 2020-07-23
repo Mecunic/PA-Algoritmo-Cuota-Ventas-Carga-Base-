@@ -45,16 +45,30 @@
     <Compile Include="Messages.Designer.cs" />
     <Compile Include="Messages.es-MX.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ViewLabels.Designer.cs" />
-    <Compile Include="ViewLabels.es-MX.Designer.cs" />
+    <Compile Include="ViewLabels.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ViewLabels.resx</DependentUpon>
+    </Compile>
+    <Compile Include="ViewLabels.es-MX.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ViewLabels.es-MX.resx</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="ErrorMessages.es-MX.resx" />
     <EmbeddedResource Include="ErrorMessages.resx" />
     <EmbeddedResource Include="Messages.es-MX.resx" />
     <EmbeddedResource Include="Messages.resx" />
-    <EmbeddedResource Include="ViewLabels.es-MX.resx" />
-    <EmbeddedResource Include="ViewLabels.resx" />
+    <EmbeddedResource Include="ViewLabels.es-MX.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ViewLabels.es-MX.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ViewLabels.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ViewLabels.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

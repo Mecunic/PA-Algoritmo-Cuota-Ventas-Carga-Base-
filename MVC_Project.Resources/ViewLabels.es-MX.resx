@@ -183,4 +183,7 @@
   <data name="LABEL_CLEAN" xml:space="preserve">
     <value>Limpiar</value>
   </data>
+  <data name="HAVE_ACCOUNT" xml:space="preserve">
+    <value>Quiero registrarme</value>
+  </data>
 </root>

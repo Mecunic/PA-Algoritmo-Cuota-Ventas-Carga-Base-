@@ -115,6 +115,15 @@ namespace MVC_Project.Resources {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Do not have an account?.
+        /// </summary>
+        public static string HAVE_ACCOUNT {
+            get {
+                return ResourceManager.GetString("HAVE_ACCOUNT", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Welcome to Template Project.
         /// </summary>
         public static string HOME_TITLE {

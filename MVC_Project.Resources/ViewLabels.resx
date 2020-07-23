@@ -183,4 +183,7 @@
   <data name="LABEL_CLEAN" xml:space="preserve">
     <value>Clean</value>
   </data>
+  <data name="HAVE_ACCOUNT" xml:space="preserve">
+    <value>Do not have an account?</value>
+  </data>
 </root>
