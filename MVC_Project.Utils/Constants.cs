@@ -20,7 +20,8 @@ namespace MVC_Project.Utils
         public static readonly string ROLE_ADMIN = "ADMIN";
         public static readonly string ROLE_EMPLOYEE = "EMPLOYEE";
         public static readonly string ROLE_APP_USER = "APP_USER";
-        
+        public static readonly string ROLE_DEFAULT_API = "APP_USER";
+
         //public static string STORAGE_MAIN_CONTAINER = ConfigurationManager.AppSettings["StorageMainContainer"];
 
         public static string DATE_FORMAT_DAY_MONTH = "dd/MM";

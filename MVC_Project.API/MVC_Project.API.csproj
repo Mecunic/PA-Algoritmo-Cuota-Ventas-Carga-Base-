@@ -219,6 +219,7 @@
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Components\UnityFilterAttributeFilterProvider.cs" />
     <Compile Include="Components\UnityFilterProvider.cs" />
+    <Compile Include="Controllers\V1\AccountController.cs" />
     <Compile Include="Controllers\V1\BaseApiController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\V1\AuthController.cs" />

@@ -31,23 +31,22 @@ namespace MVC_Project.API.Controllers.V1
 
         [HttpPost]
         [Route("login")]
-        public HttpResponseMessage Login(LoginRequest request) 
+        public HttpResponseMessage Login([FromBody] LoginRequest request)
         {
             try
             {
                 List<MessageResponse> messages = new List<MessageResponse>();
-                var authUser = _authService.Authenticate(request.Username, SecurityUtil.EncryptPassword(request.Password));
-                if(authUser == null || !authUser.Status)
+                var user = _authService.Authenticate(request.Username, SecurityUtil.EncryptPassword(request.Password));
+                if (user == null || !user.Status)
                 {
                     messages.Add(new MessageResponse { Type = MessageType.error.ToString("G"), Description = "El usuario no existe o contraseña inválida." });
                     return CreateErrorResponse(null, messages);
                 }
-                if(authUser.Role.Code != Constants.ROLE_APP_USER)
+                if (user.Role.Code != Constants.ROLE_DEFAULT_API)
                 {
-                    messages.Add(new MessageResponse { Type = MessageType.error.ToString("G"), Description = "El usuario no cuenta con acceso al app." });
+                    messages.Add(new MessageResponse { Type = MessageType.error.ToString("G"), Description = "El usuario no cuenta con acceso al API." });
                     return CreateErrorResponse(null, messages);
                 }
-                var user = _userService.FindBy(x => x.Uuid == authUser.Uuid).First();
                 var expiration = DateTime.UtcNow.AddHours(Constants.HOURS_EXPIRATION_KEY);
                 user.ApiKey = Guid.NewGuid().ToString();
                 user.ExpiraApiKey = expiration;
@@ -56,50 +55,13 @@ namespace MVC_Project.API.Controllers.V1
                 {
                     ApiKey = user.ApiKey,
                     ApiKeyExpiration = expiration.ToString(Constants.DATE_FORMAT_CALENDAR),
-                    UserData = new AuthUser
-                    {
-                        Uuid = user.Uuid,
-                        FirstName = user.FirstName,
-                        LastName = user.LastName,
-                        Email = user.Email
-                    }
+                    Uuid = user.Uuid,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    Email = user.Email,
+                    MobilePhone = user.MobileNumber,
                 };
                 return CreateResponse(response);
-            }
-            catch(Exception e)
-            {
-                return CreateErrorResponse(e, null);
-            }
-        }
-
-        [HttpPost]
-        [Route("register")]
-        public HttpResponseMessage Register(RegisterRequest request)
-        {
-            try
-            {
-                List<MessageResponse> messages = new List<MessageResponse>();
-                var currentUsers = _userService.FindBy(x => x.Email == request.Email);
-                if(currentUsers.Count() > 0)
-                {
-                    messages.Add(new MessageResponse { Type = MessageType.error.ToString("G"), Description = "El correo electrónico proporcionado ya se encuentra registrado." });
-                    return CreateErrorResponse(null, messages);
-                }
-                User user = new User();
-                user.FirstName = request.FirstName;
-                user.LastName = request.LastName;
-                user.Email = request.Email;
-                user.Password = SecurityUtil.EncryptPassword(request.Password);
-                user.Uuid = Guid.NewGuid().ToString();
-                //TODO:ESTO ESTA MAL, SE DEBE TRAER POR CODIGO DE ROLE
-                user.Role = new Role { Id = 3 }; //ROL DE APP 
-                user.Permissions = _roleService.GetById(user.Role.Id).Permissions.ToList();
-                user.CreatedAt = DateTime.Now;
-                user.UpdatedAt = DateTime.Now;
-                user.Status = true;
-                _userService.Create(user);
-                messages.Add(new MessageResponse { Type = MessageType.info.ToString("G"), Description = "Usuario creado correctamente." });
-                return CreateResponse(messages);
             }
             catch (Exception e)
             {
@@ -108,83 +70,30 @@ namespace MVC_Project.API.Controllers.V1
         }
 
         [HttpGet]
-        [Route("recover")]
-        public HttpResponseMessage Recover([FromUri (Name = "email")] string email)
+        [Route("")]
+        [AuthorizeApiKey]
+        public HttpResponseMessage Get()
         {
-            try
+            List<MessageResponse> messages = new List<MessageResponse>();
+            int UserId = GetUserId();
+            var user = _userService.GetById(UserId);
+            if (user != null)
             {
-                List<MessageResponse> messages = new List<MessageResponse>();
-
-                var user = _userService.FindBy(e => e.Email == email).FirstOrDefault();
-                if (user == null)
+                var response = new AuthUserResponse
                 {
-                    messages.Add(new MessageResponse { Type = MessageType.error.ToString("G"), Description = "El correo electrónico solicitado no se encuentra registrado." });
-                    return CreateErrorResponse(null, messages);
-                }
-                if (user.Role.Code != "APP_USER")
-                {
-                    messages.Add(new MessageResponse { Type = MessageType.error.ToString("G"), Description = "El usuario no cuenta con acceso al app." });
-                    return CreateErrorResponse(null, messages);
-                }
-                string token = (user.Uuid + "@" + DateTime.Now.AddDays(1).ToString());
-                token = EncryptorText.DataEncrypt(token).Replace("/", "!!").Replace("+", "$");
-                List<string> Email = new List<string>();
-                Email.Add(user.Email);
-                Dictionary<string, string> customParams = new Dictionary<string, string>();
-                string urlAccion = ConfigurationManager.AppSettings["_UrlServerAccess"].ToString();
-                string link = urlAccion + "Auth/AccedeToken?token=" + token;
-                customParams.Add("param1", user.Email);
-                customParams.Add("param2", link);
-                string template = "aa61890e-5e39-43c4-92ff-fae95e03a711";
-                NotificationUtil.SendNotification(Email, customParams, template);
-
-                user.ExpiraToken = DateTime.Now.AddDays(1);
-                user.Token = token;
-                _userService.Update(user);
-                
-                messages.Add(new MessageResponse { Type = MessageType.info.ToString("G"), Description = "Solicitud enviada." });
-                return CreateResponse(messages);
+                    Uuid = user.Uuid,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    Email = user.Email,
+                    MobilePhone = user.MobileNumber,
+                };
+                return CreateResponse(response, "Datos devueltos correctamente");
             }
-            catch (Exception e)
+            else
             {
-                return CreateErrorResponse(e, null);
+                messages.Add(new MessageResponse { Type = MessageType.error.ToString("G"), Description = "No se pudo crear la cuenta del usuario." });
             }
-        }
-
-        [HttpPost]
-        [Route("reset")]
-        public HttpResponseMessage resetPass(ResetPassRequest request)
-        {
-            try
-            {
-                List<MessageResponse> messages = new List<MessageResponse>();
-                var decrypted = EncryptorText.DataDecrypt(request.Token.Replace("!!", "/").Replace("$", "+"));
-                if (string.IsNullOrEmpty(request.Token) || string.IsNullOrEmpty(decrypted))
-                {
-                    messages.Add(new MessageResponse { Type = MessageType.error.ToString("G"), Description = "Token de recuperación no encontrado." });
-                    return CreateErrorResponse(null, messages);
-                }
-                string id = decrypted.Split('@').First();
-                var user = _userService.FindBy(x => x.Uuid == id).First();
-                if(user == null || DateTime.Now > user.ExpiraToken)
-                {
-                    messages.Add(new MessageResponse { Type = MessageType.error.ToString("G"), Description = "El token ha expirado." });
-                    return CreateErrorResponse(null, messages);
-                }
-                if (user.Role.Code != "APP_USER")
-                {
-                    messages.Add(new MessageResponse { Type = MessageType.error.ToString("G"), Description = "El usuario no cuenta con acceso al app." });
-                    return CreateErrorResponse(null, messages);
-                }
-                user.Password = request.Password;
-                _userService.Update(user);
-                messages.Add(new MessageResponse { Type = MessageType.info.ToString("G"), Description = "Contraseña actualizada." });
-                return CreateResponse(messages);
-            }
-            catch(Exception e)
-            {
-                return CreateErrorResponse(e, null);
-            }
+            return CreateResponse(messages);
         }
     }
 }

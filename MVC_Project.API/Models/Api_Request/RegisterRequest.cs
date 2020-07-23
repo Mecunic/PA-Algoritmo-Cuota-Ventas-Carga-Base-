@@ -17,5 +17,7 @@ namespace MVC_Project.API.Models.Api_Request
         public string Email { get; set; }
         [DataMember(Name = "password")]
         public string Password { get; set; }
+        [DataMember(Name = "mobile_number")]
+        public string MobileNumber { get; set; }
     }
 }

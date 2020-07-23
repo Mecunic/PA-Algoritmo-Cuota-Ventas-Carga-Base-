@@ -18,14 +18,14 @@ namespace MVC_Project.API.Controllers
         {
             return Convert.ToInt32(Thread.CurrentPrincipal.Identity.Name);
         }
-        public HttpResponseMessage CreateResponse<T>(T data) where T : class
+        public HttpResponseMessage CreateResponse<T>(T data, string message = "") where T : class
         {
             var response = new ApiResponse<T>()
             {
                 Result = "success",
                 ResponseData = data,
                 StatusCode = (int)HttpStatusCode.OK,
-                Message = string.Empty
+                Message = message
             };
             //LOG de respuesta si es necesario
             return Request.CreateResponse(HttpStatusCode.OK, response);
