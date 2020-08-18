@@ -1,7 +1,9 @@
 ﻿using MVC_Project.Domain.Entities;
 using MVC_Project.Domain.Repositories;
+using MVC_Project.Domain.Services;
 using System.Linq;
-namespace MVC_Project.Domain.Services
+
+namespace MVC_Project.Data.Services
 {
     public class AuthService : IAuthService
     {

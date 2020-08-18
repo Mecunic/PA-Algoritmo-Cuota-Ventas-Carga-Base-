@@ -1,5 +1,6 @@
 ﻿using MVC_Project.Domain.Entities;
 using MVC_Project.Domain.Repositories;
+using MVC_Project.Domain.Services;
 using MVC_Project.Utils;
 using NHibernate;
 using NHibernate.Criterion;
@@ -10,17 +11,8 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 
-namespace MVC_Project.Domain.Services
+namespace MVC_Project.Data.Services
 {
-    #region Interfaces
-
-    public interface IUserService : IService<User>
-    {
-        Tuple<IEnumerable<User>, int> FilterBy(NameValueCollection filtersValue, int? skip, int? take);
-    }
-
-    #endregion Interfaces
-
     public class UserService : ServiceBase<User>, IUserService
     {
         private IRepository<User> _repository;
