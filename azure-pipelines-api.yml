@@ -29,8 +29,13 @@ steps:
 
 - task: VSTest@2
   inputs:
+    testSelector: 'testAssemblies'
+    testAssemblyVer2: '**\MVC_Project.API.UnitTests.dll'
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
+    searchFolder: '$(System.DefaultWorkingDirectory)' 
+
+- task: PublishTestResults@2
 
 - task: ArchiveFiles@2
   inputs:
