@@ -1,18 +1,13 @@
 ﻿using MVC_Project.Domain.Entities;
 using MVC_Project.Domain.Repositories;
+using MVC_Project.Domain.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace MVC_Project.Domain.Services {
-    #region Interfaces  
-    public interface IRoleService : IService<Role>
-    {
-        IList<Role> ObtenerRoles(string filtros);
-    }
-    #endregion
-
+namespace MVC_Project.Data.Services
+{   
     public class RoleService : ServiceBase<Role>, IRoleService
     {
         private IRepository<Role> _repository;

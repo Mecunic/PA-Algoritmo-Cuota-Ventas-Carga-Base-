@@ -42,7 +42,7 @@ namespace MVC_Project.Utils
                 var textoCifradoFinal = Convert.ToBase64String(cipherTextBytes);
                 return textoCifradoFinal;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return string.Empty;
             }

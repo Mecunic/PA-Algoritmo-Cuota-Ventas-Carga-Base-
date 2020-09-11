@@ -1,13 +1,12 @@
 ﻿using MVC_Project.Domain.Entities;
 using MVC_Project.Domain.Repositories;
+using MVC_Project.Domain.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace MVC_Project.Domain.Services
+namespace MVC_Project.Data.Services
 {
     public class ServiceBase<M> : IService<M> where M : IEntity
     {

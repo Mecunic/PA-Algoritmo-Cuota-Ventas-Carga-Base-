@@ -1,14 +1,12 @@
 ﻿using MVC_Project.Data.Helpers;
 using MVC_Project.Data.Repositories;
+using MVC_Project.Data.Services;
 using MVC_Project.Domain.Entities;
 using MVC_Project.Domain.Services;
 using MVC_Project.Utils;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Threading;
-using System.Web;
 
 namespace MVC_Project.Jobs
 {
@@ -21,7 +19,6 @@ namespace MVC_Project.Jobs
 
         public static void DemoMethod()
         {
-
             _processService = new ProcessService(new Repository<Process>(new UnitOfWork()));
             Process processJob = _processService.GetByCode(JOB_CODE);
             bool CAN_EXECUTE = processJob!=null && processJob.Status && !processJob.Running; //Esta habilitado y no está corriendo (validacion BD)

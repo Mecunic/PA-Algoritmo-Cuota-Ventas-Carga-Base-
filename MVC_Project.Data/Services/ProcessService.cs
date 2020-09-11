@@ -1,16 +1,11 @@
 ﻿using MVC_Project.Domain.Entities;
 using MVC_Project.Domain.Repositories;
+using MVC_Project.Domain.Services;
 using System.Linq;
 
-namespace MVC_Project.Domain.Services
+namespace MVC_Project.Data.Services
 {
-    public interface IProcessService : IService<Process>
-    {
-        Process GetByCode(string code);
-        ProcessExecution CreateExecution(ProcessExecution processExecution);
-        ProcessExecution UpdateExecution(ProcessExecution processExecution);
-    }
-
+   
     public class ProcessService : ServiceBase<Process>, IProcessService
     {
         private IRepository<Process> _repository;

@@ -113,7 +113,7 @@ namespace MVC_Project.Utils
                 }
 
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 _Mensage = "No se ha podido generar el archivo de Excel. Verifique si hay información para procesar.";
                 CrearMensage(ref streambook, _Mensage, _TableNameDefault);

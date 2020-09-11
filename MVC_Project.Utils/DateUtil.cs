@@ -159,7 +159,7 @@ namespace MVC_Project.Utils
                 {
                     result = DateTime.ParseExact(dateStr, format, System.Globalization.CultureInfo.InvariantCulture);
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
 
                 }

@@ -6,14 +6,10 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
 using NHibernate.Criterion;
+using MVC_Project.Domain.Services;
 
-namespace MVC_Project.Domain.Services
+namespace MVC_Project.Data.Services
 {
-    public interface IDocumentService : IService<Document>
-    {
-        Tuple<IEnumerable<Document>, int> FilterBy(NameValueCollection filtersValue, int? skip, int? take);
-    }
-
     public class DocumentService : ServiceBase<Document>, IDocumentService
     {
         private IRepository<Document> _repository;

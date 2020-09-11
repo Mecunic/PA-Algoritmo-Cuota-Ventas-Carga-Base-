@@ -1,11 +1,8 @@
 ﻿using MVC_Project.API.Models;
 using MVC_Project.API.Models.Api_Response;
 using MVC_Project.Data.Helpers;
-using MVC_Project.Data.Repositories;
-using MVC_Project.Data.Services;
 using MVC_Project.Domain.Entities;
 using MVC_Project.Domain.Helpers;
-using MVC_Project.Domain.Repositories;
 using MVC_Project.Domain.Services;
 using MVC_Project.Utils;
 using System;
@@ -14,9 +11,9 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Security.Principal;
-using System.Web;
 using System.Web.Http.Controllers;
 using System.Web.Http.Filters;
+using Unity;
 
 namespace MVC_Project.API
 {
@@ -40,8 +37,7 @@ namespace MVC_Project.API
             string apiKey = filterContext.Request.Headers.Authorization.ToString();
             using (IUnitOfWork unitOfWork = new UnitOfWork())
             {
-                IRepository<User> repository = new Repository<User>(unitOfWork);
-                IUserService userService = new UserService(repository);
+                IUserService userService = UnityConfig.Container.Resolve<IUserService>();
                 User user = userService.FindBy(x => x.ApiKey == apiKey).FirstOrDefault();
                 DateTime now = DateUtil.GetDateTimeNow();
                 if (user == null || (user.ExpiraApiKey.HasValue && user.ExpiraApiKey.Value < now))

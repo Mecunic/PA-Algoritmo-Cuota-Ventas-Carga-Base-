@@ -1,17 +1,9 @@
 ﻿using MVC_Project.Domain.Entities;
 using MVC_Project.Domain.Repositories;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using MVC_Project.Domain.Services;
 
-namespace MVC_Project.Domain.Services
+namespace MVC_Project.Data.Services
 {
-    #region Interfaces  
-    public interface IRolePermissionService : IService<RolePermission>
-    {
-    }
-    #endregion
     public class RolePermissionService : ServiceBase<RolePermission>, IRolePermissionService
     {
         private IRepository<RolePermission> _repository;

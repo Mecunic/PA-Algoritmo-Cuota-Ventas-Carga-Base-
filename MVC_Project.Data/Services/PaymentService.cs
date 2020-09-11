@@ -6,19 +6,10 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
 using NHibernate.Criterion;
-using System.Text;
-using System.Threading.Tasks;
+using MVC_Project.Domain.Services;
 
-namespace MVC_Project.Domain.Services
+namespace MVC_Project.Data.Services
 {
-    public interface IPaymentService : IService<Payment>
-    {
-        Payment GetByOrderId(string OrderId);
-        Payment GetByProviderId(string ProviderId);
-        PaymentApplication GetPaymentApplicationByKey(string appKey);
-        Tuple<IEnumerable<Payment>, int> FilterBy(NameValueCollection filtersValue, int? skip, int? take);
-    }
-
     public class PaymentService : ServiceBase<Payment>, IPaymentService
     {
         private IRepository<Payment> _repository;
