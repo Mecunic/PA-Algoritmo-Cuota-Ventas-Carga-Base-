@@ -5,7 +5,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
-using NHibernate.Criterion;
 
 namespace MVC_Project.Domain.Services
 {
