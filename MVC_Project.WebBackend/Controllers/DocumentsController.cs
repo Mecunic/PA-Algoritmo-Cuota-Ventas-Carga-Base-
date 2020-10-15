@@ -26,7 +26,7 @@ namespace MVC_Project.WebBackend.Controllers
             _documentService = documentServce;
 
             //ESTO DEBE SER DINAMICO, POR UNITY O POR WEB.CONFIG
-            IStorageServiceProvider storageService = new AzureBlobService();
+            storageService = new AzureBlobService();
             containerBucketName = System.Configuration.ConfigurationManager.AppSettings["ContainerBucketName"];
         }
 

@@ -24,7 +24,7 @@ namespace MVC_Project.Jobs
 
             try
             {
-                GlobalConfiguration.Configuration.UseSqlServerStorage("testConectionString");
+                GlobalConfiguration.Configuration.UseSqlServerStorage("DBConnectionString");
                 Boolean.TryParse(System.Configuration.ConfigurationManager.AppSettings["Jobs.EnabledJobs"], out NotificationProcessEnabled);
                 Dashboardurl = System.Configuration.ConfigurationManager.AppSettings["Jobs.Dashboard.Url"].ToString();
 
