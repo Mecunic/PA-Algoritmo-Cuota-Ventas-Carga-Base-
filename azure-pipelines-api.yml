@@ -14,6 +14,12 @@ variables:
   buildConfiguration: 'Release'
 
 steps:
+- task: SonarQubePrepare@4
+  inputs:
+    SonarQube: 'SonarQube'
+    scannerMode: 'MSBuild'
+    projectKey: 'Plantilla_NET'
+    projectName: 'Plantilla_NET'
 - task: NuGetToolInstaller@1
 
 - task: NuGetCommand@2
@@ -33,7 +39,10 @@ steps:
     testAssemblyVer2: '**\*Tests.dll'
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
-
+- task: SonarQubeAnalyze@4
+- task: SonarQubePublish@4
+  inputs:
+    pollingTimeoutSec: '300'
 - task: PublishTestResults@2
 
 - task: ArchiveFiles@2
