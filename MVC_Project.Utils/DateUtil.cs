@@ -161,7 +161,7 @@ namespace MVC_Project.Utils
                 }
                 catch (Exception)
                 {
-
+                    return null;
                 }
             }
             return result;

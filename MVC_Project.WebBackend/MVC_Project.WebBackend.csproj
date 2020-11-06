@@ -185,6 +185,7 @@
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\CalendarController.cs" />
     <Compile Include="Controllers\CheckoutController.cs" />
+    <Compile Include="Controllers\DashboardsController.cs" />
     <Compile Include="Controllers\DocumentsController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -1271,6 +1272,7 @@
     <Content Include="Images\landing\iphone.jpg" />
     <Content Include="Images\landing\laptop.png" />
     <Content Include="Images\landing\perspective.png" />
+    <Content Include="Images\logos\logo_altek.png" />
     <Content Include="Images\logos\logo_default.png" />
     <Content Include="Images\logos\logo_default2.png" />
     <Content Include="Images\logos\logo_icon.png" />
@@ -1767,6 +1769,12 @@
     <None Include="Properties\PublishProfiles\ensi-template - Web Deploy.pubxml" />
     <Content Include="Views\Shared\EditorTemplates\DateRange.cshtml" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
+    <Content Include="Views\Dashboards\Dashboard_1.cshtml" />
+    <Content Include="Views\Dashboards\Dashboard_2.cshtml" />
+    <Content Include="Views\Dashboards\Dashboard_3.cshtml" />
+    <Content Include="Views\Dashboards\Dashboard_4.cshtml" />
+    <Content Include="Views\Dashboards\Dashboard_4_1.cshtml" />
+    <Content Include="Views\Dashboards\Dashboard_5.cshtml" />
     <None Include="Web.Base.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
