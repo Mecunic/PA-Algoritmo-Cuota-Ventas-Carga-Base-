@@ -44,6 +44,11 @@ namespace MVC_Project.WebBackend.Utils.Enums
             return typeMatches && valueMatches;
         }
 
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+
         public int CompareTo(object other) => Id.CompareTo(((Enumeration)other).Id);
     }
 }

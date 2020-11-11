@@ -47,16 +47,13 @@ namespace Utils
             var methodInfo = (from m in gericType.GetMethods(BindingFlags.Public | BindingFlags.Static)
                               where m.Name == "TryParse"
                               select m).FirstOrDefault();
-            if (methodInfo == null)
-                throw new Exception("Unable to find TryParse method!");
+            if (methodInfo == null) throw new Exception("Unable to find TryParse method!");
             object result = methodInfo.Invoke(null, new object[] { curremtObject.ToString(), value });
             if ((result != null))
             {
                 var methodParser = (from m in gericType.GetMethods(BindingFlags.Public | BindingFlags.Static)
                                     where m.Name == "Parse"
                                     select m).FirstOrDefault();
-                if (methodInfo == null)
-                    throw new Exception("Unable to find Parse method!");
                 bool isParser = ((bool)result);
                 if (isParser)
                 {
