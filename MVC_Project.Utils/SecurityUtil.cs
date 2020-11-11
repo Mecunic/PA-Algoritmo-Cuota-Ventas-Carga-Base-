@@ -15,7 +15,8 @@ namespace MVC_Project.Utils
 
         public static string EncryptPassword(string password)
         {
-            using (SHA256 sha256Hash = SHA256.Create())
+            //using (SHA256 sha256Hash = SHA256.Create())
+            using (SHA256 sha256Hash = new SHA256Managed())
             {
                 byte[] bytes = sha256Hash.ComputeHash(Encoding.UTF8.GetBytes(password));
 

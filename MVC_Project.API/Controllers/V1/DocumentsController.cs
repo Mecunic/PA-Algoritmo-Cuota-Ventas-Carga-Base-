@@ -134,6 +134,7 @@ namespace MVC_Project.API.Controllers.V1
                         Type = document.Type,
                         Base64 = base64
                     };
+                    client.Dispose();
                     return CreateResponse(documentObj);
                 }
                 else

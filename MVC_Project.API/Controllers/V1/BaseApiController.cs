@@ -36,7 +36,7 @@ namespace MVC_Project.API.Controllers
             var response = new ApiResponse<IList<MessageResponse>>();
             if (exception == null)
             {
-                messages.Select(x => { x.Type = MessageType.error.ToString("G"); return x; }).ToList();
+                //var res = messages.Select(x => { x.Type = MessageType.error.ToString("G"); return x; }).ToList();
                 response = new ApiResponse<IList<MessageResponse>>
                 {
                     Result = "error",

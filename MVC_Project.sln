@@ -27,6 +27,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MVC_Project.Resources", "MV
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MVC_Project.API.UnitTests", "MVC_Project.API.UnitTests\MVC_Project.API.UnitTests.csproj", "{2CAEC16D-715F-49E5-8581-B3D9793DE913}"
 EndProject
+Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "MVC_Project.Database", "MVC_Project.Database\MVC_Project.Database.sqlproj", "{AA67C342-377E-4A9A-98F8-C6EA579B923F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Base|Any CPU = Base|Any CPU
@@ -106,6 +108,15 @@ Global
 		{2CAEC16D-715F-49E5-8581-B3D9793DE913}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2CAEC16D-715F-49E5-8581-B3D9793DE913}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2CAEC16D-715F-49E5-8581-B3D9793DE913}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AA67C342-377E-4A9A-98F8-C6EA579B923F}.Base|Any CPU.ActiveCfg = Debug|Any CPU
+		{AA67C342-377E-4A9A-98F8-C6EA579B923F}.Base|Any CPU.Build.0 = Debug|Any CPU
+		{AA67C342-377E-4A9A-98F8-C6EA579B923F}.Base|Any CPU.Deploy.0 = Debug|Any CPU
+		{AA67C342-377E-4A9A-98F8-C6EA579B923F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AA67C342-377E-4A9A-98F8-C6EA579B923F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AA67C342-377E-4A9A-98F8-C6EA579B923F}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{AA67C342-377E-4A9A-98F8-C6EA579B923F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AA67C342-377E-4A9A-98F8-C6EA579B923F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AA67C342-377E-4A9A-98F8-C6EA579B923F}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

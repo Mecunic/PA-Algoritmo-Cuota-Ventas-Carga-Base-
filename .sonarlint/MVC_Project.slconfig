@@ -1,0 +1,15 @@
+{
+  "ServerUri": "https://sonarcloud.io/",
+  "Organization": {
+    "Key": "ensitechdevops",
+    "Name": "ensitechdevops"
+  },
+  "ProjectKey": "ensitechdevops_Plantilla-NET",
+  "ProjectName": "Plantilla NET",
+  "Profiles": {
+    "CSharp": {
+      "ProfileKey": "AXW09CPPPOAnaJWzaUtS",
+      "ProfileTimestamp": "2020-10-13T14:12:09Z"
+    }
+  }
+}

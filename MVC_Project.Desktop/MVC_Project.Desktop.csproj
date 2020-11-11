@@ -12,6 +12,7 @@
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <TargetFrameworkProfile />
+    <CodeAnalysisRuleSet>..\.sonarlint\ensitechdevops_plantilla-netcsharp.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -22,6 +23,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>..\.sonarlint\ensitechdevops_plantilla-netcsharp.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -31,9 +33,11 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>..\.sonarlint\ensitechdevops_plantilla-netcsharp.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Base|AnyCPU'">
     <OutputPath>bin\Base\</OutputPath>
+    <CodeAnalysisRuleSet>..\.sonarlint\ensitechdevops_plantilla-netcsharp.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.ReportViewer.Common, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
@@ -149,6 +153,9 @@
     <EmbeddedResource Include="Users\AdminUsersForm.resx">
       <DependentUpon>AdminUsersForm.cs</DependentUpon>
     </EmbeddedResource>
+    <None Include="..\.sonarlint\ensitechdevops_plantilla-netcsharp.ruleset">
+      <Link>ensitechdevops_plantilla-netcsharp.ruleset</Link>
+    </None>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -181,6 +188,9 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <AdditionalFiles Include="..\.sonarlint\ensitechdevops_plantilla-net\CSharp\SonarLint.xml">
+      <Link>SonarLint.xml</Link>
+    </AdditionalFiles>
     <Content Include="..\packages\Microsoft.SqlServer.Types.11.0.1\nativeBinaries\x64\msvcr100.dll">
       <Link>SqlServerTypes\x64\msvcr100.dll</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
