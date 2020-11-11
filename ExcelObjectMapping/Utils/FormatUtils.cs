@@ -48,7 +48,7 @@ namespace Utils
                               where m.Name == "TryParse"
                               select m).FirstOrDefault();
             if (methodInfo == null)
-                throw new ApplicationException("Unable to find TryParse method!");
+                throw new Exception("Unable to find TryParse method!");
             object result = methodInfo.Invoke(null, new object[] { curremtObject.ToString(), value });
             if ((result != null))
             {
@@ -56,7 +56,7 @@ namespace Utils
                                     where m.Name == "Parse"
                                     select m).FirstOrDefault();
                 if (methodInfo == null)
-                    throw new ApplicationException("Unable to find Parse method!");
+                    throw new Exception("Unable to find Parse method!");
                 bool isParser = ((bool)result);
                 if (isParser)
                 {
