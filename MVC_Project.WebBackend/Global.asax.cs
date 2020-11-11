@@ -18,7 +18,7 @@ namespace MVC_Project.WebBackend
             BundleConfig.RegisterBundles(BundleTable.Bundles);
         }
 
-        private void Application_BeginRequest(object sender, EventArgs e)
+        protected void Application_BeginRequest(object sender, EventArgs e)
         {
             try
             {
@@ -32,10 +32,13 @@ namespace MVC_Project.WebBackend
                 }
                 //Trace.TraceInformation("Application_EndRequest = Headers[Cache-Control] = " + Response.Headers["Cache-Control"]);
             }
-            catch (Exception ex) { }
+            catch (Exception ex)
+            {
+                //DONT HANDLE IF FAILS
+            }
         }
 
-        private void Application_EndRequest(object sender, EventArgs e)
+        protected void Application_EndRequest(object sender, EventArgs e)
         {
             try
             {
@@ -50,7 +53,10 @@ namespace MVC_Project.WebBackend
                 }
                 //Trace.TraceInformation("Application_EndRequest = Headers[Cache-Control] = " + Response.Headers["Cache-Control"]);
             }
-            catch (Exception ex) { }
+            catch (Exception ex)
+            {
+                //DONT HANDLE IF FAILS
+            }
         }
 
         protected void Application_Error(object sender, EventArgs e)
@@ -121,7 +127,10 @@ namespace MVC_Project.WebBackend
                               trace.GetFrame(0).GetFileLineNumber(),
                               trace.GetFrame(0).GetMethod().Name));
                 }
-                catch (Exception ex) { }
+                catch (Exception ex)
+                {
+                    //DONT HANDLE IF FAILS
+                }
 
                 Response.Write(HttpUtility.HtmlEncode("<p><b>Mensaje de error: </b>" + exception.Message + "</p>\n"));
                 if (exception.InnerException != null && !string.IsNullOrEmpty(exception.InnerException.Message))

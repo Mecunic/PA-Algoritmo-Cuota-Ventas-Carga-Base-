@@ -31,12 +31,12 @@ namespace MVC_Project.WebBackend.Utils
 
             if (filterContext.Result is FileResult)
                 //jquery.fileDownload uses this cookie to determine that a file download has completed successfully
-                response.AppendCookie(new HttpCookie(CookieName, "true") { Path = CookiePath });
+                response.AppendCookie(new HttpCookie(CookieName, "true") { Path = CookiePath , Secure = true, HttpOnly = true });
             else
                 //ensure that the cookie is removed in case someone did a file download without using jquery.fileDownload
                 if (httpContext.Request.Cookies[CookieName] != null)
             {
-                response.AppendCookie(new HttpCookie(CookieName, "true") { Expires = DateTime.Now.AddYears(-1), Path = CookiePath });
+                response.AppendCookie(new HttpCookie(CookieName, "true") { Expires = DateTime.Now.AddYears(-1), Path = CookiePath, Secure = true, HttpOnly = true });
             }
         }
 

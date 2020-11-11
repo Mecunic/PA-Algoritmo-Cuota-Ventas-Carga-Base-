@@ -125,12 +125,11 @@ namespace MVC_Project.WebBackend.Controllers
         {
             AuthUser authUser = Authenticator.AuthenticatedUser;
             string SASToken = System.Configuration.ConfigurationManager.AppSettings["StorageSASToken"];
-
             Document document = _documentService.FindBy(x => x.Uuid == Uuid).FirstOrDefault();
-            
             var client = new WebClient();
             var content = client.DownloadData(document.URL + SASToken);
             var stream = new MemoryStream(content);
+            client.Dispose();
             return File(stream, "application/" + Path.GetExtension(document.URL).Substring(1), document.Name);
          
         }

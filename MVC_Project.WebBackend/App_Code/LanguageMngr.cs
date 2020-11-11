@@ -39,9 +39,14 @@ namespace MVC_Project.WebBackend.App_Code
                 Thread.CurrentThread.CurrentCulture = CultureInfo.CreateSpecificCulture(cultureInfo.Name);
                 HttpCookie langCookie = new HttpCookie("culture", lang);
                 langCookie.Expires = DateTime.Now.AddYears(1);
+                langCookie.Secure = true;
+                langCookie.HttpOnly = true;
                 HttpContext.Current.Response.Cookies.Add(langCookie);
             }
-            catch (Exception) { }
+            catch (Exception)
+            {
+                //DONT HANDLE IF FAILS
+            }
         }
     }
     public class Language
