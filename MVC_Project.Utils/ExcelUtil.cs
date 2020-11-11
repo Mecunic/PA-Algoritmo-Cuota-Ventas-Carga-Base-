@@ -550,7 +550,9 @@ namespace MVC_Project.Utils
                 }
             }
             catch (Exception)
-            { }
+            {
+                //DONT HANDLE IF ERROR
+            }
         }
 
 
@@ -1265,7 +1267,9 @@ namespace MVC_Project.Utils
                     }
                 }
                 catch (Exception)
-                { }
+                {
+                    //DONT HANDLE IF ERROR
+                }
             }
             return dataTable;
         }
