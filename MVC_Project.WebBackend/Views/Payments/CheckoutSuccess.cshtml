@@ -30,30 +30,30 @@
                         @if (!string.IsNullOrEmpty(Model.Id))
                         {
                             <div class="col-sm-12">
-                                <b>Tipo:</b> @Html.Raw(Model.PaymentMethod)
+                                <b>Tipo:</b> @Model.PaymentMethod
                                 <br />
-                                <b>ID Transacción:</b> @Html.Raw(Model.Id)
+                                <b>ID Transacción:</b> @Model.Id
                                 <br />
-                                <b>ID Orden:</b> @Html.Raw(Model.OrderId)
+                                <b>ID Orden:</b> @Model.OrderId
                                 <br />
-                                <b>Monto:</b> @Html.Raw(Model.Amount)
+                                <b>Monto:</b> @Model.Amount
                                 <br />
-                                <b>Descripción:</b> @Html.Raw(Model.Description)
+                                <b>Descripción:</b> @Model.Description
                                 <br />
 
                                 @if (Model.PaymentMethod == PaymentMethod.BANK_ACCOUNT)
                                 {
-                                    <b>Fecha de Vencimiento:</b> @Html.Raw(Model.DueDate)
+                                    <b>Fecha de Vencimiento:</b> @Model.DueDate
                                     <br />
-                                    <b>Banco:</b> @Html.Raw(Model.BankName)
+                                    <b>Banco:</b> @Model.BankName
                                     <br />
-                                    <b>CLABE:</b> @Html.Raw(Model.Clabe)
+                                    <b>CLABE:</b> @Model.Clabe
                                     <br />
-                                    <b>Referencia:</b> @Html.Raw(Model.Name)
+                                    <b>Referencia:</b> @Model.Name
                                     <br />
-                                    <b>Convenio:</b> @Html.Raw(Model.Agreement)
+                                    <b>Convenio:</b> @Model.Agreement
                                     <br />
-                                    <b>Ficha de Pago:</b> <a href="@Html.Raw(Model.PaymentCardURL)" target="_blank" class="btn btn-block">Descarga</a>
+                                    <b>Ficha de Pago:</b> <a href="@Model.PaymentCardURL" target="_blank" class="btn btn-block">Descarga</a>
                                     <br />
                                 }
                             </div>
@@ -61,7 +61,7 @@
                         else
                         {
                             <div class="col-sm-12">
-                                <b>Descripción:</b> @Html.Raw(Model.Description)
+                                <b>Descripción:</b> @Model.Description
                                 <br />
                             </div>
                         }

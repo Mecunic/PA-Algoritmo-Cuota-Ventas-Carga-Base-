@@ -46,7 +46,7 @@ namespace MVC_Project.WebBackend.Utils.Enums
 
         public override int GetHashCode()
         {
-            return base.GetHashCode();
+            return Id;
         }
 
         public int CompareTo(object other) => Id.CompareTo(((Enumeration)other).Id);
