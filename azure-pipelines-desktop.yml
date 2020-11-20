@@ -21,11 +21,12 @@ steps:
     restoreSolution: '$(solution)'
 
 - task: VSBuild@1
+  displayName: 'Build solution **\*.sln'
   inputs:
-    solution: '$(solution)'
-    msbuildArgs: '/t:"MVC_Project_Desktop" /target:Publish'
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
+    solution: '$(Parameters.solution)'
+    msbuildArgs: '/t:"MVC_Project_Desktop"'
+    platform: '$(BuildPlatform)'
+    configuration: '$(BuildConfiguration)'
 
 - task: VSTest@2
   inputs:
