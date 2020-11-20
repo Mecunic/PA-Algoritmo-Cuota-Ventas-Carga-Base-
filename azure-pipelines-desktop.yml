@@ -23,10 +23,10 @@ steps:
 - task: VSBuild@1
   displayName: 'Build solution **\*.sln'
   inputs:
-    solution: '$(Parameters.solution)'
+    solution: '$(solution)'
     msbuildArgs: '/t:"MVC_Project_Desktop"'
-    platform: '$(BuildPlatform)'
-    configuration: '$(BuildConfiguration)'
+    platform: '$(buildConfiguration)'
+    configuration: '$(buildConfiguration)'
 
 - task: VSTest@2
   inputs:
