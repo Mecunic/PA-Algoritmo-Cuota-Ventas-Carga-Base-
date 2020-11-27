@@ -1,0 +1,79 @@
+﻿@model MVC_Project.WebBackend.Controllers.MonitorViewModel
+@{
+    ViewBag.Title = "Monitor";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="es-mx">
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title> @System.Web.Configuration.WebConfigurationManager.AppSettings["AppName"] | @ViewLabels.AUTH_LOGIN_TITLE </title>
+
+    @Styles.Render("~/Content/template/css")
+
+
+    @Styles.Render("~/font-awesome/css")
+    @Scripts.Render("~/font-awesome/js")
+
+    @Styles.Render("~/plugins/sweetAlertStyles")
+    @Scripts.Render("~/plugins/sweetAlert")
+
+</head>
+
+<body class="gray-bg">
+
+    <div class="middle-box text-center loginscreen animated fadeInDown">
+
+        @using (Html.BeginForm("Import", "Monitor", FormMethod.Post, new { @class = "form-horizontal", role = "form", @id = "CreateForm", enctype = "multipart/form-data" }))
+        {
+
+            @Html.AntiForgeryToken()
+
+            <div class="form-horizontal">
+                @Html.ValidationSummary(true)
+                <input type="hidden" name="StorageProvider" value="azure"/>
+                <div class="form-group">
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(model => model.ImportedFile, new { @class = "form-control", @required = "required", type = "file", accept = "image/*", capture = "camera" })
+                        @Html.ValidationMessageFor(model => model.ImportedFile)
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Analizar" class="btn btn-primary" />
+                    </div>
+                </div>
+            </div>
+        }
+
+        @if (Model != null && Model.ResultMonitor != null)
+        {
+            <div class="card">
+                <div class="card-body">
+                    @foreach (var result in Model.ResultMonitor.analyzeResult.readResults)
+                    {
+                        foreach (var item in result.lines)
+                        {
+                            <br />@item.text.Trim().Replace(" ","")
+                        }
+                    }
+                </div>
+            </div>
+        }
+    </div>
+
+    <!-- Mainly scripts -->
+    <script src="~/Scripts/jquery-3.1.1.min.js"></script>
+    <script src="~/Scripts/popper.min.js"></script>
+    <script src="~/Scripts/bootstrap.js"></script>
+    <script src="/Scripts/plugins/validate/jquery.validate.min.js"></script>
+</body>
+</html>
+
+
+
