@@ -117,13 +117,19 @@ namespace MVC_Project.WebBackend
                     Response.Write(HttpUtility.HtmlEncode("<p><b>Stack: </b>" + HttpUtility.HtmlEncode(exception.StackTrace).Replace("Ensitech", "User1") + "</p>\n"));
                 }
 
+                var sqlException = exception.GetBaseException() as System.Data.SqlClient.SqlException;
+                if (sqlException != null)
+                {
+                    exception = exception.GetBaseException();
+                }
+
                 try
                 {
                     System.Diagnostics.StackTrace trace = new System.Diagnostics.StackTrace(exception, true);
                     Response.Write(
                         String.Format("<p>Error Detail Message :{0}  => Error In :{1}  => Line Number :{2} => Error Method:{3}</p>",
                               HttpUtility.HtmlEncode(exception.Message),
-                              trace.GetFrame(0).GetFileName().Replace("Ensitech", "User1"),
+                              trace.GetFrame(0).GetFileName() != null ? trace.GetFrame(0).GetFileName().Replace("Ensitech", "User1") : "",
                               trace.GetFrame(0).GetFileLineNumber(),
                               trace.GetFrame(0).GetMethod().Name));
                 }
