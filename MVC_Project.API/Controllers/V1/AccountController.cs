@@ -93,7 +93,6 @@ namespace MVC_Project.API.Controllers
         [AuthorizeApiKey]
         public HttpResponseMessage GetAccount()
         {
-            List<MessageResponse> messages = new List<MessageResponse>();
             int UserId = GetUserId();
             var user = _userService.GetById(UserId);
             if (user != null)
@@ -122,8 +121,6 @@ namespace MVC_Project.API.Controllers
         {
             try
             {
-                List<MessageResponse> messages = new List<MessageResponse>();
-
                 var user = _userService.FindBy(e => e.Email == email).FirstOrDefault();
                 if (user == null)
                 {
@@ -145,12 +142,11 @@ namespace MVC_Project.API.Controllers
                 string template = "aa61890e-5e39-43c4-92ff-fae95e03a711";
                 NotificationUtil.SendNotification(Email, customParams, template);
 
-                user.ExpiraToken = DateTime.Now.AddDays(1);
+                user.ExpiraToken = DateUtil.GetDateTimeNow().AddDays(1);
                 user.Token = token;
                 _userService.Update(user);
 
-                messages.Add(new MessageResponse { Type = MessageType.info.ToString("G"), Description = "Solicitud enviada." });
-                return CreateResponse(messages);
+                return CreateResponse("OK", "Datos devueltos correctamente");
             }
             catch (Exception e)
             {
@@ -164,7 +160,6 @@ namespace MVC_Project.API.Controllers
         {
             try
             {
-                List<MessageResponse> messages = new List<MessageResponse>();
                 var decrypted = EncryptorText.DataDecrypt(request.Token.Replace("!!", "/").Replace("$", "+"));
                 if (string.IsNullOrEmpty(request.Token) || string.IsNullOrEmpty(decrypted))
                 {
@@ -172,7 +167,7 @@ namespace MVC_Project.API.Controllers
                 }
                 string id = decrypted.Split('@').First();
                 var user = _userService.FindBy(x => x.Uuid == id).First();
-                if (user == null || DateTime.Now > user.ExpiraToken)
+                if (user == null || DateUtil.GetDateTimeNow() > user.ExpiraToken)
                 {
                     return CreateErrorResponse(HttpStatusCode.BadRequest, "El token ha expirado.");
                 }
@@ -182,8 +177,8 @@ namespace MVC_Project.API.Controllers
                 }
                 user.Password = request.Password;
                 _userService.Update(user);
-                messages.Add(new MessageResponse { Type = MessageType.info.ToString("G"), Description = "Contraseña actualizada." });
-                return CreateResponse(messages);
+
+                return CreateResponse("OK", "Datos actualizados correctamente");
             }
             catch (Exception e)
             {
