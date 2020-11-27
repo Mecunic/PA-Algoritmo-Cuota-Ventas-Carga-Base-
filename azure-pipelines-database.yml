@@ -8,7 +8,6 @@ trigger:
       - master
   paths:
     include:
-    - 'MVC_Project.Utils'
     - 'MVC_Project.Database'
 
 pool:
