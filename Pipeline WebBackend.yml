@@ -10,6 +10,7 @@ trigger:
     include:
     - 'MVC_Project.Utils'
     - 'MVC_Project.WebBackend'
+    - 'MVC_Project_WebBackend'
 
 pool:
   vmImage: 'windows-latest'
