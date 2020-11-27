@@ -34,13 +34,20 @@ namespace MVC_Project.API.Controllers
         {
             try
             {
-                List<MessageResponse> messages = new List<MessageResponse>();
+                if (request == null)
+                {
+                    return CreateErrorResponse(HttpStatusCode.BadRequest, "No se recibieron los parámetros de entrada.");
+                }
                 var currentUsers = _userService.FindBy(x => x.Email.ToUpper().Trim() == request.Email.ToUpper().Trim());
                 if (currentUsers.Count() > 0)
                 {
-                    messages.Add(new MessageResponse { Type = MessageType.error.ToString("G"), Description = "El correo electrónico proporcionado ya se encuentra registrado." });
-                    return CreateErrorResponse(null, messages);
+                    return CreateErrorResponse(HttpStatusCode.BadRequest, "El correo electrónico proporcionado ya se encuentra registrado.");
                 }
+                /*if (!FormatUtil.IsEmailValid(request.Email.Trim()))
+                {
+                    return CreateErrorResponse(HttpStatusCode.BadRequest, "El formato de correo electrónico no es válido.");
+                }*/
+                
                 Role roleBO = _roleService.FindBy(x => x.Code == Constants.ROLE_DEFAULT_API).FirstOrDefault();
                 User user = new User
                 {
@@ -72,14 +79,12 @@ namespace MVC_Project.API.Controllers
                 }
                 else
                 {
-                    messages.Add(new MessageResponse { Type = MessageType.error.ToString("G"), Description = "No se pudo crear la cuenta del usuario." });
+                    return CreateErrorResponse(HttpStatusCode.BadRequest, "No se pudo crear la cuenta del usuario.");
                 }
-
-                return CreateResponse(messages);
             }
             catch (Exception e)
             {
-                return CreateErrorResponse(e, null);
+                return CreateErrorResponse(e);
             }
         }
 
@@ -107,9 +112,8 @@ namespace MVC_Project.API.Controllers
             }
             else
             {
-                messages.Add(new MessageResponse { Type = MessageType.error.ToString("G"), Description = "No se pudo crear la cuenta del usuario." });
+                return CreateErrorResponse(HttpStatusCode.BadRequest, "No se pudo obtener los datos del usuario.");
             }
-            return CreateResponse(messages);
         }
 
         [HttpGet]
@@ -123,13 +127,11 @@ namespace MVC_Project.API.Controllers
                 var user = _userService.FindBy(e => e.Email == email).FirstOrDefault();
                 if (user == null)
                 {
-                    messages.Add(new MessageResponse { Type = MessageType.error.ToString("G"), Description = "El correo electrónico solicitado no se encuentra registrado." });
-                    return CreateErrorResponse(null, messages);
+                    return CreateErrorResponse(HttpStatusCode.BadRequest, "El correo electrónico solicitado no se encuentra registrado.");
                 }
                 if (user.Role.Code != Constants.ROLE_DEFAULT_API)
                 {
-                    messages.Add(new MessageResponse { Type = MessageType.error.ToString("G"), Description = "El usuario no cuenta con acceso al app." });
-                    return CreateErrorResponse(null, messages);
+                    return CreateErrorResponse(HttpStatusCode.BadRequest, "El usuario no cuenta con acceso al API");
                 }
                 string token = (user.Uuid + "@" + DateTime.Now.AddDays(1).ToString());
                 token = EncryptorText.DataEncrypt(token).Replace("/", "!!").Replace("+", "$");
@@ -152,7 +154,7 @@ namespace MVC_Project.API.Controllers
             }
             catch (Exception e)
             {
-                return CreateErrorResponse(e, null);
+                return CreateErrorResponse(e);
             }
         }
 
@@ -166,20 +168,17 @@ namespace MVC_Project.API.Controllers
                 var decrypted = EncryptorText.DataDecrypt(request.Token.Replace("!!", "/").Replace("$", "+"));
                 if (string.IsNullOrEmpty(request.Token) || string.IsNullOrEmpty(decrypted))
                 {
-                    messages.Add(new MessageResponse { Type = MessageType.error.ToString("G"), Description = "Token de recuperación no encontrado." });
-                    return CreateErrorResponse(null, messages);
+                    return CreateErrorResponse(HttpStatusCode.BadRequest, "Token de recuperación no encontrado.");
                 }
                 string id = decrypted.Split('@').First();
                 var user = _userService.FindBy(x => x.Uuid == id).First();
                 if (user == null || DateTime.Now > user.ExpiraToken)
                 {
-                    messages.Add(new MessageResponse { Type = MessageType.error.ToString("G"), Description = "El token ha expirado." });
-                    return CreateErrorResponse(null, messages);
+                    return CreateErrorResponse(HttpStatusCode.BadRequest, "El token ha expirado.");
                 }
                 if (user.Role.Code != Constants.ROLE_DEFAULT_API)
                 {
-                    messages.Add(new MessageResponse { Type = MessageType.error.ToString("G"), Description = "El usuario no cuenta con acceso." });
-                    return CreateErrorResponse(null, messages);
+                    return CreateErrorResponse(HttpStatusCode.BadRequest, "El usuario no cuenta con acceso.");
                 }
                 user.Password = request.Password;
                 _userService.Update(user);
@@ -188,7 +187,7 @@ namespace MVC_Project.API.Controllers
             }
             catch (Exception e)
             {
-                return CreateErrorResponse(e, null);
+                return CreateErrorResponse(e);
             }
         }
     }

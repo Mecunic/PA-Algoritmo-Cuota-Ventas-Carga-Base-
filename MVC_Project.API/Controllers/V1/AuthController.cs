@@ -35,26 +35,32 @@ namespace MVC_Project.API.Controllers.V1
         {
             try
             {
-                List<MessageResponse> messages = new List<MessageResponse>();
-                var user = _authService.Authenticate(request.Username, SecurityUtil.EncryptPassword(request.Password));
-                if (user == null || !user.Status)
+                if (request == null)
                 {
-                    messages.Add(new MessageResponse { Type = MessageType.error.ToString("G"), Description = "El usuario no existe o contraseña inválida." });
-                    return CreateErrorResponse(null, messages);
+                    return CreateErrorResponse(HttpStatusCode.BadRequest, "No se recibieron los parámetros de entrada.");
                 }
-                if (user.Role.Code != Constants.ROLE_DEFAULT_API)
+                var user = _authService.Authenticate(request.Username, request.Password);
+                if (user == null)
                 {
-                    messages.Add(new MessageResponse { Type = MessageType.error.ToString("G"), Description = "El usuario no cuenta con acceso al API." });
-                    return CreateErrorResponse(null, messages);
+                    return CreateErrorResponse(HttpStatusCode.BadRequest, "El usuario no existe o contraseña inválida.");
                 }
-                var expiration = DateTime.UtcNow.AddHours(Constants.HOURS_EXPIRATION_KEY);
+                if (!user.Status)
+                {
+                    return CreateErrorResponse(HttpStatusCode.BadRequest, "La cuenta del usuario se encuentra inactiva o no se ha confirmado.");
+                }
+                /*if (user.Role.Code != Constants.ROLE_DEFAULT_API)
+                {
+                    return CreateErrorResponse(HttpStatusCode.BadRequest, "El usuario no cuenta con acceso al API");
+                }*/
+                var expiration = DateUtil.GetDateTimeNow().AddHours(Constants.HOURS_EXPIRATION_KEY).ToUniversalTime();
                 user.ApiKey = Guid.NewGuid().ToString();
                 user.ExpiraApiKey = expiration;
+                user.LastLoginAt = DateUtil.GetDateTimeNow();
                 _userService.Update(user);
                 var response = new AuthUserResponse
                 {
                     ApiKey = user.ApiKey,
-                    ApiKeyExpiration = expiration.ToString(Constants.DATE_FORMAT_CALENDAR),
+                    ApiKeyExpiration = DateUtil.ConvertToUnixTime(expiration),
                     Uuid = user.Uuid,
                     FirstName = user.FirstName,
                     LastName = user.LastName,
@@ -65,7 +71,7 @@ namespace MVC_Project.API.Controllers.V1
             }
             catch (Exception e)
             {
-                return CreateErrorResponse(e, null);
+                return CreateErrorResponse(e);
             }
         }
 
@@ -91,9 +97,8 @@ namespace MVC_Project.API.Controllers.V1
             }
             else
             {
-                messages.Add(new MessageResponse { Type = MessageType.error.ToString("G"), Description = "No se pudo crear la cuenta del usuario." });
+                return CreateErrorResponse(HttpStatusCode.BadRequest, "El usuario no existe o cuenta inválida.");   
             }
-            return CreateResponse(messages);
         }
     }
 }

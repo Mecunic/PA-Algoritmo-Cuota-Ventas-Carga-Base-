@@ -105,7 +105,7 @@ namespace MVC_Project.API.Controllers.V1
             }
             catch (Exception e)
             {
-                return CreateErrorResponse(e, null);
+                return CreateErrorResponse(e);
             }
         }
 
@@ -147,7 +147,7 @@ namespace MVC_Project.API.Controllers.V1
             }
             catch (Exception e)
             {
-                return CreateErrorResponse(e, null);
+                return CreateErrorResponse(e);
             }
         }
 

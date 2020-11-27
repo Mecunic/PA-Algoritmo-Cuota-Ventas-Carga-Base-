@@ -9,6 +9,8 @@ namespace MVC_Project.API.Models
     [DataContract]
     public class ApiResponse<T> where T : class
     {
+        [DataMember(Name = "success")]
+        public bool Success { get; set; }
         [DataMember(Name = "result")]
         public string Result { get; set; }
         [DataMember(Name = "code")]

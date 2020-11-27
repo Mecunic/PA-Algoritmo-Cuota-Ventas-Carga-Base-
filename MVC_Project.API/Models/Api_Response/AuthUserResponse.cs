@@ -12,7 +12,7 @@ namespace MVC_Project.API.Models.Api_Response
         [DataMember(Name = "api_key")]
         public string ApiKey { get; set; }
         [DataMember(Name = "api_key_expiration")]
-        public string ApiKeyExpiration { get; set; }
+        public long ApiKeyExpiration { get; set; }
 
         [DataMember(Name = "id")]
         public string Uuid { get; set; }

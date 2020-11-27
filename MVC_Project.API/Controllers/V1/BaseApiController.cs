@@ -18,50 +18,59 @@ namespace MVC_Project.API.Controllers
         {
             return Convert.ToInt32(Thread.CurrentPrincipal.Identity.Name);
         }
-        public HttpResponseMessage CreateResponse<T>(T data, string message = "") where T : class
+        public HttpResponseMessage CreateResponse<T>(T data, string message = ""/*, PaginationResponse Pagination = null*/) where T : class
         {
             var response = new ApiResponse<T>()
             {
+                Success = true,
                 Result = "success",
                 ResponseData = data,
                 StatusCode = (int)HttpStatusCode.OK,
-                Message = message
+                Message = message,
+                //Pagination = Pagination
             };
             //LOG de respuesta si es necesario
             return Request.CreateResponse(HttpStatusCode.OK, response);
         }
 
-        public HttpResponseMessage CreateErrorResponse(Exception exception, IList<MessageResponse> messages)
+        public HttpResponseMessage CreateErrorResponse(HttpStatusCode statusCode, string message)
         {
-            var response = new ApiResponse<IList<MessageResponse>>();
-            if (exception == null)
+            int Status = Convert.ToInt32(statusCode);
+
+            var response = new ApiResponse<MessageResponse>()
             {
-                //var res = messages.Select(x => { x.Type = MessageType.error.ToString("G"); return x; }).ToList();
-                response = new ApiResponse<IList<MessageResponse>>
-                {
-                    Result = "error",
-                    ResponseData = messages,
-                    StatusCode = (int)HttpStatusCode.BadRequest,
-                    Message = messages.First().Description
-                };
-            }
-            else
+                Success = false,
+                Result = "error",
+                ResponseData = new MessageResponse() { Description = message },
+                StatusCode = (int)HttpStatusCode.BadRequest,
+                Message = message
+            };
+            return Request.CreateResponse((HttpStatusCode)response.StatusCode, response);
+            //return Request.CreateResponse(defaultCode, apiResponse, JsonUtil.Formatter(), JsonUtil.mediatype);
+        }
+
+        public HttpResponseMessage CreateErrorResponse(Exception exception)
+        {
+            string errorMsg = "Ha ocurrido un error!";
+            int StatusCode = (int)HttpStatusCode.InternalServerError;
+            if (exception != null)
             {
                 Win32Exception win32Ex = exception as Win32Exception;
-                string errorMsg = exception.InnerException != null ? exception.InnerException.Message : exception.Message;
-                int errorCode = win32Ex == null ? (int)HttpStatusCode.BadRequest : (int)HttpStatusCode.InternalServerError;
-                messages = new List<MessageResponse>();
-                messages.Add(new MessageResponse { Type = MessageType.error.ToString("G"), Description = errorMsg });
-                response = new ApiResponse<IList<MessageResponse>>
-                {
-                    Result = "error",
-                    ResponseData = messages,
-                    StatusCode = errorCode,
-                    Message = messages.First().Description
-                };
+                errorMsg = exception.InnerException != null ? exception.InnerException.Message : exception.Message;
+                StatusCode = win32Ex == null ? (int)HttpStatusCode.BadRequest : (int)HttpStatusCode.InternalServerError;
             }
-            //LOG de respuesta si es necesario
+
+            var response = new ApiResponse<MessageResponse>()
+            {
+                Success = false,
+                Result = "error",
+                ResponseData = new MessageResponse() { Description = errorMsg },
+                StatusCode = StatusCode,
+                Message = errorMsg
+            };
             return Request.CreateResponse((HttpStatusCode)response.StatusCode, response);
         }
+
+
     }
 }
