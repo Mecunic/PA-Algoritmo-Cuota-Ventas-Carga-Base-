@@ -35,7 +35,7 @@ steps:
   inputs:
     solution: '$(solution)'
     msbuildArgs: '/t:"MVC_Project_Desktop"'
-    platform: '$(buildConfiguration)'
+    platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
 
 - task: VSTest@2
