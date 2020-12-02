@@ -9,9 +9,12 @@ namespace MVC_Project.WebBackend.App_Code
 {
     public class LanguageMngr
     {
+        public static bool IsMultiLanguage = false;
+        public static string DefaultLanguageCulture = "";
+
         public static List<Language> AvailableLanguages = new List<Language> {
             new Language {
-                LanguageFullName = "English", LanguageCultureName = "en"
+                LanguageFullName = "English", LanguageCultureName = "en",
             },
             new Language {
                 LanguageFullName = "Español", LanguageCultureName = "es-MX"
@@ -23,7 +26,7 @@ namespace MVC_Project.WebBackend.App_Code
         }
         public static string GetDefaultLanguage()
         {
-            return AvailableLanguages[0].LanguageCultureName;
+            return (!DefaultLanguageCulture.Trim().Any()) ? AvailableLanguages[0].LanguageCultureName : AvailableLanguages.Where(AL => AL.LanguageCultureName.Equals(DefaultLanguageCulture)).FirstOrDefault().LanguageCultureName;
         }
         public static void SetDefaultLanguage()
         {
@@ -41,9 +44,10 @@ namespace MVC_Project.WebBackend.App_Code
                 langCookie.Expires = DateTime.Now.AddYears(1);
                 langCookie.Secure = true;
                 langCookie.HttpOnly = true;
+                DefaultLanguageCulture = lang;
                 HttpContext.Current.Response.Cookies.Add(langCookie);
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 //DONT HANDLE IF FAILS
             }
