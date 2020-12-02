@@ -5,7 +5,9 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
-
+using System.Configuration;
+using MVC_Project.WebBackend.Utils;
+using MVC_Project.WebBackend.App_Code;
 namespace MVC_Project.WebBackend
 {
     public class MvcApplication : System.Web.HttpApplication
@@ -16,6 +18,12 @@ namespace MVC_Project.WebBackend
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+            var _multilanguage = System.Configuration.ConfigurationManager.AppSettings["Lang.MultiLanguage"];
+            bool IsMultiLanguage = _multilanguage == null ? false : (_multilanguage.Trim().ToUpper().Equals(Boolean.TrueString.ToUpper()));
+            var _default = System.Configuration.ConfigurationManager.AppSettings["Lang.Default"];
+            var language = _default == null ? ViewConstants.ESPAÑOL : (_default.Trim().ToUpper().Equals(ViewConstants.INGLES.ToUpper()) ? ViewConstants.INGLES : ViewConstants.ESPAÑOL);
+            LanguageMngr.SetLanguage(language);
+            LanguageMngr.IsMultiLanguage = IsMultiLanguage;
         }
 
         protected void Application_BeginRequest(object sender, EventArgs e)
@@ -148,5 +156,7 @@ namespace MVC_Project.WebBackend
             // Clear the error from the server
             Server.ClearError();
         }
+
+        
     }
 }

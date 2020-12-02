@@ -1,4 +1,5 @@
-﻿@model MVC_Project.BackendWeb.Models.AuthViewModel
+﻿@using MVC_Project.WebBackend.Utils;
+@model MVC_Project.BackendWeb.Models.AuthViewModel
 @{
     Layout = null;
 }
@@ -22,11 +23,46 @@
 
 </head>
 
-<body class="gray-bg">
+@{
+    var language = ViewConstants.GetDefaultLanguage();
+}
 
+<body class="gray-bg">
     <div style="padding:5px">
-        @Html.ActionLink("Español", "ChangeLanguage", "Auth", new { lang = "es-MX" }, null) | @Html.ActionLink("Inglés", "ChangeLanguage", "Auth", new { lang = "en" }, null)
+        @if (ViewConstants.IsMultiLanguage())
+        {
+            object español = null;
+            object ingles = null;
+            
+            
+            if (language.LanguageCultureName.Equals(ViewConstants.ESPAÑOL))
+            {
+                @Html.LabelForModel("Español")
+            }
+            else
+            {
+                @Html.ActionLink("Español", "ChangeLanguage", "Auth", new { lang = ViewConstants.ESPAÑOL }, español)
+            }
+
+            <span>|</span>
+
+            if (language.LanguageCultureName.Equals(ViewConstants.INGLES))
+            {
+                @Html.LabelForModel("Inglés")
+            }
+            else
+            {
+                @Html.ActionLink("Inglés", "ChangeLanguage", "Auth", new { lang = ViewConstants.INGLES }, ingles)
+            }
+
+
+
+
+        }
     </div>
+
+
+
 
     <div class="middle-box text-center loginscreen animated fadeInDown">
         <div>
