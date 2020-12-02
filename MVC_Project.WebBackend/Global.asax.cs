@@ -18,10 +18,9 @@ namespace MVC_Project.WebBackend
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
-            var _multilanguage = System.Configuration.ConfigurationManager.AppSettings["Lang.MultiLanguage"];
-            bool IsMultiLanguage = _multilanguage == null ? false : (_multilanguage.Trim().ToUpper().Equals(Boolean.TrueString.ToUpper()));
+            bool IsMultiLanguage = Convert.ToBoolean(System.Configuration.ConfigurationManager.AppSettings["Lang.MultiLanguage"]);
             var _default = System.Configuration.ConfigurationManager.AppSettings["Lang.Default"];
-            var language = _default == null ? ViewConstants.ESPAÑOL : (_default.Trim().ToUpper().Equals(ViewConstants.INGLES.ToUpper()) ? ViewConstants.INGLES : ViewConstants.ESPAÑOL);
+            var language = _default == null ? ViewConstants.ESPANOL : (_default.Trim().ToUpper().Equals(ViewConstants.INGLES.ToUpper()) ? ViewConstants.INGLES : ViewConstants.ESPANOL);
             LanguageMngr.SetLanguage(language);
             LanguageMngr.IsMultiLanguage = IsMultiLanguage;
         }
