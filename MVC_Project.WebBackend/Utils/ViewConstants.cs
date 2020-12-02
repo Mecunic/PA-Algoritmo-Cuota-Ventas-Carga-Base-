@@ -9,7 +9,7 @@ namespace MVC_Project.WebBackend.Utils
     public class ViewConstants
     {
         public static readonly string AUTHENTICATED_USER_PROFILE = "8af092bb-a8e0-437f-a7eb-8c1ac1f233a2_USER_PROFILE";
-        public static readonly string ESPAÑOL = "es-MX";
+        public static readonly string ESPANOL = "es-MX";
         public static readonly string INGLES = "en";
         public static bool IsMultiLanguage()
         {

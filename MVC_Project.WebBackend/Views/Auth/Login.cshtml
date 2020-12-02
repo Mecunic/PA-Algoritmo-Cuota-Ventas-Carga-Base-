@@ -31,17 +31,17 @@
     <div style="padding:5px">
         @if (ViewConstants.IsMultiLanguage())
         {
-            object español = null;
+            object espanol = null;
             object ingles = null;
-            
-            
+
+
             if (language.LanguageCultureName.Equals(ViewConstants.ESPAÑOL))
             {
                 @Html.LabelForModel("Español")
             }
             else
             {
-                @Html.ActionLink("Español", "ChangeLanguage", "Auth", new { lang = ViewConstants.ESPAÑOL }, español)
+                @Html.ActionLink("Español", "ChangeLanguage", "Auth", new { lang = ViewConstants.ESPAÑOL }, espanol)
             }
 
             <span>|</span>
