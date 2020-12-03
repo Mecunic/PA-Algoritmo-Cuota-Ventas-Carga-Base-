@@ -35,13 +35,13 @@
             object ingles = null;
 
 
-            if (language.LanguageCultureName.Equals(ViewConstants.ESPAÑOL))
+            if (language.LanguageCultureName.Equals(ViewConstants.ESPANOL))
             {
                 @Html.LabelForModel("Español")
             }
             else
             {
-                @Html.ActionLink("Español", "ChangeLanguage", "Auth", new { lang = ViewConstants.ESPAÑOL }, espanol)
+                @Html.ActionLink("Español", "ChangeLanguage", "Auth", new { lang = ViewConstants.ESPANOL }, espanol)
             }
 
             <span>|</span>
