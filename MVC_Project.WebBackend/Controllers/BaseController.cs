@@ -1,5 +1,6 @@
 ﻿using MVC_Project.Domain.Helpers;
 using MVC_Project.WebBackend.App_Code;
+using MVC_Project.WebBackend.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -48,6 +49,15 @@ namespace MVC_Project.WebBackend.Controllers
             {
                 Message = message
             }, JsonRequestBehavior.AllowGet);
+        }
+
+        protected void AddViewMessage(TypeMessageView type,string message)
+        {
+            Session.Add("View.Message", new MessageView
+            {
+                type = type,
+                description = message
+            });
         }
     }
 }

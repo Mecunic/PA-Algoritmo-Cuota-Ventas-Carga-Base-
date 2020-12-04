@@ -210,11 +210,13 @@
     <Compile Include="Models\DocumentViewModel.cs" />
     <Compile Include="Models\ExcelImport\UserImport.cs" />
     <Compile Include="Models\JQueryDataTableParams.cs" />
+    <Compile Include="Models\MessageView.cs" />
     <Compile Include="Models\PaymentViewModel.cs" />
     <Compile Include="Models\RegisterViewModel.cs" />
     <Compile Include="Models\ReportOrdersViewModel.cs" />
     <Compile Include="Models\RoleViewModel.cs" />
     <Compile Include="Models\RolPermission.cs" />
+    <Compile Include="Models\TypeMessageView.cs" />
     <Compile Include="Models\UserPermissionViewModel.cs" />
     <Compile Include="Models\UserProfile.cs" />
     <Compile Include="Models\UserViewModel.cs" />
@@ -1784,6 +1786,7 @@
     <Content Include="Views\Dashboards\Dashboard_4.cshtml" />
     <Content Include="Views\Dashboards\Dashboard_4_1.cshtml" />
     <Content Include="Views\Dashboards\Dashboard_5.cshtml" />
+    <Content Include="Views\Shared\_Message.cshtml" />
     <None Include="Web.Base.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

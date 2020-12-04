@@ -1,0 +1,46 @@
+﻿@using MVC_Project.WebBackend.Models;
+@using MVC_Project.WebBackend.Utils.Enums;
+@if (Session["View.Message"] != null && (Session["View.Message"] is MessageView))
+{
+    var message = (MessageView)Session["View.Message"];
+    string alertClass;
+    switch (message.type)
+    {
+        case TypeMessageView.SUCCESS:
+            alertClass = "info";
+            break;
+        case TypeMessageView.WARNING:
+            alertClass = "warning";
+            break;
+        case TypeMessageView.ERROR:
+            alertClass = "danger";
+            break;
+        default:
+            alertClass = "info";
+            break;
+    }
+
+    <div>
+        <div class="alert alert-@alertClass alert-dismissible fade show" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            @if (alertClass.Equals("danger"))
+            {
+                <strong>Error!</strong>
+            }
+            @if (alertClass.Equals("info"))
+            {
+                <strong>Mensaje!</strong>
+            }
+            @if (alertClass.Equals("warning"))
+            {
+                <strong>Advertencia!</strong>
+            }
+            @message.description
+        </div>
+    </div>
+    Session.Remove("View.Message");
+
+}
+

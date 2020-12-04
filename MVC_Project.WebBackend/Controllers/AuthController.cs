@@ -11,7 +11,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using System.Web.Mvc;
-
+using MVC_Project.WebBackend.Models;
 namespace MVC_Project.WebBackend.Controllers
 {
     public class AuthController : BaseController
@@ -127,7 +127,7 @@ namespace MVC_Project.WebBackend.Controllers
                 }
                 else
                 {
-                    ViewBag.Error = "El usuario no existe o contraseña inválida.";
+                    AddViewMessage(TypeMessageView.ERROR, ErrorMessages.UserNotExistsOrPasswordInvalid);
                 }
             }
 
