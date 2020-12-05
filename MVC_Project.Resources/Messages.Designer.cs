@@ -19,7 +19,7 @@ namespace MVC_Project.Resources {
     // a través de una herramienta como ResGen o Visual Studio.
     // Para agregar o quitar un miembro, edite el archivo .ResX y, a continuación, vuelva a ejecutar ResGen
     // con la opción /str o recompile su proyecto de VS.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class Messages {
@@ -66,6 +66,33 @@ namespace MVC_Project.Resources {
         public static string PasswordExpirationTime {
             get {
                 return ResourceManager.GetString("PasswordExpirationTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Request Successful.
+        /// </summary>
+        public static string RequestSuccessful {
+            get {
+                return ResourceManager.GetString("RequestSuccessful", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Token Error.
+        /// </summary>
+        public static string TokenError {
+            get {
+                return ResourceManager.GetString("TokenError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Token of Password Expired.
+        /// </summary>
+        public static string TokenExpired {
+            get {
+                return ResourceManager.GetString("TokenExpired", resourceCulture);
             }
         }
         

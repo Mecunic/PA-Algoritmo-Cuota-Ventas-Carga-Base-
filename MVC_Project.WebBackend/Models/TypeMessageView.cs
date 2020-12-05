@@ -7,6 +7,7 @@ namespace MVC_Project.WebBackend.Models
 {
     public enum TypeMessageView
     {
+        INFO,
         SUCCESS,
         WARNING,
         ERROR

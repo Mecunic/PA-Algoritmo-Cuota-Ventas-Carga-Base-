@@ -1,13 +1,17 @@
 ﻿@using MVC_Project.WebBackend.Models;
 @using MVC_Project.WebBackend.Utils.Enums;
+@using MVC_Project.Resources;
 @if (Session["View.Message"] != null && (Session["View.Message"] is MessageView))
 {
     var message = (MessageView)Session["View.Message"];
     string alertClass;
     switch (message.type)
     {
-        case TypeMessageView.SUCCESS:
+        case TypeMessageView.INFO:
             alertClass = "info";
+            break;
+        case TypeMessageView.SUCCESS:
+            alertClass = "success";
             break;
         case TypeMessageView.WARNING:
             alertClass = "warning";
@@ -29,13 +33,13 @@
             {
                 <strong>Error!</strong>
             }
-            @if (alertClass.Equals("info"))
+            @if (alertClass.Equals("info") || alertClass.Equals("success"))
             {
-                <strong>Mensaje!</strong>
+                <strong>@ViewLabels.Message!</strong>
             }
             @if (alertClass.Equals("warning"))
             {
-                <strong>Advertencia!</strong>
+                <strong>@ViewLabels.Warning!</strong>
             }
             @message.description
         </div>

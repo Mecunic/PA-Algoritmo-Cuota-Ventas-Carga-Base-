@@ -189,4 +189,10 @@
   <data name="REGISTER_ACCOUNT" xml:space="preserve">
     <value>Register</value>
   </data>
+  <data name="Message" xml:space="preserve">
+    <value>Message</value>
+  </data>
+  <data name="Warning" xml:space="preserve">
+    <value>Warning</value>
+  </data>
 </root>

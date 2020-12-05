@@ -241,7 +241,7 @@ namespace MVC_Project.WebBackend.Controllers
                 }
                 else
                 {
-                    FlashMessages.MensajeFlashHandler.RegistrarMensaje(message, FlashMessages.TiposMensaje.Error);
+                    AddViewMessage(TypeMessageView.ERROR, message);
                     return RedirectToAction("Index");
                 }
             }
@@ -270,7 +270,7 @@ namespace MVC_Project.WebBackend.Controllers
                 }
                 else
                 {
-                    FlashMessages.MensajeFlashHandler.RegistrarMensaje(message, FlashMessages.TiposMensaje.Error);
+                    AddViewMessage(TypeMessageView.ERROR, message);
                     return RedirectToAction("Index");
                 }
             }
@@ -288,7 +288,7 @@ namespace MVC_Project.WebBackend.Controllers
                         Message = successMessage
                     });
                 }
-                FlashMessages.MensajeFlashHandler.RegistrarMensaje(successMessage, FlashMessages.TiposMensaje.Success);
+                AddViewMessage(TypeMessageView.SUCCESS, successMessage);
                 return RedirectToAction("Index");
             }
             if (Request.IsAjaxRequest())
