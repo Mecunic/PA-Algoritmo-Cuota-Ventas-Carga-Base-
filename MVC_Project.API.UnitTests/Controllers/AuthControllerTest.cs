@@ -10,6 +10,7 @@ using MVC_Project.Data.Services;
 using MVC_Project.Domain.Entities;
 using MVC_Project.Domain.Helpers;
 using MVC_Project.Domain.Services;
+using MVC_Project.Utils;
 
 namespace MVC_Project.API.UnitTests.Controllers
 {
@@ -36,7 +37,7 @@ namespace MVC_Project.API.UnitTests.Controllers
         {
             LoginRequest request = new LoginRequest();
             request.Username = "appuser@mail.com";
-            request.Password = "12345678";
+            request.Password = SecurityUtil.EncryptPassword("12345678");
             var result = authController.Login(request);
             Assert.IsNotNull(result);
             Assert.AreEqual (200,(int)result.StatusCode);
