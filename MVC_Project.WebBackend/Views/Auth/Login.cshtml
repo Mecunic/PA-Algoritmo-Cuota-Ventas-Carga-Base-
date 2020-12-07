@@ -72,7 +72,7 @@
             </div>
             <h3>@System.Web.Configuration.WebConfigurationManager.AppSettings["AppName"]</h3>
 
-            @Html.Partial("_Message")
+            @Html.Partial("_Messages")
 
             <p>@ViewLabels.AUTH_LOGIN_TITLE</p>
             @using (Html.BeginForm("Login", "Auth", FormMethod.Post, new { @class = "m-t", role = "form" }))
