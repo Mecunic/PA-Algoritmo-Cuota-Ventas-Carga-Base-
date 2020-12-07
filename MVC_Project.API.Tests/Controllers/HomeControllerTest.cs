@@ -3,7 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MVC_Project.API;
 using MVC_Project.API.Controllers;
 
-namespace MVC_Project.API.UnitTests.Controllers
+namespace MVC_Project.API.Tests.Controllers
 {
     [TestClass]
     public class HomeControllerTest

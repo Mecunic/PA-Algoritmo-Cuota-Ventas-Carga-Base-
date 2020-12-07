@@ -12,7 +12,7 @@ using MVC_Project.Domain.Helpers;
 using MVC_Project.Domain.Services;
 using MVC_Project.Utils;
 
-namespace MVC_Project.API.UnitTests.Controllers
+namespace MVC_Project.API.Tests.Controllers
 {
     [TestClass]
     public class AuthControllerTest
