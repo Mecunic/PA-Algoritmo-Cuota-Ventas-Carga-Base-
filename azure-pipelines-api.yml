@@ -9,7 +9,7 @@ trigger:
   paths:
     include:
     - 'MVC_Project.API'
-    - 'MVC_Project.API.UnitTests'
+    - 'MVC_Project.API.Tests'
     - 'MVC_Project.Utils'
     - 'MVC_Project.Data'
     - 'MVC_Project.Domain'
