@@ -29,7 +29,7 @@
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     <label class="col-form-label" for="FilterInitialDate">Fecha de Creación</label>
-                                    @Html.EditorFor(m => m.FilterDate, new { @cssClass = "form-control-sm form-control" } )
+                                    @Html.EditorFor(m => m.FilterDate, new { @cssClass = "form-control-sm form-control" })
                                 </div>
                             </div>
                             <div class="col-6 offset-6 text-right">
@@ -47,10 +47,7 @@
             <div class="ibox">
                 <div class="ibox-title">
                     <h5>@ViewLabels.LABEL_RESULTS</h5>
-                    <div class="ibox-tools">
-                        <button id="btnExportar" class="btn btn-sm btn-primary" type="button">
-                            <i></i> Exportar (CSV)
-                        </button>
+                    <div class="ibox-tools" id="tblButtonsResults">
                     </div>
                 </div>
                 <div class="ibox-content">
@@ -69,7 +66,7 @@
     @Scripts.Render("~/plugins/validate")
     <script src="~/Scripts/Utils.js"></script>
     <script src="~/Scripts/views/template/ReporteIndex.js"></script>
-
+    
     <script>
         $(function () {
             var columns = [
@@ -96,13 +93,11 @@
                 { data: 'ConfirmationDate', title: "Fecha/Hora de Confirmación" },
                 { data: 'ProviderId', title: "ID Proveedor" }
             ];
-
-            var reporteCtrl = new ReporteIndexControlador(columns);
+            var buttonsOptions = {};
+            buttonsOptions.excel = true;
+            buttonsOptions.pdf = true;
+            var reporteCtrl = new ReporteIndexControlador(columns, buttonsOptions);
             reporteCtrl.init();
-            
-            $('#btnExportar').on('click', function (e) {
-                swal('TBD');
-            });
 
         });
 
