@@ -5,14 +5,15 @@
  searchForm: ID del form de filtros
  btnSearchForm: ID del boton de Buscar
  btnClearForm: ID del boton de Limpiar
+ tblButtonsResults: ID del contenedor de Botones
 */
-var ReporteIndexControlador = function (columns) {
+var ReporteIndexControlador = function (columns,buttons,title) {
 
     var searchForm = $('form#searchForm');
 
     this.init = function () {
 
-        $('#tblResults').DataTable({
+        var myTable = $('#tblResults').DataTable({
             "bProcessing": true,
             "bServerSide": true,
             "sAjaxSource": searchForm.attr('action'),
@@ -43,6 +44,81 @@ var ReporteIndexControlador = function (columns) {
             });
             $('#tblResults').DataTable().draw();
         });
+
+        console.log(buttons);
+        debugger;
+        if (buttons) {
+
+            const arrayButtons = [];
+
+            if (buttons.copy && buttons.copy === true) {
+                arrayButtons.push({
+                    extend: 'copy',
+                    text: '<i class="fa fa-files-o"></i> Copy',
+                    titleAttr: 'Copy',
+                    className: 'btn btn-sm btn-primary'
+                });
+            }
+
+            if (buttons.csv && buttons.csv === true) {
+                arrayButtons.push({
+                    extend: 'csv',
+                    text: '<i class="fa fa-files-o"></i> Copy',
+                    titleAttr: 'CSV',
+                    className: 'btn btn-sm btn-primary',
+                    exportOptions: {
+                        columns: ':visible'
+                        
+                    }
+                });
+            }
+
+            if (buttons.excel && buttons.excel === true) {
+                arrayButtons.push({
+                    extend: 'excel',
+                    text: '<i class="fa fa-files-o"></i> Excel',
+                    titleAttr: 'Excel',
+                    className: 'btn btn-sm btn-primary',
+                    exportOptions: {
+                        columns: ':visible',
+                        
+                    }
+                });
+            }
+
+            if (buttons.pdf && buttons.pdf === true) {
+                arrayButtons.push({
+                    extend: 'pdf',
+                    text: '<i class="fa fa-file-pdf-o"></i> PDF',
+                    titleAttr: 'PDF',
+                    className: 'btn btn-sm btn-primary',
+                    exportOptions: {
+                        columns: ':visible'
+                    }
+                });
+            }
+
+            if (buttons.print && buttons.print === true) {
+                arrayButtons.push({
+                    extend: 'print',
+                    text: '<i class="fa fa-print"></i> Print',
+                    titleAttr: 'Imprimir',
+                    className: 'btn btn-sm btn-primary',
+                    exportOptions: {
+                        columns: ':visible'
+                    }
+                });
+            }
+            
+            new $.fn.dataTable.Buttons(myTable, {
+                buttons: arrayButtons
+            });
+
+            myTable.buttons().container().appendTo("#tblButtonsResults");
+        }
+
+        
+        
 
     }
 }
