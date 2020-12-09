@@ -7,7 +7,7 @@
  btnClearForm: ID del boton de Limpiar
  tblButtonsResults: ID del contenedor de Botones
 */
-var ReporteIndexControlador = function (columns,buttons,title) {
+var ReporteIndexControlador = function (columns,buttons) {
 
     var searchForm = $('form#searchForm');
 
@@ -44,9 +44,7 @@ var ReporteIndexControlador = function (columns,buttons,title) {
             });
             $('#tblResults').DataTable().draw();
         });
-
-        console.log(buttons);
-        debugger;
+        
         if (buttons) {
 
             const arrayButtons = [];
