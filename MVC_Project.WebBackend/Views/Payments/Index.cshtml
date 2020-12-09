@@ -93,10 +93,8 @@
                 { data: 'ConfirmationDate', title: "Fecha/Hora de Confirmación" },
                 { data: 'ProviderId', title: "ID Proveedor" }
             ];
-            var buttonsOptions = {};
-            buttonsOptions.excel = true;
-            buttonsOptions.pdf = true;
-            var reporteCtrl = new ReporteIndexControlador(columns, buttonsOptions);
+            var buttons = {excel:true,pdf:true};
+            var reporteCtrl = new ReporteIndexControlador(columns, buttons);
             reporteCtrl.init();
 
         });
