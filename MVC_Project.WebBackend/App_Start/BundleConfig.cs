@@ -43,7 +43,8 @@ namespace MVC_Project.WebBackend
             //Estilos
             //DataTables
             bundles.Add(new StyleBundle("~/plugins/dataTablesStyles").Include(
-                      "~/Content/template/plugins/dataTables/datatables.min.css"));          
+                      "~/Content/template/plugins/dataTables/datatables.min.css",
+                      "~/Content/template/plugins/dataTables/buttons.bootstrap4.min.css"));          
             
             bundles.Add(new StyleBundle("~/font-awesome/css").Include(
                       "~/fonts/font-awesome/all.css"));
@@ -52,7 +53,8 @@ namespace MVC_Project.WebBackend
             //DataTables
             bundles.Add(new ScriptBundle("~/plugins/dataTables").Include(
                       "~/Scripts/plugins/dataTables/datatables.min.js",
-                      "~/Scripts/plugins/dataTables/dataTables.bootstrap4.min.js"));
+                      "~/Scripts/plugins/dataTables/dataTables.bootstrap4.min.js",
+                      "~/Scripts/plugins/dataTables/buttons.bootstrap4.min.js"));
 
 
             // fullCalendar styles
