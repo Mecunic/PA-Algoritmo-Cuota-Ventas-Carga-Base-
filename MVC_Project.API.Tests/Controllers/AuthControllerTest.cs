@@ -37,7 +37,7 @@ namespace MVC_Project.API.Tests.Controllers
         {
             LoginRequest request = new LoginRequest();
             request.Username = "appuser@mail.com";
-            request.Password = SecurityUtil.EncryptPassword("12345678");
+            request.Password = "12345678";
             var result = authController.Login(request);
             Assert.IsNotNull(result);
             Assert.AreEqual (200,(int)result.StatusCode);
