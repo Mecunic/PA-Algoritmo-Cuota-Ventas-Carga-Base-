@@ -26,7 +26,6 @@ steps:
     msbuildArgs: '/t:"MVC_Project_Database"'
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
-    vsVersion: latest
 
 - task: CopyFiles@1
   inputs:
