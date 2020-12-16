@@ -172,7 +172,7 @@
                 var form = document.createElement('form');
                 document.body.appendChild(form);
                 form.method = 'GET';
-                form.action = "/User/Edit?uuid=" + uuid;
+                form.action = "/User/CreateOrEdit?uuid=" + uuid;
 
                 var input = document.createElement('input');
                 input.type = 'hidden';

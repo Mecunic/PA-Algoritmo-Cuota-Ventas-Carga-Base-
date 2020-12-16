@@ -125,20 +125,6 @@ namespace MVC_Project.WebBackend.Controllers
             }
         }
 
-        /*[Authorize]
-        public ActionResult Create()
-        {
-            var userCreateViewModel = new UserCreateViewModel { Roles = PopulateRoles() };
-            return View(userCreateViewModel);
-        }*/
-
-        [Authorize]
-        public ActionResult Create()
-        {
-            var userCreateOrEditViewModel = new UserCreateOrEditViewModel { Roles = PopulateRoles() ,isNew = true};
-            return View("CreateOrEdit",userCreateOrEditViewModel);
-        }
-
         private IEnumerable<SelectListItem> PopulateRoles()
         {
             var availableRoles = _roleService.GetAll();
@@ -150,96 +136,112 @@ namespace MVC_Project.WebBackend.Controllers
             }).ToList();
             return rolesList;
         }
+        
 
-        [Authorize, HttpPost, ValidateAntiForgeryToken, ValidateInput(true)]
-        public ActionResult Create(UserCreateOrEditViewModel userCreateOrEditViewModel)
+        [Authorize]
+        public ActionResult CreateOrEdit(string uuid = null)
         {
-            if(!String.IsNullOrWhiteSpace(userCreateOrEditViewModel.ConfirmPassword) 
-                && !String.IsNullOrWhiteSpace(userCreateOrEditViewModel.Password))
+            var model = new UserCreateOrEditViewModel();
+            if (uuid == null || uuid.Trim().Length == 0)
             {
-                if(!userCreateOrEditViewModel.Password.Equals(userCreateOrEditViewModel.ConfirmPassword))
-                {
-                    ModelState.AddModelError("ConfirmPassword", "Las contraseñas no coinciden");
-                }
-            }
-            if (ModelState.IsValid)
-            {
-                DateTime todayDate =  DateUtil.GetDateTimeNow();
-
-                string daysToExpirateDate = ConfigurationManager.AppSettings["DaysToExpirateDate"];
+                model.Roles = PopulateRoles();
+                model.isNew = true;
                 
-                DateTime passwordExpiration = todayDate.AddDays(Int32.Parse(daysToExpirateDate));
-                var user = new User
-                {
-                    Uuid = Guid.NewGuid().ToString(),
-                    FirstName = userCreateOrEditViewModel.Name,
-                    LastName = userCreateOrEditViewModel.Apellidos,
-                    Email = userCreateOrEditViewModel.Email,
-                    MobileNumber = userCreateOrEditViewModel.MobileNumber,
-                    Password = SecurityUtil.EncryptPassword(userCreateOrEditViewModel.Password),
-                    PasswordExpiration = passwordExpiration,
-                    Role = new Role { Id = userCreateOrEditViewModel.Role },
-                    Username = userCreateOrEditViewModel.Username,
-                    Language = userCreateOrEditViewModel.Language,
-                    CreatedAt = todayDate,
-                    UpdatedAt = todayDate,
-                    Status = true
-                    
-                };
-                var role = _roleService.GetById(user.Role.Id);
-                foreach (var permission in role.Permissions)
-                {
-                    user.Permissions.Add(permission);
-                }
-                _userService.Create(user);
-                return RedirectToAction("Index");
             }
             else
             {
-                userCreateOrEditViewModel.Roles = PopulateRoles();
-                return View("CreateOrEdit", userCreateOrEditViewModel);
-            }
-        }
-
-        [Authorize]
-        public ActionResult Edit(string uuid)
-        {
-            User user = _userService.FindBy(x => x.Uuid == uuid).First();
-            UserCreateOrEditViewModel model = new UserCreateOrEditViewModel();
-            model.Uuid = user.Uuid;
-            model.Name = user.FirstName;
-            model.Apellidos = user.LastName;
-            model.Email = user.Email;
-            model.MobileNumber = user.MobileNumber;
-            model.Roles = PopulateRoles();
-            model.Role = user.Role.Id;
-            model.Password = user.Password;
-            model.ConfirmPassword = user.Password;
-            return View("CreateOrEdit",model);
-        }
-
-        [Authorize, HttpPost, ValidateAntiForgeryToken, ValidateInput(true)]
-        public ActionResult Edit(UserCreateOrEditViewModel model, FormCollection collection)
-        {
-            try
-            {
-                User user = _userService.FindBy(x => x.Uuid == model.Uuid).First();
-                user.FirstName = model.Name;
-                user.LastName = model.Apellidos;
-                user.Email = model.Email;
-                user.MobileNumber = model.MobileNumber;
-                user.Username = model.Username;
-                user.Language = model.Language;
+                User user = _userService.FindBy(x => x.Uuid == uuid).First();
+                model.Uuid = user.Uuid;
+                model.Name = user.FirstName;
+                model.Apellidos = user.LastName;
+                model.Email = user.Email;
+                model.MobileNumber = user.MobileNumber;
+                model.Roles = PopulateRoles();
+                model.Role = user.Role.Id;
                 model.Password = user.Password;
                 model.ConfirmPassword = user.Password;
-                _userService.Update(user);
-                return RedirectToAction("Index");
             }
-            catch
-            {
-                return View("CreateOrEdit",model);
-            }
+
+            return View("CreateOrEdit", model);
+
         }
+        
+        
+        [Authorize, HttpPost, ValidateAntiForgeryToken, ValidateInput(true)]
+        public ActionResult CreateOrEdit(UserCreateOrEditViewModel model)
+        {
+            if (model.isNew)
+            {
+                if (!String.IsNullOrWhiteSpace(model.ConfirmPassword)
+                && !String.IsNullOrWhiteSpace(model.Password))
+                {
+                    if (!model.Password.Equals(model.ConfirmPassword))
+                    {
+                        ModelState.AddModelError("ConfirmPassword", "Las contraseñas no coinciden");
+                    }
+                }
+                if (ModelState.IsValid)
+                {
+                    DateTime todayDate = DateUtil.GetDateTimeNow();
+
+                    string daysToExpirateDate = ConfigurationManager.AppSettings["DaysToExpirateDate"];
+
+                    DateTime passwordExpiration = todayDate.AddDays(Int32.Parse(daysToExpirateDate));
+                    var user = new User
+                    {
+                        Uuid = Guid.NewGuid().ToString(),
+                        FirstName = model.Name,
+                        LastName = model.Apellidos,
+                        Email = model.Email,
+                        MobileNumber = model.MobileNumber,
+                        Password = SecurityUtil.EncryptPassword(model.Password),
+                        PasswordExpiration = passwordExpiration,
+                        Role = new Role { Id = model.Role },
+                        Username = model.Username,
+                        Language = model.Language,
+                        CreatedAt = todayDate,
+                        UpdatedAt = todayDate,
+                        Status = true
+
+                    };
+                    var role = _roleService.GetById(user.Role.Id);
+                    foreach (var permission in role.Permissions)
+                    {
+                        user.Permissions.Add(permission);
+                    }
+                    _userService.Create(user);
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    model.Roles = PopulateRoles();
+                    return View("CreateOrEdit", model);
+                }
+            }
+            else
+            {
+                try
+                {
+                    User user = _userService.FindBy(x => x.Uuid == model.Uuid).First();
+                    user.FirstName = model.Name;
+                    user.LastName = model.Apellidos;
+                    user.Email = model.Email;
+                    user.MobileNumber = model.MobileNumber;
+                    user.Username = model.Username;
+                    user.Language = model.Language;
+                    model.Password = user.Password;
+                    model.ConfirmPassword = user.Password;
+                    _userService.Update(user);
+                    return RedirectToAction("Index");
+                }
+                catch
+                {
+                    return View("CreateOrEdit", model);
+                }
+            }
+            
+        }
+
         [HttpGet]
         public ActionResult EditPassword(string uuid)
         {

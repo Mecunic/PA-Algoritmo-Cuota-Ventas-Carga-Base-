@@ -9,7 +9,7 @@
         ViewBag.Title = "Crear Usuario";
     }
     var FormName = Model.isNew ? "CreateForm" : "EditForm";
-    var view = Model.isNew ? "Create" : "Edit";
+    var view = "CreateOrEdit";
 }
 @section Styles {
     @Styles.Render("~/Content/template/plugins/chosen/chosenStyles")
