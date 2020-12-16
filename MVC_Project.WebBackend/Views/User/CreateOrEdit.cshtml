@@ -9,6 +9,7 @@
         ViewBag.Title = "Crear Usuario";
     }
     var FormName = Model.isNew ? "CreateForm" : "EditForm";
+    var view = Model.isNew ? "Create" : "Edit";
 }
 @section Styles {
     @Styles.Render("~/Content/template/plugins/chosen/chosenStyles")
@@ -21,113 +22,117 @@
                     <h5>Crear Usuario</h5>
                 </div>
                 <div class="ibox-content">
-                    @using (Html.BeginForm("CreateOrEdit", "User", FormMethod.Post, new { @class = "form-horizontal", role = "form", @id = @FormName }))
+                    @using (Html.BeginForm(@view, "User", FormMethod.Post, new { @class = "form-horizontal", role = "form", @id = @FormName }))
                     {
                         if (!Model.isNew)
                         {
                             @Html.HiddenFor(model => model.Uuid)
                         }
-                        @Html.AntiForgeryToken()
-
-                    <div class="form-horizontal">
-                        @Html.ValidationSummary(true)
-
-                        <div class="form-group row">
-                            @Html.LabelFor(model => model.Name, new { @class = "col-form-label col-md-2 control-label" })
-                            <div class="col-md-10">
-                                @Html.EditorFor(model => model.Name, new { @class = "form-control", @required = "required" })
-                                @Html.ValidationMessageFor(model => model.Name)
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            @Html.LabelFor(model => model.Apellidos, new { @class = "col-form-label col-md-2 control-label" })
-                            <div class="col-md-10">
-                                @Html.EditorFor(model => model.Apellidos, new { @class = "form-control" })
-                                @Html.ValidationMessageFor(model => model.Apellidos)
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            @Html.LabelFor(model => model.Email, new { @class = "col-form-label col-md-2 control-label", required = "required" })
-                            <div class="col-md-10">
-                                @Html.EditorFor(model => model.Email, new { @class = "form-control", required = "required" })
-                                @Html.ValidationMessageFor(model => model.Email)
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            @Html.LabelFor(model => model.MobileNumber, new { @class = "col-form-label col-md-2 control-label" })
-                            <div class="col-md-10">
-                                @Html.EditorFor(model => model.MobileNumber, new { @class = "form-control" })
-                                @Html.ValidationMessageFor(model => model.MobileNumber)
-                            </div>
-                        </div>
-
-                        @if (Model.isNew)
-                        {
-                            <div class="form-group row">
-                                @Html.LabelFor(model => model.Password, new { @class = "col-form-label col-md-2 control-label" })
-                                <div class="col-md-10">
-                                    @Html.EditorFor(model => model.Password, new { @class = "form-control", @required = "required", type = "password" })
-                                    @Html.ValidationMessageFor(model => model.Password)
-                                </div>
-                            </div>
-
-                            <div class="form-group row">
-                                @Html.LabelFor(model => model.ConfirmPassword, new { @class = "col-form-label col-md-2 control-label" })
-                                <div class="col-md-10">
-                                    @Html.EditorFor(model => model.ConfirmPassword, new { @class = "form-control", @required = "required", type = "password" })
-                                    @Html.ValidationMessageFor(model => model.ConfirmPassword)
-                                </div>
-                            </div>
-
-                        }
                         else
                         {
-                            <div class="form-group row">
-                                @Html.LabelFor(model => model.Username, new { @class = "col-form-label control-label col-md-2", required = "required" })
-                                <div class="col-md-10">
-                                    @Html.EditorFor(model => model.Username, new { @class = "form-control", @required = "required" })
-                                    @Html.ValidationMessageFor(model => model.Username)
-                                </div>
-                            </div>
-
-                            <div class="form-group row">
-                                @Html.LabelFor(model => model.Language, new { @class = "col-form-label control-label col-md-2", required = "required" })
-                                <div class="col-md-10">
-                                    @Html.EditorFor(model => model.Language, new { @class = "form-control", @required = "required" })
-                                    @Html.ValidationMessageFor(model => model.Language)
-                                </div>
-                            </div>
+                            @Html.HiddenFor(model => model.isNew)
                         }
+                        @Html.AntiForgeryToken()
+
+                        <div class="form-horizontal">
+                            @Html.ValidationSummary(true)
+
+                            <div class="form-group row">
+                                @Html.LabelFor(model => model.Name, new { @class = "col-form-label col-md-2 control-label" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.Name, new { @class = "form-control", @required = "required" })
+                                    @Html.ValidationMessageFor(model => model.Name)
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                @Html.LabelFor(model => model.Apellidos, new { @class = "col-form-label col-md-2 control-label" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.Apellidos, new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => model.Apellidos)
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                @Html.LabelFor(model => model.Email, new { @class = "col-form-label col-md-2 control-label", required = "required" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.Email, new { @class = "form-control", required = "required" })
+                                    @Html.ValidationMessageFor(model => model.Email)
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                @Html.LabelFor(model => model.MobileNumber, new { @class = "col-form-label col-md-2 control-label" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.MobileNumber, new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => model.MobileNumber)
+                                </div>
+                            </div>
+
+                            @if (Model.isNew)
+                            {
+                                <div class="form-group row">
+                                    @Html.LabelFor(model => model.Password, new { @class = "col-form-label col-md-2 control-label" })
+                                    <div class="col-md-10">
+                                        @Html.EditorFor(model => model.Password, new { @class = "form-control", @required = "required", type = "password" })
+                                        @Html.ValidationMessageFor(model => model.Password)
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    @Html.LabelFor(model => model.ConfirmPassword, new { @class = "col-form-label col-md-2 control-label" })
+                                    <div class="col-md-10">
+                                        @Html.EditorFor(model => model.ConfirmPassword, new { @class = "form-control", @required = "required", type = "password" })
+                                        @Html.ValidationMessageFor(model => model.ConfirmPassword)
+                                    </div>
+                                </div>
+
+                            }
+                            else
+                            {
+                                <div class="form-group row">
+                                    @Html.LabelFor(model => model.Username, new { @class = "col-form-label control-label col-md-2", required = "required" })
+                                    <div class="col-md-10">
+                                        @Html.EditorFor(model => model.Username, new { @class = "form-control", @required = "required" })
+                                        @Html.ValidationMessageFor(model => model.Username)
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    @Html.LabelFor(model => model.Language, new { @class = "col-form-label control-label col-md-2", required = "required" })
+                                    <div class="col-md-10">
+                                        @Html.EditorFor(model => model.Language, new { @class = "form-control", @required = "required" })
+                                        @Html.ValidationMessageFor(model => model.Language)
+                                    </div>
+                                </div>
+                            }
 
 
 
 
-                        <div class="form-group row">
-                            @Html.LabelFor(model => model.Role, new { @class = "col-form-label col-md-2 control-label" })
-                            <div class="col-md-10">
-                                @Html.DropDownListFor(model => model.Role, Model.Roles, "Seleccione un rol", new { @class = "chosen-select", @required = "required" })
-                                @Html.ValidationMessageFor(model => model.Role)
+                            <div class="form-group row">
+                                @Html.LabelFor(model => model.Role, new { @class = "col-form-label col-md-2 control-label" })
+                                <div class="col-md-10">
+                                    @Html.DropDownListFor(model => model.Role, Model.Roles, "Seleccione un rol", new { @class = "chosen-select", @required = "required" })
+                                    @Html.ValidationMessageFor(model => model.Role)
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <div class="offset-md-2 col-md-10">
+                                    @{
+                                        var accion = "Crear";
+                                        if (!Model.isNew)
+                                        {
+                                            accion = "Guardar";
+                                        }
+                                    }
+                                    <input type="button" value="@accion" class="btn btn-primary" onclick="validarDatos();" />
+                                    @Html.ActionLink("Cancelar", "Index", null, new { @class = "btn btn-white" })
+                                </div>
                             </div>
                         </div>
-
-                        <div class="form-group row">
-                            <div class="offset-md-2 col-md-10">
-                                @{
-                                    var accion = "Crear";
-                                    if (!Model.isNew)
-                                    {
-                                        accion = "Guardar";
-                                    }
-                                }
-                                <input type="button" value="@accion" class="btn btn-primary" onclick="validarDatos();" />
-                                @Html.ActionLink("Cancelar", "Index", null, new { @class = "btn btn-white" })
-                            </div>
-                        </div>
-                    </div>
-                                    }
+                    }
                 </div>
             </div>
         </div>

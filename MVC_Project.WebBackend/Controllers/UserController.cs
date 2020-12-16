@@ -125,11 +125,18 @@ namespace MVC_Project.WebBackend.Controllers
             }
         }
 
-        [Authorize]
+        /*[Authorize]
         public ActionResult Create()
         {
             var userCreateViewModel = new UserCreateViewModel { Roles = PopulateRoles() };
             return View(userCreateViewModel);
+        }*/
+
+        [Authorize]
+        public ActionResult Create()
+        {
+            var userCreateOrEditViewModel = new UserCreateOrEditViewModel { Roles = PopulateRoles() ,isNew = true};
+            return View("CreateOrEdit",userCreateOrEditViewModel);
         }
 
         private IEnumerable<SelectListItem> PopulateRoles()
@@ -145,12 +152,12 @@ namespace MVC_Project.WebBackend.Controllers
         }
 
         [Authorize, HttpPost, ValidateAntiForgeryToken, ValidateInput(true)]
-        public ActionResult Create(UserCreateViewModel userCreateViewModel)
+        public ActionResult Create(UserCreateOrEditViewModel userCreateOrEditViewModel)
         {
-            if(!String.IsNullOrWhiteSpace(userCreateViewModel.ConfirmPassword) 
-                && !String.IsNullOrWhiteSpace(userCreateViewModel.Password))
+            if(!String.IsNullOrWhiteSpace(userCreateOrEditViewModel.ConfirmPassword) 
+                && !String.IsNullOrWhiteSpace(userCreateOrEditViewModel.Password))
             {
-                if(!userCreateViewModel.Password.Equals(userCreateViewModel.ConfirmPassword))
+                if(!userCreateOrEditViewModel.Password.Equals(userCreateOrEditViewModel.ConfirmPassword))
                 {
                     ModelState.AddModelError("ConfirmPassword", "Las contraseñas no coinciden");
                 }
@@ -165,18 +172,19 @@ namespace MVC_Project.WebBackend.Controllers
                 var user = new User
                 {
                     Uuid = Guid.NewGuid().ToString(),
-                    FirstName = userCreateViewModel.Name,
-                    LastName = userCreateViewModel.Apellidos,
-                    Email = userCreateViewModel.Email,
-                    MobileNumber = userCreateViewModel.MobileNumber,
-                    Password = SecurityUtil.EncryptPassword(userCreateViewModel.Password),
+                    FirstName = userCreateOrEditViewModel.Name,
+                    LastName = userCreateOrEditViewModel.Apellidos,
+                    Email = userCreateOrEditViewModel.Email,
+                    MobileNumber = userCreateOrEditViewModel.MobileNumber,
+                    Password = SecurityUtil.EncryptPassword(userCreateOrEditViewModel.Password),
                     PasswordExpiration = passwordExpiration,
-                    Role = new Role { Id = userCreateViewModel.Role },
-                    Username = userCreateViewModel.Username,
-                    Language = userCreateViewModel.Language,
+                    Role = new Role { Id = userCreateOrEditViewModel.Role },
+                    Username = userCreateOrEditViewModel.Username,
+                    Language = userCreateOrEditViewModel.Language,
                     CreatedAt = todayDate,
                     UpdatedAt = todayDate,
                     Status = true
+                    
                 };
                 var role = _roleService.GetById(user.Role.Id);
                 foreach (var permission in role.Permissions)
@@ -188,8 +196,8 @@ namespace MVC_Project.WebBackend.Controllers
             }
             else
             {
-                userCreateViewModel.Roles = PopulateRoles();
-                return View("Create", userCreateViewModel);
+                userCreateOrEditViewModel.Roles = PopulateRoles();
+                return View("CreateOrEdit", userCreateOrEditViewModel);
             }
         }
 
@@ -197,7 +205,7 @@ namespace MVC_Project.WebBackend.Controllers
         public ActionResult Edit(string uuid)
         {
             User user = _userService.FindBy(x => x.Uuid == uuid).First();
-            UserEditViewModel model = new UserEditViewModel();
+            UserCreateOrEditViewModel model = new UserCreateOrEditViewModel();
             model.Uuid = user.Uuid;
             model.Name = user.FirstName;
             model.Apellidos = user.LastName;
@@ -205,11 +213,13 @@ namespace MVC_Project.WebBackend.Controllers
             model.MobileNumber = user.MobileNumber;
             model.Roles = PopulateRoles();
             model.Role = user.Role.Id;
-            return View(model);
+            model.Password = user.Password;
+            model.ConfirmPassword = user.Password;
+            return View("CreateOrEdit",model);
         }
 
         [Authorize, HttpPost, ValidateAntiForgeryToken, ValidateInput(true)]
-        public ActionResult Edit(UserEditViewModel model, FormCollection collection)
+        public ActionResult Edit(UserCreateOrEditViewModel model, FormCollection collection)
         {
             try
             {
@@ -220,12 +230,14 @@ namespace MVC_Project.WebBackend.Controllers
                 user.MobileNumber = model.MobileNumber;
                 user.Username = model.Username;
                 user.Language = model.Language;
+                model.Password = user.Password;
+                model.ConfirmPassword = user.Password;
                 _userService.Update(user);
                 return RedirectToAction("Index");
             }
             catch
             {
-                return View(model);
+                return View("CreateOrEdit",model);
             }
         }
         [HttpGet]
