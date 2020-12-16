@@ -26,11 +26,12 @@ steps:
     msbuildArgs: '/t:"MVC_Project_Database"'
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
+    vsVersion: latest
 
-- task: CopyFiles@2
+- task: CopyFiles@1
   inputs:
-    SourceFolder: '$(Build.ArtifactStagingDirectory)'
-    Contents: '**'
+    SourceFolder: '$(System.defaultworkingdirectory)'
+    Contents: '**\bin\$(buildConfiguration)\**'
     TargetFolder: '$(Build.ArtifactStagingDirectory)'
 
 - task: PublishBuildArtifacts@1
