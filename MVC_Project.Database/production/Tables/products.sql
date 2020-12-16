@@ -6,7 +6,7 @@
     [model_year]   SMALLINT        NOT NULL,
     [list_price]   DECIMAL (10, 2) NOT NULL,
     PRIMARY KEY CLUSTERED ([product_id] ASC),
-    FOREIGN KEY ([brand_id]) REFERENCES [production].[brands] ([brand_id]) ON DELETE CASCADE ON UPDATE CASCADE,
-    FOREIGN KEY ([category_id]) REFERENCES [production].[categories] ([category_id]) ON DELETE CASCADE ON UPDATE CASCADE
+    CONSTRAINT FK_production_products_brand_id FOREIGN KEY ([brand_id]) REFERENCES [production].[brands] ([brand_id]) ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT FK_production_products_category_id FOREIGN KEY ([category_id]) REFERENCES [production].[categories] ([category_id]) ON DELETE CASCADE ON UPDATE CASCADE
 );
 

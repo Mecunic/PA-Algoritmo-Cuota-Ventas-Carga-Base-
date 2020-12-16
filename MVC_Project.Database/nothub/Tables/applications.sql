@@ -4,9 +4,6 @@
     [api_key]    NVARCHAR (250) NOT NULL,
     [account_id] BIGINT         NOT NULL,
     PRIMARY KEY CLUSTERED ([id] ASC),
-    FOREIGN KEY ([account_id]) REFERENCES [nothub].[accounts] ([id]),
-    FOREIGN KEY ([account_id]) REFERENCES [nothub].[accounts] ([id]),
-    FOREIGN KEY ([account_id]) REFERENCES [nothub].[accounts] ([id]),
-    FOREIGN KEY ([account_id]) REFERENCES [nothub].[accounts] ([id])
+    CONSTRAINT FK_nothub_applications_account_id FOREIGN KEY ([account_id]) REFERENCES [nothub].[accounts] ([id]),
 );
 

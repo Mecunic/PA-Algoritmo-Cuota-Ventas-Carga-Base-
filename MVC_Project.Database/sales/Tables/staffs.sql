@@ -8,8 +8,8 @@
     [store_id]   INT           NOT NULL,
     [manager_id] INT           NULL,
     PRIMARY KEY CLUSTERED ([staff_id] ASC),
-    FOREIGN KEY ([manager_id]) REFERENCES [sales].[staffs] ([staff_id]),
-    FOREIGN KEY ([store_id]) REFERENCES [sales].[stores] ([store_id]) ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT FK_sales_staffs_manager_id FOREIGN KEY ([manager_id]) REFERENCES [sales].[staffs] ([staff_id]),
+    CONSTRAINT FK_sales_staffs_store_id FOREIGN KEY ([store_id]) REFERENCES [sales].[stores] ([store_id]) ON DELETE CASCADE ON UPDATE CASCADE,
     UNIQUE NONCLUSTERED ([email] ASC)
 );
 

@@ -7,9 +7,6 @@
     [account_id] BIGINT         NOT NULL,
     [password]   NVARCHAR (250) NULL,
     PRIMARY KEY CLUSTERED ([id] ASC),
-    FOREIGN KEY ([account_id]) REFERENCES [nothub].[accounts] ([id]),
-    FOREIGN KEY ([account_id]) REFERENCES [nothub].[accounts] ([id]),
-    FOREIGN KEY ([account_id]) REFERENCES [nothub].[accounts] ([id]),
-    FOREIGN KEY ([account_id]) REFERENCES [nothub].[accounts] ([id])
+    CONSTRAINT FK_nothub_users_account_id FOREIGN KEY ([account_id]) REFERENCES [nothub].[accounts] ([id])
 );
 

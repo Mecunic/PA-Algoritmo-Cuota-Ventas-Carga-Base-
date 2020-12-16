@@ -38,13 +38,7 @@
     [notification_id] BIGINT         NULL,
     [email_sent]      NVARCHAR (255) NULL,
     PRIMARY KEY CLUSTERED ([id] ASC),
-    FOREIGN KEY ([application_id]) REFERENCES [nothub].[applications] ([id]),
-    FOREIGN KEY ([application_id]) REFERENCES [nothub].[applications] ([id]),
-    FOREIGN KEY ([application_id]) REFERENCES [nothub].[applications] ([id]),
-    FOREIGN KEY ([application_id]) REFERENCES [nothub].[applications] ([id]),
-    FOREIGN KEY ([notification_id]) REFERENCES [nothub].[notifications] ([id]),
-    FOREIGN KEY ([notification_id]) REFERENCES [nothub].[notifications] ([id]),
-    FOREIGN KEY ([notification_id]) REFERENCES [nothub].[notifications] ([id]),
-    FOREIGN KEY ([notification_id]) REFERENCES [nothub].[notifications] ([id])
+    CONSTRAINT FK_nothub_notification_message_application_id FOREIGN KEY ([application_id]) REFERENCES [nothub].[applications] ([id]),
+    CONSTRAINT FK_nothub_notification_message_notification_id FOREIGN KEY ([notification_id]) REFERENCES [nothub].[notifications] ([id])
 );
 
