@@ -1814,6 +1814,7 @@
     <Content Include="Views\Dashboards\Dashboard_4_1.cshtml" />
     <Content Include="Views\Dashboards\Dashboard_5.cshtml" />
     <Content Include="Views\Shared\_Messages.cshtml" />
+    <Content Include="Views\User\CreateOrEdit.cshtml" />
     <None Include="Web.Base.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

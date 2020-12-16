@@ -139,6 +139,47 @@ namespace MVC_Project.WebBackend.Models
 
         public IEnumerable<SelectListItem> Roles { get; set; }
     }
+
+    public class UserCreateOrEditViewModel
+    {
+        public bool isNew { get; set; }
+        public string Uuid { get; set; }
+
+        [Required]
+        [Display(Name = "Nombre")]
+        public string Name { get; set; }
+
+        [Display(Name = "Apellidos")]
+        public string Apellidos { get; set; }
+
+        [Required]
+        public string Email { get; set; }
+
+        [Display(Name = "Usuario")]
+        public string Username { get; set; }
+
+        [Display(Name = "Teléfono Móvil")]
+        public string MobileNumber { get; set; }
+
+        [Display(Name = "Idioma")]
+        public string Language { get; set; }
+
+        [Required]
+        [Display(Name = "Contraseña")]
+        [DataType(DataType.Password)]
+        public string Password { get; set; }
+        [Required]
+        [Display(Name = "Confirmar contraseña")]
+        [DataType(DataType.Password)]
+        public string ConfirmPassword { get; set; }
+
+        [Display(Name = "Rol")]
+        [Required]
+        public int Role { get; set; }
+
+        public IEnumerable<SelectListItem> Roles { get; set; }
+    }
+
     public class UserImportViewModel
     {
         [Display(Name = "Subir archivo")]
