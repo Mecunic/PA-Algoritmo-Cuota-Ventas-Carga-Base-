@@ -39,7 +39,7 @@ namespace MVC_Project.API.Controllers.V1
                 {
                     return CreateErrorResponse(HttpStatusCode.BadRequest, "No se recibieron los parámetros de entrada.");
                 }
-                var user = _authService.Authenticate(request.Username, request.Password);
+                var user = _authService.Authenticate(request.Username, SecurityUtil.EncryptPassword(request.Password));
                 if (user == null)
                 {
                     return CreateErrorResponse(HttpStatusCode.BadRequest, "El usuario no existe o contraseña inválida.");

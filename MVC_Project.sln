@@ -17,15 +17,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MVC_Project.Integrations", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExcelObjectMapping", "ExcelObjectMapping\ExcelObjectMapping.csproj", "{89F9F036-0428-49A2-84F1-72851728183D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MVC_Project.FlashMessages", "MVC_Project.FlashMessages\MVC_Project.FlashMessages.csproj", "{0CE135CB-4DC5-449D-BE1D-28982188B260}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MVC_Project.Desktop", "MVC_Project.Desktop\MVC_Project.Desktop.csproj", "{79A95018-BE6D-4533-A9FB-18FA69E1264C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MVC_Project.WebBackend", "MVC_Project.WebBackend\MVC_Project.WebBackend.csproj", "{A3C31666-97AB-4135-873B-68402863530D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MVC_Project.Resources", "MVC_Project.Resources\MVC_Project.Resources.csproj", "{1946DCF4-C3DA-43E2-9A38-35DB04DB2D92}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MVC_Project.API.UnitTests", "MVC_Project.API.UnitTests\MVC_Project.API.UnitTests.csproj", "{2CAEC16D-715F-49E5-8581-B3D9793DE913}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MVC_Project.API.Tests", "MVC_Project.API.Tests\MVC_Project.API.Tests.csproj", "{2CAEC16D-715F-49E5-8581-B3D9793DE913}"
 EndProject
 Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "MVC_Project.Database", "MVC_Project.Database\MVC_Project.Database.sqlproj", "{AA67C342-377E-4A9A-98F8-C6EA579B923F}"
 EndProject
@@ -78,12 +76,6 @@ Global
 		{89F9F036-0428-49A2-84F1-72851728183D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{89F9F036-0428-49A2-84F1-72851728183D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{89F9F036-0428-49A2-84F1-72851728183D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0CE135CB-4DC5-449D-BE1D-28982188B260}.Base|Any CPU.ActiveCfg = Base|Any CPU
-		{0CE135CB-4DC5-449D-BE1D-28982188B260}.Base|Any CPU.Build.0 = Base|Any CPU
-		{0CE135CB-4DC5-449D-BE1D-28982188B260}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0CE135CB-4DC5-449D-BE1D-28982188B260}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0CE135CB-4DC5-449D-BE1D-28982188B260}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0CE135CB-4DC5-449D-BE1D-28982188B260}.Release|Any CPU.Build.0 = Release|Any CPU
 		{79A95018-BE6D-4533-A9FB-18FA69E1264C}.Base|Any CPU.ActiveCfg = Base|Any CPU
 		{79A95018-BE6D-4533-A9FB-18FA69E1264C}.Base|Any CPU.Build.0 = Base|Any CPU
 		{79A95018-BE6D-4533-A9FB-18FA69E1264C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU

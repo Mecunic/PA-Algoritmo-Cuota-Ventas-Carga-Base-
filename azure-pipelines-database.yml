@@ -19,11 +19,6 @@ variables:
   buildConfiguration: 'Release'
 
 steps:
-- task: NuGetToolInstaller@1
-
-- task: NuGetCommand@2
-  inputs:
-    restoreSolution: '$(solution)'
 
 - task: VSBuild@1
   inputs:
@@ -31,9 +26,16 @@ steps:
     msbuildArgs: '/t:"MVC_Project_Database"'
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
+    vsVersion: latest
+
+- task: CopyFiles@1
+  inputs:
+    SourceFolder: '$(System.defaultworkingdirectory)'
+    Contents: '**\bin\$(buildConfiguration)\**'
+    TargetFolder: '$(Build.ArtifactStagingDirectory)'
 
 - task: PublishBuildArtifacts@1
   inputs:
     PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-    ArtifactName: 'dist'
+    ArtifactName: 'drop'
     publishLocation: 'Container'

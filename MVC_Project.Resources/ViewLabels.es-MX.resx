@@ -127,7 +127,7 @@
     <value>Iniciar Sesión</value>
   </data>
   <data name="PASSWORD" xml:space="preserve">
-    <value>Constraseña</value>
+    <value>Contraseña</value>
   </data>
   <data name="PasswordRequired" xml:space="preserve">
     <value>Contraseña es requerida</value>
@@ -188,5 +188,11 @@
   </data>
   <data name="REGISTER_ACCOUNT" xml:space="preserve">
     <value>Crear una cuenta</value>
+  </data>
+  <data name="Message" xml:space="preserve">
+    <value>Mensaje</value>
+  </data>
+  <data name="Warning" xml:space="preserve">
+    <value>Advertencia</value>
   </data>
 </root>

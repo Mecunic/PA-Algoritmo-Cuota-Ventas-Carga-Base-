@@ -120,6 +120,15 @@
   <data name="PasswordExpirationTime" xml:space="preserve">
     <value>The password has a 30-day expiration period</value>
   </data>
+  <data name="RequestSuccessful" xml:space="preserve">
+    <value>Request Successful</value>
+  </data>
+  <data name="TokenError" xml:space="preserve">
+    <value>Token Error</value>
+  </data>
+  <data name="TokenExpired" xml:space="preserve">
+    <value>Token of Password Expired</value>
+  </data>
   <data name="UserPasswordUpdated" xml:space="preserve">
     <value>User password updated</value>
   </data>

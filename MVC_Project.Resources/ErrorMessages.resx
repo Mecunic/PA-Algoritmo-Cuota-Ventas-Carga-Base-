@@ -144,4 +144,7 @@
   <data name="UserInactive" xml:space="preserve">
     <value>The user is not active</value>
   </data>
+  <data name="UserNotExistsOrPasswordInvalid" xml:space="preserve">
+    <value>The user not exists or password invalid</value>
+  </data>
 </root>

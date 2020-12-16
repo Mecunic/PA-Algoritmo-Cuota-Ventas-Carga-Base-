@@ -41,7 +41,9 @@
 @section Scripts {
     <script>
         $(document).ready(function () {
-            $('#tblJobs').DataTable();
+            $('#tblJobs').DataTable({
+                ordering: false
+            });
         });
     </script>
 }

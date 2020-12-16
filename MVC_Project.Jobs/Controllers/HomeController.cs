@@ -14,7 +14,7 @@ namespace MVC_Project.Jobs.Controllers
 {
     public class HomeController : Controller
     {
-        IProcessService _processService;
+        readonly IProcessService _processService;
 
         public HomeController()
         {
@@ -27,13 +27,17 @@ namespace MVC_Project.Jobs.Controllers
             ProcessViewModel model = new ProcessViewModel();
             foreach(var execution in executions)
             {
+                string SuccessStr = "PENDING...";
+                if (!execution.Status && execution.Success) SuccessStr = "OK";
+                if (!execution.Status && !execution.Success) SuccessStr = "ERROR";
+
                 model.executions.Add(new ProcessExecutionModel() {
                     ExecutionId = execution.Id,
                     ProcessName = execution.Process.Code,
                     StartDate = execution.StartAt.Value.ToString(),
                     EndDate = execution.EndAt.HasValue ? execution.EndAt.Value.ToString() : "N/A",
                     Status = execution.Status ? "RUNNING" : "FINISHED",
-                    Success = execution.Success ? "OK" : "ERROR"
+                    Success = SuccessStr
                 });
             }
             return View(model);

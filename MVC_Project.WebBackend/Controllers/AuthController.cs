@@ -1,5 +1,4 @@
 ﻿using MVC_Project.Domain.Services;
-using MVC_Project.FlashMessages;
 using MVC_Project.Resources;
 using MVC_Project.Utils;
 using MVC_Project.WebBackend.App_Code;
@@ -11,7 +10,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using System.Web.Mvc;
-
+using MVC_Project.WebBackend.Models;
 namespace MVC_Project.WebBackend.Controllers
 {
     public class AuthController : BaseController
@@ -115,7 +114,7 @@ namespace MVC_Project.WebBackend.Controllers
                             if(daysLeft <= daysBeforeExpireToNotify)
                             {
                                 string message = String.Format(ViewLabels.PASSWORD_EXPIRATION_MESSAGE, daysLeft);
-                                MensajeFlashHandler.RegistrarMensaje(message, TiposMensaje.Info);
+                                AddViewMessage(TypeMessageView.WARNING, message);
                             }
                         }
                     }
@@ -127,7 +126,7 @@ namespace MVC_Project.WebBackend.Controllers
                 }
                 else
                 {
-                    ViewBag.Error = "El usuario no existe o contraseña inválida.";
+                    AddViewMessage(TypeMessageView.ERROR, ErrorMessages.UserNotExistsOrPasswordInvalid);
                 }
             }
 
@@ -176,8 +175,7 @@ namespace MVC_Project.WebBackend.Controllers
                     customParams.Add("param2", link);
                     NotificationUtil.SendNotification(resultado.Email, customParams, Constants.NOT_TEMPLATE_PASSWORDRECOVER );
                     _userService.Update(resultado);
-                    //MensajesFlash.MensajeFlashHandler.RegistrarMensaje(ImpuestoPredial.Resource.Recursos.OperacionExitosa);
-                    ViewBag.Message = "Solicitud realizada";
+                    AddViewMessage(TypeMessageView.SUCCESS, Messages.RequestSuccessful);
                     return View("Login");
 
                 }
@@ -228,11 +226,11 @@ namespace MVC_Project.WebBackend.Controllers
             }
             catch (Exception ex)
             {
-                ViewBag.Message = "Token de contraseña expirado";
+                AddViewMessage(TypeMessageView.WARNING, Messages.TokenExpired);
                 return View("Login");
                 //ErrorController.SaveLogError(this, listAction.Update, "AccedeToken", ex);
             }
-            ViewBag.Message = "Error en el token";
+            AddViewMessage(TypeMessageView.INFO, Messages.TokenError);
             return View("Login");
         }
 
