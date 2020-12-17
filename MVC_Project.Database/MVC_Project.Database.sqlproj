@@ -130,4 +130,7 @@
     <Build Include="Security\production.sql" />
     <Build Include="Security\sales.sql" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Readme.txt" />
+  </ItemGroup>
 </Project>
