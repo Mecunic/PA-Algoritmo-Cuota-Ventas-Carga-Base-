@@ -1,0 +1,187 @@
+﻿@{
+    ViewBag.Title = "Portal de Cálculo de Cuotas";
+    Random _random = new Random();
+}
+
+<div class="wrapper wrapper-content">
+    <div class="row">
+        <div class="col-12">
+            <div class="ibox">
+                <form>
+                    <div class="ibox-title">
+                        <div class="row">
+                            <div class="col">
+                                <h5>Seguimiento de avance</h5>
+                            </div>
+                            <div class="col d-flex justify-content-end">
+                                <label class="mr-2"><input type="radio" name="optionsFilter" checked /> CEDIS</label>
+                                <label><input type="radio" name="optionsFilter" /> Total Bepensa </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ibox-content clearfix">
+                        <div class="row">
+                            <div class="col-12 col-lg-4">
+                                <div class="form-group">
+                                    <label for="cedis">CEDIS</label>
+                                    <select class="form-control m-b" name="cedis">
+                                        <option>CEDIS 1</option>
+                                        <option>CEDIS 2</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-12 col-lg-4">
+                                <div class="form-group">
+                                    <label for="date">Periodo</label>
+                                    <select class="form-control m-b" name="date">
+                                        <option>Enero</option>
+                                        <option>Diciembre</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-12 col-lg-4">
+                                <div class="form-group">
+                                    <label>Rutas</label>
+                                    <input type="text" class="form-control m-b" value="11" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6 offset-6 text-right">
+                                <span>
+                                    <button type="button" class="btn btn-sm btn-primary btn-filter"><i class="fas fa-search"></i> Buscar</button>
+                                    <button type="button" class="btn btn-sm btn-default"><i class="fas fa-eraser "></i> Limpiar</button>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="ibox">
+                <form>
+                    <div class="ibox-title">
+                        <h5>Resultado</h5>
+                    </div>
+                    <div class="ibox-content">
+                        <table class="table table-striped mb-4">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Ruta</th>
+                                    <th scope="col">Nom Ruta</th>
+                                    <th scope="col" class="bg-success">Cuota</th>
+                                    <th scope="col" class="bg-success">C Diaria</th>
+                                    <th scope="col">Vta. Esp</th>
+                                    <th scope="col">Vta. Acum</th>
+                                    <th scope="col">Real Vs. Esp</th>
+                                    <th scope="col">Diferencia</th>
+                                    <th scope="col">Nva Cuota</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @for (int i = 0; i < 4; i++)
+                                {
+                                    <tr>
+                                        <td>@($"45{i}")</td>
+                                        <td>R HOGAR @($"45{i}")</td>
+                                        <td>@_random.Next(4500, 5500)</td>
+                                        <td>@_random.Next(100, 200)</td>
+                                        <td>@_random.Next(4500, 5500)</td>
+                                        <td>@_random.Next(4500, 5500)</td>
+                                        @if (_random.Next(0, 50) > 25)
+                                        {
+                                            <td class="text-danger">@($"-{_random.Next(10, 99)}%")</td>
+                                        }
+                                        else
+                                        {
+                                            <td>@($"{_random.Next(10, 99)}%")</td>
+                                        }
+                                        @if (_random.Next(0, 50) > 25)
+                                        {
+                                            <td class="text-danger">@($"-{_random.Next(100, 999)}")</td>
+                                        }
+                                        else
+                                        {
+                                            <td>@_random.Next(100, 999)</td>
+                                        }
+                                        <td>@_random.Next(100, 200)</td>
+                                    </tr>
+                                }
+                                <tr class="font-weight-bolder">
+                                    <td colspan="2" class="text-center">TOTAL</td>
+                                    <td>16,672</td>
+                                    <td></td>
+                                    <td>15,464</td>
+                                    <td>15,127</td>
+                                    <td class="text-danger">@($"-{_random.Next(10, 99)}%")</td>
+                                    <td class="text-danger">@($"-{_random.Next(100, 999)}")</td>
+                                    <td></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Ruta</th>
+                                    <th scope="col">Nom Ruta</th>
+                                    <th scope="col" class="bg-danger">Cuota</th>
+                                    <th scope="col" class="bg-danger">C Diaria</th>
+                                    <th scope="col">Vta. Esp</th>
+                                    <th scope="col">Vta. Acum</th>
+                                    <th scope="col">Real Vs. Esp</th>
+                                    <th scope="col">Diferencia</th>
+                                    <th scope="col">Nva Cuota</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @for (int i = 0; i < 4; i++)
+                                {
+                                    <tr>
+                                        <td>@($"45{i}")</td>
+                                        <td>R HOGAR @($"45{i}")</td>
+                                        <td>@_random.Next(9000, 110000)</td>
+                                        <td>@_random.Next(3000, 3500)</td>
+                                        <td>@_random.Next(50000, 70000)</td>
+                                        <td>@_random.Next(50000, 70000)</td>
+                                        @if (_random.Next(0, 50) > 25)
+                                        {
+                                            <td class="text-danger">@($"-{_random.Next(10, 99)}%")</td>
+                                        }
+                                        else
+                                        {
+                                            <td>@($"{_random.Next(10, 99)}%")</td>
+                                        }
+                                        @if (_random.Next(0, 50) > 25)
+                                        {
+                                            <td class="text-danger">@($"-{_random.Next(5000, 11000)}")</td>
+                                        }
+                                        else
+                                        {
+                                            <td>@_random.Next(5000, 11000)</td>
+                                        }
+                                        <td>@_random.Next(3000, 3500)</td>
+                                    </tr>
+                                }
+                                <tr class="font-weight-bolder">
+                                    <td colspan="2" class="text-center">TOTAL</td>
+                                    <td>385,644</td>
+                                    <td></td>
+                                    <td>228,695</td>
+                                    <td>228,065</td>
+                                    <td class="text-danger">@($"-{_random.Next(10, 99)}%")</td>
+                                    <td class="text-danger">@($"-{_random.Next(500, 1000)}")</td>
+                                    <td></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+

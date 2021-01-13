@@ -1,0 +1,125 @@
+﻿@{
+    ViewBag.Title = "Portal de Cálculo de Cuotas";
+}
+
+<div class="wrapper wrapper-content">
+    <div class="row">
+        <div class="col-12">
+            <div class="ibox">
+                <form>
+                    <div class="ibox-title">
+                        <h5>Parámetros de cálculo</h5>
+                    </div>
+                    <div class="ibox-content clearfix">
+                        <div class="row">
+                            <div class="col-6 col-lg-4">
+                                <div class="form-group">
+                                    <label for="date">Período</label>
+                                    <select class="form-control m-b" name="date">
+                                        <option>Enero</option>
+                                        <option>Diciembre</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-12 col-lg-6">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="form-group">
+                                                <label>Vendido mes anterior</label>
+                                                <input type="text" class="form-control m-b" value="295,958" disabled />
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <p class="font-weight-bold">Parámetros APC</p>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="form-group">
+                                                <label>Pronóstico</label>
+                                                <input type="text" class="form-control m-b" value="295,227" />
+                                            </div>
+                                        </div>
+                                        <div class="col-12 col-lg-6">
+                                            <div class="form-group">
+                                                <label>Factor cuota base</label>
+                                                <div class="input-group m-b">
+                                                    <input type="text" class="form-control" value="70">
+                                                    <div class="input-group-append">
+                                                        <span class="input-group-addon">%</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 col-lg-6">
+                                            <div class="form-group">
+                                                <label>Factor cuota absorción</label>
+                                                <div class="input-group m-b">
+                                                    <input type="text" class="form-control" value="30">
+                                                    <div class="input-group-append">
+                                                        <span class="input-group-addon">%</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-lg-6">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="form-group">
+                                                <label>Vendido mes anterior</label>
+                                                <input type="text" class="form-control m-b" value="295,958" disabled />
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <p class="font-weight-bold">Parámetros OP</p>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="form-group">
+                                                <label>Pronóstico</label>
+                                                <input type="text" class="form-control m-b" value="295,227" />
+                                            </div>
+                                        </div>
+                                        <div class="col-12 col-lg-6">
+                                            <div class="form-group">
+                                                <label>Factor cuota base</label>
+                                                <div class="input-group m-b">
+                                                    <input type="text" class="form-control" value="70">
+                                                    <div class="input-group-append">
+                                                        <span class="input-group-addon">%</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 col-lg-6">
+                                            <div class="form-group">
+                                                <label>Factor cuota absorción</label>
+                                                <div class="input-group m-b">
+                                                    <input type="text" class="form-control" value="30">
+                                                    <div class="input-group-append">
+                                                        <span class="input-group-addon">%</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6 offset-6 text-right">
+                                <span>
+                                    <button type="button" class="btn btn-sm btn-primary btn-filter"><i class="fas fa-calculator"></i> Calcular</button>
+                                    <button type="button" class="btn btn-sm btn-default"><i class="fas fa-eraser "></i> Limpiar</button>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+

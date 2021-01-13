@@ -215,6 +215,7 @@
     <Compile Include="Controllers\DashboardsController.cs" />
     <Compile Include="Controllers\DocumentsController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
+    <Compile Include="Controllers\FeeController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PaymentsController.cs" />
     <Compile Include="Controllers\RegisterController.cs" />
@@ -1814,6 +1815,8 @@
     <Content Include="Views\Dashboards\Dashboard_4_1.cshtml" />
     <Content Include="Views\Dashboards\Dashboard_5.cshtml" />
     <Content Include="Views\Shared\_Messages.cshtml" />
+    <Content Include="Views\Fee\Calculate.cshtml" />
+    <Content Include="Views\Fee\Tracing.cshtml" />
     <None Include="Web.Base.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
