@@ -30,13 +30,6 @@ steps:
   inputs:
     restoreSolution: '$(solution)'
 
-- task: SonarCloudPrepare@1
-  inputs:
-    SonarCloud: 'SonarCloud'
-    organization: 'ensitechdevops'
-    scannerMode: 'MSBuild'
-    projectKey: 'PlantillaNET-WebBackend'
-    projectName: 'PlantillaNET WebBackend'
 - task: VSBuild@1
   inputs:
     solution: '$(solution)'
@@ -48,7 +41,6 @@ steps:
   inputs:
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
-- task: SonarCloudAnalyze@1
 - task: ArchiveFiles@2
   inputs:
     rootFolderOrFile: '$(Build.BinariesDirectory)'
