@@ -6,7 +6,7 @@ using System.Web.Mvc;
 
 namespace MVC_Project.WebBackend.Controllers
 {    
-    public class FeeController : Controller
+    public class FeesController : Controller
     {
         // GET: Fee
         public ActionResult Index()

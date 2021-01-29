@@ -278,10 +278,6 @@
       <Project>{AADE4A05-4CC5-4465-BD0F-B681FA698C97}</Project>
       <Name>MVC_Project.Domain</Name>
     </ProjectReference>
-    <ProjectReference Include="..\MVC_Project.Integrations\MVC_Project.Integrations.csproj">
-      <Project>{E616D7FC-E5A8-4E69-91E6-FF0760920CE8}</Project>
-      <Name>MVC_Project.Integrations</Name>
-    </ProjectReference>
     <ProjectReference Include="..\MVC_Project.Utils\MVC_Project.Utils.csproj">
       <Project>{23b89c18-68c5-449f-aded-e51a86da6b52}</Project>
       <Name>MVC_Project.Utils</Name>

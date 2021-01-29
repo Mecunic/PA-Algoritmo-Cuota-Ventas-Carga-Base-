@@ -133,10 +133,6 @@
     <Content Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\MVC_Project.API\MVC_Project.API.csproj">
-      <Project>{25CCAF09-7620-4011-BD66-046C559142C7}</Project>
-      <Name>MVC_Project.API</Name>
-    </ProjectReference>
     <ProjectReference Include="..\MVC_Project.Data\MVC_Project.Data.csproj">
       <Project>{347A6BFB-7CD3-4B7F-90AD-AB21950EF7AD}</Project>
       <Name>MVC_Project.Data</Name>
