@@ -29,6 +29,7 @@
 	- Integración con proveedor de pagos OpenPay
 - Jobs
 	- Ejemplo de job con Hangfire
+	- Pantalla resumen de ejecución de Jobs
 - API
 	- Proyecto separado de API con Web API
 	- Inicio de sesión con usuario/contraseña
