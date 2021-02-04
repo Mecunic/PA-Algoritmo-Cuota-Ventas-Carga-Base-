@@ -19,7 +19,12 @@ namespace MVC_Project.WebBackend.Controllers
             return View();
         }
 
-        public ActionResult Tracing()
+        public ActionResult Tracking()
+        {
+            return View();
+        }
+
+        public ActionResult Tweaking()
         {
             return View();
         }

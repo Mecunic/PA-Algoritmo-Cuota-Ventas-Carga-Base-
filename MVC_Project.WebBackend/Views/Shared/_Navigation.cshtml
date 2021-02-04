@@ -34,21 +34,22 @@
                         </ul>
                     }
                     @*@if (user.HasAccessController("Role"))
-                {
-                    <ul class="nav nav-second-level collapse @Html.IsSelected(controller: "User", cssClass: "in")">
-                        <li class="@Html.IsSelected(controller: "Role",action: "Index")"><a href="@Url.Action("Index", "Role")">Roles</a></li>
-                    </ul>
-                }*@
+                        {
+                            <ul class="nav nav-second-level collapse @Html.IsSelected(controller: "User", cssClass: "in")">
+                                <li class="@Html.IsSelected(controller: "Role",action: "Index")"><a href="@Url.Action("Index", "Role")">Roles</a></li>
+                            </ul>
+                        }*@
                 </li>
             }
 
             @if (user.HasAccessToModule("fees"))
             {
                 <li class="@Html.IsModuleSelected(user, "fees")">
-                    <a href="#"><i class="fa fa-calendar"></i> <span class="nav-label" data-i18n="nav.dashboard">C&aacute;lculo de Cuotas</span> <span class="fain arrow"></span></a>
+                    <a href="#"><i class="fa fa-calendar"></i> <span class="nav-label" data-i18n="nav.dashboard">Cálculo de Cuotas</span> <span class="fain arrow"></span></a>
                     <ul class="nav nav-second-level collapse @Html.IsSelected(controller: "Fees", cssClass: "in")">
-                        <li class="@Html.IsSelected(action: "Index")"><a href="@Url.Action("Calculate", "Fees")">Par&aacute;metros</a></li>
-                        <li class="@Html.IsSelected(action: "Index")"><a href="@Url.Action("Tracing", "Fees")">Resultados</a></li>
+                        <li class="@Html.IsSelected(action: "Calculate")"><a href="@Url.Action("Calculate", "Fees")">Parámetros</a></li>
+                        <li class="@Html.IsSelected(action: "Tracking")"><a href="@Url.Action("Tracking", "Fees")">Seguimiento</a></li>
+                        <li class="@Html.IsSelected(action: "Tweaking")"><a href="@Url.Action("Tweaking", "Fees")">Ajustes</a></li>
                     </ul>
                 </li>
             }
