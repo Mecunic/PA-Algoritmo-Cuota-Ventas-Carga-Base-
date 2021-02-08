@@ -4,11 +4,10 @@
 
         var columnsMetaData = [
             { data: "@Html.NameFor(x=>x.Id)", visible: false },
-            { data: "@Html.NameFor(x => x.Email)", title: "@Html.DisplayNameFor(x => x.Email)" },
-            { data: "@Html.NameFor(x => x.RoleName)", title: "@Html.DisplayNameFor(x => x.RoleName)" },
             { data: "@Html.NameFor(x => x.Name)", title: "@Html.DisplayNameFor(x => x.Name)" },
-            { data: "@Html.NameFor(x => x.CreatedAt)", title: "@Html.DisplayNameFor(x => x.CreatedAt)" },
-            { data: "@Html.NameFor(x => x.UpdatedAt)", title: "@Html.DisplayNameFor(x => x.UpdatedAt)" },
+            { data: "@Html.NameFor(x => x.Email)", title: "@Html.DisplayNameFor(x => x.Email)" },
+            { data: "@Html.NameFor(x => x.CedisName)", title: "@Html.DisplayNameFor(x => x.CedisName)" },
+            { data: "@Html.NameFor(x => x.Status)", title: "@Html.DisplayNameFor(x => x.Status)" },
         ];
         var controlador = new UserIndexControlador({
             columns: columnsMetaData,

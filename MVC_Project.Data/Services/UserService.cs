@@ -25,17 +25,11 @@ namespace MVC_Project.Data.Services
         public Tuple<IEnumerable<User>, int>  FilterBy(NameValueCollection filtersValue, int? skip, int? take)
         {
             string FilterName = filtersValue.Get("Name").Trim();
-            int FilterStatus = Convert.ToInt32(filtersValue.Get("Status").Trim());
-
+            
             var query = _repository.Session.QueryOver<User>();
             if (!string.IsNullOrWhiteSpace(FilterName))
             {
                 query = query.Where(user => user.Email.IsInsensitiveLike("%" + FilterName + "%") || user.FirstName.IsInsensitiveLike("%" + FilterName + "%") || user.LastName.IsInsensitiveLike("%" + FilterName + "%"));
-            }
-            if (FilterStatus != Constants.SEARCH_ALL)
-            {
-                bool FilterStatusBool = Convert.ToBoolean(FilterStatus);
-                query = query.Where(user => user.Status == FilterStatusBool);
             }
             var count = query.RowCount();
 

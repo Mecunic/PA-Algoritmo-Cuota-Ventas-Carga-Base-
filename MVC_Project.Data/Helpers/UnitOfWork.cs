@@ -28,6 +28,7 @@ namespace MVC_Project.Data.Helpers
                 .Mappings(m => m.FluentMappings.AddFromAssemblyOf<StoreMap>())
                 .Mappings(m => m.FluentMappings.AddFromAssemblyOf<StaffMap>())
                 .Mappings(m => m.FluentMappings.AddFromAssemblyOf<PaymentMap>())
+                .Mappings(m => m.FluentMappings.AddFromAssemblyOf<CedisMap>())
                 .ExposeConfiguration(cfg => configuration = cfg)
                 .BuildSessionFactory();
         }

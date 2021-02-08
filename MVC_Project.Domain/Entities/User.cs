@@ -29,6 +29,8 @@ namespace MVC_Project.Domain.Entities {
         public virtual DateTime? ExpiraApiKey { get; set; }
         public virtual DateTime? LastLoginAt { get; set; }
 
+        public virtual Cedis Cedis { get; set; }
+
         public User()
         {            
             Permissions = new List<Permission>();

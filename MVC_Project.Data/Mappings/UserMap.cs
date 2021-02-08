@@ -30,6 +30,7 @@ namespace MVC_Project.Data.Mappings {
             Map(x => x.Username).Column("username").Nullable();
             Map(x => x.PasswordExpiration).Column("password_expiration").Nullable();
             References(x => x.Role).Column("RoleId");
+            References(x => x.Cedis).Column("CedisId");
             HasManyToMany(x => x.Permissions)
                 .Cascade.SaveUpdate()
                 .Table("permission_user")

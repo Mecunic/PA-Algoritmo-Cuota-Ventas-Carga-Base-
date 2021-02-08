@@ -1,10 +1,8 @@
-﻿var UserIndexControlador = function (htmlTableId, baseUrl, modalEditAction, modalDeleteAction, modelEditPasswordAction, modalEditPasswordId, formEditPasswordId, submitEditPasswordId) {
+﻿var UserIndexControlador = function (htmlTableId, baseUrl) {
     var self = this;
     this.htmlTable = $('#' + htmlTableId);
     this.baseUrl = baseUrl;
     this.dataTable = {};
-    this.modalEditPassword = $('#' + modalEditPasswordId);
-    const utils = new Utils();
     this.initModal = function () {
 
     }
@@ -19,39 +17,31 @@
             ordering: false,
             columns: [
                 { data: 'Id', title: "Id", visible: false },
-                { data: 'Email', title: "Email" },
-                { data: 'RoleName', title: "Rol" },
                 { data: 'Name', title: "Nombre" },
+                { data: 'Email', title: "Email" },
+                { data: 'CedisName', title: "Cedis" },
                 {
-                    data: null, orderName: "CreatedAt", title: "Fecha de Creación", autoWidth: false, className: "dt-center td-actions thead-dark",
+                    data: null, title: "Estatus",
                     render: function (data, type, row, meta) {
-                        if (data.CreatedAt !== null && data.CreatedAt !== "") {
-                            return moment(data.CreatedAt).format('DD-MMM-YYYY');
+                        if (data.Status) {
+                            return 'Activo';
+                        } else {
+                            return 'Inactivo';
                         }
-                        return '';
-                    }
-                },
-                {
-                    data: null, orderName: "UpdatedAt", title: "Último Acceso", autoWidth: false, className: "dt-center td-actions thead-dark",
-                    render: function (data, type, row, meta) {
-                        if (data.LastLoginAt !== null && data.LastLoginAt !== "") {
-                            return moment(data.LastLoginAt).format('DD-MMM-YYYY');
-                        }
-                        return '';
                     }
                 },
                 {
                     data: null,
                     className: 'personal-options',
+                    title: 'Acciones',
                     render: function (data) {
                         var deshabilitarBtns = data.Status ?
-                            '<button class="btn btn-light btn-change-status" title="Desactivar" style="margin-left:5px;"><span class="far fa-check-square "></span></button>' :
-                            '<button class="btn btn-light btn-change-status" title="Activar" style="margin-left:5px;"><span class="far fa-square"></span></button>';
+                            '<a class="btn btn-light btn-delete" title="Borrar" style="margin-left:5px;"><span class="far fa-trash-alt "></span></a>' :
+                            '';
 
                         var buttons = '<div class="btn-group" role="group" aria-label="Opciones">' +
+                            '<a class="btn btn-light btn-edit" title="Editar Usuario"><span class="fas fa-user-edit"></span></a>' +
                             deshabilitarBtns +
-                            '<button class="btn btn-light btn-edit" title="Editar Usuario"><span class="fas fa-user-edit"></span></button>' +
-                            '<button class="btn btn-light btn-edit-password" title="Cambiar Contraseña"><span class="fas fa-key"></span></button>' +
                             '</div>';
                         return buttons;
                     }
@@ -67,15 +57,15 @@
         });
 
         $(this.htmlTable, "tbody").on('click',
-            'td.personal-options .btn-group .btn-change-status',
+            'td.personal-options .btn-group .btn-delete',
             function () {
                 var tr = $(this).closest('tr');
                 var row = self.dataTable.row(tr);
                 var id = row.data().Uuid;
-
+                debugger;
                 swal({
                     title: "Confirmación",
-                    text: "¿Desea cambiar el estado del usuario?",
+                    text: "¿Desea eliminar usuario?",
                     showCancelButton: true,
                     confirmButtonClass: "btn-danger",
                     confirmButtonText: "Aceptar",
@@ -89,16 +79,16 @@
                                 type: 'POST',
                                 async: true,
                                 data: { uuid: id },
-                                url: '/User/ChangeStatus',
+                                url: '/User/Delete',
                                 success: function (data) {
                                     if (!data) {
                                         swal({
                                             type: 'error',
-                                            title: data.Mensaje.Titulo,
-                                            text: data.Mensaje.Contenido
+                                            title: 'Error',
+                                            text: 'Error al eliminar el registro'
                                         })
                                     } else {
-                                        swal("Registro actualizado");
+                                        swal("Registro eliminado");
                                         self.dataTable.ajax.reload();
                                     }
                                 },
@@ -110,56 +100,6 @@
                             swal.close();
                         }
                     });
-            });
-
-        $(self.htmlTable, "tbody").on('click',
-            'td.personal-options .btn-group .btn-edit-password',
-            function () {
-                var tr = $(this).closest('tr');
-                var row = self.dataTable.row(tr);
-                var uuid = row.data().Uuid;
-                var action = modelEditPasswordAction + "?uuid=" + uuid;
-                self.modalEditPassword.find('.modal-body').load(action, function (response, status, xhr) {
-                    if (status == "error") {
-                        return;
-                    }
-                    self.modalEditPassword.modal("show");
-                    let form = $("#" + formEditPasswordId);
-                    utils.actualizarValidaciones(form);
-                    form.submit(function (e) {
-                        e.preventDefault();
-                        if (form.valid()) {
-                            submitEditPassword(form).then(function (data) {
-                                form.find("span.field-validation-error").attr("class", "field-validation-valid");
-                                form.find("span.field-validation-error").empty();
-                                self.modalEditPassword.modal("hide");
-                                toastr["success"](data.Message);
-                            }).catch(function (data) {
-                                if (data.status == 422) {
-                                    dataObj = data.responseJSON;
-                                    dataObj.errors.forEach(function (error) {
-                                        let span = form.find("span[data-valmsg-for='" + error.propertyName + "']");
-                                        span.attr("class", "field-validation-error");
-                                        let idMessage = error.propertyName + "-error";
-                                        let spanMessage = span.find("#" + idMessage);
-                                        if (spanMessage.length <= 0) {
-                                            spanMessage = $("<span></span>");
-                                            spanMessage.attr('id', idMessage);
-                                            span.append(spanMessage);
-                                        }
-                                        spanMessage.html(error.errorMessage);
-                                    });
-                                } else {
-                                    self.modalEditPassword.modal("hide");
-                                }
-                            });
-                        }
-                    });
-                    $("#" + submitEditPasswordId).click(function () {
-                        form.submit();
-                    });
-
-                });
             });
 
         $(self.htmlTable, "tbody").on('click',
@@ -181,22 +121,5 @@
                 form.appendChild(input);
                 form.submit();
             });
-
-        function submitEditPassword(form) {
-            let url = form.attr("action");
-            let method = form.attr("method");
-            return new Promise(function (resolve, reject) {
-                $.ajax({
-                    url: url,
-                    method: method,
-                    data: form.serialize(),
-                    dataType: "json"
-                }).done(function (data) {
-                    resolve(data);
-                }).fail(function (jqXHR, error) {
-                    reject(jqXHR);
-                });
-            });
-        }
     }
 }

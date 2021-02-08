@@ -37,52 +37,6 @@ namespace MVC_Project.WebBackend.Controllers
             };
             return View(model);
         }
-        [Authorize]
-        public ActionResult Import()
-        {
-            UserImportViewModel model = new UserImportViewModel();
-            return View("Import", model);
-        }
-        [HttpPost, Authorize, ValidateAntiForgeryToken]
-        public ActionResult Import(UserImportViewModel model)
-        {
-            if (ModelState.IsValid)
-            {
-                ResultExcelImporter<UserImport> result = ExcelImporterMapper.ReadExcel<UserImport>(new ExcelFileInputData
-                {
-                    ContentLength = model.ImportedFile.ContentLength,
-                    FileName = model.ImportedFile.FileName,
-                    InputStream = model.ImportedFile.InputStream
-                });
-                model.ImportResult = new List<UserRowImportResultViewModel>();
-                foreach (RowResult rowResult in result.ResultMapExcel.RowResults)
-                {
-                    UserRowImportResultViewModel userRowImportResultViewModel = new UserRowImportResultViewModel();
-                    userRowImportResultViewModel.Email = rowResult.RowsValues.Email;
-                    userRowImportResultViewModel.EmployeeNumber = rowResult.RowsValues.EmployeeNumber;
-                    userRowImportResultViewModel.Name = rowResult.RowsValues.Name;
-                    userRowImportResultViewModel.RowNumber = rowResult.Number;
-                    userRowImportResultViewModel.Messages = new List<string>();
-                    bool hasCustomError = false;
-                    User existingUser = _userService.FindBy(x => x.Email == userRowImportResultViewModel.Email).FirstOrDefault();
-                    if (existingUser != null && !String.IsNullOrWhiteSpace(userRowImportResultViewModel.Email))
-                    {
-                        userRowImportResultViewModel.Messages.Add("El correo electrónico del usuario ya se encuentra registrado");
-                    }
-                    hasCustomError = userRowImportResultViewModel.Messages.Any();
-                    if (rowResult.HasError)
-                    {
-                        userRowImportResultViewModel.Messages = userRowImportResultViewModel.Messages.Concat(rowResult.ErrorMessages).ToList();
-                    }
-                    if(!rowResult.HasError && !hasCustomError)
-                    {
-                        
-                        userRowImportResultViewModel.Messages.Add("Usuario registrado satisfactoriamente");
-                    }
-                }
-            }
-            return View("Import", model);
-        }
 
         [HttpGet, Authorize]
         public JsonResult GetAllByFilter(JQueryDataTableParams param, string filtros)
@@ -97,12 +51,9 @@ namespace MVC_Project.WebBackend.Controllers
                     UserData userData = new UserData();
                     userData.Name = user.FirstName + " " + user.LastName;
                     userData.Email = user.Email;
-                    userData.RoleName = user.Role.Name;
-                    userData.CreatedAt = user.CreatedAt;
-                    userData.UpdatedAt = user.UpdatedAt;
                     userData.Status = user.Status;
                     userData.Uuid = user.Uuid;
-                    userData.LastLoginAt = user.LastLoginAt;
+                    userData.CedisName = user.Cedis?.Name;
                     dataResponse.Add(userData);
                 }
                 return Json(new
@@ -228,91 +179,16 @@ namespace MVC_Project.WebBackend.Controllers
                 return View(model);
             }
         }
-        [HttpGet]
-        public ActionResult EditPassword(string uuid)
-        {
-            var user = _userService.FindBy(e => e.Uuid == uuid).FirstOrDefault();
-            if (user == null)
-            {
-                string message = Resources.ErrorMessages.UserNotAvailable;
-                if (Request.IsAjaxRequest())
-                {
-                    return JsonStatusGone(message);
-                }
-                else
-                {
-                    AddViewMessage(TypeMessageView.ERROR, message);
-                    return RedirectToAction("Index");
-                }
-            }
-            UserChangePasswordViewModel model = new UserChangePasswordViewModel {
-                Uuid = uuid,
-                Password = null,
-                ConfirmPassword = null
-            };
-            if (Request.IsAjaxRequest())
-            {
-                return PartialView(model);
-            }
-
-            return View(model);
-        }
-        [HttpPost, ValidateAntiForgeryToken]
-        public ActionResult EditPassword(UserChangePasswordViewModel model)
-        {
-            var user = _userService.FindBy(e => e.Uuid == model.Uuid).FirstOrDefault();
-            if(user == null)
-            {
-                string message = Resources.ErrorMessages.UserNotAvailable;
-                if (Request.IsAjaxRequest())
-                {
-                    return JsonStatusGone(message);
-                }
-                else
-                {
-                    AddViewMessage(TypeMessageView.ERROR, message);
-                    return RedirectToAction("Index");
-                }
-            }
-            if (ModelState.IsValid)
-            {
-                user.Password = SecurityUtil.EncryptPassword(model.Password);
-                DateTime todayDate = DateUtil.GetDateTimeNow();
-                DateTime passwordExpiration = todayDate.AddDays(-1);
-                user.PasswordExpiration = passwordExpiration;
-                _userService.Update(user);
-                string successMessage = Resources.Messages.UserPasswordUpdated;
-                if (Request.IsAjaxRequest())
-                {
-                    return Json(new {
-                        Message = successMessage
-                    });
-                }
-                AddViewMessage(TypeMessageView.SUCCESS, successMessage);
-                return RedirectToAction("Index");
-            }
-            if (Request.IsAjaxRequest())
-            {
-                Response.StatusCode = 422;
-                return Json(new
-                {
-                    issue = model,
-                    errors = ModelState.Keys.Where(k => ModelState[k].Errors.Count > 0)
-                    .Select(k => new { propertyName = k, errorMessage = ModelState[k].Errors[0].ErrorMessage })
-                });
-            }
-            return View(model);
-        }
         
         [HttpPost, Authorize]
-        public ActionResult ChangeStatus(string uuid, FormCollection collection)
+        public ActionResult Delete(string uuid, FormCollection collection)
         {
             try
             {
                 var user = _userService.FindBy(x => x.Uuid == uuid).First();
                 if (user != null)
                 {
-                    user.Status = !user.Status;
+                    user.Status = false;
                     _userService.Update(user);
                     return Json(true, JsonRequestBehavior.AllowGet);
                 }

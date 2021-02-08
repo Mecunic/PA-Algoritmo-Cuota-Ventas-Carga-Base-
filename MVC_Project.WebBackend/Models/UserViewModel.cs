@@ -38,18 +38,11 @@ namespace MVC_Project.WebBackend.Models
         public string Uuid { get; set; }
 
         public string Email { get; set; }
-
-        [Display(Name = "Rol")]
-        public string RoleName { get; set; }
-
-        [Display(Name = "Fecha de creación")]
-        public DateTime CreatedAt { get; set; }
-
-        [Display(Name = "Fecha de actualización")]
-        public DateTime UpdatedAt { get; set; }
-        public DateTime? LastLoginAt { get; set; }
-        [Display(Name = "Estatus")]
         public bool Status { get; set; }
+
+        //Attributes Custom
+        [Display(Name="Cedis")]
+        public string CedisName { get; set; }
     }
 
     public class UserCreateViewModel
@@ -87,6 +80,13 @@ namespace MVC_Project.WebBackend.Models
         public int Role { get; set; }
 
         public IEnumerable<SelectListItem> Roles { get; set; }
+
+        //Attributes Custom
+        [Display(Name="Cedis")]
+        [Required]
+        public int Cedis { get; set; }
+
+        public IEnumerable<SelectListItem> CedisList { get; set; }
     }
 
     public class UserRoleViewModel

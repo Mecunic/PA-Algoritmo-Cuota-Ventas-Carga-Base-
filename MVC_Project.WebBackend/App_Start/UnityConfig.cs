@@ -58,6 +58,7 @@ namespace MVC_Project.WebBackend
             container.RegisterType<IEventService, EventService>();
             container.RegisterType<IOrderService, OrderService>();
             container.RegisterType<IDocumentService, DocumentService>();
+            container.RegisterType<ICedisService, CedisService>();
         }
     }
 }
