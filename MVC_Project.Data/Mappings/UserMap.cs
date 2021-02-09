@@ -29,6 +29,7 @@ namespace MVC_Project.Data.Mappings {
             Map(x=>x.LastLoginAt).Column("last_login_at").Nullable();
             Map(x => x.Username).Column("username").Nullable();
             Map(x => x.PasswordExpiration).Column("password_expiration").Nullable();
+            Map(x => x.ApellidoMaterno).Column('apellido_materno').Nullable();
             References(x => x.Role).Column("RoleId");
             References(x => x.Cedis).Column("CedisId");
             HasManyToMany(x => x.Permissions)
