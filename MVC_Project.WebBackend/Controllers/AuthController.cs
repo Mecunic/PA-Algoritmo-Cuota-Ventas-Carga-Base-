@@ -74,7 +74,7 @@ namespace MVC_Project.WebBackend.Controllers
                     {
                         Id = user.Id,
                         FirstName = user.FirstName,
-                        LastName = user.LastName,
+                        LastName = user.ApellidoPaterno,
                         Email = user.Email,
                         Language = user.Language,
                         Uuid = user.Uuid,
@@ -278,7 +278,7 @@ namespace MVC_Project.WebBackend.Controllers
                     AuthUser authUser = new AuthUser
                     {
                         FirstName = user.FirstName,
-                        LastName = user.LastName,
+                        LastName = user.ApellidoPaterno,
                         Email = user.Email,
                         Uuid = user.Uuid,
                         PasswordExpiration = user.PasswordExpiration,
@@ -327,7 +327,7 @@ namespace MVC_Project.WebBackend.Controllers
                     AuthUser authUser = new AuthUser
                     {
                         FirstName = resultado.FirstName,
-                        LastName = resultado.LastName,
+                        LastName = resultado.ApellidoPaterno,
                         Uuid = resultado.Uuid,
                         PasswordExpiration = resultado.PasswordExpiration,
                         Email = resultado.Email,

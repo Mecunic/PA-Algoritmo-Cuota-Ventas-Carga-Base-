@@ -19,23 +19,19 @@ namespace MVC_Project.WebBackend.Controllers
     {
         private IUserService _userService;
         private IRoleService _roleService;
+        private ICedisService _cedisService;
 
-        public UserController(IUserService userService, IRoleService roleService)
+        public UserController(IUserService userService, IRoleService roleService, ICedisService cedisService = null)
         {
             _userService = userService;
             _roleService = roleService;
+            _cedisService = cedisService;
         }
 
         [Authorize]
         public ActionResult Index()
         {
-            UserViewModel model = new UserViewModel
-            {
-                UserList = new UserData(),
-                Status = FilterStatusEnum.ALL.Id,
-                Statuses = FilterStatusEnum.GetSelectListItems()
-            };
-            return View(model);
+            return View();
         }
 
         [HttpGet, Authorize]
@@ -49,7 +45,7 @@ namespace MVC_Project.WebBackend.Controllers
                 foreach (var user in results.Item1)
                 {
                     UserData userData = new UserData();
-                    userData.Name = user.FirstName + " " + user.LastName;
+                    userData.Name = user.FirstName + " " + user.ApellidoPaterno;
                     userData.Email = user.Email;
                     userData.Status = user.Status;
                     userData.Uuid = user.Uuid;
@@ -79,8 +75,9 @@ namespace MVC_Project.WebBackend.Controllers
         [Authorize]
         public ActionResult Create()
         {
-            var userCreateViewModel = new UserCreateViewModel { Roles = PopulateRoles() };
-            return View(userCreateViewModel);
+            var userCreateViewModel = new UserCreateViewModel 
+            { Roles = PopulateRoles(), CedisList = PopulateCedis() };
+            return PartialView(userCreateViewModel);
         }
 
         private IEnumerable<SelectListItem> PopulateRoles()
@@ -95,36 +92,43 @@ namespace MVC_Project.WebBackend.Controllers
             return rolesList;
         }
 
-        [Authorize, HttpPost, ValidateAntiForgeryToken, ValidateInput(true)]
-        public ActionResult Create(UserCreateViewModel userCreateViewModel)
+        private IEnumerable<SelectListItem> PopulateCedis()
         {
-            if(!String.IsNullOrWhiteSpace(userCreateViewModel.ConfirmPassword) 
-                && !String.IsNullOrWhiteSpace(userCreateViewModel.Password))
+            var availableCedis = _cedisService.GetAll();
+            var cedisList = new List<SelectListItem>();
+            cedisList = availableCedis.Select(cedis => new SelectListItem
             {
-                if(!userCreateViewModel.Password.Equals(userCreateViewModel.ConfirmPassword))
-                {
-                    ModelState.AddModelError("ConfirmPassword", "Las contraseñas no coinciden");
-                }
-            }
+                Value = cedis.Id.ToString(),
+                Text = cedis.Name
+            }).ToList();
+            return cedisList;
+        }
+
+        [HttpPost, ValidateAntiForgeryToken,ValidateInput(true)]
+        public ActionResult Create(UserCreateViewModel model)
+        {
             if (ModelState.IsValid)
             {
-                DateTime todayDate =  DateUtil.GetDateTimeNow();
+                DateTime todayDate = DateUtil.GetDateTimeNow();
 
                 string daysToExpirateDate = ConfigurationManager.AppSettings["DaysToExpirateDate"];
-                
+
                 DateTime passwordExpiration = todayDate.AddDays(Int32.Parse(daysToExpirateDate));
                 var user = new User
                 {
                     Uuid = Guid.NewGuid().ToString(),
-                    FirstName = userCreateViewModel.Name,
-                    LastName = userCreateViewModel.Apellidos,
-                    Email = userCreateViewModel.Email,
-                    MobileNumber = userCreateViewModel.MobileNumber,
-                    Password = SecurityUtil.EncryptPassword(userCreateViewModel.Password),
+                    FirstName = model.Name,
+                    ApellidoPaterno = model.ApellidoPaterno,
+                    ApellidoMaterno = model.ApellidoMaterno,
+                    //LastName = userCreateViewModel.Apellidos,
+                    Email = model.Email,
+                    //MobileNumber = userCreateViewModel.MobileNumber,
+                    Password = SecurityUtil.EncryptPassword("12345678"),
                     PasswordExpiration = passwordExpiration,
-                    Role = new Role { Id = userCreateViewModel.Role },
-                    Username = userCreateViewModel.Username,
-                    Language = userCreateViewModel.Language,
+                    Role = new Role { Id = model.Role },
+                    //Username = model.Username,
+                    Cedis = new Cedis { Id = model.Cedis },
+                    //Language = userCreateViewModel.Language,
                     CreatedAt = todayDate,
                     UpdatedAt = todayDate,
                     Status = true
@@ -135,12 +139,21 @@ namespace MVC_Project.WebBackend.Controllers
                     user.Permissions.Add(permission);
                 }
                 _userService.Create(user);
-                return RedirectToAction("Index");
+                string successMessage = Resources.Messages.UserPasswordUpdated;
+                return Json(new
+                {
+                    Message = successMessage
+                });
             }
             else
             {
-                userCreateViewModel.Roles = PopulateRoles();
-                return View("Create", userCreateViewModel);
+                Response.StatusCode = 422;
+                return Json(new
+                {
+                    issue = model,
+                    errors = ModelState.Keys.Where(k => ModelState[k].Errors.Count > 0)
+                    .Select(k => new { propertyName = k, errorMessage = ModelState[k].Errors[0].ErrorMessage })
+                });
             }
         }
 
@@ -151,7 +164,7 @@ namespace MVC_Project.WebBackend.Controllers
             UserEditViewModel model = new UserEditViewModel();
             model.Uuid = user.Uuid;
             model.Name = user.FirstName;
-            model.Apellidos = user.LastName;
+            model.Apellidos = user.ApellidoPaterno;
             model.Email = user.Email;
             model.MobileNumber = user.MobileNumber;
             model.Roles = PopulateRoles();
@@ -166,7 +179,7 @@ namespace MVC_Project.WebBackend.Controllers
             {
                 User user = _userService.FindBy(x => x.Uuid == model.Uuid).First();
                 user.FirstName = model.Name;
-                user.LastName = model.Apellidos;
+                user.ApellidoPaterno = model.Apellidos;
                 user.Email = model.Email;
                 user.MobileNumber = model.MobileNumber;
                 user.Username = model.Username;
@@ -181,7 +194,7 @@ namespace MVC_Project.WebBackend.Controllers
         }
         
         [HttpPost, Authorize]
-        public ActionResult Delete(string uuid, FormCollection collection)
+        public ActionResult Delete(string uuid)
         {
             try
             {
@@ -199,5 +212,7 @@ namespace MVC_Project.WebBackend.Controllers
                 return Json(false, JsonRequestBehavior.AllowGet);
             }
         }
+
+        
     }
 }

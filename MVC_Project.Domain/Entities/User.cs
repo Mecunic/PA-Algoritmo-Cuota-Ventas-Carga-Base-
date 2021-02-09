@@ -8,7 +8,9 @@ namespace MVC_Project.Domain.Entities {
         public virtual int Id { get; set; }
         public virtual string Uuid { get; set; }
         public virtual string FirstName { get; set; }
-        public virtual string LastName { get; set; }
+        public virtual string ApellidoPaterno { get; set; }
+
+        public virtual string ApellidoMaterno { get; set; }
         public virtual string Email { get; set; }
         public virtual string Username { get; set; }
         public virtual string Language { get; set; }

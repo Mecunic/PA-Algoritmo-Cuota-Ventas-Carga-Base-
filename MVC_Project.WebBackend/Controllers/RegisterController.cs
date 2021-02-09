@@ -60,7 +60,7 @@ namespace MVC_Project.WebBackend.Controllers
                     {
                         Uuid = Guid.NewGuid().ToString(),
                         FirstName = model.FistName,
-                        LastName = model.LastName,
+                        ApellidoPaterno = model.LastName,
                         Email = model.Email,
                         Password = SecurityUtil.EncryptPassword(model.Password),
                         PasswordExpiration = passwordExpiration,

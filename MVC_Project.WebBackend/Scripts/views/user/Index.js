@@ -36,11 +36,11 @@
                     title: 'Acciones',
                     render: function (data) {
                         var deshabilitarBtns = data.Status ?
-                            '<a class="btn btn-light btn-delete" title="Borrar" style="margin-left:5px;"><span class="far fa-trash-alt "></span></a>' :
+                            '<button type="button" class="btn btn-light btn-delete" title="Borrar" style="margin-left:5px;"><span class="far fa-trash-alt "></span></button>' :
                             '';
 
                         var buttons = '<div class="btn-group" role="group" aria-label="Opciones">' +
-                            '<a class="btn btn-light btn-edit" title="Editar Usuario"><span class="fas fa-user-edit"></span></a>' +
+                            '<button type="button" class="btn btn-light btn-edit" title="Editar Usuario"><span class="fas fa-user-edit"></span></button>' +
                             deshabilitarBtns +
                             '</div>';
                         return buttons;

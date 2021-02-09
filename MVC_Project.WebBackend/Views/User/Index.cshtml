@@ -5,6 +5,7 @@
 }
 @section styles {
     @Styles.Render("~/plugins/dataTablesStyles")
+    @Styles.Render("~/Content/template/plugins/chosen/chosenStyles")
 }
 
 <div class="wrapper wrapper-content animated fadeInRight">
@@ -25,14 +26,14 @@
                             </div>
                             <div class="col-sm-6 col-xs-12">
                                 <button type="button" id="btnSearchForm" class="btn btn-sm btn-primary btn-filter">Buscar</button>
-                                <a href="@Url.Action("Create","User")" class="btn btn-primary float-right"><span class="fas fa-plus"></span> Crear Nuevo</a>
+                                <button type="button" class="btn btn-create btn-primary float-right"><span class="fas fa-plus"></span> Crear Nuevo</button>
                                 <div class="clearfix"></div>
                             </div>
 
                         </div>
                     </div>
                     <div class="ibox-content clearfix">
-                        
+
 
                         <div class="table-responsive">
                             <table id="table" class="table table-striped table-bordered table-hover"></table>
@@ -46,13 +47,35 @@
     </div>
 </div>
 
+<div id="modal-create" class="modal fade hidden-print" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Crear Usuario</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="btn-cancel" data-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-primary" id="btn-save">Guardar</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
 @section scripts{
+    @Scripts.Render("~/plugins/chosen")
     @Scripts.Render("~/plugins/dataTables")
     @Scripts.Render("~/plugins/fullCalendar")
     @Scripts.Render("~/plugins/validate")
     @Scripts.Render("~/plugins/validateUnobtrusive")
     @Scripts.Render("~/custom/Utils")
-    
+
     <script src="~/Scripts/views/user/Index.js"></script>
 
     <script>
@@ -60,7 +83,7 @@
             var tableCtrl = new UserIndexControlador('table', '@Url.Action("GetAllByFilter")');
             tableCtrl.init();
         });
-
+        const utils = new Utils();
         $(window).keydown(function (event) {
             if (event.keyCode == 13) {
                 event.preventDefault();
@@ -78,6 +101,74 @@
         $(".btn-filter").click(function () {
             $('#table').DataTable().draw();
         });
+
+        $(".btn-create").click(function (e) {
+            let modalCreate = $("#modal-create");
+            e.preventDefault();
+            modalCreate.find('.modal-body').load('@Url.Action("Create")', function (response, status, xhr) {
+                if (status == "error") {
+                    return;
+                }
+                modalCreate.modal("show");
+                $('.chosen-select').chosen({ width: '100%' });
+                /*$("#Status").change(function () {
+                    if (this.checked) {
+                        $(this).parent().find('label').html('Activo');
+                    } else {
+                        $(this).parent().find('label').html('Inactivo');
+                    }
+                });
+                */
+            });
+
+        });
+
+        function submitCreate(form,url,method) {
+            return new Promise(function (resolve, reject) {
+                $.ajax({
+                    url: url,
+                    method: method,
+                    data: form.serialize(),
+                    dataType: "json"
+                }).done(function (data) {
+                    debugger;
+                    resolve(data);
+                }).fail(function (jqXHR, error) {
+                    reject(jqXHR);
+                });
+            });
+        }
+
+        $("#btn-save").click(function (e) {
+                    let form = $("#create-form");
+                    let modal = $("#modal-create");
+                    submitCreate(form, '@Url.Action("create","user")','POST').then(function (data) {
+                            form.find("span.field-validation-error").attr("class", "field-validation-valid");
+                            form.find("span.field-validation-error").empty();
+                            modal.modal("hide");
+                            toastr["success"](data.Message);
+                        }).catch(function (data) {
+                            if (data.status == 422) {
+                                form.find("span[id*='error']").html('');
+                                dataObj = data.responseJSON;
+                                dataObj.errors.forEach(function (error) {
+                                    let span = form.find("span[data-valmsg-for='" + error.propertyName + "']");
+                                    span.attr("class", "field-validation-error");
+                                    let idMessage = error.propertyName + "-error";
+                                    let spanMessage = span.find("#" + idMessage);
+                                    if (spanMessage.length <= 0) {
+                                        spanMessage = $("<span style=\"color:#f00;\"></span>");
+                                        spanMessage.attr('id', idMessage);
+                                        span.append(spanMessage);
+                                    }
+                                    spanMessage.html(error.errorMessage);
+                                });
+                            } else {
+                                modal.modal("hide");
+                            }
+                        });
+                });
+
     </script>
 
 }

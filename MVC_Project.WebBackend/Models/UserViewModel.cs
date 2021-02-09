@@ -31,8 +31,6 @@ namespace MVC_Project.WebBackend.Models
     public class UserData
     {
         public int Id { get; set; }
-
-        [Display(Name = "Nombre")]
         public string Name { get; set; }
 
         public string Uuid { get; set; }
@@ -41,26 +39,35 @@ namespace MVC_Project.WebBackend.Models
         public bool Status { get; set; }
 
         //Attributes Custom
-        [Display(Name="Cedis")]
         public string CedisName { get; set; }
     }
 
     public class UserCreateViewModel
     {
         [Required]
-        [Display(Name = "Nombre")]
+        [Display(Name = "Nombre(s)")]
         public string Name { get; set; }
+        [Required]
+        [Display(Name = "Apellido Paterno")]
+        public string ApellidoPaterno { get; set; }
 
-        [Display(Name = "Apellidos")]
-        public string Apellidos { get; set; }
+        [Display(Name = "Apellido Materno")]
+        public string ApellidoMaterno { get; set; }
+
+        [Display(Name = "Rol")]
+        [Required]
+        public int Role { get; set; }
+
+        public IEnumerable<SelectListItem> Roles { get; set; }
 
         [Required]
+        [EmailAddress]
         public string Email { get; set; }
 
         [Display(Name = "Usuario")]
         public string Username { get; set; }
 
-        [Display(Name = "Teléfono Móvil")]
+        /*[Display(Name = "Teléfono Móvil")]
         public string MobileNumber { get; set; }
 
         [Display(Name = "Idioma")]
@@ -74,12 +81,8 @@ namespace MVC_Project.WebBackend.Models
         [Display(Name = "Confirmar contraseña")]
         [DataType(DataType.Password)]
         public string ConfirmPassword { get; set; }
-
-        [Display(Name = "Rol")]
-        [Required]
-        public int Role { get; set; }
-
-        public IEnumerable<SelectListItem> Roles { get; set; }
+        */
+        
 
         //Attributes Custom
         [Display(Name="Cedis")]
@@ -87,6 +90,10 @@ namespace MVC_Project.WebBackend.Models
         public int Cedis { get; set; }
 
         public IEnumerable<SelectListItem> CedisList { get; set; }
+
+        [Display(Name="Estatus")]
+        public bool Status { get; set; }
+
     }
 
     public class UserRoleViewModel

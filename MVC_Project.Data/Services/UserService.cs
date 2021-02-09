@@ -29,7 +29,7 @@ namespace MVC_Project.Data.Services
             var query = _repository.Session.QueryOver<User>();
             if (!string.IsNullOrWhiteSpace(FilterName))
             {
-                query = query.Where(user => user.Email.IsInsensitiveLike("%" + FilterName + "%") || user.FirstName.IsInsensitiveLike("%" + FilterName + "%") || user.LastName.IsInsensitiveLike("%" + FilterName + "%"));
+                query = query.Where(user => user.Email.IsInsensitiveLike("%" + FilterName + "%") || user.FirstName.IsInsensitiveLike("%" + FilterName + "%") || user.ApellidoPaterno.IsInsensitiveLike("%" + FilterName + "%"));
             }
             var count = query.RowCount();
 

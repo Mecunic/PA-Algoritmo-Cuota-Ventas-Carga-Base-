@@ -14,7 +14,7 @@ namespace MVC_Project.Data.Mappings {
             Map(x => x.MobileNumber).Column("mobile_number").Nullable();
             Map(x => x.Profile).Column("profile").Nullable();
             Map(x => x.FirstName).Column("first_name").Not.Nullable();
-            Map(x => x.LastName).Column("last_name").Nullable();
+            Map(x => x.ApellidoPaterno).Column("last_name").Nullable();
             Map(x => x.Email).Column("email").Not.Nullable();
             Map(x => x.Password).Column("password").Not.Nullable();            
             Map(x => x.CreatedAt).Column("created_at").Not.Nullable();
