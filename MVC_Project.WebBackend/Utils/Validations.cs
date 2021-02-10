@@ -20,17 +20,37 @@ namespace MVC_Project.WebBackend.Utils
 
         public static bool ContainsCapitalLetter(this string word)
         {
-            return word != null && Regex.Matches(word.Trim(), @"[A-Z]").Count > 0;
+            return word != null && Regex.Matches(word.Trim(), @"[A-ZÁ-ÚÑ]").Count > 0;
         }
 
         public static bool ContainsLowerCaseLetter(this string word)
         {
-            return word != null && Regex.Matches(word.Trim(), @"[a-z]").Count > 0;
+            return word != null && Regex.Matches(word.Trim(), @"[a-zá-úñ]").Count > 0;
         }
 
         public static bool ContainsCaractersSpecial(this string word)
         {
-            return word != null && Regex.Matches(word.Trim(), @"[^0-9a-zA-Z]+").Count > 0;
+            return word != null && Regex.Matches(word.Trim(), @"[^0-9a-zA-ZÁ-Úá-ú\s]+").Count > 0;
+        }
+
+        public static bool ContainsSpaces(this string word)
+        {
+            return word != null && Regex.Matches(word.Trim(), @"[\s*]").Count >= 0;
+        }
+
+        public static bool ContainsOnlyLetters(this string word)
+        {
+            return word != null && word.ContainsSpaces() && word.ContainsLetters() && !word.ContainsNumbers() && !word.ContainsCaractersSpecial();
+        }
+
+        public static bool ContainsOnlyNumbers(this string word)
+        {
+            return word != null && word.ContainsSpaces() && !word.ContainsLetters() && word.ContainsNumbers() && !word.ContainsCaractersSpecial();
+        }
+
+        public static bool ContainsOnlyLetterAndNumbers(this string word)
+        {
+            return word != null && word.ContainsSpaces() && (word.ContainsLetters() || word.ContainsNumbers()) && !word.ContainsCaractersSpecial();
         }
     }
 }

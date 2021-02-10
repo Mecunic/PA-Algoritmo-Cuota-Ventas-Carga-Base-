@@ -90,7 +90,7 @@ namespace MVC_Project.WebBackend.Controllers
                     userCreateViewModel.Email = user.Email;
                     userCreateViewModel.ApellidoPaterno = user.ApellidoPaterno;
                     userCreateViewModel.ApellidoMaterno = user.ApellidoMaterno;
-                    userCreateViewModel.Cedis = user.Cedis.Id;
+                    userCreateViewModel.Cedis = user.Cedis != null ? user.Cedis.Id : 0;
                     userCreateViewModel.Status = user.Status;
                 }
             }
@@ -234,9 +234,13 @@ namespace MVC_Project.WebBackend.Controllers
                 {
                     ModelState.AddModelError("Password", "El campo Contraseña debe ser una cadena con una longitud mínima de 8 y una longitud máxima de 20.");
                 }
+                else
+                {
+                    ModelState.AddModelError("Password", "El campo Contraseña es obligatorio");
+                }
                 if (!password.ContainsCapitalLetter() || !password.ContainsNumbers() || !password.ContainsCaractersSpecial())
                 {
-                    ModelState.AddModelError("Password", "El password debe contener una letra Mayuscula, un número y un caracter especial.");
+                    ModelState.AddModelError("Password", "El Contraseña debe contener una letra Mayuscula, un número y un caracter especial.");
                 }
             }
             if (validEmail && (model.Email == null || model.Email.Trim().Length == 0) )

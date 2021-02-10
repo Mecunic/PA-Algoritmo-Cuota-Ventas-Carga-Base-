@@ -46,9 +46,11 @@ namespace MVC_Project.WebBackend.Models
     public class UserSaveViewModel
     {
         [Required]
+        [ValidType(CustomAttributes.Validations.ValidType.ALPHABETICAL)]
         [Display(Name = "Nombre(s)")]
         public string Name { get; set; }
         [Required]
+        [ValidType(CustomAttributes.Validations.ValidType.ALPHABETICAL)]
         [Display(Name = "Apellido Paterno")]
         public string ApellidoPaterno { get; set; }
 
@@ -56,6 +58,7 @@ namespace MVC_Project.WebBackend.Models
         public string Password { get; set; }
 
         [Display(Name = "Apellido Materno")]
+        [ValidType(CustomAttributes.Validations.ValidType.ALPHABETICAL)]
         public string ApellidoMaterno { get; set; }
 
         [Display(Name = "Rol")]
@@ -67,9 +70,6 @@ namespace MVC_Project.WebBackend.Models
         [Required]
         [EmailAddress]
         public string Email { get; set; }
-
-        [Display(Name = "Usuario")]
-        public string Username { get; set; }
 
         //Attributes Custom
         [Display(Name="Cedis")]
