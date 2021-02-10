@@ -1,28 +1,35 @@
-﻿@model MVC_Project.WebBackend.Models.UserCreateViewModel
+﻿@model MVC_Project.WebBackend.Models.UserSaveViewModel
 
 @section Styles {
     @Styles.Render("~/Content/template/plugins/chosen/chosenStyles")
 }
 
+@{
+    var classTextControl = new Dictionary<string, object> { { "class", "form-control" } };
+    var classTextControlDisabled = new Dictionary<string, object> { { "class", "form-control" }, { "disabled", "disabled" } };
+    var classSelectControl = new Dictionary<string, object> { { "class", "chosen-select" } };
+    var classSelectControlDisabled = new Dictionary<string, object> { { "class" , "chosen-select" }, { "disabled", "disabled" } };
+}
+
 <div class="wrapper wrapper-content animated fadeInRight">
     <div class="row">
         <div class="col-lg-12">
-            <form method="post" role="form" id="create-form">
+            <form method="post" role="form" id="save-form">
                 @Html.AntiForgeryToken()
-
+                @Html.HiddenFor(model => model.Uuid)
                 <div class="row">
                     @Html.ValidationSummary(true)
                     <div class="col-md-4">
                         <div class="form-group">
                             @Html.LabelFor(model => model.Name, new { @class = "col-form-label control-label" })
-                            @Html.EditorFor(model => model.Name, new { @class = "form-control", @required = "required" })
+                            @Html.EditorFor(model => model.Name, classTextControl)
                             @Html.ValidationMessageFor(model => model.Name)
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="form-group">
                             @Html.LabelFor(model => model.ApellidoPaterno, new { @class = "col-form-label control-label" })
-                            @Html.EditorFor(model => model.ApellidoPaterno, new { @class = "form-control" })
+                            @Html.EditorFor(model => model.ApellidoPaterno, classTextControl)
                             @Html.ValidationMessageFor(model => model.ApellidoPaterno)
                         </div>
                     </div>
@@ -30,40 +37,48 @@
                     <div class="col-md-4">
                         <div class="form-group">
                             @Html.LabelFor(model => model.ApellidoMaterno, new { @class = "col-form-label control-label" })
-                            @Html.EditorFor(model => model.ApellidoMaterno, new { @class = "form-control" })
+                            @Html.EditorFor(model => model.ApellidoMaterno, classTextControl)
                             @Html.ValidationMessageFor(model => model.ApellidoMaterno)
                         </div>
                     </div>
 
                     <div class="col-md-4">
                         <div class="form-group">
-                            @Html.LabelFor(model => model.Cedis, new { @class = "col-form-label control-label", required = "required" })
-                            @Html.DropDownListFor(model => model.Cedis, Model.CedisList, "Selecciona", new { @class = "chosen-select", @required = "required" })
-                            @Html.ValidationMessageFor(model => model.Cedis)
+                            @Html.LabelFor(model => model.Cedis, new { @class = "col-form-label control-label" })
+                            @Html.DropDownListFor(model => model.Cedis, Model.CedisList, "Selecciona", Model.IsNew ? classSelectControl : classSelectControlDisabled)
+                            @if (Model.IsNew)
+                            {
+                                @Html.ValidationMessageFor(model => model.Cedis)
+                            }
                         </div>
                     </div>
 
-                    <div class="col-md-4 offset-md-8">
-
-                    </div>
-
-                    <div class="col-md-4 offset-md-8">
-
-                    </div>
-
-
-                    <div class="col-md-4">
+                    <div class="col-md-4 ">
                         <div class="form-group">
                             @Html.LabelFor(model => model.Email, new { @class = "col-form-label control-label" })
-                            @Html.EditorFor(model => model.Email, new { @class = "form-control" })
-                            @Html.ValidationMessageFor(model => model.Email)
+                            @Html.EditorFor(model => model.Email, Model.IsNew ? classTextControl : classTextControlDisabled)
+                            @if (Model.IsNew)
+                            {
+                                @Html.ValidationMessageFor(model => model.Email)
+                            }
                         </div>
                     </div>
+                    @if (Model.IsNew)
+                    {
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.Password, new { @class = "col-form-label control-label" })
+                                @Html.PasswordFor(model => model.Password, classTextControl)
+                                @Html.ValidationMessageFor(model => model.Password)
+                            </div>
+                        </div>
+                    }
+                    
 
                     <div class="col-md-4">
                         <div class="form-group">
-                            @Html.LabelFor(model => model.Role, new { @class = "col-form-label control-label", required = "required" })
-                            @Html.DropDownListFor(model => model.Role, Model.Roles, "Selecciona", new { @class = "chosen-select", @required = "required" })
+                            @Html.LabelFor(model => model.Role, new { @class = "col-form-label control-label" })
+                            @Html.DropDownListFor(model => model.Role, Model.Roles, "Selecciona", classSelectControl)
                             @Html.ValidationMessageFor(model => model.Role)
                         </div>
                     </div>
@@ -72,8 +87,8 @@
                         <div class="form-group">
                             <br /><br />
                             <div class="custom-control custom-switch">
-                                <input type="checkbox" class="custom-control-input" disabled value="true)">
-                                <label class="custom-control-label" for="Status">Activo</label>
+                                <input type="checkbox" class="custom-control-input" @(Model.IsNew ? "disabled" : "") @(Model.IsNew?"checked":(Model.Status?"checked":"")) value="@(Model.IsNew?"true":(Model.Status?"true":"false"))" id="Status" name="Status">
+                                <label class="custom-control-label" for="Status">@(Model.IsNew?"Activo":(Model.Status?"Activo":"Inactivo"))</label>
                             </div>
                         </div>
                     </div>

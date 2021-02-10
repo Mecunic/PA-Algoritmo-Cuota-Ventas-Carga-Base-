@@ -69,18 +69,19 @@
 </div>
 
 @section scripts{
-    @Scripts.Render("~/plugins/chosen")
+
     @Scripts.Render("~/plugins/dataTables")
     @Scripts.Render("~/plugins/fullCalendar")
     @Scripts.Render("~/plugins/validate")
     @Scripts.Render("~/plugins/validateUnobtrusive")
     @Scripts.Render("~/custom/Utils")
-
+    @Scripts.Render("~/plugins/chosen")
     <script src="~/Scripts/views/user/Index.js"></script>
 
     <script>
+        var tableCtrl;
         $(function () {
-            var tableCtrl = new UserIndexControlador('table', '@Url.Action("GetAllByFilter")');
+            tableCtrl = new UserIndexControlador('table', '@Url.Action("GetAllByFilter")');
             tableCtrl.init();
         });
         const utils = new Utils();
@@ -90,6 +91,7 @@
                 return false;
             }
         });
+
 
         $("#btnClearForm").click(function () {
             $("#SearchForm").each(function () {
@@ -103,24 +105,15 @@
         });
 
         $(".btn-create").click(function (e) {
-            let modalCreate = $("#modal-create");
             e.preventDefault();
+            let modalCreate = $("#modal-create");
             modalCreate.find('.modal-body').load('@Url.Action("Create")', function (response, status, xhr) {
                 if (status == "error") {
                     return;
                 }
                 modalCreate.modal("show");
                 $('.chosen-select').chosen({ width: '100%' });
-                /*$("#Status").change(function () {
-                    if (this.checked) {
-                        $(this).parent().find('label').html('Activo');
-                    } else {
-                        $(this).parent().find('label').html('Inactivo');
-                    }
-                });
-                */
             });
-
         });
 
         function submitCreate(form,url,method) {
@@ -131,7 +124,6 @@
                     data: form.serialize(),
                     dataType: "json"
                 }).done(function (data) {
-                    debugger;
                     resolve(data);
                 }).fail(function (jqXHR, error) {
                     reject(jqXHR);
@@ -139,14 +131,16 @@
             });
         }
 
-        $("#btn-save").click(function (e) {
-                    let form = $("#create-form");
+            $("#btn-save").click(function (e) {
+                e.preventDefault();
+                    let form = $("#save-form");
                     let modal = $("#modal-create");
                     submitCreate(form, '@Url.Action("create","user")','POST').then(function (data) {
                             form.find("span.field-validation-error").attr("class", "field-validation-valid");
                             form.find("span.field-validation-error").empty();
                             modal.modal("hide");
-                            toastr["success"](data.Message);
+                        toastr["success"](data.Message);
+                        tableCtrl.dataTable.ajax.reload();
                         }).catch(function (data) {
                             if (data.status == 422) {
                                 form.find("span[id*='error']").html('');
@@ -165,9 +159,10 @@
                                 });
                             } else {
                                 modal.modal("hide");
+                                tableCtrl.dataTable.ajax.reload();
                             }
                         });
-                });
+            });
 
     </script>
 

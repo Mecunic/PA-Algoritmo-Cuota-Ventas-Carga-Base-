@@ -1,4 +1,5 @@
 ﻿using MVC_Project.Web.CustomAttributes.Validations;
+using MVC_Project.WebBackend.Models.Attributes;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -42,7 +43,7 @@ namespace MVC_Project.WebBackend.Models
         public string CedisName { get; set; }
     }
 
-    public class UserCreateViewModel
+    public class UserSaveViewModel
     {
         [Required]
         [Display(Name = "Nombre(s)")]
@@ -50,6 +51,9 @@ namespace MVC_Project.WebBackend.Models
         [Required]
         [Display(Name = "Apellido Paterno")]
         public string ApellidoPaterno { get; set; }
+
+        [Display(Name = "Contraseña")]
+        public string Password { get; set; }
 
         [Display(Name = "Apellido Materno")]
         public string ApellidoMaterno { get; set; }
@@ -67,23 +71,6 @@ namespace MVC_Project.WebBackend.Models
         [Display(Name = "Usuario")]
         public string Username { get; set; }
 
-        /*[Display(Name = "Teléfono Móvil")]
-        public string MobileNumber { get; set; }
-
-        [Display(Name = "Idioma")]
-        public string Language { get; set; }
-
-        [Required]
-        [Display(Name = "Contraseña")]
-        [DataType(DataType.Password)]
-        public string Password { get; set; }
-        [Required]
-        [Display(Name = "Confirmar contraseña")]
-        [DataType(DataType.Password)]
-        public string ConfirmPassword { get; set; }
-        */
-        
-
         //Attributes Custom
         [Display(Name="Cedis")]
         [Required]
@@ -93,6 +80,15 @@ namespace MVC_Project.WebBackend.Models
 
         [Display(Name="Estatus")]
         public bool Status { get; set; }
+
+        public bool IsNew
+        {
+            get {
+                return !(Uuid != null && Uuid.Trim().Length > 0);
+            }
+        }
+
+        public string Uuid { get; set; }
 
     }
 

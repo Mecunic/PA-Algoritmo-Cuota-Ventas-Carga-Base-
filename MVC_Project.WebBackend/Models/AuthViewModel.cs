@@ -11,7 +11,7 @@ namespace MVC_Project.BackendWeb.Models
         public string Email { get; set; }
 
         [Display(Name = "PASSWORD", ResourceType = typeof(ViewLabels))]
-        [Required(ErrorMessageResourceType = typeof(ViewLabels), ErrorMessageResourceName = "PasswordRequired"), MinLength(8)]
+        [Required(ErrorMessageResourceType = typeof(ViewLabels), ErrorMessageResourceName = "PasswordRequired")]
         public string Password { get; set; }
     }
     public class RecoverPasswordViewModel

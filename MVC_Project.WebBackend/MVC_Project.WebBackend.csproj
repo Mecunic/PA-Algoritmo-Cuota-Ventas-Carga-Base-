@@ -222,6 +222,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\HTMLHelperExtensions.cs" />
+    <Compile Include="Models\Attributes\PasswordValid.cs" />
     <Compile Include="Models\AuthViewModel.cs" />
     <Compile Include="Models\CalendarViewModel.cs" />
     <Compile Include="Models\CustomEditorsViewModels.cs" />
@@ -243,6 +244,7 @@
     <Compile Include="Utils\Enums\Enumeration.cs" />
     <Compile Include="Utils\Enums\FilterStatusEnum.cs" />
     <Compile Include="Utils\FileDownloadAttribute.cs" />
+    <Compile Include="Utils\Validations.cs" />
     <Compile Include="Utils\ViewConstants.cs" />
   </ItemGroup>
   <ItemGroup>

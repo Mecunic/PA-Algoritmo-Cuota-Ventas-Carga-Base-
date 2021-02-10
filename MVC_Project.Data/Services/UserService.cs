@@ -22,6 +22,11 @@ namespace MVC_Project.Data.Services
             _repository = baseRepository;
         }
 
+        public bool Exists(string email)
+        {
+            return _repository.FindBy(u => u.Email.Trim().ToLower().Equals(email.Trim().ToLower())).Any();
+        }
+
         public Tuple<IEnumerable<User>, int>  FilterBy(NameValueCollection filtersValue, int? skip, int? take)
         {
             string FilterName = filtersValue.Get("Name").Trim();

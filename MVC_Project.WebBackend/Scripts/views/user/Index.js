@@ -108,18 +108,23 @@
                 var tr = $(this).closest('tr');
                 var row = self.dataTable.row(tr);
                 var uuid = row.data().Uuid;
-
-                var form = document.createElement('form');
-                document.body.appendChild(form);
-                form.method = 'GET';
-                form.action = "/User/Edit?uuid=" + uuid;
-
-                var input = document.createElement('input');
-                input.type = 'hidden';
-                input.name = "uuid";
-                input.value = uuid;
-                form.appendChild(input);
-                form.submit();
+                let modalCreate = $("#modal-create");
+                modalCreate.find('.modal-body').load("/User/Create?uuid="+uuid, function (response, status, xhr) {
+                    if (status == "error") {
+                        return;
+                    }
+                    modalCreate.modal("show");
+                    $('.chosen-select').chosen({ width: '100%' });
+                    $("#Status").change(function () {
+                        $(this).val(this.checked);
+                        if (this.checked) {
+                            $(this).parent().find('label').html('Activo');
+                        } else {
+                            $(this).parent().find('label').html('Inactivo');
+                        }
+                    });
+                });
+                
             });
     }
 }

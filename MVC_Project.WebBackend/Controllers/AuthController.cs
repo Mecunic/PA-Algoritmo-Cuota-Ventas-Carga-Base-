@@ -52,23 +52,20 @@ namespace MVC_Project.WebBackend.Controllers
                     _userService.Update(user);
 
                     //Permissions by role
-                    List<Permission> permissionsUser = user.Role.Permissions.Select(p => new Permission
+                    /*List<Permission> permissionsUser = user.Role.Permissions.Select(p => new Permission
+                    {
+                        Action = p.Action,
+                        Controller = p.Controller,
+                        Module = p.Module
+                    }).ToList();*/
+
+                    //SETT ALL PERMISSIONS
+                    List<Permission> permissionsUser = _permissionService.GetAll().Select(p => new Permission
                     {
                         Action = p.Action,
                         Controller = p.Controller,
                         Module = p.Module
                     }).ToList();
-
-                    //IF SUPPORT, SET ALL PERMISSIONS
-                    if (user.Role.Code == Constants.ROLE_IT_SUPPORT)
-                    {
-                        permissionsUser = _permissionService.GetAll().Select(p => new Permission
-                        {
-                            Action = p.Action,
-                            Controller = p.Controller,
-                            Module = p.Module
-                        }).ToList();
-                    }
 
                     AuthUser authUser = new AuthUser
                     {

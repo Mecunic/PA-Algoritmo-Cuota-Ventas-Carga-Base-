@@ -7,7 +7,7 @@ using System.Web.Mvc;
 
 namespace MVC_Project.WebBackend.Controllers
 {
-    [AuthorizeUsers]
+    //[AuthorizeUsers]
     public class HomeController : BaseController
     {
         public ActionResult Index()
