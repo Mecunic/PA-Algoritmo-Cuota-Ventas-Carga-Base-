@@ -18,13 +18,13 @@ namespace MVC_Project.WebBackend.Controllers
         private IAuthService _authService;
         private IUserService _userService;
         private IPermissionService _permissionService;
-      
+
         public AuthController(IAuthService authService, IUserService userService, IPermissionService permissionService)
         {
             _authService = authService;
             _userService = userService;
             _permissionService = permissionService;
-         }
+        }
 
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
@@ -51,16 +51,7 @@ namespace MVC_Project.WebBackend.Controllers
                     user.LastLoginAt = DateTime.Now;
                     _userService.Update(user);
 
-                    //Permissions by role
-                    /*List<Permission> permissionsUser = user.Role.Permissions.Select(p => new Permission
-                    {
-                        Action = p.Action,
-                        Controller = p.Controller,
-                        Module = p.Module
-                    }).ToList();*/
-
-                    //SETT ALL PERMISSIONS
-                    List<Permission> permissionsUser = _permissionService.GetAll().Select(p => new Permission
+                    List<Permission> permissionsUser = user.Role.Permissions.Select(p => new Permission
                     {
                         Action = p.Action,
                         Controller = p.Controller,
@@ -83,7 +74,7 @@ namespace MVC_Project.WebBackend.Controllers
                         },
                         Permissions = permissionsUser
                     };
-                    
+
                     //Set user in sesion
                     Authenticator.StoreAuthenticatedUser(authUser);
 
@@ -108,7 +99,7 @@ namespace MVC_Project.WebBackend.Controllers
                         {
 
                             int daysLeft = ((TimeSpan)(passwordExpiration.Date - todayDate.Date)).Days + 1;
-                            if(daysLeft <= daysBeforeExpireToNotify)
+                            if (daysLeft <= daysBeforeExpireToNotify)
                             {
                                 string message = String.Format(ViewLabels.PASSWORD_EXPIRATION_MESSAGE, daysLeft);
                                 AddViewMessage(TypeMessageView.WARNING, message);
@@ -163,14 +154,14 @@ namespace MVC_Project.WebBackend.Controllers
                     ViewBag.mensajeError = string.Empty;
                     resultado.ExpiraToken = System.DateTime.Now.AddDays(1);
                     string token = (resultado.Uuid + "@" + DateTime.Now.AddDays(1).ToString());
-                     token = EncryptorText.DataEncrypt(token).Replace("/", "!!").Replace("+", "$");
+                    token = EncryptorText.DataEncrypt(token).Replace("/", "!!").Replace("+", "$");
                     resultado.Token = token;
                     Dictionary<string, string> customParams = new Dictionary<string, string>();
                     string urlAccion = (string)ConfigurationManager.AppSettings["_UrlServerAccess"];
                     string link = urlAccion + "Auth/AccedeToken?token=" + token;
                     customParams.Add("param1", resultado.Email);
                     customParams.Add("param2", link);
-                    NotificationUtil.SendNotification(resultado.Email, customParams, Constants.NOT_TEMPLATE_PASSWORDRECOVER );
+                    NotificationUtil.SendNotification(resultado.Email, customParams, Constants.NOT_TEMPLATE_PASSWORDRECOVER);
                     _userService.Update(resultado);
                     AddViewMessage(TypeMessageView.SUCCESS, Messages.RequestSuccessful);
                     return View("Login");
@@ -210,7 +201,7 @@ namespace MVC_Project.WebBackend.Controllers
                 string id = elements.First().ToString();
                 var resultado = _userService.FindBy(e => e.Uuid == id).First();
                 int[] valores = new int[100];
-                for(int a=0;a<100; a++)
+                for (int a = 0; a < 100; a++)
                 {
                     valores[a] = a++;
                 }

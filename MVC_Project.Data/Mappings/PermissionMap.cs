@@ -2,13 +2,16 @@
 using FluentNHibernate.Mapping;
 using MVC_Project.Domain.Entities;
 
-namespace MVC_Project.Data.Mappings {
+namespace MVC_Project.Data.Mappings
+{
 
-    public class PermissionMap : ClassMap<Permission> {
+    public class PermissionMap : ClassMap<Permission>
+    {
 
-        public PermissionMap() {
+        public PermissionMap()
+        {
             Table("Permissions");
-            Id(x => x.Id).GeneratedBy.Identity().Column("IdPermission");            
+            Id(x => x.Id).GeneratedBy.Identity().Column("IdPermission");
             Map(x => x.Description).Column("description").Not.Nullable();
             Map(x => x.Controller).Column("controller").Not.Nullable();
             Map(x => x.Action).Column("action").Not.Nullable();
