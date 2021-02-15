@@ -34,13 +34,20 @@
                         </ul>
                     }
                     @*@if (user.HasAccessController("Role"))
-                        {
-                            <ul class="nav nav-second-level collapse @Html.IsSelected(controller: "User", cssClass: "in")">
-                                <li class="@Html.IsSelected(controller: "Role",action: "Index")"><a href="@Url.Action("Index", "Role")">Roles</a></li>
-                            </ul>
-                        }*@
+                {
+                    <ul class="nav nav-second-level collapse @Html.IsSelected(controller: "User", cssClass: "in")">
+                        <li class="@Html.IsSelected(controller: "Role",action: "Index")"><a href="@Url.Action("Index", "Role")">Roles</a></li>
+                    </ul>
+                }*@
                 </li>
             }
+
+            <li class="@Html.IsModuleSelected(user, "Productos")">
+                <a href="#"><i class="fa fa-th-large"></i> <span class="nav-label" data-i18n="nav.dashboard">Catalogos</span> <span class="fain arrow"></span></a>
+                <ul class="nav nav-second-level collapse @Html.IsSelected(controller: "Fees", cssClass: "in")">
+                    <li class="@Html.IsSelected(controller: "Productos",action: "Index")"><a href="@Url.Action("Index", "Productos")">Productos</a></li>
+                </ul>
+            </li>
 
             @if (user.HasAccessToModule("fees"))
             {

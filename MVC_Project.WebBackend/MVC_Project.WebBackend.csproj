@@ -213,6 +213,7 @@
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\FeesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\ProductosController.cs" />
     <Compile Include="Controllers\RegisterController.cs" />
     <Compile Include="Controllers\RoleController.cs" />
     <Compile Include="Controllers\UserController.cs" />
@@ -233,6 +234,7 @@
     <Compile Include="Models\JQueryDataTableParams.cs" />
     <Compile Include="Models\MessageView.cs" />
     <Compile Include="Models\PaymentViewModel.cs" />
+    <Compile Include="Models\ProductoViewModel.cs" />
     <Compile Include="Models\RegisterViewModel.cs" />
     <Compile Include="Models\ReportOrdersViewModel.cs" />
     <Compile Include="Models\RoleViewModel.cs" />
@@ -1704,6 +1706,7 @@
     <Content Include="Scripts\views\documents\Index.js" />
     <Content Include="Scripts\views\Payments\Index.js" />
     <Content Include="Scripts\views\PdfSignature\Index.js" />
+    <Content Include="Scripts\views\productos\Index.js" />
     <Content Include="Scripts\views\Reports\OrderIndex.js" />
     <Content Include="Scripts\views\rol\Index.js" />
     <Content Include="Scripts\views\template\ReporteIndex.js" />
@@ -1797,6 +1800,7 @@
     <Content Include="Views\Shared\_Messages.cshtml" />
     <Content Include="Views\Fees\Calculate.cshtml" />
     <Content Include="Views\Fees\Tracing.cshtml" />
+    <Content Include="Views\Productos\Index.cshtml" />
     <None Include="Web.Base.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

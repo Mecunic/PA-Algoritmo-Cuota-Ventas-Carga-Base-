@@ -214,7 +214,7 @@ namespace MVC_Project.WebBackend.Controllers
                 }
                 return Json(false, JsonRequestBehavior.AllowGet);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return Json(false, JsonRequestBehavior.AllowGet);
             }

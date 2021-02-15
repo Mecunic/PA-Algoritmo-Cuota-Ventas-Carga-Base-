@@ -23,9 +23,6 @@ namespace MVC_Project.WebBackend.Models
     {
         [Display(Name = "Nombre")]
         public string Name { get; set; }
-
-        public int Status { get; set; }
-        public IEnumerable<SelectListItem> Statuses { get; set; }
         public UserData UserList { get; set; }
     }
 
