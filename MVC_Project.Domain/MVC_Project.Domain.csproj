@@ -81,6 +81,7 @@
     <Compile Include="Entities\Process.cs" />
     <Compile Include="Entities\ProcessExecution.cs" />
     <Compile Include="Entities\Producto.cs" />
+    <Compile Include="Entities\ProductoProduction.cs" />
     <Compile Include="Entities\Role.cs" />
     <Compile Include="Entities\RolePermission.cs" />
     <Compile Include="Entities\Staff.cs" />

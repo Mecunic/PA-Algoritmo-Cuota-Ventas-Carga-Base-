@@ -1,4 +1,5 @@
-﻿using MVC_Project.WebBackend.Models;
+﻿using MVC_Project.Domain.Services;
+using MVC_Project.WebBackend.Models;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
@@ -10,6 +11,11 @@ namespace MVC_Project.WebBackend.Controllers
 {
     public class ProductosController : BaseController
     {
+        private IProductoService _ProductoService;
+        public ProductosController(IProductoService productoService)
+        {
+            this._ProductoService = productoService;
+        }
         public ActionResult Index()
         {
             return View();

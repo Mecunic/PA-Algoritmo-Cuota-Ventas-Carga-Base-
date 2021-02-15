@@ -88,6 +88,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Helpers\UnitOfWork.cs" />
+    <Compile Include="Mappings\ProductoMap.cs" />
     <Compile Include="Mappings\CedisMap.cs" />
     <Compile Include="Mappings\ConfigParamMap.cs" />
     <Compile Include="Mappings\CustomerMap.cs" />
@@ -100,7 +101,7 @@
     <Compile Include="Mappings\PermissionMap.cs" />
     <Compile Include="Mappings\ProcessExecutionMap.cs" />
     <Compile Include="Mappings\ProcessMap.cs" />
-    <Compile Include="Mappings\ProductoMap.cs" />
+    <Compile Include="Mappings\ProductoProductionMap.cs" />
     <Compile Include="Mappings\RoleMap.cs" />
     <Compile Include="Mappings\RolePermissionMap.cs" />
     <Compile Include="Mappings\StaffMap.cs" />

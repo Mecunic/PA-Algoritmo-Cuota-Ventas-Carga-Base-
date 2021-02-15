@@ -29,6 +29,11 @@ namespace MVC_Project.Data.Helpers
                 .Mappings(m => m.FluentMappings.AddFromAssemblyOf<StaffMap>())
                 .Mappings(m => m.FluentMappings.AddFromAssemblyOf<PaymentMap>())
                 .Mappings(m => m.FluentMappings.AddFromAssemblyOf<CedisMap>())
+                .Mappings(m => m.FluentMappings.AddFromAssemblyOf<ProductoMap>())
+                .Mappings(m => m.FluentMappings.AddFromAssemblyOf<CategoriaMap>())
+                .Mappings(m => m.FluentMappings.AddFromAssemblyOf<PresentacionMap>())
+                .Mappings(m => m.FluentMappings.AddFromAssemblyOf<TipoEmpaqueMap>())
+                .Mappings(m => m.FluentMappings.AddFromAssemblyOf<UnidadEmpaqueMap>())
                 .ExposeConfiguration(cfg => configuration = cfg)
                 .BuildSessionFactory();
         }

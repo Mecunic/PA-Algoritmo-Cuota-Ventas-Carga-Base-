@@ -130,7 +130,7 @@ namespace MVC_Project.Data.Services
         public IList<OrderItems> OrdenDetail(int orderId)
         {
             Order OrderAlias = null;
-            Producto ProductoAlias = null;
+            ProductoProduction ProductoAlias = null;
             var query = _repository.Session.QueryOver<OrderItems>()
                 .JoinAlias(x => x.Order, () => OrderAlias)
                 .JoinAlias(x => x.Producto, () => ProductoAlias)

@@ -59,6 +59,11 @@ namespace MVC_Project.WebBackend
             container.RegisterType<IOrderService, OrderService>();
             container.RegisterType<IDocumentService, DocumentService>();
             container.RegisterType<ICedisService, CedisService>();
+            container.RegisterType<ITipoEmpaqueService, TipoEmpaqueService>();
+            container.RegisterType<IUnidadEmpaqueService, UnidadEmpaqueService>();
+            container.RegisterType<ICategoriaService, CategoriaService>();
+            container.RegisterType<IPresentacionService, PresentacionService>();
+            container.RegisterType<IProductoService, ProductoService>();
         }
     }
 }
