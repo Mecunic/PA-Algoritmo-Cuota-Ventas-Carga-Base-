@@ -9,6 +9,5 @@ namespace MVC_Project.Domain.Services
 {
     public interface ITipoEmpaqueService : IService<TipoEmpaque>
     {
-        IList<TipoEmpaque> ObtenerTiposEmpaque(string filtros);
     }
 }

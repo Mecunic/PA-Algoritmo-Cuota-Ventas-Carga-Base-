@@ -10,9 +10,6 @@ namespace MVC_Project.Data.Mappings {
             Table("dbo.users");
             Id(x => x.Id).GeneratedBy.Identity().Column("IdUser");
             Map(x => x.Uuid).Column("uuid").Not.Nullable();
-            Map(x => x.EmployeeIdentifier).Column("employee_identifier").Nullable();
-            Map(x => x.MobileNumber).Column("mobile_number").Nullable();
-            Map(x => x.Profile).Column("profile").Nullable();
             Map(x => x.FirstName).Column("first_name").Not.Nullable();
             Map(x => x.ApellidoPaterno).Column("last_name").Nullable();
             Map(x => x.Email).Column("email").Not.Nullable();
@@ -23,9 +20,6 @@ namespace MVC_Project.Data.Mappings {
             Map(x => x.Status).Column("status").Nullable();
             Map(x => x.ExpiraToken).Column("expira_token").Nullable();
             Map(x => x.Token).Column("token").Nullable();
-            Map(x => x.ApiKey).Column("apikey").Nullable();
-            Map(x => x.Language).Column("language").Nullable();
-            Map(x => x.ExpiraApiKey).Column("expira_apikey").Nullable();
             Map(x=>x.LastLoginAt).Column("last_login_at").Nullable();
             Map(x => x.Username).Column("username").Nullable();
             Map(x => x.PasswordExpiration).Column("password_expiration").Nullable();

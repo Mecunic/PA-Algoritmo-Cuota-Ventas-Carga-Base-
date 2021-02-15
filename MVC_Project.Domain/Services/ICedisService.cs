@@ -9,6 +9,5 @@ namespace MVC_Project.Domain.Services
 {
     public interface ICedisService : IService<Cedis>
     { 
-        IList<Cedis> ObtenerCedis(string filtros);
     }
 }

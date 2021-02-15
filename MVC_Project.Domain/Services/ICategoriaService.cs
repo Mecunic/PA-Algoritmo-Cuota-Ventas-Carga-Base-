@@ -9,6 +9,5 @@ namespace MVC_Project.Domain.Services
 {
     public interface ICategoriaService : IService<Categoria>
     {
-        IList<Categoria> ObtenerCategorias(string filtros);
     }
 }

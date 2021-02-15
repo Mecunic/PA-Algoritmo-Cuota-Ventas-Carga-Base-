@@ -3,9 +3,11 @@ using MVC_Project.Domain.Repositories;
 using MVC_Project.Domain.Services;
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using NHibernate.Criterion;
 
 namespace MVC_Project.Data.Services
 {
@@ -16,18 +18,29 @@ namespace MVC_Project.Data.Services
         {
             _repository = baseRepository;
         }
-        public IList<Producto> ObtenerProductos(string filtros)
-        {
-            filtros = filtros.Replace("[", "").Replace("]", "").Replace("\\", "").Replace("\"", "");
-            var filters = filtros.Split(',').ToList();
 
-            var result = _repository.GetAll();
-            if (!string.IsNullOrWhiteSpace(filters[0]))
+        public override Tuple<IEnumerable<Producto>, int> FilterBy(NameValueCollection filtersValue, int? skip, int? take)
+        {
+            string FilterName = filtersValue.Get("Filtro").Trim();
+
+            var query = _repository.Session.QueryOver<Producto>();
+            if (!string.IsNullOrWhiteSpace(FilterName))
             {
-                string nombre = filters[0];
-                result = result.Where(p => p.Descripcion.ToLower().Contains(nombre.ToLower()));
+                query = query.Where(producto => producto.Descripcion.IsInsensitiveLike("%" + FilterName + "%") || producto.TipoEmpaque.Name.IsInsensitiveLike("%" + FilterName + "%") || producto.Presentacion.Name.IsInsensitiveLike("%" + FilterName + "%"));
             }
-            return result.ToList();
+            var count = query.RowCount();
+
+            if (skip.HasValue)
+            {
+                query.Skip(skip.Value);
+            }
+
+            if (take.HasValue)
+            {
+                query.Take(take.Value);
+            }
+            var list = query.OrderBy(u => u.CreatedAt).Desc.List();
+            return new Tuple<IEnumerable<Producto>, int>(list, count);
         }
     }
 }

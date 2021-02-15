@@ -1,5 +1,4 @@
-﻿using MVC_Project.Domain.Entities;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
@@ -8,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace MVC_Project.Domain.Services
 {
-    public interface IPresentacionService : IService<Presentacion>
+    public interface IFilter<T>
     {
-        
+        Tuple<IEnumerable<T>, int> FilterBy(NameValueCollection filtersValue, int? skip, int? take);
     }
 }

@@ -16,18 +16,5 @@ namespace MVC_Project.Data.Services
         {
             _repository = baseRepository;
         }
-        public IList<Cedis> ObtenerCedis(string filtros)
-        {
-            filtros = filtros.Replace("[", "").Replace("]", "").Replace("\\", "").Replace("\"", "");
-            var filters = filtros.Split(',').ToList();
-
-            var cedis = _repository.GetAll();
-            if (!string.IsNullOrWhiteSpace(filters[0]))
-            {
-                string nombre = filters[0];
-                cedis = cedis.Where(p => p.Name.ToLower().Contains(nombre.ToLower()));
-            }
-            return cedis.ToList();
-        }
     }
 }

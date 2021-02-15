@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace MVC_Project.Domain.Services
 {
-    public interface IService<M>
+    public interface IService<M> : IFilter<M>
     {
         IEnumerable<M> GetAll();
         IEnumerable<M> FindBy(Expression<Func<M, bool>> predicate);

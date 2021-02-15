@@ -12,7 +12,6 @@ namespace MVC_Project.Domain.Services
 {
     public interface IUserService : IService<User>
     {
-        Tuple<IEnumerable<User>, int> FilterBy(NameValueCollection filtersValue, int? skip, int? take);
         bool Exists(string email);
     }
 }

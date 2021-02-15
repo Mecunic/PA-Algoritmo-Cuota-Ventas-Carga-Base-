@@ -11,10 +11,10 @@ namespace MVC_Project.WebBackend.Controllers
 {
     public class ProductosController : BaseController
     {
-        private IProductoService _ProductoService;
+        private IProductoService _productoService;
         public ProductosController(IProductoService productoService)
         {
-            this._ProductoService = productoService;
+            this._productoService = productoService;
         }
         public ActionResult Index()
         {
@@ -27,24 +27,26 @@ namespace MVC_Project.WebBackend.Controllers
             try
             {
                 NameValueCollection filtersValues = HttpUtility.ParseQueryString(filtros);
-                //var results = _userService.FilterBy(filtersValues, param.iDisplayStart, param.iDisplayLength);
+                var results = _productoService.FilterBy(filtersValues, param.iDisplayStart, param.iDisplayLength);
                 IList<ProductoModel> dataResponse = new List<ProductoModel>();
-                /*foreach (var user in results.Item1)
+                foreach (var prod in results.Item1)
                 {
-                    UserData userData = new UserData();
-                    userData.Name = user.FirstName + " " + user.ApellidoPaterno;
-                    userData.Email = user.Email;
-                    userData.Status = user.Status;
-                    userData.Uuid = user.Uuid;
-                    userData.CedisName = user.Cedis?.Name;
-                    dataResponse.Add(userData);
-                }*/
+                    ProductoModel productoModel = new ProductoModel();
+                    productoModel.SKU = prod.SKU;
+                    productoModel.TipoEmpaque = prod.TipoEmpaque?.Name;
+                    productoModel.Presentacion = prod.Presentacion.Name;
+                    productoModel.PrecioUnitario = prod.PrecioUnitario;
+                    productoModel.Uuid = prod.Uuid;
+                    productoModel.Status = prod.Status;
+                    productoModel.Descripcion = prod.Descripcion;
+                    dataResponse.Add(productoModel);
+                }
                 return Json(new
                 {
                     success = true,
                     param.sEcho,
                     iTotalRecords = dataResponse.Count(),
-                    iTotalDisplayRecords = 0,
+                    iTotalDisplayRecords = results.Item2,
                     aaData = dataResponse
                 }, JsonRequestBehavior.AllowGet);
             }

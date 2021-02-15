@@ -22,5 +22,6 @@ namespace MVC_Project.WebBackend.Models
         public decimal PrecioUnitario { get; set; }
         public string Presentacion { get; set; }
         public bool Status { get; set; }
+        public string Uuid { get; set; }
     }
 }
