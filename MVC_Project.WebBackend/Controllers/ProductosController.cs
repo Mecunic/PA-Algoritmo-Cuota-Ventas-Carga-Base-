@@ -12,16 +12,24 @@ namespace MVC_Project.WebBackend.Controllers
     public class ProductosController : BaseController
     {
         private IProductoService _productoService;
-        public ProductosController(IProductoService productoService)
+        private ITipoEmpaqueService _tipoEmpaqueService;
+        private ICategoriaService _categoriaService;
+        private IPresentacionService _presentacionService;
+        private IUnidadEmpaqueService _unidadEmpaqueService;
+        public ProductosController(IProductoService productoService, ITipoEmpaqueService tipoEmpaqueService, ICategoriaService categoriaService, IUnidadEmpaqueService unidadEmpaqueService, IPresentacionService presentacionService)
         {
-            this._productoService = productoService;
+            _productoService = productoService;
+            _tipoEmpaqueService = tipoEmpaqueService;
+            _categoriaService = categoriaService;
+            _unidadEmpaqueService = unidadEmpaqueService;
+            _presentacionService = presentacionService;
         }
         public ActionResult Index()
         {
             return View();
         }
 
-        [HttpGet, Authorize]
+        [HttpGet]
         public JsonResult GetAllByFilter(JQueryDataTableParams param, string filtros)
         {
             try
@@ -59,6 +67,60 @@ namespace MVC_Project.WebBackend.Controllers
                     MaxJsonLength = Int32.MaxValue
                 };
             }
+        }
+
+        public ActionResult Create()
+        {
+            var productoSaveModel = new ProductoSaveModel
+            { Categorias = PopulateCategorias(), Presentaciones = PopulatePresentaciones(), UnidadesEmpaque = PopulateUnidadesEmpaque(), TiposEmpaque = PopulateTiposEmpaque()  };
+            return View(productoSaveModel);
+        }
+
+        private IEnumerable<SelectListItem> PopulateTiposEmpaque()
+        {
+            var availableTiposEmpaque = _tipoEmpaqueService.GetAll().Where(c => c.Status == true); ;
+            var tiposEmpaqueList = new List<SelectListItem>();
+            tiposEmpaqueList = availableTiposEmpaque.Select(tipo => new SelectListItem
+            {
+                Value = tipo.Uuid,
+                Text = tipo.Name
+            }).ToList();
+            return tiposEmpaqueList;
+        }
+
+        private IEnumerable<SelectListItem> PopulateUnidadesEmpaque()
+        {
+            var availableUnidades = _unidadEmpaqueService.GetAll().Where(c => c.Status == true); ;
+            var unidadesList = new List<SelectListItem>();
+            unidadesList = availableUnidades.Select(unidad => new SelectListItem
+            {
+                Value = unidad.Uuid,
+                Text = unidad.Name
+            }).ToList();
+            return unidadesList;
+        }
+        private IEnumerable<SelectListItem> PopulateCategorias()
+        {
+            var availableCategorias = _categoriaService.GetAll().Where(c => c.Status == true); ;
+            var categoriasList = new List<SelectListItem>();
+            categoriasList = availableCategorias.Select(categorias => new SelectListItem
+            {
+                Value = categorias.Uuid,
+                Text = categorias.Name
+            }).ToList();
+            return categoriasList;
+        }
+
+        private IEnumerable<SelectListItem> PopulatePresentaciones()
+        {
+            var availablePresentaciones = _presentacionService.GetAll().Where(c => c.Status == true); ;
+            var rolesList = new List<SelectListItem>();
+            rolesList = availablePresentaciones.Select(presentacion => new SelectListItem
+            {
+                Value = presentacion.Uuid,
+                Text = presentacion.Name
+            }).ToList();
+            return rolesList;
         }
     }
 }

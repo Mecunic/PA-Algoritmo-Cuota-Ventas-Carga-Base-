@@ -8,7 +8,7 @@ namespace MVC_Project.Data.Mappings
     public class RoleMap : ClassMap<Role>
     {
 
-        public RoleMap()
+        public RoleMap() { 
             Table("Roles");
             Id(x => x.Id).GeneratedBy.Identity().Column("IdRole");
             Map(x => x.Code).Column("code").Not.Nullable();

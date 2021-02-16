@@ -1,0 +1,133 @@
+﻿@model MVC_Project.WebBackend.Models.ProductoSaveModel
+
+@section Styles {
+    @Styles.Render("~/Content/template/plugins/chosen/chosenStyles")
+}
+
+@{
+    var classTextControl = new Dictionary<string, object> { { "class", "form-control" } };
+
+    var classTextControlDisabled = new Dictionary<string, object> { { "class", "form-control" }, { "disabled", "disabled" } };
+    var classSelectControl = new Dictionary<string, object> { { "class", "chosen-select" } };
+    var classSelectControlDisabled = new Dictionary<string, object> { { "class", "chosen-select" }, { "disabled", "disabled" } };
+    var classTextNumberControl = new Dictionary<string, object> { { "class", "form-control" }, { "type", "number" }, { "min", "0" }, { "step", "0.01" } };
+    ViewBag.Title = "Crear Producto";
+}
+
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-content clearfix">
+                    <form method="post" role="form" id="save-form">
+                        @Html.AntiForgeryToken()
+                        @Html.HiddenFor(model => model.Uuid)
+                        <div class="row">
+                            @Html.ValidationSummary(true)
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.SKU, new { @class = "col-form-label control-label" })
+                                    @Html.EditorFor(model => model.SKU, classTextControl)
+                                    @Html.ValidationMessageFor(model => model.SKU)
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.Descripcion, new { @class = "col-form-label control-label" })
+                                    @Html.EditorFor(model => model.Descripcion, classTextControl)
+                                    @Html.ValidationMessageFor(model => model.Descripcion)
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    @Html.Label("Producto Estrategico")
+                                    <div class="custom-control custom-switch">
+                                        <input type="checkbox" class="custom-control-input" @(Model.ProductoEstrategico ? "checked" : "") value="@(Model.ProductoEstrategico?"true":"false")" id="ProductoEstrategico" name="ProductoEstrategico">
+                                        <label class="custom-control-label" for="ProductoEstrategico">@(Model.ProductoEstrategico ? "Si":"No")</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.TipoEmpaque, new { @class = "col-form-label control-label" })
+                                    @Html.DropDownListFor(model => model.TipoEmpaque, Model.TiposEmpaque, "Selecciona", classSelectControl)
+                                    @Html.ValidationMessageFor(model => model.TipoEmpaque)
+
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.Categoria, new { @class = "col-form-label control-label" })
+                                    @Html.DropDownListFor(model => model.Categoria, Model.Categorias, "Selecciona", classSelectControl)
+                                    @Html.ValidationMessageFor(model => model.Categoria)
+
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.Presentacion, new { @class = "col-form-label control-label" })
+                                    @Html.DropDownListFor(model => model.Presentacion, Model.Presentaciones, "Selecciona", classSelectControl)
+                                    @Html.ValidationMessageFor(model => model.Presentacion)
+
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.PrecioUnitario, new { @class = "col-form-label control-label" })
+                                    @Html.TextBoxFor(model => model.PrecioUnitario, classTextNumberControl)
+                                    @Html.ValidationMessageFor(model => model.PrecioUnitario)
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.PrecioEmpaque, new { @class = "col-form-label control-label" })
+                                    @Html.TextBoxFor(model => model.PrecioEmpaque, classTextNumberControl)
+                                    @Html.ValidationMessageFor(model => model.PrecioEmpaque)
+                                </div>
+                            </div>
+
+
+                            @*<div class="col-md-4">
+                                    <div class="form-group">
+                                        @Html.Label("Estatus")
+                                        <div class="custom-control custom-switch">
+                                            <input type="checkbox" class="custom-control-input" @(Model.IsNew ? "disabled" : "") @(Model.IsNew ? "checked" : (Model.Status ? "checked" : "")) value="@(Model.IsNew?"true":(Model.Status?"true":"false"))" id="Status" name="Status">
+                                            <label class="custom-control-label" for="Status">@(Model.IsNew?"Activo":(Model.Status?"Activo":"Inactivo"))</label>
+                                        </div>
+                                    </div>
+                                </div>*@
+                        </div>
+                        <div class="col-12 text-right">
+                            <button type="button" class="btn btn-secondary" id="btn-cancel" data-dismiss="modal">Cancelar</button>
+                            <button type="button" class="btn btn-primary" id="btn-save">Guardar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+
+    @Scripts.Render("~/plugins/chosen")
+    <script>
+        $(document).ready(function () {
+            $('.chosen-select').chosen({ width: '100%' });
+            $("#ProductoEstrategico").change(function () {
+                $(this).val(this.checked);
+                if (this.checked) {
+                    $(this).parent().find('label.custom-control-label').html('Si');
+                } else {
+                    $(this).parent().find('label.custom-control-label').html('No');
+                }
+            });
+        });
+    </script>
+}

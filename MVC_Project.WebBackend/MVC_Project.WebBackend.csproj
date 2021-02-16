@@ -1801,6 +1801,7 @@
     <Content Include="Views\Fees\Calculate.cshtml" />
     <Content Include="Views\Fees\Tracing.cshtml" />
     <Content Include="Views\Productos\Index.cshtml" />
+    <Content Include="Views\Productos\Create.cshtml" />
     <None Include="Web.Base.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -29,13 +29,12 @@ namespace MVC_Project.WebBackend.Controllers
             _cedisService = cedisService;
         }
 
-        [Authorize]
         public ActionResult Index()
         {
             return View();
         }
 
-        [HttpGet, Authorize]
+        [HttpGet]
         public JsonResult GetAllByFilter(JQueryDataTableParams param, string filtros)
         {
             try
@@ -73,7 +72,6 @@ namespace MVC_Project.WebBackend.Controllers
             }
         }
 
-        [Authorize]
         public ActionResult Create(string uuid = null)
         {
             var userCreateViewModel = new UserSaveViewModel 
@@ -199,7 +197,7 @@ namespace MVC_Project.WebBackend.Controllers
         }
 
         
-        [HttpPost, Authorize]
+        [HttpPost]
         public ActionResult Delete(string uuid)
         {
             try
