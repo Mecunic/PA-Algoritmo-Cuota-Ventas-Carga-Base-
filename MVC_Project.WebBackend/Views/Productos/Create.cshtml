@@ -120,16 +120,18 @@
                             </div>
 
 
-
-                            @*<div class="col-md-4">
-            <div class="form-group">
-                @Html.Label("Estatus")
-                <div class="custom-control custom-switch">
-                    <input type="checkbox" class="custom-control-input" @(Model.IsNew ? "disabled" : "") @(Model.IsNew ? "checked" : (Model.Status ? "checked" : "")) value="@(Model.IsNew?"true":(Model.Status?"true":"false"))" id="Status" name="Status">
-                    <label class="custom-control-label" for="Status">@(Model.IsNew?"Activo":(Model.Status?"Activo":"Inactivo"))</label>
-                </div>
-            </div>
-        </div>*@
+                            @if (!Model.IsNew)
+                            {
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        @Html.Label("Estatus")
+                                        <div class="custom-control custom-switch">
+                                            <input type="checkbox" class="custom-control-input" @(Model.IsNew ? "disabled" : "") @(Model.IsNew ? "checked" : (Model.Status ? "checked" : "")) value="@(Model.IsNew ? "true" : (Model.Status ? "true" : "false"))" id="Status" name="Status">
+                                            <label class="custom-control-label" for="Status">@(Model.IsNew ? "Activo" : (Model.Status ? "Activo" : "Inactivo"))</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
                         </div>
                         <div class="col-12 text-right">
                             <button type="button" class="btn btn-secondary" id="btn-cancel">Cancelar</button>
@@ -161,6 +163,14 @@
             });
             $("#btn-save").click(function () {
                 $("#save-form").submit();
+            });
+            $("#Status").change(function () {
+                $(this).val(this.checked);
+                if (this.checked) {
+                    $(this).parent().find('label.custom-control-label').html('Activo');
+                } else {
+                    $(this).parent().find('label.custom-control-label').html('Inactivo');
+                }
             });
         });
     </script>

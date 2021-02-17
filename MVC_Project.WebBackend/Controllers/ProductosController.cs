@@ -4,6 +4,7 @@ using MVC_Project.WebBackend.Models;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Globalization;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -70,41 +71,90 @@ namespace MVC_Project.WebBackend.Controllers
             }
         }
 
-        public ActionResult Create()
+        public ActionResult Create(string uuid = null)
         {
             var productoSaveModel = new ProductoSaveModel
             { Categorias = PopulateCategorias(), Presentaciones = PopulatePresentaciones(), UnidadesEmpaque = PopulateUnidadesEmpaque(), TiposEmpaque = PopulateTiposEmpaque()  };
+            if(uuid != null)
+            {
+                var producto = _productoService.FindBy(p => p.Uuid == uuid).FirstOrDefault();
+                if(producto != null)
+                {
+                    productoSaveModel.Uuid = producto.Uuid;
+                    productoSaveModel.UnidadEmpaque = producto.UnidadEmpaque.Uuid;
+                    productoSaveModel.TipoEmpaque = producto.TipoEmpaque?.Uuid;
+                    productoSaveModel.Status = producto.Status;
+                    productoSaveModel.Presentacion = producto.Presentacion.Uuid;
+                    productoSaveModel.SKU = producto.SKU;
+                    productoSaveModel.PrecioUnitario = producto.PrecioUnitario;
+                    productoSaveModel.PrecioEmpaque = producto.PrecioEmpaque;
+                    productoSaveModel.FechaInicio = producto.FechaInicio != null ? producto.FechaInicio.Value.ToString("yyyy-MM-dd") : "";
+                    productoSaveModel.FechaFin = producto.FechaFin != null ? producto.FechaFin.Value.ToString("yyyy-MM-dd") : "";
+                    productoSaveModel.Categoria = producto.Categoria.Uuid;
+                    productoSaveModel.ProductoEstrategico = producto.ProductoEstrategico;
+                    productoSaveModel.Descripcion = producto.Descripcion;
+                }
+            }
             return View(productoSaveModel);
         }
 
         [HttpPost, ValidateAntiForgeryToken, ValidateInput(true)]
         public ActionResult Create(ProductoSaveModel model)
         {
+            var cultureInfo = new CultureInfo("es-MX");
+            ValidacionesAdicionales(model);
             if (ModelState.IsValid)
             {
-                var producto = new Producto
+                if (model.IsNew)
                 {
-                    Uuid = Guid.NewGuid().ToString(),
-                    SKU = model.SKU,
-                    Categoria = new Categoria { Uuid = model.Categoria },
-                    Descripcion = model.Descripcion,
-                    FechaInicio = model.FechaInicio,
-                    FechaFin = model.FechaFin,
-                    PrecioEmpaque = model.PrecioEmpaque,
-                    PrecioUnitario = model.PrecioUnitario,
-                    Presentacion = new Presentacion { Uuid = model.Presentacion },
-                    ProductoEstrategico = model.ProductoEstrategico,
-                    Status = true,
-                    TipoEmpaque = new TipoEmpaque { Uuid = model.TipoEmpaque },
-                    UnidadEmpaque = new UnidadEmpaque { Uuid = model.UnidadEmpaque }
-                };
-                producto.Categoria = _categoriaService.FindBy(c=>c.Uuid == producto.Categoria.Uuid).FirstOrDefault();
-                producto.TipoEmpaque = _tipoEmpaqueService.FindBy(te => te.Uuid == producto.TipoEmpaque.Uuid).FirstOrDefault();
-                producto.UnidadEmpaque = _unidadEmpaqueService.FindBy(ue => ue.Uuid == producto.UnidadEmpaque.Uuid).FirstOrDefault();
-                producto.Presentacion = _presentacionService.FindBy(ps => ps.Uuid == producto.Presentacion.Uuid).FirstOrDefault();
-                _productoService.Create(producto);
+                    var producto = new Producto
+                    {
+                        Uuid = Guid.NewGuid().ToString(),
+                        SKU = model.SKU,
+                        Categoria = new Categoria { Uuid = model.Categoria },
+                        Descripcion = model.Descripcion,
+                        FechaInicio = model.FechaInicio != null && model.FechaInicio.Trim().Length > 0 ? DateTime.ParseExact(model.FechaInicio, "yyyy-MM-dd", cultureInfo) : null,
+                        FechaFin = model.FechaFin != null && model.FechaFin.Trim().Length > 0 ? DateTime.ParseExact(model.FechaFin, "yyyy-MM-dd", cultureInfo) : null,
+                        PrecioEmpaque = model.PrecioEmpaque,
+                        PrecioUnitario = model.PrecioUnitario,
+                        Presentacion = new Presentacion { Uuid = model.Presentacion },
+                        ProductoEstrategico = model.ProductoEstrategico,
+                        Status = true,
+                        TipoEmpaque = new TipoEmpaque { Uuid = model.TipoEmpaque },
+                        UnidadEmpaque = new UnidadEmpaque { Uuid = model.UnidadEmpaque }
+                    };
+                    producto.Categoria = _categoriaService.FindBy(c => c.Uuid == producto.Categoria.Uuid).FirstOrDefault();
+                    producto.TipoEmpaque = _tipoEmpaqueService.FindBy(te => te.Uuid == producto.TipoEmpaque.Uuid).FirstOrDefault();
+                    producto.UnidadEmpaque = _unidadEmpaqueService.FindBy(ue => ue.Uuid == producto.UnidadEmpaque.Uuid).FirstOrDefault();
+                    producto.Presentacion = _presentacionService.FindBy(ps => ps.Uuid == producto.Presentacion.Uuid).FirstOrDefault();
+                    _productoService.Create(producto);
 
-                ViewBag.Message = "Producto Creado";
+                    ViewBag.Message = "Producto Creado";
+                }
+                else
+                {
+                    var producto = _productoService.FindBy(p => p.Uuid == model.Uuid).FirstOrDefault();
+                    producto.SKU = model.SKU;
+                    producto.Categoria = new Categoria { Uuid = model.Categoria };
+                    producto.Descripcion = model.Descripcion;
+                    producto.FechaInicio = model.FechaInicio != null && model.FechaInicio.Trim().Length > 0 ? DateTime.ParseExact(model.FechaInicio, "yyyy-MM-dd", cultureInfo) : null;
+                    producto.FechaFin = model.FechaFin != null && model.FechaFin.Trim().Length > 0 ? DateTime.ParseExact(model.FechaFin, "yyyy-MM-dd", cultureInfo) : null;
+                    producto.PrecioEmpaque = model.PrecioEmpaque;
+                    producto.PrecioUnitario = model.PrecioUnitario;
+                    producto.Presentacion = new Presentacion { Uuid = model.Presentacion };
+                    producto.ProductoEstrategico = model.ProductoEstrategico;
+                    producto.Status = model.Status;
+                    producto.TipoEmpaque = new TipoEmpaque { Uuid = model.TipoEmpaque };
+                    producto.UnidadEmpaque = new UnidadEmpaque { Uuid = model.UnidadEmpaque };
+                    producto.Categoria = _categoriaService.FindBy(c => c.Uuid == producto.Categoria.Uuid).FirstOrDefault();
+                    producto.TipoEmpaque = _tipoEmpaqueService.FindBy(te => te.Uuid == producto.TipoEmpaque.Uuid).FirstOrDefault();
+                    producto.UnidadEmpaque = _unidadEmpaqueService.FindBy(ue => ue.Uuid == producto.UnidadEmpaque.Uuid).FirstOrDefault();
+                    producto.Presentacion = _presentacionService.FindBy(ps => ps.Uuid == producto.Presentacion.Uuid).FirstOrDefault();
+                    _productoService.Update(producto);
+
+                    ViewBag.Message = "Producto Actualizado";
+                }
+                
                 return View("Index");
             }
             else
@@ -163,6 +213,26 @@ namespace MVC_Project.WebBackend.Controllers
                 Text = presentacion.Name
             }).ToList();
             return rolesList;
+        }
+
+        private void ValidacionesAdicionales(ProductoSaveModel model)
+        {
+            if (model.IsNew)
+            {
+                var productoExists = _productoService.FindBy(p => p.SKU == model.SKU).FirstOrDefault();
+                if(productoExists != null)
+                {
+                    ModelState.AddModelError("SKU", "El SKU ya existe.");
+                }
+            }
+            else
+            {
+                var productoExists = _productoService.FindBy(p => p.SKU == model.SKU && p.Uuid != model.Uuid).FirstOrDefault();
+                if (productoExists != null)
+                {
+                    ModelState.AddModelError("SKU", "El SKU ya existe.");
+                }
+            }
         }
     }
 }

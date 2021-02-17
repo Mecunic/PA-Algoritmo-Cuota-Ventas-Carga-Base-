@@ -110,22 +110,7 @@
                 var tr = $(this).closest('tr');
                 var row = self.dataTable.row(tr);
                 var uuid = row.data().Uuid;
-                let modalCreate = $("#modal-create");
-                modalCreate.find('.modal-body').load("/User/Create?uuid=" + uuid, function (response, status, xhr) {
-                    if (status == "error") {
-                        return;
-                    }
-                    modalCreate.modal("show");
-                    $('.chosen-select').chosen({ width: '100%' });
-                    $("#Status").change(function () {
-                        $(this).val(this.checked);
-                        if (this.checked) {
-                            $(this).parent().find('label').html('Activo');
-                        } else {
-                            $(this).parent().find('label').html('Inactivo');
-                        }
-                    });
-                });
+                location.href = "/Productos/Create?uuid=" + uuid;
 
             });
     }
