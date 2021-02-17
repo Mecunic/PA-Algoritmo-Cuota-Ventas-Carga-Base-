@@ -88,8 +88,8 @@ namespace MVC_Project.WebBackend.Controllers
                     productoSaveModel.SKU = producto.SKU;
                     productoSaveModel.PrecioUnitario = producto.PrecioUnitario;
                     productoSaveModel.PrecioEmpaque = producto.PrecioEmpaque;
-                    productoSaveModel.FechaInicio = producto.FechaInicio != null ? producto.FechaInicio.Value.ToString("yyyy-MM-dd") : "";
-                    productoSaveModel.FechaFin = producto.FechaFin != null ? producto.FechaFin.Value.ToString("yyyy-MM-dd") : "";
+                    productoSaveModel.FechaInicio = producto.FechaInicio; //!= null ? producto.FechaInicio.Value.ToString("yyyy-MM-dd") : "";
+                    productoSaveModel.FechaFin = producto.FechaFin; // != null ? producto.FechaFin.Value.ToString("yyyy-MM-dd") : "";
                     productoSaveModel.Categoria = producto.Categoria.Uuid;
                     productoSaveModel.ProductoEstrategico = producto.ProductoEstrategico;
                     productoSaveModel.Descripcion = producto.Descripcion;
@@ -113,8 +113,8 @@ namespace MVC_Project.WebBackend.Controllers
                         SKU = model.SKU,
                         Categoria = new Categoria { Uuid = model.Categoria },
                         Descripcion = model.Descripcion,
-                        FechaInicio = model.FechaInicio != null && model.FechaInicio.Trim().Length > 0 ? DateTime.ParseExact(model.FechaInicio, "yyyy-MM-dd", cultureInfo) : null,
-                        FechaFin = model.FechaFin != null && model.FechaFin.Trim().Length > 0 ? DateTime.ParseExact(model.FechaFin, "yyyy-MM-dd", cultureInfo) : null,
+                        FechaInicio = model.FechaInicio ,//!= null && model.FechaInicio.Trim().Length > 0 ? DateTime.ParseExact(model.FechaInicio, "yyyy-MM-dd", cultureInfo) : null,
+                        FechaFin = model.FechaFin , //!= null && model.FechaFin.Trim().Length > 0 ? DateTime.ParseExact(model.FechaFin, "yyyy-MM-dd", cultureInfo) : null,
                         PrecioEmpaque = model.PrecioEmpaque,
                         PrecioUnitario = model.PrecioUnitario,
                         Presentacion = new Presentacion { Uuid = model.Presentacion },
@@ -133,7 +133,7 @@ namespace MVC_Project.WebBackend.Controllers
                 }
                 else
                 {
-                    var producto = _productoService.FindBy(p => p.Uuid == model.Uuid).FirstOrDefault();
+                    /*var producto = _productoService.FindBy(p => p.Uuid == model.Uuid).FirstOrDefault();
                     producto.SKU = model.SKU;
                     producto.Categoria = new Categoria { Uuid = model.Categoria };
                     producto.Descripcion = model.Descripcion;
@@ -153,6 +153,7 @@ namespace MVC_Project.WebBackend.Controllers
                     _productoService.Update(producto);
 
                     ViewBag.Message = "Producto Actualizado";
+                    */
                 }
                 
                 return View("Index");
@@ -234,5 +235,6 @@ namespace MVC_Project.WebBackend.Controllers
                 }
             }
         }
+
     }
 }

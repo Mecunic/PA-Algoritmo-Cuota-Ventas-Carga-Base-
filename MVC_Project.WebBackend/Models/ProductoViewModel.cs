@@ -56,8 +56,8 @@ namespace MVC_Project.WebBackend.Models
         [Required]
         [Display(Name = "Precio por Empaque")]
         public decimal PrecioEmpaque { get; set; }
-        public string FechaInicio { get; set; }
-        public string FechaFin { get; set; }
+        public DateTime? FechaInicio { get; set; }
+        public DateTime? FechaFin { get; set; }
         public string Uuid { get; set; }
         public bool Status { get; set; }
         public bool IsNew
