@@ -34,7 +34,7 @@ namespace MVC_Project.WebBackend.Models
         public string SKU { get; set; }
         [Required]
         public string Descripcion { get; set; }
-        [Required]
+
         [Display(Name ="Tipo de Empaque")]
         public string TipoEmpaque { get; set; }
         public IEnumerable<SelectListItem> TiposEmpaque { get; set; }

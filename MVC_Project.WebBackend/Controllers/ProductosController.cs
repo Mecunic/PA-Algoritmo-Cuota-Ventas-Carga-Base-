@@ -1,4 +1,5 @@
-﻿using MVC_Project.Domain.Services;
+﻿using MVC_Project.Domain.Entities;
+using MVC_Project.Domain.Services;
 using MVC_Project.WebBackend.Models;
 using System;
 using System.Collections.Generic;
@@ -74,6 +75,47 @@ namespace MVC_Project.WebBackend.Controllers
             var productoSaveModel = new ProductoSaveModel
             { Categorias = PopulateCategorias(), Presentaciones = PopulatePresentaciones(), UnidadesEmpaque = PopulateUnidadesEmpaque(), TiposEmpaque = PopulateTiposEmpaque()  };
             return View(productoSaveModel);
+        }
+
+        [HttpPost, ValidateAntiForgeryToken, ValidateInput(true)]
+        public ActionResult Create(ProductoSaveModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var producto = new Producto
+                {
+                    Uuid = Guid.NewGuid().ToString(),
+                    SKU = model.SKU,
+                    Categoria = new Categoria { Uuid = model.Categoria },
+                    Descripcion = model.Descripcion,
+                    FechaInicio = model.FechaInicio,
+                    FechaFin = model.FechaFin,
+                    PrecioEmpaque = model.PrecioEmpaque,
+                    PrecioUnitario = model.PrecioUnitario,
+                    Presentacion = new Presentacion { Uuid = model.Presentacion },
+                    ProductoEstrategico = model.ProductoEstrategico,
+                    Status = true,
+                    TipoEmpaque = new TipoEmpaque { Uuid = model.TipoEmpaque },
+                    UnidadEmpaque = new UnidadEmpaque { Uuid = model.UnidadEmpaque }
+                };
+                producto.Categoria = _categoriaService.FindBy(c=>c.Uuid == producto.Categoria.Uuid).FirstOrDefault();
+                producto.TipoEmpaque = _tipoEmpaqueService.FindBy(te => te.Uuid == producto.TipoEmpaque.Uuid).FirstOrDefault();
+                producto.UnidadEmpaque = _unidadEmpaqueService.FindBy(ue => ue.Uuid == producto.UnidadEmpaque.Uuid).FirstOrDefault();
+                producto.Presentacion = _presentacionService.FindBy(ps => ps.Uuid == producto.Presentacion.Uuid).FirstOrDefault();
+                _productoService.Create(producto);
+
+                ViewBag.Message = "Producto Creado";
+                return View("Index");
+            }
+            else
+            {
+                model.Categorias = PopulateCategorias();
+                model.Presentaciones = PopulatePresentaciones();
+                model.UnidadesEmpaque = PopulateUnidadesEmpaque();
+                model.TiposEmpaque = PopulateTiposEmpaque();
+                return View(model);
+            }
+
         }
 
         private IEnumerable<SelectListItem> PopulateTiposEmpaque()

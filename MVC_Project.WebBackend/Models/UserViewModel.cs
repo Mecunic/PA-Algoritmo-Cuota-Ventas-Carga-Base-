@@ -43,7 +43,7 @@ namespace MVC_Project.WebBackend.Models
     public class UserSaveViewModel
     {
         [Required]
-        [ValidType(CustomAttributes.Validations.ValidType.ALPHABETICAL)]
+        [ValidType(CustomAttributes.Validations.ValidType.ALPHABETICAL_WITH_SPACES)]
         [Display(Name = "Nombre(s)")]
         public string Name { get; set; }
         [Required]

@@ -24,7 +24,8 @@ namespace MVC_Project.Data.Mappings
             Map(x => x.CreatedAt).Column("created_at").Not.Nullable();
             Map(x => x.UpdatedAt).Column("updated_at").Not.Nullable();
             Map(x => x.RemovedAt).Column("removed_at").Nullable();
-            Map(x => x.Status).Column("status").Nullable();
+            Map(x => x.Status).Column("status").Not.Nullable();
+            Map(x => x.Uuid).Column("uuid").Not.Nullable();
             References(x => x.Categoria).Column("IdCategoria");
             References(x => x.Presentacion).Column("IdPresentacion");
             References(x => x.TipoEmpaque).Column("IdTipoEmpaque");

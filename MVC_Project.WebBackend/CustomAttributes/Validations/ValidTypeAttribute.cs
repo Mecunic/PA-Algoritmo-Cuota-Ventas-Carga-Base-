@@ -31,16 +31,28 @@ namespace MVC_Project.WebBackend.Models.Attributes
                             return new ValidationResult(campo +" Solo puede Contener letras");
                         }
                         break;
+                    case ValidType.ALPHABETICAL_WITH_SPACES:
+                        if (!word.ContainsOnlyLettersWithSpaces())
+                        {
+                            return new ValidationResult(campo + " Solo puede Contener letras");
+                        }
+                        break;
                     case ValidType.NUMERICS:
                         if (!word.ContainsOnlyNumbers())
                         {
-                            return new ValidationResult(campo + " Solo puede Contener letras y Numeros");
+                            return new ValidationResult(campo + " Solo puede Contener Números");
                         }
                         break;
                     case ValidType.ALPHANUMERIC:
                         if (!word.ContainsOnlyLetterAndNumbers())
                         {
-                            return new ValidationResult(campo + " Solo puede Contener letras y Numeros");
+                            return new ValidationResult(campo + " Solo puede Contener letras y Números");
+                        }
+                        break;
+                    case ValidType.ALPHANUMERIC_WITH_SPACES:
+                        if (!word.ContainsOnlyLetterAndNumbersWithSpaces())
+                        {
+                            return new ValidationResult(campo + " Solo puede Contener letras y Números");
                         }
                         break;
 

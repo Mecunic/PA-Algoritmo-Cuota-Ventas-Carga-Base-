@@ -8,7 +8,9 @@ namespace MVC_Project.WebBackend.CustomAttributes.Validations
     public enum ValidType
     {
         ALPHABETICAL,
+        ALPHABETICAL_WITH_SPACES,
         NUMERICS,
-        ALPHANUMERIC
+        ALPHANUMERIC,
+        ALPHANUMERIC_WITH_SPACES
     }
 }

@@ -254,6 +254,7 @@
     <AdditionalFiles Include="..\.sonarlint\ensitechdevops_plantilla-net\CSharp\SonarLint.xml">
       <Link>SonarLint.xml</Link>
     </AdditionalFiles>
+    <Content Include="Content\layout.css" />
     <Content Include="Content\template\animate.css" />
     <Content Include="Content\template\bootstrap.css" />
     <Content Include="Content\template\bootstrap.min.css" />

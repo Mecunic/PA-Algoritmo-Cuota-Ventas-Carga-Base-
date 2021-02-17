@@ -135,7 +135,7 @@
                 e.preventDefault();
                     let form = $("#save-form");
                     let modal = $("#modal-create");
-                    submitCreate(form, '@Url.Action("create","user")','POST').then(function (data) {
+                    submitCreate(form, '@Url.Action("Create")','POST').then(function (data) {
                             form.find("span.field-validation-error").attr("class", "field-validation-valid");
                             form.find("span.field-validation-error").empty();
                             modal.modal("hide");
@@ -151,7 +151,7 @@
                                     let idMessage = error.propertyName + "-error";
                                     let spanMessage = span.find("#" + idMessage);
                                     if (spanMessage.length <= 0) {
-                                        spanMessage = $("<span style=\"color:#f00;\"></span>");
+                                        spanMessage = $("<span></span>");
                                         spanMessage.attr('id', idMessage);
                                         span.append(spanMessage);
                                     }
