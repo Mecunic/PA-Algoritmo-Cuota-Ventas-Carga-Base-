@@ -3,9 +3,8 @@ using MVC_Project.Domain.Repositories;
 using MVC_Project.Domain.Services;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Collections.Specialized;
+using NHibernate.Criterion;
 
 namespace MVC_Project.Data.Services
 {
@@ -15,6 +14,35 @@ namespace MVC_Project.Data.Services
         public CedisService(IRepository<Cedis> baseRepository) : base(baseRepository)
         {
             _repository = baseRepository;
+        }
+
+        public override Tuple<IEnumerable<Cedis>, int> FilterBy(NameValueCollection filtersValue, int? skip, int? take)
+        {
+            string FilterCode = filtersValue.Get("Code").Trim();
+            string FilterName = filtersValue.Get("Name").Trim();
+
+            var query = _repository.Session.QueryOver<Cedis>();
+            if (!string.IsNullOrWhiteSpace(FilterCode))
+            {
+                query = query.Where(cedi => cedi.Code.IsInsensitiveLike("%" + FilterCode + "%"));
+            }
+            if (!string.IsNullOrWhiteSpace(FilterName))
+            {
+                query = query.Where(cedi => cedi.Name.IsInsensitiveLike("%" + FilterName + "%"));
+            }
+            var count = query.RowCount();
+
+            if (skip.HasValue)
+            {
+                query.Skip(skip.Value);
+            }
+
+            if (take.HasValue)
+            {
+                query.Take(take.Value);
+            }
+            var list = query.OrderBy(u => u.CreatedAt).Desc.List();
+            return new Tuple<IEnumerable<Cedis>, int>(list, count);
         }
     }
 }

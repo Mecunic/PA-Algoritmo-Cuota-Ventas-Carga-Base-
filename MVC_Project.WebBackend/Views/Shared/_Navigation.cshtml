@@ -37,11 +37,11 @@
                 </ul>
             }
             @*@if (user.HasAccessController("Role"))
-        {
-            <ul class="nav nav-second-level collapse @Html.IsSelected(controller: "User", cssClass: "in")">
-                <li class="@Html.IsSelected(controller: "Role",action: "Index")"><a href="@Url.Action("Index", "Role")">Roles</a></li>
-            </ul>
-        }*@
+                {
+                    <ul class="nav nav-second-level collapse @Html.IsSelected(controller: "User", cssClass: "in")">
+                        <li class="@Html.IsSelected(controller: "Role",action: "Index")"><a href="@Url.Action("Index", "Role")">Roles</a></li>
+                    </ul>
+                }*@
         </li>
             }
 
@@ -63,6 +63,16 @@
                     <a href="#"><i class="fa fa-calendar"></i> <span class="nav-label" data-i18n="nav.dashboard">C&aacute;lculo de Cargas</span> <span class="fain arrow"></span></a>
                     <ul class="nav nav-second-level collapse @Html.IsSelected(controller: "Fee", cssClass: "in")">
                         <li class="@Html.IsSelected(action: "Index")"><a href="@Url.Action("Index", "Charges")">Par&aacute;metros</a></li>
+                    </ul>
+                </li>
+            }
+
+            @if (user.HasAccessToModule("cedis"))
+            {
+                <li class="@Html.IsModuleSelected(user, "cedis")">
+                    <a href="#"><i class="fa fa-calendar"></i> <span class="nav-label" data-i18n="nav.dashboard">CEDIs</span> <span class="fain arrow"></span></a>
+                    <ul class="nav nav-second-level collapse @Html.IsSelected(controller: "Cedis", cssClass: "in")">
+                        <li class="@Html.IsSelected(action: "Index")"><a href="@Url.Action("Index", "Cedis")">Administración</a></li>
                     </ul>
                 </li>
             }
