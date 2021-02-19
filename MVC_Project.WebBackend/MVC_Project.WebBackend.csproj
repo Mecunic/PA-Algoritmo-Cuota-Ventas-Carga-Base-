@@ -215,6 +215,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ProductosController.cs" />
     <Compile Include="Controllers\RegisterController.cs" />
+    <Compile Include="Controllers\CedisController.cs" />
     <Compile Include="Controllers\RoleController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="CustomAttributes\Validations\PasswordSecuredAttribute.cs" />
@@ -227,6 +228,7 @@
     <Compile Include="CustomAttributes\Validations\ValidTypeAttribute.cs" />
     <Compile Include="Models\AuthViewModel.cs" />
     <Compile Include="Models\CalendarViewModel.cs" />
+    <Compile Include="Models\CedisViewModel.cs" />
     <Compile Include="Models\CustomEditorsViewModels.cs" />
     <Compile Include="Models\DataTableModel.cs" />
     <Compile Include="Models\DocumentViewModel.cs" />
@@ -1305,10 +1307,8 @@
     <Content Include="Images\landing\iphone.jpg" />
     <Content Include="Images\landing\laptop.png" />
     <Content Include="Images\landing\perspective.png" />
-    <Content Include="Images\logos\logo_altek.png" />
-    <Content Include="Images\logos\logo_default.png" />
-    <Content Include="Images\logos\logo_default2.png" />
     <Content Include="Images\logos\logo_icon.png" />
+    <Content Include="Images\logos\logo_default.png" />
     <Content Include="Images\off_canvas.jpg" />
     <Content Include="Images\p1.jpg" />
     <Content Include="Images\p2.jpg" />
@@ -1704,6 +1704,7 @@
     <Content Include="Scripts\plugins\video\responsible-video.js" />
     <Content Include="Scripts\plugins\wow\wow.min.js" />
     <Content Include="Scripts\popper.min.js" />
+    <Content Include="Scripts\views\Cedis\Index.js" />
     <Content Include="Scripts\views\documents\Index.js" />
     <Content Include="Scripts\views\Payments\Index.js" />
     <Content Include="Scripts\views\PdfSignature\Index.js" />
@@ -1800,9 +1801,11 @@
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="Views\Shared\_Messages.cshtml" />
     <Content Include="Views\Fees\Calculate.cshtml" />
-    <Content Include="Views\Fees\Tracing.cshtml" />
+    <Content Include="Views\Fees\Tracking.cshtml" />
     <Content Include="Views\Productos\Index.cshtml" />
     <Content Include="Views\Productos\Create.cshtml" />
+    <Content Include="Views\Fees\Tweaking.cshtml" />
+    <Content Include="Views\Cedis\Index.cshtml" />
     <None Include="Web.Base.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

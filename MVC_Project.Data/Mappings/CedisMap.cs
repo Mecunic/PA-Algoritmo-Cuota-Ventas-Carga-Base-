@@ -23,6 +23,7 @@ namespace MVC_Project.Data.Mappings
             Map(x => x.RemovedAt).Column("removed_at").Nullable();
             Map(x => x.Status).Column("status").Nullable();
             HasMany(x => x.Users).Inverse().Cascade.All().KeyColumn("IdCedis");
+            References(x => x.Manager).Column("manager");
         }
     }
 }

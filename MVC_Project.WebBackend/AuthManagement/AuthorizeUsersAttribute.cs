@@ -27,7 +27,7 @@ namespace MVC_Project.WebBackend.AuthManagement
             }
             response.SuppressFormsAuthenticationRedirect = true;
             //response.End();
-            
+
         }
         protected override void HandleUnauthorizedRequest(AuthorizationContext filterContext)
         {
@@ -52,12 +52,12 @@ namespace MVC_Project.WebBackend.AuthManagement
             else
             {
                 base.HandleUnauthorizedRequest(filterContext);
-            }            
+            }
         }
-        
+
 
         protected override bool AuthorizeCore(HttpContextBase httpContext)
-        {                                 
+        {
             AuthUser authenticatedUser = Authenticator.AuthenticatedUser;
             if (authenticatedUser != null)
             {
@@ -81,8 +81,8 @@ namespace MVC_Project.WebBackend.AuthManagement
                     return true;
                 }
                 return false;
-            }                    
+            }
             return false;
-        }        
+        }
     }
 }

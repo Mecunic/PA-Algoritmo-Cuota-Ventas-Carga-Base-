@@ -18,6 +18,7 @@ namespace MVC_Project.Domain.Entities
         public virtual DateTime? RemovedAt { get; set; }
         public virtual string Uuid { get; set; }
         public virtual Boolean Status { get; set; }
+        public virtual User Manager { get; set; }
 
         public Cedis()
         {
