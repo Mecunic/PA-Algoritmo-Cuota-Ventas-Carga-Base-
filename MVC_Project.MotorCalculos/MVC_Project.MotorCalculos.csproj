@@ -45,10 +45,14 @@
   <ItemGroup>
     <Compile Include="CalculoCarga.cs" />
     <Compile Include="Modelos\Configuracion.cs" />
+    <Compile Include="Modelos\Excepciones.cs" />
     <Compile Include="Modelos\Inventario.cs" />
     <Compile Include="Modelos\PortafolioPredefinido.cs" />
+    <Compile Include="Modelos\Producto.cs" />
     <Compile Include="Modelos\Respuesta.cs" />
+    <Compile Include="Modelos\Venta.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utils.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

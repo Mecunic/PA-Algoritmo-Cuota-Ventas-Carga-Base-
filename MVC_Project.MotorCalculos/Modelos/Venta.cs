@@ -6,20 +6,17 @@ using System.Threading.Tasks;
 
 namespace MVC_Project.MotorCalculos.Modelos
 {
-    public class Inventario
+    public class Venta
     {
-        public string InventarioId { get; set; }
+        public string VentaId { get; set; }
         public string Ruta { get; set; }
         public string Fecha { get; set; }
-        public List<ProductoInventario> Productos { get; set; }
-        public List<Producto> Reemplazos { get; set; }
-        public List<Producto> Implementos { get; set; }
+        public List<ProductoVenta> Productos { get; set; }
     }
 
-    public class ProductoInventario : Producto
+    public class ProductoVenta : Producto
     {
         public decimal Precio { get; set; }
         public decimal Descuento { get; set; }
-        public decimal PorcentajeIva { get; set; }
     }
 }
