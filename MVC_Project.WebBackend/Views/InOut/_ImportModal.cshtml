@@ -1,0 +1,42 @@
+﻿@model  MVC_Project.WebBackend.Models.ImportInOutViewModel
+
+<div class="modal inmodal" id="importModal" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog">
+        <div class="modal-content animated bounceInRight">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title">Importar Excel</h4>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="row">
+                        <div class="col-sm-6 col-12">
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.Cedis)
+                                <select class="form-control m-b" name="@Html.IdFor(m => m.Cedis)">
+                                    <option>CEDIS 1</option>
+                                    <option>CEDIS 2</option>
+                                    <option>CEDIS 3</option>
+                                    <option>CEDIS 4</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.ExcelFile)
+                                <div class="custom-file">
+                                    <input id="@Html.IdFor(m => m.ExcelFile)" type="file" class="custom-file-input">
+                                    <label for="@Html.IdFor(m => m.ExcelFile)" class="custom-file-label">Seleccione un archivo...</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-link" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary">Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>

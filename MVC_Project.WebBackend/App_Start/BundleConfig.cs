@@ -68,13 +68,13 @@ namespace MVC_Project.WebBackend
                       "~/Scripts/plugins/fullcalendar/fullcalendar.min.js", //));
                       "~/Scripts/plugins/fullcalendar/lang/es.js"));
 
-            // dataPicker styles
-            bundles.Add(new StyleBundle("~/plugins/dataPickerStyles").Include(
-                      "~/Content/template/plugins/datapicker/datepicker3.css"));
+            // datePicker styles
+            bundles.Add(new StyleBundle("~/plugins/datepickerStyles").Include(
+                      "~/Content/template/plugins/datepicker/datepicker3.css"));
 
-            // dataPicker
-            bundles.Add(new ScriptBundle("~/plugins/dataPicker").Include(
-                      "~/Scripts/plugins/datapicker/bootstrap-datepicker.js"));
+            // datePicker
+            bundles.Add(new ScriptBundle("~/plugins/datepicker").Include(
+                      "~/Scripts/plugins/datepicker/bootstrap-datepicker.js"));
 
             // Sweet alert Styless
             bundles.Add(new StyleBundle("~/plugins/sweetAlertStyles").Include(
