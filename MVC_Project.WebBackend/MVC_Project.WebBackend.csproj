@@ -1810,7 +1810,8 @@
     <Content Include="Views\Fees\Tweaking.cshtml" />
     <Content Include="Views\Cedis\Index.cshtml" />
     <Content Include="Views\InOut\Index.cshtml" />
-    <Content Include="Views\InOut\_ImportModal.cshtml" />
+    <Content Include="Views\InOut\Import.cshtml" />
+    <Content Include="Views\InOut\_ImportResult.cshtml" />
     <None Include="Web.Base.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

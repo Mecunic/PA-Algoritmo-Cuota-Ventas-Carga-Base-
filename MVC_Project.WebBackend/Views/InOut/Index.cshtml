@@ -5,7 +5,6 @@
 }
 @section styles {
     @Styles.Render("~/plugins/dataTablesStyles")
-    @Styles.Render("~/plugins/datepickerStyles")
 }
 
 <div class="wrapper wrapper-content animated fadeInRight">
@@ -15,12 +14,12 @@
                 <div class="ibox-title d-flex justify-content-between">
                     <h5>Resultados</h5>
                     <div>
-                        <button type="button" class="btn btn-secondary btn-xs" data-toggle="modal" data-target="#importModal" data-backdrop="static">
-                            <i class="fa fa-upload mr-1" aria-hidden="true"></i> Importar
-                        </button>
                         <button type="button" class="btn btn-info btn-xs">
                             <i class="fa fa-file-download mr-1" aria-hidden="true"></i> Descargar Plantilla
                         </button>
+                        <a href="@Url.Action("Import", "InOut")" class="btn btn-secondary btn-xs">
+                            <i class="fa fa-upload mr-1" aria-hidden="true"></i> Importar
+                        </a>
                         <button type="button" class="btn btn-primary btn-xs">
                             <i class="fa fa-plus mr-1" aria-hidden="true"></i> Crear
                         </button>
@@ -36,25 +35,15 @@
     </div>
 </div>
 
-@Html.Partial("_ImportModal")
-
 @section scripts{
 
     @Scripts.Render("~/plugins/dataTables")
     @Scripts.Render("~/custom/Utils")
-    @Scripts.Render("~/plugins/datepicker")
     <script src="~/Scripts/views/InOut/Index.js"></script>
     <script type="text/javascript">
         $(function () {
             const tableCtrl = new InOutIndexControlador('table', '@Url.Action("GetAll")');
             tableCtrl.init();
-
-            $('.custom-file-input').on('change', function () {
-                let fileName = $(this).val().split('\\').pop();
-                $(this).next('.custom-file-label').addClass("selected").html(fileName);
-            });
-
-            $('.datepicker').datepicker();
         });
     </script>
 
