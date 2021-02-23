@@ -522,3 +522,42 @@ function getFiltros(form) {
 
     return JSON.stringify(filtros);
 }
+
+function validFileType(file, validFileTypes) {
+  var fileType;
+  if (!file.type) {
+    fileType = file.name.split('.').pop();
+  } else {
+    fileType = file.type;
+  }
+  var typeIndex = validFileTypes.indexOf(fileType);
+  return typeIndex > -1;
+}
+
+function validateFile(input, validFileTypes) {
+  var files = input.files;
+  var isValid = true;
+  var validationSpan = $('span[data-valmsg-for=' + input.name);
+  validationSpan.removeClass('font-bold text-danger field-validation-error');
+  validationSpan.empty();
+
+  if (files.length === 0) {
+    validationSpan.text('Debes seleccionar un archivo.');
+    isValid = false;
+  } else {
+    var document = files[0];
+
+    if (validFileType(document, validFileTypes)) {
+        isValid = true;
+    } else {
+        validationSpan.text('No es un tipo de archivo válido.');
+        isValid = false;
+    }
+  }
+
+  if (!isValid) {
+    validationSpan.addClass('font-bold text-danger field-validation-error')
+  }
+
+  return isValid;
+}

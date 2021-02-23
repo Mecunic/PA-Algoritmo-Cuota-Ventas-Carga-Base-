@@ -1,0 +1,116 @@
+﻿@model  MVC_Project.WebBackend.Models.ImportPredefinedListViewModel
+
+@{
+    ViewBag.Title = "Listas Predefinidas | Importar";
+}
+@section styles {
+    @Styles.Render("~/plugins/dataTablesStyles")
+    @Styles.Render("~/plugins/datePickerStyles")
+    <style>
+        .custom-file-label::after {
+            content: "Buscar" !important;
+        }
+    </style>
+}
+
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-12">
+            <div class="ibox float-e-margins">
+                @using (Html.BeginForm("ProductsImporter", "PredefinedList", FormMethod.Post, new { enctype = "multipart/form-data", id = "import-form" }))
+                {
+                    <div class="ibox-title d-flex justify-content-between">
+                        <h5>Información</h5>
+                    </div>
+                    <div class="ibox-content clearfix">
+                        <div class="row">
+                            <div class="col-sm-4 col-12">
+                                <div class="form-group">
+                                    @Html.LabelFor(m => m.Cedis)
+                                    <select class="form-control m-b" name="@Html.IdFor(m => m.Cedis)">
+                                        <option>CEDIS 1</option>
+                                        <option>CEDIS 2</option>
+                                        <option>CEDIS 3</option>
+                                        <option>CEDIS 4</option>
+                                    </select>
+                                    @Html.ValidationMessageFor(m => m.Cedis)
+                                </div>
+                            </div>
+                            <div class="col-sm-4 col-12">
+                                @Html.LabelFor(m => m.StartDate)
+                                <div class="input-group date start-date-picker">
+                                    @Html.TextBoxFor(m => m.StartDate, "{0:dd/MM/yyyy}", new { @class = "form-control start-date-inputbox" })
+                                    <div class="input-group-append align-items-center px-2 bg-muted">
+                                        <i class="fas fa-calendar-alt"></i>
+                                    </div>
+                                </div>
+                                @Html.ValidationMessageFor(x => x.StartDate, "", new { @class = "font-bold text-danger" })
+                            </div>
+                            <div class="col-sm-4 col-12">
+                                @Html.LabelFor(m => m.EndDate)
+                                <div class="input-group date end-date-picker">
+                                    @Html.TextBoxFor(m => m.EndDate, "{0:dd/MM/yyyy}", new { @class = "form-control end-date-inputbox" })
+                                    <div class="input-group-append align-items-center px-2 bg-muted">
+                                        <i class="fas fa-calendar-alt"></i>
+                                    </div>
+                                </div>
+                                @Html.ValidationMessageFor(x => x.EndDate, "", new { @class = "font-bold text-danger" })
+                            </div>
+                            <div class="col-sm-6 col-12">
+                                <div class="form-group">
+                                    @Html.LabelFor(m => m.ExcelFile)
+                                    <div class="custom-file">
+                                        <input id="@Html.IdFor(m => m.ExcelFile)" name="@Html.IdFor(m => m.ExcelFile)" type="file" class="custom-file-input" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
+                                        <label for="@Html.IdFor(m => m.ExcelFile)" class="custom-file-label">Seleccione un archivo...</label>
+                                    </div>
+                                    @Html.ValidationMessageFor(m => m.ExcelFile)
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ibox-footer d-flex justify-content-end">
+                        <button type="button" class="btn btn-link btn-xs mr-2" id="btnClearForm">
+                            <i class="fa fa-eraser mr-1" aria-hidden="true"></i> Limpiar
+                        </button>
+                        <button type="submit" class="btn btn-primary btn-xs" id="btnImport">
+                            <i class="fa fa-file-import mr-1" aria-hidden="true"></i> Importar
+                        </button>
+                    </div>
+                }
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title d-flex justify-content-between">
+                    <h5>Resultados</h5>
+                    <div>
+                        @if (Model.ImportedProducts != null && Model.ImportedProducts.Count > 0)
+                        {
+                            <button type="button" class="btn btn-primary btn-xs" id="btnSaveData">Guardar</button>
+                        }
+                    </div>
+                </div>
+                <div class="ibox-content clearfix">
+                    @{ Html.RenderPartial("_ImportResult", Model.ImportedProducts); }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    @Scripts.Render("~/plugins/validate")
+    @Scripts.Render("~/plugins/validateUnobtrusive")
+    @Scripts.Render("~/plugins/dataTables")
+    @Scripts.Render("~/plugins/datePicker")
+    @Scripts.Render("~/custom/Utils")
+    <script src="~/Scripts/views/PredefinedList/Import.js"></script>
+
+    <script type="text/javascript">
+        $(function () {
+            const importController = new PredefinedListImportControlador('@(Json.Encode(Model.ImportedProducts))');
+            importController.init();
+        });
+    </script>
+
+}

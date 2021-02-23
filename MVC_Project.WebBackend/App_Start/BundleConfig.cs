@@ -74,7 +74,8 @@ namespace MVC_Project.WebBackend
 
             // datePicker
             bundles.Add(new ScriptBundle("~/plugins/datepicker").Include(
-                      "~/Scripts/plugins/datepicker/bootstrap-datepicker.js"));
+                      "~/Scripts/plugins/datepicker/bootstrap-datepicker.js",
+                      "~/Scripts/plugins/datepicker/bootstrap-datepicker.es.min.js"));
 
             // Sweet alert Styless
             bundles.Add(new StyleBundle("~/plugins/sweetAlertStyles").Include(
