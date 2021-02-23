@@ -1716,6 +1716,7 @@
     <Content Include="Scripts\plugins\video\responsible-video.js" />
     <Content Include="Scripts\plugins\wow\wow.min.js" />
     <Content Include="Scripts\popper.min.js" />
+    <Content Include="Scripts\views\InOut\Detail.js" />
     <Content Include="Scripts\views\PredefinedList\Import.js" />
     <Content Include="Scripts\views\PredefinedList\Index.js" />
     <Content Include="Scripts\views\InOut\Index.js" />
@@ -1824,6 +1825,7 @@
     <Content Include="Views\InOut\Index.cshtml" />
     <Content Include="Views\InOut\Import.cshtml" />
     <Content Include="Views\InOut\_ImportResult.cshtml" />
+    <Content Include="Views\InOut\Detail.cshtml" />
     <Content Include="Views\PredefinedList\Index.cshtml" />
     <Content Include="Views\PredefinedList\Import.cshtml" />
     <Content Include="Views\PredefinedList\_ImportResult.cshtml" />

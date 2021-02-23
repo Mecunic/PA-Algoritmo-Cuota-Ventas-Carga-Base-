@@ -1,8 +1,7 @@
-﻿const InOutIndexControlador = function (htmlTableId, baseUrl, detailUrl) {
+﻿const InOutDetailControlador = function (htmlTableId, baseUrl) {
     var self = this;
     this.htmlTable = $('#' + htmlTableId);
     this.baseUrl = baseUrl;
-    this.detailUrl = detailUrl;
     this.dataTable = {};
     this.initModal = function () {
 
@@ -17,9 +16,9 @@
             searching: false,
             ordering: false,
             columns: [
-                { data: 'Id', title: "Id", visible: false },
-                { data: 'Code', title: "Clave" },
-                { data: 'Cedis', title: "Cedis" },
+                { data: 'Sku', title: "SKU" },
+                { data: 'Description', title: "Descripción" },
+                { data: 'Cedis', title: "CEDIS" },
                 {
                     data: null,
                     //className: 'personal-options',
@@ -27,7 +26,7 @@
                     render: function (data) {
                         const buttons = `<div class="btn-group" role="group" aria-label="Opciones">
                                 <div class="btn-group" role="group" aria-label="Opciones">
-                                    <a href="${self.detailUrl}/${data.Id}" class="btn btn-light btn-view" title="Detalle"><span class="fa fa-eye"></span></a>
+                                    <button type="button" class="btn btn-light btn-view" title="Detalle"><span class="fa fa-eye"></span></button>
                                 </div>
                             `;
                         return buttons;

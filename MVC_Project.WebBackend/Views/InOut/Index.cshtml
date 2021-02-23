@@ -42,7 +42,7 @@
     <script src="~/Scripts/views/InOut/Index.js"></script>
     <script type="text/javascript">
         $(function () {
-            const tableCtrl = new InOutIndexControlador('table', '@Url.Action("GetAll")');
+            const tableCtrl = new InOutIndexControlador('table', '@Url.Action("GetAll")', '@Url.Action("Detail")');
             tableCtrl.init();
         });
     </script>

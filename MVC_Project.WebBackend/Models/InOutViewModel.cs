@@ -43,4 +43,16 @@ namespace MVC_Project.WebBackend.Models
         [Display(Name = "CEDIS")]
         public string Cedis { get; set; }
     }
+
+    public class DetailInOutViewModel
+    {
+        [Display(Name = "Id")]
+        public string Id { get; set; }
+
+        [Display(Name = "Clave")]
+        public string Code { get; set; }
+
+        [Display(Name = "CEDIS")]
+        public string Cedis { get; set; }
+    }
 }
