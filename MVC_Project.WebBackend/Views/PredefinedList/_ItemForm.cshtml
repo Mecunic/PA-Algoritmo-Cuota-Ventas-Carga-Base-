@@ -13,11 +13,11 @@
 <div class="col-md-2 col-12">
     <div class="form-group">
         @Html.LabelFor(m => m.Amount)
-        @Html.TextBoxFor(m => m.Amount, new { @class = "form-control", type = "number" })
+        @Html.TextBoxFor(m => m.Amount, new { @class = "form-control", type = "number", min = 1 })
         @Html.ValidationMessageFor(m => m.Amount)
     </div>
 </div>
-<div class="col-md-4 col-12 d-flex align-items-center">
+<div class="col-12 col-md-4 d-flex align-items-start justify-content-between mt-2 pt-4">
     <div class="form-check form-check-inline i-checks">
         @Html.CheckBoxFor(m => m.IsStrategic, new { @class = "form-check-input" })
         @Html.LabelFor(m => m.IsStrategic, new { @class = "form-check-label ml-2" })
@@ -32,7 +32,7 @@
     </div>
 </div>
 
-<div class="col-md-2 col-12 d-flex align-items-center text-center">
+<div class="col-md-2 col-12 d-flex align-items-start pt-4 justify-content-center">
     <button type="button" class="btn btn-primary" id="add-item-btn">Agregar</button>
 </div>
 
