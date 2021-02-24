@@ -8,16 +8,19 @@
                     @Html.DisplayNameFor(model => model.Sku)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.Description)
+                    @Html.DisplayNameFor(model => model.Product)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.PackageUnit)
+                    @Html.DisplayNameFor(model => model.Amount)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.StartDate)
+                    @Html.DisplayNameFor(model => model.IsStrategic)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.EndDate)
+                    @Html.DisplayNameFor(model => model.IsPrioritary)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.IsTactic)
                 </th>
             </tr>
         </thead>
@@ -26,10 +29,11 @@
             {
                 <tr>
                     <td>@product.Sku</td>
-                    <td>@product.Description</td>
-                    <td>@product.PackageUnit</td>
-                    <td>@product.StartDate.GetValueOrDefault().ToString("dd/MM/yyyy")</td>
-                    <td>@product.EndDate.GetValueOrDefault().ToString("dd/MM/yyyy")</td>
+                    <td>@product.Product</td>
+                    <td>@product.Amount</td>
+                    <td>@(product.IsStrategic ? "Sí": "No")</td>
+                    <td>@(product.IsPrioritary ? "Sí": "No")</td>
+                    <td>@(product.IsTactic ? "Sí": "No")</td>
                 </tr>
             }
         </tbody>

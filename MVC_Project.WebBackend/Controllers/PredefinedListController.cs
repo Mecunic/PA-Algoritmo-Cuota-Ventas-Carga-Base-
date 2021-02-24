@@ -26,9 +26,7 @@ namespace MVC_Project.WebBackend.Controllers
                     PredefinedListItemViewModel cediVM = new PredefinedListItemViewModel
                     {
                         Id = Guid.NewGuid().ToString(),
-                        Sku = $"SKU #{i}",
-                        Description = "Descripción",
-                        PackageUnit = "Unidad",
+                        Cedis = $"CEDIS #{i}",
                         StartDate = DateTime.Now.ToString("dd/MM/yyyy"),
                         EndDate = DateTime.Now.ToString("dd/MM/yyyy"),
                     };
@@ -52,6 +50,80 @@ namespace MVC_Project.WebBackend.Controllers
                     MaxJsonLength = int.MaxValue
                 };
             }
+        }
+
+        [Route("/Detail/{id}")]
+        public ActionResult Detail(string id)
+        {
+            var model = new DetailPredefinedListViewModel
+            {
+                Id = id,
+                Cedis = "Cedis"
+            };
+            return View(model);
+        }
+
+        [Route("/GetDetailProducts/{id}")]
+        public JsonResult GetDetailProducts(JQueryDataTableParams param, string id)
+        {
+            try
+            {
+                List<PredefinedListProductViewModel> dataResponse = new List<PredefinedListProductViewModel>();
+                for (int i = 0; i < 5; i++)
+                {
+                    PredefinedListProductViewModel listItem = new PredefinedListProductViewModel
+                    {
+                        Id = Guid.NewGuid().ToString(),
+                        Sku = $"SKU #{i}",
+                        Product = "Producto",
+                        Amount = 10,
+                        IsPrioritary = true,
+                        IsStrategic = false,
+                        IsTactic = true
+                    };
+                    dataResponse.Add(listItem);
+                }
+                return Json(new
+                {
+                    success = true,
+                    param.sEcho,
+                    iTotalRecords = dataResponse.Count,
+                    iTotalDisplayRecords = 5,
+                    aaData = dataResponse
+                }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return new JsonResult
+                {
+                    Data = new { Mensaje = new { title = "Error", message = ex.Message } },
+                    JsonRequestBehavior = JsonRequestBehavior.AllowGet,
+                    MaxJsonLength = int.MaxValue
+                };
+            }
+        }
+
+        [HttpGet]
+        public ActionResult Create()
+        {
+            var model = new CreatePredefinedListViewModel
+            {
+                Products = new List<SelectListItem>
+                {
+                    new SelectListItem
+                    {
+                        Text = "Producto 1",
+                        Value = "1"
+                    },
+                    new SelectListItem
+                    {
+                        Text = "Producto 2",
+                        Value = "2"
+                    }
+                }
+            };
+
+            return View(model);
         }
 
         [HttpGet]
@@ -83,16 +155,24 @@ namespace MVC_Project.WebBackend.Controllers
                                 {
                                     DataRow row = page.Rows[i];
                                     string sku = Convert.ToString(row[0]);
-                                    string description = Convert.ToString(row[1]);
-                                    string packageUnit = Convert.ToString(row[2]);
+                                    string product = Convert.ToString(row[1]);
+                                    int amount = Convert.ToInt32(row[2]);
+                                    string isStrategicTextVal = Convert.ToString(row[3]).ToLower();
+                                    string isPrioritaryTextVal = Convert.ToString(row[4]).ToLower();
+                                    string isTacticTextVal = Convert.ToString(row[5]).ToLower();
+
+                                    bool isStategic = isStrategicTextVal == "sí" || isStrategicTextVal == "si";
+                                    bool isPrioritary = isPrioritaryTextVal == "sí" || isPrioritaryTextVal == "si";
+                                    bool isTactic = isTacticTextVal == "sí" || isTacticTextVal == "si";
 
                                     model.ImportedProducts.Add(new PredefinedListProductViewModel
                                     {
                                         Sku = sku,
-                                        Description = description,
-                                        PackageUnit = packageUnit,
-                                        StartDate = model.StartDate,
-                                        EndDate = model.EndDate,
+                                        Product = product,
+                                        Amount = amount,
+                                        IsStrategic = isStategic,
+                                        IsPrioritary = isPrioritary,
+                                        IsTactic = isTactic
                                     });
                                 }
                             }

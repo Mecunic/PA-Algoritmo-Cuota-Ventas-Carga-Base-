@@ -1,8 +1,7 @@
-﻿const PredefinedListIndexControlador = function (htmlTableId, baseUrl, detailUrl) {
+﻿const PredefinedListDetailControlador = function (htmlTableId, baseUrl) {
     var self = this;
     this.htmlTable = $('#' + htmlTableId);
     this.baseUrl = baseUrl;
-    this.detailUrl = detailUrl;
     this.dataTable = {};
     this.initModal = function () {
 
@@ -18,22 +17,12 @@
             ordering: false,
             columns: [
                 { data: 'Id', title: "Id", visible: false },
-                { data: 'Cedis', title: "Cedis" },
-                { data: 'StartDate', title: "Fecha Inicio" },
-                { data: 'EndDate', title: "Fecha Fin" },
-                {
-                    data: null,
-                    //className: 'personal-options',
-                    title: 'Acciones',
-                    render: function (data) {
-                        const buttons = `<div class="btn-group" role="group" aria-label="Opciones">
-                                <div class="btn-group" role="group" aria-label="Opciones">
-                                    <a href=${self.detailUrl}/${data.Id} class="btn btn-light btn-view" title="Detalle"><span class="fa fa-eye"></span></a>
-                                </div>
-                            `;
-                        return buttons;
-                    }
-                }
+                { data: 'Sku', title: "SKU" },
+                { data: 'Product', title: "Producto" },
+                { data: 'Amount', title: "Cantidad" },
+                { data: 'IsStrategic', title: "Estratégico", render: renderBoolToText },
+                { data: 'IsPrioritary', title: "Prioritario", render: renderBoolToText },
+                { data: 'IsTactic', title: "Táctico", render: renderBoolToText }
             ],
             "fnServerData": function (sSource, aoData, fnCallback) {
                 aoData.push({ "name": "sSortColumn", "value": this.fnSettings().aoColumns[this.fnSettings().aaSorting[0][0]].orderName });
@@ -43,4 +32,8 @@
             }
         });
     }
+
+  function renderBoolToText(value) {
+    return value ? 'Sí' : 'No';
+  }
 }

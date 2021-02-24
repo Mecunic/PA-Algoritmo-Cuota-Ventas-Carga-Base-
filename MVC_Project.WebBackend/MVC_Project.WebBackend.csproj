@@ -1717,6 +1717,8 @@
     <Content Include="Scripts\plugins\wow\wow.min.js" />
     <Content Include="Scripts\popper.min.js" />
     <Content Include="Scripts\views\InOut\Detail.js" />
+    <Content Include="Scripts\views\PredefinedList\Create.js" />
+    <Content Include="Scripts\views\PredefinedList\Detail.js" />
     <Content Include="Scripts\views\PredefinedList\Import.js" />
     <Content Include="Scripts\views\PredefinedList\Index.js" />
     <Content Include="Scripts\views\InOut\Index.js" />
@@ -1829,6 +1831,9 @@
     <Content Include="Views\PredefinedList\Index.cshtml" />
     <Content Include="Views\PredefinedList\Import.cshtml" />
     <Content Include="Views\PredefinedList\_ImportResult.cshtml" />
+    <Content Include="Views\PredefinedList\Detail.cshtml" />
+    <Content Include="Views\PredefinedList\Create.cshtml" />
+    <Content Include="Views\PredefinedList\_ItemForm.cshtml" />
     <None Include="Web.Base.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

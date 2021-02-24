@@ -5,6 +5,7 @@
     "application/vnd.ms-excel",
   ];
   this.importedList = importedList;
+  console.log(this.importedList);
 
   this.init = function () {
     $('#productsTable').DataTable({
@@ -18,6 +19,7 @@
     $('.custom-file-input').on('change', function () {
       let fileName = $(this).val().split('\\').pop();
       $(this).next('.custom-file-label').addClass("selected").html(fileName);
+      validateFile(this, self.fileTypes);
     });
 
     $('.start-date-picker, .end-date-picker').datepicker({
@@ -32,7 +34,7 @@
       $('#import-form').each(function () {
         this.reset();
       });
-      $('.start-date-picker, .end-date-picker').val();
+      $('.start-date-inputbox, .end-date-inputbox').val('');
       $('#btnSaveData').hide();
       $('.custom-file-input').next('.custom-file-label').removeClass("selected").html('Seleccione un archivo...');
       $('#productsTable').DataTable().clear().draw();

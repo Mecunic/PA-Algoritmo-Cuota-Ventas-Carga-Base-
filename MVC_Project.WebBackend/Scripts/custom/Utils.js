@@ -93,6 +93,7 @@ function Utils() {
                 } catch (ex) {
                     obj[field.name] = field.value;
                 }
+
                 var $input = $(form).find('input[name="' + field.name + '"]');
                 if ($input.hasClass("date") && field.value != "") {
                     if ($input.data('datepicker')) {
@@ -104,6 +105,9 @@ function Utils() {
                             obj[field.name] = $input.data("DateTimePicker").date().startOf('day').toISOString();
                         }
                 }
+              if ($input[0] && $input[0].type === 'checkbox') {
+                obj[field.name] = $input[0].checked;
+              }
 
             } catch (ex) {
                 console.log(ex);

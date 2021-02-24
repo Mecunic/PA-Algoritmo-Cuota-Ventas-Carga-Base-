@@ -1,0 +1,38 @@
+﻿@model MVC_Project.WebBackend.Models.CreateProductPredefinedListViewModel
+@{
+    IEnumerable<SelectListItem> productsOptions = (IEnumerable<SelectListItem>)ViewData["ProductsOptions"];
+}
+
+<div class="col-md-4 col-12">
+    <div class="form-group">
+        @Html.LabelFor(m => m.ProductId)
+        @Html.DropDownListFor(m => m.ProductId, productsOptions, "Selecciona una opción", new { @class = "form-control mb" })
+        @Html.ValidationMessageFor(m => m.ProductId)
+    </div>
+</div>
+<div class="col-md-2 col-12">
+    <div class="form-group">
+        @Html.LabelFor(m => m.Amount)
+        @Html.TextBoxFor(m => m.Amount, new { @class = "form-control", type = "number" })
+        @Html.ValidationMessageFor(m => m.Amount)
+    </div>
+</div>
+<div class="col-md-4 col-12 d-flex align-items-center">
+    <div class="form-check form-check-inline i-checks">
+        @Html.CheckBoxFor(m => m.IsStrategic, new { @class = "form-check-input" })
+        @Html.LabelFor(m => m.IsStrategic, new { @class = "form-check-label ml-2" })
+    </div>
+    <div class="form-check form-check-inline i-checks">
+        @Html.CheckBoxFor(m => m.IsPrioritary, new { @class = "form-check-input" })
+        @Html.LabelFor(m => m.IsPrioritary, new { @class = "form-check-label ml-2" })
+    </div>
+    <div class="form-check form-check-inline i-checks">
+        @Html.CheckBoxFor(m => m.IsTactic, new { @class = "form-check-input" })
+        @Html.LabelFor(m => m.IsTactic, new { @class = "form-check-label ml-2" })
+    </div>
+</div>
+
+<div class="col-md-2 col-12 d-flex align-items-center text-center">
+    <button type="button" class="btn btn-primary" id="add-item-btn">Agregar</button>
+</div>
+

@@ -1,4 +1,5 @@
-﻿@model  MVC_Project.WebBackend.Models.ImportPredefinedListViewModel
+﻿@using Newtonsoft.Json;
+@model  MVC_Project.WebBackend.Models.ImportPredefinedListViewModel
 
 @{
     ViewBag.Title = "Listas Predefinidas | Importar";
@@ -39,7 +40,7 @@
                             <div class="col-sm-4 col-12">
                                 @Html.LabelFor(m => m.StartDate)
                                 <div class="input-group date start-date-picker">
-                                    @Html.TextBoxFor(m => m.StartDate, "{0:dd/MM/yyyy}", new { @class = "form-control start-date-inputbox" })
+                                    @Html.TextBoxFor(m => m.StartDate, "{0:dd/MM/yyyy}", new { @class = "form-control start-date-inputbox", autocomplete = "off" })
                                     <div class="input-group-append align-items-center px-2 bg-muted">
                                         <i class="fas fa-calendar-alt"></i>
                                     </div>
@@ -49,7 +50,7 @@
                             <div class="col-sm-4 col-12">
                                 @Html.LabelFor(m => m.EndDate)
                                 <div class="input-group date end-date-picker">
-                                    @Html.TextBoxFor(m => m.EndDate, "{0:dd/MM/yyyy}", new { @class = "form-control end-date-inputbox" })
+                                    @Html.TextBoxFor(m => m.EndDate, "{0:dd/MM/yyyy}", new { @class = "form-control end-date-inputbox", autocomplete = "off" })
                                     <div class="input-group-append align-items-center px-2 bg-muted">
                                         <i class="fas fa-calendar-alt"></i>
                                     </div>
@@ -108,7 +109,7 @@
 
     <script type="text/javascript">
         $(function () {
-            const importController = new PredefinedListImportControlador('@(Json.Encode(Model.ImportedProducts))');
+            const importController = new PredefinedListImportControlador(@Html.Raw(JsonConvert.SerializeObject(Model.ImportedProducts)));
             importController.init();
         });
     </script>
