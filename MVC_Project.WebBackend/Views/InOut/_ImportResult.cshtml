@@ -8,10 +8,10 @@
                     @Html.DisplayNameFor(model => model.Sku)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.Description)
+                    @Html.DisplayNameFor(model => model.Name)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.Cedis)
+                    @Html.DisplayNameFor(model => model.Quantity)
                 </th>
             </tr>
         </thead>
@@ -20,8 +20,8 @@
             {
                 <tr>
                     <td>@product.Sku</td>
-                    <td>@product.Description</td>
-                    <td>@product.Cedis</td>
+                    <td>@product.Name</td>
+                    <td>@product.Quantity</td>
                 </tr>
             }
         </tbody>

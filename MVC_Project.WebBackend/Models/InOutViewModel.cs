@@ -10,11 +10,17 @@ namespace MVC_Project.WebBackend.Models
         [Display(Name = "Id")]
         public string Id { get; set; }
 
-        [Display(Name = "Clave")]
-        public string Code { get; set; }
-
         [Display(Name = "CEDIS")]
         public string Cedis { get; set; }
+
+        [Display(Name = "Ruta")]
+        public string Route { get; set; }
+
+        [Display(Name = "Fecha Inicio")]
+        public string StartDate { get; set; }
+
+        [Display(Name = "Fecha Fin")]
+        public string EndDate { get; set; }
     }
 
     public class ImportInOutViewModel
@@ -36,23 +42,11 @@ namespace MVC_Project.WebBackend.Models
         [Required]
         public string Sku { get; set; }
 
-        [Display(Name = "Descripción")]
+        [Display(Name = "Nombre")]
         [Required]
-        public string Description { get; set; }
+        public string Name { get; set; }
 
-        [Display(Name = "CEDIS")]
-        public string Cedis { get; set; }
-    }
-
-    public class DetailInOutViewModel
-    {
-        [Display(Name = "Id")]
-        public string Id { get; set; }
-
-        [Display(Name = "Clave")]
-        public string Code { get; set; }
-
-        [Display(Name = "CEDIS")]
-        public string Cedis { get; set; }
+        [Display(Name = "Cantidad")]
+        public int Quantity { get; set; }
     }
 }

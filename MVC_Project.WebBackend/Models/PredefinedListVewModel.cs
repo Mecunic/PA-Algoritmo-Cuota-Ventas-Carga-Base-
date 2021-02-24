@@ -88,7 +88,8 @@ namespace MVC_Project.WebBackend.Models
     {
         [Display(Name = "Producto")]
         [Required]
-        public int ProductId { get; set; }
+        public string ProductId { get; set; }
+
         [Display(Name = "Cantidad")]
         [Required]
         public int Amount { get; set; }
@@ -101,5 +102,10 @@ namespace MVC_Project.WebBackend.Models
 
         [Display(Name = "Táctico")]
         public bool IsTactic { get; set; }
+
+        public CreateProductPredefinedListViewModel()
+        {
+            Amount = 1;
+        }
     }
 }

@@ -81,9 +81,14 @@ namespace MVC_Project.WebBackend
             bundles.Add(new StyleBundle("~/plugins/sweetAlertStyles").Include(
                       "~/Content/template/plugins/sweetalert/sweetalert.css"));
 
+            // toastr notification styles
+            bundles.Add(new StyleBundle("~/plugins/toastrStyles").Include(
+                      "~/Content/template/plugins/toastr/toastr.min.css"));
+
             //Validate
             bundles.Add(new ScriptBundle("~/plugins/validate").Include(
-                      "~/Scripts/plugins/validate/jquery.validate.min.js"));
+                      "~/Scripts/plugins/validate/jquery.validate.min.js",
+                      "~/Scripts/plugins/validate/messages_es.js"));
 
 
             //Validate Unobtrusive
@@ -95,6 +100,10 @@ namespace MVC_Project.WebBackend
             // Sweet alert
             bundles.Add(new ScriptBundle("~/plugins/sweetAlert").Include(
                       "~/Scripts/plugins/sweetalert/sweetalert.min.js"));
+
+            // toastr notification
+            bundles.Add(new ScriptBundle("~/plugins/toastr").Include(
+                      "~/Scripts/plugins/toastr/toastr.min.js"));
 
             // chosen css styles
             bundles.Add(new StyleBundle("~/Content/template/plugins/chosen/chosenStyles").Include(

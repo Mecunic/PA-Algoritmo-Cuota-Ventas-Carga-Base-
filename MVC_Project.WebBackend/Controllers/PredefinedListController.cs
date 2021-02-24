@@ -1,4 +1,5 @@
 ﻿using ExcelDataReader;
+using MVC_Project.FlashMessages;
 using MVC_Project.WebBackend.Models;
 using System;
 using System.Collections.Generic;
@@ -113,15 +114,49 @@ namespace MVC_Project.WebBackend.Controllers
                     new SelectListItem
                     {
                         Text = "Producto 1",
-                        Value = "1"
+                        Value = Guid.NewGuid().ToString()
                     },
                     new SelectListItem
                     {
                         Text = "Producto 2",
-                        Value = "2"
+                        Value = Guid.NewGuid().ToString()
                     }
                 }
             };
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult Create(CreatePredefinedListViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    //save
+                    MensajeFlashHandler.RegistrarMensaje("Lista guardada correctamente.", TiposMensaje.Success);
+                    return RedirectToAction("Index");
+                }
+                catch (Exception ex)
+                {
+                    Session.Add("View.Message", new MessageView
+                    {
+                        type = TypeMessageView.ERROR,
+                        description = ex.Message
+                    });
+                }
+            }
+            else
+            {
+                var errorKey = ModelState.Keys.Where(k => ModelState[k].Errors.Count > 0).FirstOrDefault();
+                Session.Add("View.Message", new MessageView
+                {
+                    type = TypeMessageView.ERROR,
+                    description = !string.IsNullOrEmpty(errorKey) ? ModelState[errorKey].Errors[0].ErrorMessage
+                        : "Error de validación, verifique los datos e inténtelo de nuevo."
+                });
+            }
 
             return View(model);
         }

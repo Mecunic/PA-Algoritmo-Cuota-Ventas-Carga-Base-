@@ -1,4 +1,5 @@
-﻿using MVC_Project.WebBackend.Models;
+﻿using MVC_Project.Utils;
+using MVC_Project.WebBackend.Models;
 using System;
 using System.Collections.Generic;
 using System.Web.Mvc;
@@ -21,13 +22,15 @@ namespace MVC_Project.WebBackend.Controllers
                 List<InOutViewModel> dataResponse = new List<InOutViewModel>();
                 for (int i = 0; i < 5; i++)
                 {
-                    InOutViewModel cediVM = new InOutViewModel
+                    InOutViewModel listVM = new InOutViewModel
                     {
                         Id = Guid.NewGuid().ToString(),
-                        Code = $"ITEM #{i}",
                         Cedis = $"CEDIS #{i}",
+                        Route = $"RUTA #{i}",
+                        StartDate = DateUtil.GetDateTimeNow().ToString("dd/MM/yyyy"),
+                        EndDate = DateUtil.GetDateTimeNow().AddMonths(15).ToString("dd/MM/yyyy"),
                     };
-                    dataResponse.Add(cediVM);
+                    dataResponse.Add(listVM);
                 }
                 return Json(new
                 {
@@ -69,8 +72,8 @@ namespace MVC_Project.WebBackend.Controllers
                 importResult.ImportedProducts.Add(new ImportedProductViewModel
                 {
                     Sku = Guid.NewGuid().ToString(),
-                    Cedis = "CEDIS 01",
-                    Description = "Descripción"
+                    Name = $"Producto #{i}",
+                    Quantity = i + 1
                 });
             }
             TempData["ImportResult"] = importResult;
@@ -81,13 +84,12 @@ namespace MVC_Project.WebBackend.Controllers
         [Route("~/Detail/{id}")]
         public ActionResult Detail(string id)
         {
-            var model = new DetailInOutViewModel
+            InOutViewModel listVM = new InOutViewModel
             {
-                Id = id,
-                Cedis = "CEDIS 01",
-                Code = "SA1S23D3"
+                Id = Guid.NewGuid().ToString(),
+                Cedis = "CEDIS #1",
             };
-            return View(model);
+            return View(listVM);
         }
 
         [HttpGet]
@@ -102,8 +104,8 @@ namespace MVC_Project.WebBackend.Controllers
                     dataResponse.Add(new ImportedProductViewModel
                     {
                         Sku = Guid.NewGuid().ToString(),
-                        Cedis = "CEDIS 01",
-                        Description = "Descripción"
+                        Name = $"Producto #{i}",
+                        Quantity = i + 1
                     });
                 }
                 return Json(new
