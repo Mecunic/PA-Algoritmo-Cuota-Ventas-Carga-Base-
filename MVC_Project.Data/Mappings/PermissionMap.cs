@@ -9,15 +9,15 @@ namespace MVC_Project.Data.Mappings
     {
         public PermissionMap()
         {
-            Table("Permissions");
-            Id(x => x.Id).GeneratedBy.Identity().Column("IdPermission");
-            Map(x => x.Description).Column("description").Not.Nullable();
-            Map(x => x.Controller).Column("controller").Not.Nullable();
-            Map(x => x.Action).Column("action").Not.Nullable();
-            Map(x => x.Module).Column("module").Nullable();
-            Map(x => x.CreatedAt).Column("created_at").Not.Nullable();
-            Map(x => x.UpdatedAt).Column("updated_at").Not.Nullable();
-            Map(x => x.RemovedAt).Column("removed_at").Nullable();
+            Table("dbo.Permisos");
+            Id(x => x.Id).GeneratedBy.Identity().Column("IdPermiso");
+            Map(x => x.Description).Column("Descripcion").Not.Nullable();
+            Map(x => x.Controller).Column("Controlador").Not.Nullable();
+            Map(x => x.Action).Column("Accion").Not.Nullable();
+            Map(x => x.Module).Column("Modulo").Nullable();
+            Map(x => x.CreatedAt).Column("FechaAlta").Not.Nullable();
+            Map(x => x.UpdatedAt).Column("FechaModificacion").Not.Nullable();
+            Map(x => x.RemovedAt).Column("FechaBaja").Nullable();
         }
     }
 }

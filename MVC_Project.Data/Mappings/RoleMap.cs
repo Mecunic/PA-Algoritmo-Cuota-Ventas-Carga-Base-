@@ -9,18 +9,18 @@ namespace MVC_Project.Data.Mappings
     {
         public RoleMap()
         {
-            Table("Roles");
+            Table("dbo.Roles");
             Id(x => x.Id).GeneratedBy.Identity().Column("IdRole");
-            Map(x => x.Code).Column("code").Not.Nullable();
-            Map(x => x.Name).Column("name").Not.Nullable();
-            Map(x => x.Uuid).Column("uuid").Not.Nullable();
-            Map(x => x.Description).Column("description").Not.Nullable();
-            Map(x => x.CreatedAt).Column("created_at").Not.Nullable();
-            Map(x => x.UpdatedAt).Column("updated_at").Not.Nullable();
-            Map(x => x.RemovedAt).Column("removed_at").Nullable();
-            Map(x => x.Status).Column("status").Nullable();
+            Map(x => x.Code).Column("Clave").Not.Nullable();
+            Map(x => x.Name).Column("Nombre").Not.Nullable();
+            Map(x => x.Uuid).Column("Uuid").Not.Nullable();
+            Map(x => x.Description).Column("Descripcion").Not.Nullable();
+            Map(x => x.CreatedAt).Column("FechaAlta").Not.Nullable();
+            Map(x => x.UpdatedAt).Column("FechaModificacion").Not.Nullable();
+            Map(x => x.RemovedAt).Column("FechaBaja").Nullable();
+            Map(x => x.Status).Column("Estatus").Not.Nullable();
             HasMany(x => x.Users).Inverse().Cascade.All().KeyColumn("IdRole");
-            HasManyToMany(x => x.Permissions).Cascade.All().Table("PermissionsRoles").ParentKeyColumn("IdRole").ChildKeyColumn("IdPermission");
+            HasManyToMany(x => x.Permissions).Cascade.All().Table("PermisosRoles").ParentKeyColumn("IdRole").ChildKeyColumn("IdPermiso");
         }
     }
 }
