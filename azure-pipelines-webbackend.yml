@@ -30,6 +30,13 @@ steps:
   inputs:
     restoreSolution: '$(solution)'
 
+- task: SonarCloudPrepare@1
+  inputs:
+    SonarCloud: 'SonarCloud'
+    organization: 'ensitechdevops'
+    scannerMode: 'MSBuild'
+    projectKey: 'ensitechdevops_Metalinspec_SistemaWebR8'
+    projectName: 'Metalinspec_SistemaWebR8'
 - task: VSBuild@1
   inputs:
     solution: '$(solution)'
@@ -41,6 +48,8 @@ steps:
   inputs:
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
+    
+- task: SonarCloudAnalyze@1
 - task: ArchiveFiles@2
   inputs:
     rootFolderOrFile: '$(Build.BinariesDirectory)'
