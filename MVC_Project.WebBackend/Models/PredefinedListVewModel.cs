@@ -8,7 +8,7 @@ namespace MVC_Project.WebBackend.Models
 {
     public class PredefinedListItemViewModel
     {
-        public string Id { get; set; }
+        public int Id { get; set; }
         public string Cedis { get; set; }
         public string StartDate { get; set; }
         public string EndDate { get; set; }
@@ -18,7 +18,7 @@ namespace MVC_Project.WebBackend.Models
     {
         [Display(Name = "CEDIS")]
         [Required]
-        public string Cedis { get; set; }
+        public int Cedis { get; set; }
 
         [Display(Name = "Fecha Inicio")]
         [Required]
@@ -29,17 +29,38 @@ namespace MVC_Project.WebBackend.Models
         public DateTime? EndDate { get; set; }
 
         [Display(Name = "Archivo")]
-        [Required]
         public HttpPostedFileBase ExcelFile { get; set; }
 
+        public IEnumerable<PredefinedListProductViewModel> ImportedProducts { get; set; } = new List<PredefinedListProductViewModel>();
+
+        public IEnumerable<SelectListItem> CedisList { get; set; }
+    }
+
+    public class ImportSavePredefinedListViewModel
+    {
+        [Display(Name = "CEDIS")]
+        [Required]
+        public int Cedis { get; set; }
+
+        [Display(Name = "Fecha Inicio")]
+        [Required]
+        public DateTime? StartDate { get; set; }
+
+        [Display(Name = "Fecha Fin")]
+        [Required]
+        public DateTime? EndDate { get; set; }
+
+        [Required]
+        [MinLength(1)]
         public List<PredefinedListProductViewModel> ImportedProducts { get; set; } = new List<PredefinedListProductViewModel>();
     }
 
     public class PredefinedListProductViewModel
     {
-        public string Id { get; set; }
+        public int Id { get; set; }
 
         [Display(Name = "SKU")]
+        [Required]
         public string Sku { get; set; }
 
         [Display(Name = "Producto")]
@@ -61,7 +82,7 @@ namespace MVC_Project.WebBackend.Models
 
     public class DetailPredefinedListViewModel
     {
-        public string Id { get; set; }
+        public int Id { get; set; }
         public string Cedis { get; set; }
     }
 
@@ -69,7 +90,7 @@ namespace MVC_Project.WebBackend.Models
     {
         [Display(Name = "CEDIS")]
         [Required]
-        public string Cedis { get; set; }
+        public int Cedis { get; set; }
 
         [Display(Name = "Fecha Inicio")]
         [Required]
@@ -80,6 +101,7 @@ namespace MVC_Project.WebBackend.Models
         public DateTime? EndDate { get; set; }
 
         public IEnumerable<SelectListItem> Products { get; set; }
+        public IEnumerable<SelectListItem> CedisList { get; set; }
 
         public IEnumerable<CreateProductPredefinedListViewModel> ListElement { get; set; }
     }

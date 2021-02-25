@@ -1,10 +1,12 @@
-﻿const PredefinedListImportControlador = function (importedList) {
+﻿const PredefinedListImportControlador = function (saveUrl, importedList) {
   var self = this;
+  this.saveUrl = saveUrl;
+  this.importedList = importedList;
+  this.importForm = $('#import-form');
   this.fileTypes = [
     "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
     "application/vnd.ms-excel",
   ];
-  this.importedList = importedList;
   console.log(this.importedList);
 
   this.init = function () {
@@ -30,12 +32,11 @@
     });
 
     $('#btnClearForm').click(function () {
-      $('#import-form').find("span.field-validation-error").empty();
-      $('#import-form').each(function () {
+      self.importForm.find("span.field-validation-error").empty();
+      sel.importForm.each(function () {
         this.reset();
       });
       $('.start-date-inputbox, .end-date-inputbox').val('');
-      $('#btnSaveData').hide();
       $('.custom-file-input').next('.custom-file-label').removeClass("selected").html('Seleccione un archivo...');
       $('#productsTable').DataTable().clear().draw();
     });
@@ -43,8 +44,15 @@
     $('#btnImport').click(function (e) {
       e.preventDefault();
       var fileValid = validateFile($('.custom-file-input')[0], self.fileTypes);
-      if ($('#import-form').valid() && fileValid) {
-        $('#import-form').submit();
+      if (self.importForm.valid() && fileValid) {
+        self.importForm.submit();
+      }
+    });
+
+    $('#btnSaveData').click(function () {
+      if (self.importForm.valid()) {
+        self.importForm.removeAttr('enctype');
+        self.importForm.submit();
       }
     });
   }

@@ -71,9 +71,11 @@
     <Compile Include="Entities\Cedis.cs" />
     <Compile Include="Entities\ConfigParam.cs" />
     <Compile Include="Entities\Customer.cs" />
+    <Compile Include="Entities\DetallePredefinida.cs" />
     <Compile Include="Entities\Document.cs" />
     <Compile Include="Entities\Event.cs" />
     <Compile Include="Entities\IEntity.cs" />
+    <Compile Include="Entities\ListaPredefinida.cs" />
     <Compile Include="Entities\Order.cs" />
     <Compile Include="Entities\OrderItems.cs" />
     <Compile Include="Entities\Payment.cs" />
@@ -100,6 +102,8 @@
     <Compile Include="Services\IEventService.cs" />
     <Compile Include="Services\IAuthService.cs" />
     <Compile Include="Services\IFilter.cs" />
+    <Compile Include="Services\IDetallePredefinidaService.cs" />
+    <Compile Include="Services\IListaPredefinidaService.cs" />
     <Compile Include="Services\IOrderService.cs" />
     <Compile Include="Services\IPaymentService.cs" />
     <Compile Include="Services\IPermissionService.cs" />

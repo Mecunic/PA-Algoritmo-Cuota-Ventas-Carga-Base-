@@ -39,7 +39,7 @@ namespace MVC_Project.Data.Services
             {
                 query.Take(take.Value);
             }
-            var list = query.OrderBy(u => u.CreatedAt).Desc.List();
+            var list = query.OrderBy(u => u.FechaAlta).Desc.List();
             return new Tuple<IEnumerable<Producto>, int>(list, count);
         }
     }

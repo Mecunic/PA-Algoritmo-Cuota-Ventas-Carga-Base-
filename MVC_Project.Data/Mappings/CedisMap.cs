@@ -12,18 +12,15 @@ namespace MVC_Project.Data.Mappings
     {
         public CedisMap()
         {
-            Table("dbo.Cedis");
+            Table("cat.Cedis");
             Id(x => x.Id).GeneratedBy.Identity().Column("IdCedis");
-            Map(x => x.Code).Column("code").Not.Nullable();
-            Map(x => x.Name).Column("name").Not.Nullable();
-            Map(x => x.Uuid).Column("uuid").Not.Nullable();
-            Map(x => x.Description).Column("description").Not.Nullable();
-            Map(x => x.CreatedAt).Column("created_at").Not.Nullable();
-            Map(x => x.UpdatedAt).Column("updated_at").Not.Nullable();
-            Map(x => x.RemovedAt).Column("removed_at").Nullable();
-            Map(x => x.Status).Column("status").Nullable();
-            HasMany(x => x.Users).Inverse().Cascade.All().KeyColumn("IdCedis");
-            References(x => x.Manager).Column("manager");
+            Map(x => x.Clave).Column("Clave").Not.Nullable();
+            Map(x => x.Nombre).Column("Nombre").Not.Nullable();
+            Map(x => x.Descripcion).Column("Descripcion").Not.Nullable();
+            Map(x => x.FechaAlta).Column("FechaAlta").Not.Nullable();
+            Map(x => x.FechaModificacion).Column("FechaModificacion").Not.Nullable();
+            References(x => x.Responsable).Column("IdResponsable");
+            HasMany(x => x.Usuarios).Inverse().Cascade.All().KeyColumn("IdCedis").LazyLoad();
         }
     }
 }
