@@ -1,7 +1,9 @@
-﻿using MVC_Project.Utils;
+﻿using MVC_Project.FlashMessages;
+using MVC_Project.Utils;
 using MVC_Project.WebBackend.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Web.Mvc;
 
 namespace MVC_Project.WebBackend.Controllers
@@ -61,7 +63,7 @@ namespace MVC_Project.WebBackend.Controllers
         }
 
         [HttpPost]
-        public ActionResult ProductsImporter(ImportInOutViewModel model)
+        public ActionResult ImportProducts(ImportInOutViewModel model)
         {
             var importResult = new ImportInOutViewModel()
             {
@@ -126,6 +128,108 @@ namespace MVC_Project.WebBackend.Controllers
                     MaxJsonLength = int.MaxValue
                 };
             }
+        }
+
+        [HttpGet]
+        public ActionResult Create()
+        {
+            var model = new CreateInOutViewModel
+            {
+                AvailableCedis = GetAvailableCedis(),
+                AvailableRoutes = GetAvailableRoutes(),
+                AvailableProducts = GetAvailableProducts()
+            };
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult Create(CreateInOutViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    //TODO Guardado en base de datos
+                    MensajeFlashHandler.RegistrarMensaje("Lista guardada correctamente.", TiposMensaje.Success);
+                    return RedirectToAction("Index");
+                }
+                catch (Exception ex)
+                {
+                    Session.Add("View.Message", new MessageView
+                    {
+                        type = TypeMessageView.ERROR,
+                        description = ex.Message
+                    });
+                }
+            }
+            else
+            {
+                var errorKey = ModelState.Keys.Where(k => ModelState[k].Errors.Count > 0).FirstOrDefault();
+                Session.Add("View.Message", new MessageView
+                {
+                    type = TypeMessageView.ERROR,
+                    description = !string.IsNullOrEmpty(errorKey) ? ModelState[errorKey].Errors[0].ErrorMessage
+                        : "Error de validación, verifique los datos e inténtelo de nuevo."
+                });
+            }
+            model.AvailableProducts = GetAvailableProducts();
+            model.AvailableCedis = GetAvailableCedis();
+            model.AvailableRoutes = GetAvailableRoutes();
+            return View(model);
+        }
+
+        private List<SelectListItem> GetAvailableProducts()
+        {
+            //TODO Obtener productos desde el servicio
+            return new List<SelectListItem>
+                {
+                    new SelectListItem
+                    {
+                        Text = "Producto 1",
+                        Value = Guid.NewGuid().ToString()
+                    },
+                    new SelectListItem
+                    {
+                        Text = "Producto 2",
+                        Value = Guid.NewGuid().ToString()
+                    }
+                };
+        }
+
+        private List<SelectListItem> GetAvailableCedis()
+        {
+            //TODO Obtener CEDIS desde el servicio
+            return new List<SelectListItem>
+                {
+                    new SelectListItem
+                    {
+                        Text = "CEDIS 1",
+                        Value = Guid.NewGuid().ToString()
+                    },
+                    new SelectListItem
+                    {
+                        Text = "CEDIS 2",
+                        Value = Guid.NewGuid().ToString()
+                    }
+                };
+        }
+
+        private List<SelectListItem> GetAvailableRoutes()
+        {
+            //TODO Obtener rutas desde el servicio
+            return new List<SelectListItem>
+                {
+                    new SelectListItem
+                    {
+                        Text = "Ruta 1",
+                        Value = Guid.NewGuid().ToString()
+                    },
+                    new SelectListItem
+                    {
+                        Text = "Ruta 2",
+                        Value = Guid.NewGuid().ToString()
+                    }
+                };
         }
     }
 }
