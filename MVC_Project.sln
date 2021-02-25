@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.960
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30907.101
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MVC_Project.Data", "MVC_Project.Data\MVC_Project.Data.csproj", "{347A6BFB-7CD3-4B7F-90AD-AB21950EF7AD}"
 EndProject
@@ -16,6 +16,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MVC_Project.WebBackend", "MVC_Project.WebBackend\MVC_Project.WebBackend.csproj", "{A3C31666-97AB-4135-873B-68402863530D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MVC_Project.Resources", "MVC_Project.Resources\MVC_Project.Resources.csproj", "{1946DCF4-C3DA-43E2-9A38-35DB04DB2D92}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MVC_Project.FlashMessages", "MVC_Project.FlashMessages\MVC_Project.FlashMessages.csproj", "{0CE135CB-4DC5-449D-BE1D-28982188B260}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -66,6 +68,12 @@ Global
 		{1946DCF4-C3DA-43E2-9A38-35DB04DB2D92}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1946DCF4-C3DA-43E2-9A38-35DB04DB2D92}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1946DCF4-C3DA-43E2-9A38-35DB04DB2D92}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0CE135CB-4DC5-449D-BE1D-28982188B260}.Base|Any CPU.ActiveCfg = Base|Any CPU
+		{0CE135CB-4DC5-449D-BE1D-28982188B260}.Base|Any CPU.Build.0 = Base|Any CPU
+		{0CE135CB-4DC5-449D-BE1D-28982188B260}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0CE135CB-4DC5-449D-BE1D-28982188B260}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0CE135CB-4DC5-449D-BE1D-28982188B260}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0CE135CB-4DC5-449D-BE1D-28982188B260}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
