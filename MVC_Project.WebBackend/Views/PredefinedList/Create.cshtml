@@ -1,5 +1,6 @@
 ﻿@model MVC_Project.WebBackend.Models.CreatePredefinedListViewModel
 @using MVC_Project.WebBackend.Models
+@using Newtonsoft.Json
 @{
     ViewBag.Title = "Listas Predefinidas | Crear";
 }
@@ -23,12 +24,7 @@
                             <div class="col-sm-4 col-12">
                                 <div class="form-group">
                                     @Html.LabelFor(m => m.Cedis)
-                                    <select class="form-control m-b" name="@Html.IdFor(m => m.Cedis)">
-                                        <option value="1">CEDIS 1</option>
-                                        <option value="2">CEDIS 2</option>
-                                        <option value="3">CEDIS 3</option>
-                                        <option value="4">CEDIS 4</option>
-                                    </select>
+                                    @Html.DropDownListFor(m => m.Cedis, Model.CedisList, "Selecciona una opción", new { @class = "form-control mb" })
                                     @Html.ValidationMessageFor(m => m.Cedis)
                                 </div>
                             </div>
@@ -94,7 +90,7 @@
 
     <script type="text/javascript">
         $(function () {
-            const createController = new PredefinedListCreateControlador('table', '@Url.Action("Create")');
+            const createController = new PredefinedListCreateControlador('table', @Html.Raw(JsonConvert.SerializeObject(Model.ProductsList)));
             createController.init();
         });
     </script>

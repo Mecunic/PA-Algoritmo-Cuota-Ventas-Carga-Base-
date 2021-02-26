@@ -113,6 +113,8 @@
 @section scripts{
     @Scripts.Render("~/plugins/validate")
     @Scripts.Render("~/plugins/validateUnobtrusive")
+    @Scripts.Render("~/Scripts/plugins/moment/moment.min.js")
+    @Scripts.Render("~/Scripts/custom/custom-date-validation.js")
     @Scripts.Render("~/plugins/dataTables")
     @Scripts.Render("~/plugins/datePicker")
     @Scripts.Render("~/custom/Utils")
@@ -120,7 +122,7 @@
 
     <script type="text/javascript">
         $(function () {
-            const importController = new PredefinedListImportControlador(@Html.Raw(JsonConvert.SerializeObject(Model.ImportedProducts)));
+            const importController = new PredefinedListImportControlador();
             importController.init();
         });
     </script>

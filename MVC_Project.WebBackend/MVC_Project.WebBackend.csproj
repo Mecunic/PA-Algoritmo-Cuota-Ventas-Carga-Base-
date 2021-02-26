@@ -227,6 +227,7 @@
     <Compile Include="Controllers\CedisController.cs" />
     <Compile Include="Controllers\RoleController.cs" />
     <Compile Include="Controllers\UserController.cs" />
+    <Compile Include="CustomAttributes\Validations\MinValueAttribute.cs" />
     <Compile Include="CustomAttributes\Validations\PasswordSecuredAttribute.cs" />
     <Compile Include="CustomAttributes\Validations\StringComparerAttribute.cs" />
     <Compile Include="CustomAttributes\Validations\ValidType.cs" />

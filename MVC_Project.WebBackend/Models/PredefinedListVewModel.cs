@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MVC_Project.WebBackend.CustomAttributes.Validations;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Web;
@@ -36,25 +37,6 @@ namespace MVC_Project.WebBackend.Models
         public IEnumerable<SelectListItem> CedisList { get; set; }
     }
 
-    public class ImportSavePredefinedListViewModel
-    {
-        [Display(Name = "CEDIS")]
-        [Required]
-        public int Cedis { get; set; }
-
-        [Display(Name = "Fecha Inicio")]
-        [Required]
-        public DateTime? StartDate { get; set; }
-
-        [Display(Name = "Fecha Fin")]
-        [Required]
-        public DateTime? EndDate { get; set; }
-
-        [Required]
-        [MinLength(1)]
-        public List<PredefinedListProductViewModel> ImportedProducts { get; set; } = new List<PredefinedListProductViewModel>();
-    }
-
     public class PredefinedListProductViewModel
     {
         public int Id { get; set; }
@@ -68,6 +50,7 @@ namespace MVC_Project.WebBackend.Models
 
         [Display(Name = "Cantidad")]
         [Required]
+        [MinValue(1, ErrorMessage = "El valor de {0} debe ser mínimo de {1}")]
         public int Amount { get; set; }
 
         [Display(Name = "Estratégico")]
@@ -103,7 +86,9 @@ namespace MVC_Project.WebBackend.Models
         public IEnumerable<SelectListItem> Products { get; set; }
         public IEnumerable<SelectListItem> CedisList { get; set; }
 
-        public IEnumerable<CreateProductPredefinedListViewModel> ListElement { get; set; }
+        [Display(Name = "Listado de productos")]
+        [Required]
+        public IEnumerable<CreateProductPredefinedListViewModel> ProductsList { get; set; }
     }
 
     public class CreateProductPredefinedListViewModel
@@ -114,6 +99,7 @@ namespace MVC_Project.WebBackend.Models
 
         [Display(Name = "Cantidad")]
         [Required]
+        [MinValue(1, ErrorMessage = "El valor de {0} debe ser mínimo de {1}")]
         public int Amount { get; set; }
 
         [Display(Name = "Estratégico")]

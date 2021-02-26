@@ -1,9 +1,8 @@
-﻿const PredefinedListCreateControlador = function (htmlTableId, createUrl) {
+﻿const PredefinedListCreateControlador = function (htmlTableId, initialData) {
   var self = this;
   this.htmlTable = $('#' + htmlTableId);
-  this.createUrl = createUrl;
   this.dataTable = {};
-  this.items = [];
+  this.items = initialData || [];
   this.createForm = $('#create-form');
   this.addItemBtn = $('#add-item-btn');
   this.saveBtn = $('#save-btn');
@@ -14,11 +13,17 @@
   }
 
   this.init = function () {
+    for (var i = 0; i < this.items.length; i++) {
+      this.items[i].Id = i;
+      this.items[i].Product = self.createForm.find('#ProductId option[value=' + this.items[i].ProductId + ']').text();
+    }
+
     self.dataTable = this.htmlTable.DataTable({
       language: { url: new URL('/Scripts/custom/dataTableslang.es_MX.json', window.location.origin) },
       orderMulti: false,
       searching: false,
       ordering: false,
+      data: self.items,
       columns: [
         { data: 'Id', title: "Id", visible: false },
         { data: 'ProductId', title: "SKU" },
@@ -85,14 +90,14 @@
 
     this.saveBtn.click(function () {
       $('#item-inputs-container').find('input, select').prop('disabled', true);
-      if (self.items && self.items.length > 0 && self.createForm.valid()) {
+      if (self.createForm.valid()) {
         for (var i = 0; i < self.items.length; i++) {
           var itemData = self.items[i];
-          var inputProduct = '<input type="hidden" name="ListElement['+i+'].ProductId" value="' + itemData.ProductId + '" />';
-          var inputAmount = '<input type="hidden" name="ListElement['+i+'].Amount" value="' + itemData.Amount + '" />';
-          var inputStrategic = '<input type="hidden" name="ListElement['+i+'].IsStrategic" value="' + itemData.IsStrategic + '" />';
-          var inputPrioritary = '<input type="hidden" name="ListElement['+i+'].IsPrioritary" value="' + itemData.IsPrioritary + '" />';
-          var inputTactic = '<input type="hidden" name="ListElement['+i+'].IsTactic" value="' + itemData.IsTactic + '" />';
+          var inputProduct = '<input type="hidden" name="ProductsList[' + i + '].ProductId" value="' + itemData.ProductId + '" />';
+          var inputAmount = '<input type="hidden" name="ProductsList[' + i + '].Amount" value="' + itemData.Amount + '" />';
+          var inputStrategic = '<input type="hidden" name="ProductsList[' + i + '].IsStrategic" value="' + itemData.IsStrategic + '" />';
+          var inputPrioritary = '<input type="hidden" name="ProductsList[' + i + '].IsPrioritary" value="' + itemData.IsPrioritary + '" />';
+          var inputTactic = '<input type="hidden" name="ProductsList[' + i + '].IsTactic" value="' + itemData.IsTactic + '" />';
           self.createForm.append(inputProduct);
           self.createForm.append(inputAmount);
           self.createForm.append(inputStrategic);

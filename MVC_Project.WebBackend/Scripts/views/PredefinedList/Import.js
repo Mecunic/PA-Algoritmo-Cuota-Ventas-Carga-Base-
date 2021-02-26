@@ -1,7 +1,5 @@
-﻿const PredefinedListImportControlador = function (saveUrl, importedList) {
+﻿const PredefinedListImportControlador = function () {
   var self = this;
-  this.saveUrl = saveUrl;
-  this.importedList = importedList;
   this.importForm = $('#import-form');
   this.fileTypes = [
     "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
@@ -45,13 +43,16 @@
       e.preventDefault();
       var fileValid = validateFile($('.custom-file-input')[0], self.fileTypes);
       if (self.importForm.valid() && fileValid) {
+        var d = self.importForm.find('#StartDate').val().split("/");
+        self.importForm.find('#StartDate').val(d[2] + "-" + d[1] + "-" + d[0]);
+        d = self.importForm.find('#EndDate').val().split("/");
+        self.importForm.find('#EndDate').val(d[2] + "-" + d[1] + "-" + d[0]);
         self.importForm.submit();
       }
     });
 
     $('#btnSaveData').click(function () {
       if (self.importForm.valid()) {
-        self.importForm.removeAttr('enctype');
         self.importForm.submit();
       }
     });

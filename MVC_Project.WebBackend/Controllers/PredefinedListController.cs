@@ -39,19 +39,6 @@ namespace MVC_Project.WebBackend.Controllers
         {
             try
             {
-                //List<PredefinedListItemViewModel> dataResponse = new List<PredefinedListItemViewModel>();
-                //for (int i = 0; i < 5; i++)
-                //{
-                //    PredefinedListItemViewModel cediVM = new PredefinedListItemViewModel
-                //    {
-                //        Id = Guid.NewGuid().ToString(),
-                //        Cedis = $"CEDIS #{i}",
-                //        StartDate = DateTime.Now.ToString("dd/MM/yyyy"),
-                //        EndDate = DateTime.Now.ToString("dd/MM/yyyy"),
-                //    };
-                //    dataResponse.Add(cediVM);
-                //}
-
                 NameValueCollection filtersValues = HttpUtility.ParseQueryString(filtros);
                 var results = _listaPredefinidaService.FilterBy(filtersValues, param.iDisplayStart, param.iDisplayLength);
 
@@ -143,21 +130,21 @@ namespace MVC_Project.WebBackend.Controllers
         [HttpGet]
         public ActionResult Create()
         {
+            var cedis = _cedisService.GetAll();
+            var products = _productoService.FindBy(x => x.Estatus == true);
+
             var model = new CreatePredefinedListViewModel
             {
-                Products = new List<SelectListItem>
+                Products = products.Select(x => new SelectListItem
                 {
-                    new SelectListItem
-                    {
-                        Text = "Producto 1",
-                        Value = Guid.NewGuid().ToString()
-                    },
-                    new SelectListItem
-                    {
-                        Text = "Producto 2",
-                        Value = Guid.NewGuid().ToString()
-                    }
-                }
+                    Value = x.IdProducto,
+                    Text = x.Descripcion
+                }),
+                CedisList = cedis.Select(x => new SelectListItem
+                {
+                    Value = x.Id.ToString(),
+                    Text = x.Nombre
+                })
             };
 
             return View(model);
@@ -170,7 +157,34 @@ namespace MVC_Project.WebBackend.Controllers
             {
                 try
                 {
-                    //save
+                    var now = DateUtil.GetDateTimeNow();
+                    ListaPredefinida listaPredefinida = new ListaPredefinida
+                    {
+                        Cedis = new Cedis { Id = model.Cedis },
+                        FechaInicio = model.StartDate.GetValueOrDefault(),
+                        FechaFin = model.EndDate.GetValueOrDefault(),
+                        FechaAlta = now,
+                        FechaModificacion = now,
+                        Estatus = true,
+                    };
+
+                    List<DetallePredefinida> detallePredefinidas = model.ProductsList.Select(x => new DetallePredefinida
+                    {
+                        Producto = new Producto { IdProducto = x.ProductId },
+                        ListaPredefinida = listaPredefinida,
+                        Cantidad = x.Amount,
+                        Estrategico = x.IsStrategic,
+                        Prioritario = x.IsPrioritary,
+                        Tactico = x.IsTactic,
+                        FechaAlta = now,
+                        FechaModificacion = now,
+                        Estatus = true
+                    }).ToList();
+
+                    listaPredefinida.DetallesPredefinida = detallePredefinidas;
+
+                    _listaPredefinidaService.Create(listaPredefinida);
+
                     MensajeFlashHandler.RegistrarMensaje("Lista guardada correctamente.", TiposMensaje.Success);
                     return RedirectToAction("Index");
                 }
@@ -179,20 +193,64 @@ namespace MVC_Project.WebBackend.Controllers
                     Session.Add("View.Message", new MessageView
                     {
                         type = TypeMessageView.ERROR,
-                        description = ex.Message
+                        description = "Ha ocurrido un error, valide la información e inténtelo de nuevo más tarde."
                     });
                 }
             }
             else
             {
-                var errorKey = ModelState.Keys.Where(k => ModelState[k].Errors.Count > 0).FirstOrDefault();
+                var messagesList = ModelState.Keys.Where(k => ModelState[k].Errors.Count > 0).Select(key =>
+                {
+                    var errorMessage = ModelState[key].Errors[0].ErrorMessage;
+                    if (key.StartsWith("ProductsList"))
+                    {
+                        try
+                        {
+                            var indexString = key.Substring(key.IndexOf("[") + 1, 1);
+                            var index = Convert.ToInt32(indexString);
+
+                            var productSKU = model.ProductsList.ElementAt(index).ProductId;
+
+                            return string.Format("Producto SKU {0}: {1}", productSKU, errorMessage);
+                        }
+                        catch (Exception)
+                        {
+
+                            return errorMessage;
+                        }
+                    }
+                    else
+                    {
+                        return errorMessage;
+                    }
+                }).ToList();
+
+                var formatedMessage = "<br>";
+                foreach (var error in messagesList)
+                {
+                    formatedMessage += error + "<br>";
+                }
+
                 Session.Add("View.Message", new MessageView
                 {
                     type = TypeMessageView.ERROR,
-                    description = !string.IsNullOrEmpty(errorKey) ? ModelState[errorKey].Errors[0].ErrorMessage
-                        : "Error de validación, verifique los datos e inténtelo de nuevo."
+                    description = formatedMessage
                 });
             }
+
+            var cedis = _cedisService.GetAll();
+            var products = _productoService.FindBy(x => x.Estatus == true);
+
+            model.Products = products.Select(x => new SelectListItem
+            {
+                Value = x.IdProducto,
+                Text = x.Descripcion
+            });
+            model.CedisList = cedis.Select(x => new SelectListItem
+            {
+                Value = x.Id.ToString(),
+                Text = x.Nombre
+            });
 
             return View(model);
         }
@@ -213,8 +271,6 @@ namespace MVC_Project.WebBackend.Controllers
         [HttpPost]
         public ActionResult ProductsImporter(ImportPredefinedListViewModel model)
         {
-            //model.ImportedProducts = new List<PredefinedListProductViewModel>();
-
             if (ModelState.IsValid)
             {
                 try
@@ -262,18 +318,48 @@ namespace MVC_Project.WebBackend.Controllers
                     Session.Add("View.Message", new MessageView
                     {
                         type = TypeMessageView.ERROR,
-                        description = ex.Message
+                        description = "Ha ocurrido un error, valide la información e inténtelo de nuevo más tarde."
                     });
                 }
             }
             else
             {
-                var errorKey = ModelState.Keys.Where(k => ModelState[k].Errors.Count > 0).FirstOrDefault();
+                var messagesList = ModelState.Keys.Where(k => ModelState[k].Errors.Count > 0).Select(key =>
+                {
+                    var errorMessage = ModelState[key].Errors[0].ErrorMessage;
+                    if (key.StartsWith("ImportedProducts"))
+                    {
+                        try
+                        {
+                            var indexString = key.Substring(key.IndexOf("[") + 1, 1);
+                            var index = Convert.ToInt32(indexString);
+
+                            var productSKU = model.ImportedProducts.ElementAt(index).Sku;
+
+                            return string.Format("Producto SKU {0}: {1}", productSKU, errorMessage);
+                        }
+                        catch (Exception)
+                        {
+
+                            return errorMessage;
+                        }
+                    }
+                    else
+                    {
+                        return errorMessage;
+                    }
+                }).ToList();
+
+                var formatedMessage = "<br>";
+                foreach (var error in messagesList)
+                {
+                    formatedMessage += error + "<br>";
+                }
+
                 Session.Add("View.Message", new MessageView
                 {
                     type = TypeMessageView.ERROR,
-                    description = !string.IsNullOrEmpty(errorKey) ? ModelState[errorKey].Errors[0].ErrorMessage
-                        : "Error de validación, verifique los datos e inténtelo de nuevo."
+                    description = formatedMessage
                 });
             }
 
