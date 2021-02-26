@@ -21,7 +21,6 @@ namespace MVC_Project.WebBackend.Models
         public string SKU { get; set; }
         public string Descripcion { get; set; }
         public string TipoEmpaque { get; set; }
-        public decimal PrecioUnitario { get; set; }
         public string Presentacion { get; set; }
         public bool Status { get; set; }
         public string Uuid { get; set; }
@@ -42,22 +41,12 @@ namespace MVC_Project.WebBackend.Models
         [Display(Name = "Unidad por Empaque")]
         public string UnidadEmpaque { get; set; }
         public IEnumerable<SelectListItem> UnidadesEmpaque { get; set; }
-        [Display(Name = "Producto Estrategico")]
-        public bool ProductoEstrategico { get; set; }
         [Required]
         public string Categoria { get; set; }
         public IEnumerable<SelectListItem> Categorias { get; set; }
         [Required]
         public string Presentacion { get; set; }
         public IEnumerable<SelectListItem> Presentaciones { get; set; }
-        [Required]
-        [Display(Name = "Precio Unitario")]
-        public decimal PrecioUnitario { get; set; }
-        [Required]
-        [Display(Name = "Precio por Empaque")]
-        public decimal PrecioEmpaque { get; set; }
-        public DateTime? FechaInicio { get; set; }
-        public DateTime? FechaFin { get; set; }
         public string Uuid { get; set; }
         public bool Status { get; set; }
         public bool IsNew

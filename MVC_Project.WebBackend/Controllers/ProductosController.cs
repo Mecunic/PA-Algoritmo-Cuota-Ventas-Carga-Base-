@@ -123,17 +123,12 @@ namespace MVC_Project.WebBackend.Controllers
                 }
                 else
                 {
-                    /*var producto = _productoService.FindBy(p => p.Uuid == model.Uuid).FirstOrDefault();
+                    var producto = _productoService.FindBy(p => p.Uuid == model.Uuid).FirstOrDefault();
                     producto.SKU = model.SKU;
                     producto.Categoria = new Categoria { Uuid = model.Categoria };
                     producto.Descripcion = model.Descripcion;
-                    producto.FechaInicio = model.FechaInicio != null && model.FechaInicio.Trim().Length > 0 ? DateTime.ParseExact(model.FechaInicio, "yyyy-MM-dd", cultureInfo) : null;
-                    producto.FechaFin = model.FechaFin != null && model.FechaFin.Trim().Length > 0 ? DateTime.ParseExact(model.FechaFin, "yyyy-MM-dd", cultureInfo) : null;
-                    producto.PrecioEmpaque = model.PrecioEmpaque;
-                    producto.PrecioUnitario = model.PrecioUnitario;
                     producto.Presentacion = new Presentacion { Uuid = model.Presentacion };
-                    producto.ProductoEstrategico = model.ProductoEstrategico;
-                    producto.Status = model.Status;
+                    producto.Estatus = model.Status;
                     producto.TipoEmpaque = new TipoEmpaque { Uuid = model.TipoEmpaque };
                     producto.UnidadEmpaque = new UnidadEmpaque { Uuid = model.UnidadEmpaque };
                     producto.Categoria = _categoriaService.FindBy(c => c.Uuid == producto.Categoria.Uuid).FirstOrDefault();
@@ -143,7 +138,7 @@ namespace MVC_Project.WebBackend.Controllers
                     _productoService.Update(producto);
 
                     ViewBag.Message = "Producto Actualizado";
-                    */
+                    
                 }
                 
                 return View("Index");

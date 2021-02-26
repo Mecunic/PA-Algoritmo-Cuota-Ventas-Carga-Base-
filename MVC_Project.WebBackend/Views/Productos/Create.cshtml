@@ -43,16 +43,6 @@
 
                             <div class="col-md-4">
                                 <div class="form-group">
-                                    @Html.Label("Producto Estrategico")
-                                    <div class="custom-control custom-switch">
-                                        <input type="checkbox" class="custom-control-input" @(Model.ProductoEstrategico ? "checked" : "") value="@(Model.ProductoEstrategico?"true":"false")" id="ProductoEstrategico" name="ProductoEstrategico">
-                                        <label class="custom-control-label" for="ProductoEstrategico">@(Model.ProductoEstrategico ? "Si":"No")</label>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-md-4">
-                                <div class="form-group">
                                     @Html.LabelFor(model => model.TipoEmpaque, new { @class = "col-form-label control-label" })
                                     @Html.DropDownListFor(model => model.TipoEmpaque, Model.TiposEmpaque, "Selecciona", classSelectControl)
                                     @Html.ValidationMessageFor(model => model.TipoEmpaque)
@@ -87,39 +77,8 @@
                                 </div>
                             </div>
 
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    @Html.LabelFor(model => model.PrecioUnitario, new { @class = "col-form-label control-label" })
-                                    @Html.TextBoxFor(model => model.PrecioUnitario, classTextNumberControl)
-                                    @Html.ValidationMessageFor(model => model.PrecioUnitario)
-                                </div>
-                            </div>
-
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    @Html.LabelFor(model => model.PrecioEmpaque, new { @class = "col-form-label control-label" })
-                                    @Html.TextBoxFor(model => model.PrecioEmpaque, classTextNumberControl)
-                                    @Html.ValidationMessageFor(model => model.PrecioEmpaque)
-                                </div>
-                            </div>
-
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    @Html.LabelFor(model => model.FechaInicio, new { @class = "col-form-label control-label" })
-                                    @Html.TextBoxFor(model => model.FechaInicio, classDateControl)
-                                    @Html.ValidationMessageFor(model => model.FechaInicio)
-                                </div>
-                            </div>
-
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    @Html.LabelFor(model => model.FechaFin, new { @class = "col-form-label control-label" })
-                                    @Html.TextBoxFor(model => model.FechaFin, classDateControl)
-                                    @Html.ValidationMessageFor(model => model.FechaFin)
-                                </div>
-                            </div>
-
-
+                            
+                            
                             @if (!Model.IsNew)
                             {
                                 <div class="col-md-4">
