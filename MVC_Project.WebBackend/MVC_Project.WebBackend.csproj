@@ -221,6 +221,7 @@
     <Compile Include="Controllers\FeesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\InOutController.cs" />
+    <Compile Include="Controllers\ParametrosController.cs" />
     <Compile Include="Controllers\PredefinedListController.cs" />
     <Compile Include="Controllers\ProductosController.cs" />
     <Compile Include="Controllers\RegisterController.cs" />
@@ -237,6 +238,7 @@
     <Compile Include="CustomAttributes\Validations\ValidTypeAttribute.cs" />
     <Compile Include="Models\AuthViewModel.cs" />
     <Compile Include="Models\CalendarViewModel.cs" />
+    <Compile Include="Models\ParametrosViewModel.cs" />
     <Compile Include="Models\PredefinedListVewModel.cs" />
     <Compile Include="Models\InOutViewModel.cs" />
     <Compile Include="Models\CedisViewModel.cs" />
@@ -1753,7 +1755,9 @@
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Views\Parametros\" />
+  </ItemGroup>
   <ItemGroup>
     <Content Include="Content\template\bootstrap.css.map" />
     <Content Include="Content\template\bootstrap.min.css.map" />
