@@ -1,6 +1,5 @@
 ﻿using MVC_Project.Domain.Entities;
 using MVC_Project.Domain.Services;
-using MVC_Project.Integrations.Storage;
 using MVC_Project.Utils;
 using MVC_Project.WebBackend.AuthManagement;
 using MVC_Project.WebBackend.AuthManagement.Models;
@@ -19,14 +18,14 @@ namespace MVC_Project.WebBackend.Controllers
     public class DocumentsController : BaseController
     {
         private IDocumentService _documentService;
-        IStorageServiceProvider storageService;
+        //IStorageServiceProvider storageService;
         string containerBucketName;
         public DocumentsController(IDocumentService documentServce)
         {
             _documentService = documentServce;
 
             //ESTO DEBE SER DINAMICO, POR UNITY O POR WEB.CONFIG
-            storageService = new AzureBlobService();
+            //storageService = new AzureBlobService();
             containerBucketName = System.Configuration.ConfigurationManager.AppSettings["ContainerBucketName"];
         }
 
@@ -103,7 +102,7 @@ namespace MVC_Project.WebBackend.Controllers
             {
                 fName = file.FileName.Replace(" ", "_");
                 //folder = "user-" + authUser.Uuid.Substring(24) + "/documents/";
-                Tuple<string, string> tupleUrl = storageService.UploadPublicFile(file.InputStream, fName, containerBucketName);
+                Tuple<string, string> tupleUrl = null;//storageService.UploadPublicFile(file.InputStream, fName, containerBucketName);
                 fURL = tupleUrl.Item1;
 
                 Document newDoc = new Document() {
