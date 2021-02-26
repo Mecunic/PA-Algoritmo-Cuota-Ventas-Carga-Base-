@@ -41,7 +41,7 @@
             {
                 <strong>@ViewLabels.Warning!</strong>
             }
-            @message.description
+            &nbsp; @Html.Raw(message.description)
         </div>
     </div>
     Session.Remove("View.Message");

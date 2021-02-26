@@ -34,11 +34,11 @@ namespace MVC_Project.WebBackend.Controllers
                 {
                     CedisViewModel cediVM = new CedisViewModel
                     {
-                        Id = cedi.Uuid,
-                        Code = cedi.Code,
-                        Name = cedi.Name,
-                        Description = cedi.Description,
-                        Manager = cedi.Manager != null ? $"{cedi.Manager.FirstName} {cedi.Manager.ApellidoPaterno}" : "NA"
+                        Id = cedi.Id.ToString(),
+                        Code = cedi.Clave,
+                        Name = cedi.Nombre,
+                        Description = cedi.Descripcion,
+                        Manager = cedi.Responsable != null ? $"{cedi.Responsable.FirstName} {cedi.Responsable.ApellidoPaterno}" : "NA"
                     };
                     dataResponse.Add(cediVM);
                 }

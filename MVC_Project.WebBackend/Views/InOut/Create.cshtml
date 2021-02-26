@@ -1,0 +1,83 @@
+﻿@model  MVC_Project.WebBackend.Models.CreateInOutViewModel
+@using MVC_Project.WebBackend.Models
+@{
+    ViewBag.Title = "Listas In & Out - Crear";
+}
+@section styles {
+    @Styles.Render("~/plugins/dataTablesStyles")
+    @Styles.Render("~/plugins/datePickerStyles")
+}
+
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title d-flex justify-content-between align-items-center">
+                    <h5>Datos</h5>
+                    <button type="submit" class="btn btn-xs btn-primary float-right" form="createForm"><i class="fa fa-save" aria-hidden="true"></i> Guardar</button>
+                </div>
+                <div class="ibox-content">
+                    @using (Html.BeginForm("Create", "InOut", FormMethod.Post, new { id = "createForm" }))
+                    {
+                        <div class="row mb-4">
+                            <div class="col-sm-6 col-12">
+                                <div class="form-group">
+                                    @Html.LabelFor(m => m.Cedis)
+                                    @Html.DropDownListFor(m => m.Cedis, Model.AvailableCedis, "Seleccione un CEDIS", new { @class = "form-control m-b" })
+                                    @Html.ValidationMessageFor(m => m.Cedis, "", new { @class = "font-bold text-danger" })
+                                </div>
+                            </div>
+                            <div class="col-sm-6 col-12">
+                                <div class="form-group">
+                                    <div class="form-group">
+                                        @Html.LabelFor(m => m.Route)
+                                        @Html.DropDownListFor(m => m.Route, Model.AvailableRoutes, "Seleccione una ruta", new { @class = "form-control m-b" })
+                                        @Html.ValidationMessageFor(m => m.Route, "", new { @class = "font-bold text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6 col-12">
+                                @Html.LabelFor(m => m.StartDate)
+                                <div class="input-group m-b">
+                                    @Html.TextBoxFor(m => m.StartDate, "{0:dd/MM/yyyy}", new { @class = "form-control date", autocomplete = "off" })
+                                    <div class="input-group-append align-items-center px-2 bg-muted">
+                                        <i class="fas fa-calendar-alt"></i>
+                                    </div>
+                                </div>
+                                @Html.ValidationMessageFor(x => x.StartDate, "", new { @class = "font-bold text-danger" })
+                            </div>
+                            <div class="col-sm-6 col-12">
+                                @Html.LabelFor(m => m.EndDate)
+                                <div class="input-group m-b">
+                                    @Html.TextBoxFor(m => m.EndDate, "{0:dd/MM/yyyy}", new { @class = "form-control date", autocomplete = "off" })
+                                    <div class="input-group-append align-items-center px-2 bg-muted">
+                                        <i class="fas fa-calendar-alt"></i>
+                                    </div>
+                                </div>
+                                @Html.ValidationMessageFor(x => x.EndDate, "", new { @class = "font-bold text-danger" })
+                            </div>
+                        </div>
+                    }
+                    @{
+                        Html.RenderPartial(
+                            "_ProductForm",
+                            new CreateProductInOutViewModel(),
+                            new ViewDataDictionary { { "AvailableProducts", Model.AvailableProducts } }
+                        );
+                    }
+                    @{ Html.RenderPartial("_ProductsTable", new CreateProductInOutViewModel()); }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    @Scripts.Render("~/plugins/validate")
+    @Scripts.Render("~/plugins/validateUnobtrusive")
+    @Scripts.Render("~/plugins/dataTables")
+    @Scripts.Render("~/plugins/datePicker")
+    @Scripts.Render("~/custom/Utils")
+    <script src="~/Scripts/views/InOut/Create.js"></script>    
+
+}

@@ -45,9 +45,7 @@ namespace MVC_Project.WebBackend.Controllers
                     productoModel.SKU = prod.SKU;
                     productoModel.TipoEmpaque = prod.TipoEmpaque?.Name;
                     productoModel.Presentacion = prod.Presentacion.Name;
-                    productoModel.PrecioUnitario = prod.PrecioUnitario;
-                    productoModel.Uuid = prod.Uuid;
-                    productoModel.Status = prod.Status;
+                    productoModel.Status = prod.Estatus;
                     productoModel.Descripcion = prod.Descripcion;
                     dataResponse.Add(productoModel);
                 }
@@ -71,27 +69,23 @@ namespace MVC_Project.WebBackend.Controllers
             }
         }
 
-        public ActionResult Create(string uuid = null)
+        public ActionResult Create(int uuid)
         {
             var productoSaveModel = new ProductoSaveModel
             { Categorias = PopulateCategorias(), Presentaciones = PopulatePresentaciones(), UnidadesEmpaque = PopulateUnidadesEmpaque(), TiposEmpaque = PopulateTiposEmpaque()  };
             if(uuid != null)
             {
-                var producto = _productoService.FindBy(p => p.Uuid == uuid).FirstOrDefault();
+                var producto = _productoService.FindBy(p => p.Id == uuid).FirstOrDefault();
                 if(producto != null)
                 {
-                    productoSaveModel.Uuid = producto.Uuid;
+                    productoSaveModel.Uuid = producto.Id.ToString();
                     productoSaveModel.UnidadEmpaque = producto.UnidadEmpaque.Uuid;
                     productoSaveModel.TipoEmpaque = producto.TipoEmpaque?.Uuid;
-                    productoSaveModel.Status = producto.Status;
+                    productoSaveModel.Status = producto.Estatus;
                     productoSaveModel.Presentacion = producto.Presentacion.Uuid;
                     productoSaveModel.SKU = producto.SKU;
-                    productoSaveModel.PrecioUnitario = producto.PrecioUnitario;
-                    productoSaveModel.PrecioEmpaque = producto.PrecioEmpaque;
-                    productoSaveModel.FechaInicio = producto.FechaInicio; //!= null ? producto.FechaInicio.Value.ToString("yyyy-MM-dd") : "";
-                    productoSaveModel.FechaFin = producto.FechaFin; // != null ? producto.FechaFin.Value.ToString("yyyy-MM-dd") : "";
                     productoSaveModel.Categoria = producto.Categoria.Uuid;
-                    productoSaveModel.ProductoEstrategico = producto.ProductoEstrategico;
+                    //productoSaveModel.ProductoEstrategico = producto.ProductoEstrategico;
                     productoSaveModel.Descripcion = producto.Descripcion;
                 }
             }
@@ -109,17 +103,13 @@ namespace MVC_Project.WebBackend.Controllers
                 {
                     var producto = new Producto
                     {
-                        Uuid = Guid.NewGuid().ToString(),
+                        //Uuid = Guid.NewGuid().ToString(),
                         SKU = model.SKU,
                         Categoria = new Categoria { Uuid = model.Categoria },
                         Descripcion = model.Descripcion,
-                        FechaInicio = model.FechaInicio ,//!= null && model.FechaInicio.Trim().Length > 0 ? DateTime.ParseExact(model.FechaInicio, "yyyy-MM-dd", cultureInfo) : null,
-                        FechaFin = model.FechaFin , //!= null && model.FechaFin.Trim().Length > 0 ? DateTime.ParseExact(model.FechaFin, "yyyy-MM-dd", cultureInfo) : null,
-                        PrecioEmpaque = model.PrecioEmpaque,
-                        PrecioUnitario = model.PrecioUnitario,
                         Presentacion = new Presentacion { Uuid = model.Presentacion },
-                        ProductoEstrategico = model.ProductoEstrategico,
-                        Status = true,
+                        //ProductoEstrategico = model.ProductoEstrategico,
+                        Estatus = true,
                         TipoEmpaque = new TipoEmpaque { Uuid = model.TipoEmpaque },
                         UnidadEmpaque = new UnidadEmpaque { Uuid = model.UnidadEmpaque }
                     };
@@ -228,7 +218,7 @@ namespace MVC_Project.WebBackend.Controllers
             }
             else
             {
-                var productoExists = _productoService.FindBy(p => p.SKU == model.SKU && p.Uuid != model.Uuid).FirstOrDefault();
+                var productoExists = _productoService.FindBy(p => p.SKU == model.SKU).FirstOrDefault();
                 if (productoExists != null)
                 {
                     ModelState.AddModelError("SKU", "El SKU ya existe.");

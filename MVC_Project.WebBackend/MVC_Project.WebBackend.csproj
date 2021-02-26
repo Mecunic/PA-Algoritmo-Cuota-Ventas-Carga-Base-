@@ -228,6 +228,7 @@
     <Compile Include="Controllers\CedisController.cs" />
     <Compile Include="Controllers\RoleController.cs" />
     <Compile Include="Controllers\UserController.cs" />
+    <Compile Include="CustomAttributes\Validations\MinValueAttribute.cs" />
     <Compile Include="CustomAttributes\Validations\PasswordSecuredAttribute.cs" />
     <Compile Include="CustomAttributes\Validations\StringComparerAttribute.cs" />
     <Compile Include="CustomAttributes\Validations\ValidType.cs" />
@@ -1722,6 +1723,7 @@
     <Content Include="Scripts\plugins\video\responsible-video.js" />
     <Content Include="Scripts\plugins\wow\wow.min.js" />
     <Content Include="Scripts\popper.min.js" />
+    <Content Include="Scripts\views\InOut\Create.js" />
     <Content Include="Scripts\views\InOut\Detail.js" />
     <Content Include="Scripts\views\PredefinedList\Create.js" />
     <Content Include="Scripts\views\PredefinedList\Detail.js" />
@@ -1842,6 +1844,9 @@
     <Content Include="Views\PredefinedList\Detail.cshtml" />
     <Content Include="Views\PredefinedList\Create.cshtml" />
     <Content Include="Views\PredefinedList\_ItemForm.cshtml" />
+    <Content Include="Views\InOut\Create.cshtml" />
+    <Content Include="Views\InOut\_ProductForm.cshtml" />
+    <Content Include="Views\InOut\_ProductsTable.cshtml" />
     <None Include="Web.Base.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

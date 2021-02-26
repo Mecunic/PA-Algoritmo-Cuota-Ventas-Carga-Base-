@@ -1,0 +1,42 @@
+﻿@model MVC_Project.WebBackend.Models.CreateProductInOutViewModel
+@{
+    IEnumerable<SelectListItem> availableProducts = (IEnumerable<SelectListItem>)ViewData["AvailableProducts"];
+}
+
+<form id="addProductForm">
+    <div class="row pt-4 border-top mb-4">
+        <div class="col-md-4 col-12">
+            <div class="form-group">
+                @Html.LabelFor(m => m.Name)
+                @Html.DropDownListFor(m => m.Sku, availableProducts, "Seleccione un producto", new { @class = "form-control m-b" })
+                @Html.ValidationMessageFor(m => m.Sku, "", new { @class = "font-bold text-danger" })
+            </div>
+        </div>
+        <div class="col-md-2 col-12">
+            <div class="form-group">
+                @Html.LabelFor(m => m.Quantity)
+                @Html.TextBoxFor(m => m.Quantity, new { @class = "form-control m-b", type = "number", min = 1 })
+                @Html.ValidationMessageFor(m => m.Quantity, "", new { @class = "font-bold text-danger" })
+            </div>
+        </div>
+        <div class="col-12 col-md-4 d-flex align-items-start justify-content-between mt-2 pt-4">
+            <div class="form-check form-check-inline i-checks">
+                @Html.CheckBoxFor(m => m.IsStrategic, new { @class = "form-check-input" })
+                @Html.LabelFor(m => m.IsStrategic, new { @class = "form-check-label ml-2" })
+            </div>
+            <div class="form-check form-check-inline i-checks">
+                @Html.CheckBoxFor(m => m.IsPrioritary, new { @class = "form-check-input" })
+                @Html.LabelFor(m => m.IsPrioritary, new { @class = "form-check-label ml-2" })
+            </div>
+            <div class="form-check form-check-inline i-checks">
+                @Html.CheckBoxFor(m => m.IsTactic, new { @class = "form-check-input" })
+                @Html.LabelFor(m => m.IsTactic, new { @class = "form-check-label ml-2" })
+            </div>
+        </div>
+
+        <div class="col-md-2 col-12 d-flex align-items-start pt-4 justify-content-center">
+            <button type="submit" class="btn btn-primary" id="addItemBtn">Agregar</button>
+        </div>
+    </div>
+</form>
+

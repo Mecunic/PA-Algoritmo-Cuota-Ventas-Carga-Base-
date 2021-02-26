@@ -28,12 +28,7 @@
                             <div class="col-sm-4 col-12">
                                 <div class="form-group">
                                     @Html.LabelFor(m => m.Cedis)
-                                    <select class="form-control m-b" name="@Html.IdFor(m => m.Cedis)">
-                                        <option>CEDIS 1</option>
-                                        <option>CEDIS 2</option>
-                                        <option>CEDIS 3</option>
-                                        <option>CEDIS 4</option>
-                                    </select>
+                                    @Html.DropDownListFor(m => m.Cedis, Model.CedisList, "Selecciona una opción", new { @class = "form-control mb" })
                                     @Html.ValidationMessageFor(m => m.Cedis)
                                 </div>
                             </div>
@@ -77,6 +72,14 @@
                             <i class="fa fa-file-import mr-1" aria-hidden="true"></i> Importar
                         </button>
                     </div>
+                    for (int i = 0; i < Model.ImportedProducts.Count(); i++)
+                    {
+                        <input type="hidden" name="ImportedProducts[@(i)].Sku" value="@Model.ImportedProducts.ElementAt(i).Sku" />
+                        <input type="hidden" name="ImportedProducts[@(i)].Amount" value="@Model.ImportedProducts.ElementAt(i).Amount" />
+                        <input type="hidden" name="ImportedProducts[@(i)].IsStrategic" value="@Model.ImportedProducts.ElementAt(i).IsStrategic.ToString()" />
+                        <input type="hidden" name="ImportedProducts[@(i)].IsPrioritary" value="@Model.ImportedProducts.ElementAt(i).IsPrioritary.ToString()" />
+                        <input type="hidden" name="ImportedProducts[@(i)].IsTactic" value="@Model.ImportedProducts.ElementAt(i).IsTactic.ToString()" />
+                    }
                 }
             </div>
         </div>
@@ -84,15 +87,23 @@
             <div class="ibox float-e-margins">
                 <div class="ibox-title d-flex justify-content-between">
                     <h5>Resultados</h5>
-                    <div>
+                    @*<div>
                         @if (Model.ImportedProducts != null && Model.ImportedProducts.Count > 0)
                         {
                             <button type="button" class="btn btn-primary btn-xs" id="btnSaveData">Guardar</button>
                         }
-                    </div>
+                    </div>*@
                 </div>
                 <div class="ibox-content clearfix">
                     @{ Html.RenderPartial("_ImportResult", Model.ImportedProducts); }
+                </div>
+                <div class="ibox-footer">
+                    <div class="row">
+                        <div class="col-md-3 offset-md-9 d-flex justify-content-end">
+                            <a href="@Url.Action("Index", "PredefinedList")" class="btn btn-default mr-3">Cancelar</a>
+                            <button type="button" class="btn btn-primary" id="btnSaveData">Guardar</button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -102,6 +113,8 @@
 @section scripts{
     @Scripts.Render("~/plugins/validate")
     @Scripts.Render("~/plugins/validateUnobtrusive")
+    @Scripts.Render("~/Scripts/plugins/moment/moment.min.js")
+    @Scripts.Render("~/Scripts/custom/custom-date-validation.js")
     @Scripts.Render("~/plugins/dataTables")
     @Scripts.Render("~/plugins/datePicker")
     @Scripts.Render("~/custom/Utils")
@@ -109,7 +122,7 @@
 
     <script type="text/javascript">
         $(function () {
-            const importController = new PredefinedListImportControlador(@Html.Raw(JsonConvert.SerializeObject(Model.ImportedProducts)));
+            const importController = new PredefinedListImportControlador();
             importController.init();
         });
     </script>

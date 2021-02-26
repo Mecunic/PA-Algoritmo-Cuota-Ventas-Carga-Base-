@@ -24,11 +24,11 @@ namespace MVC_Project.Data.Services
             var query = _repository.Session.QueryOver<Cedis>();
             if (!string.IsNullOrWhiteSpace(FilterCode))
             {
-                query = query.Where(cedi => cedi.Code.IsInsensitiveLike("%" + FilterCode + "%"));
+                query = query.Where(cedi => cedi.Clave.IsInsensitiveLike("%" + FilterCode + "%"));
             }
             if (!string.IsNullOrWhiteSpace(FilterName))
             {
-                query = query.Where(cedi => cedi.Name.IsInsensitiveLike("%" + FilterName + "%"));
+                query = query.Where(cedi => cedi.Nombre.IsInsensitiveLike("%" + FilterName + "%"));
             }
             var count = query.RowCount();
 
@@ -41,7 +41,7 @@ namespace MVC_Project.Data.Services
             {
                 query.Take(take.Value);
             }
-            var list = query.OrderBy(u => u.CreatedAt).Desc.List();
+            var list = query.OrderBy(u => u.FechaAlta).Desc.List();
             return new Tuple<IEnumerable<Cedis>, int>(list, count);
         }
     }

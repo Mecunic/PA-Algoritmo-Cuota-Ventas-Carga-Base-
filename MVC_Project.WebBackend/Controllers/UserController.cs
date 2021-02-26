@@ -49,7 +49,7 @@ namespace MVC_Project.WebBackend.Controllers
                     userData.Email = user.Email;
                     userData.Status = user.Status;
                     userData.Uuid = user.Uuid;
-                    userData.CedisName = user.Cedis?.Name;
+                    userData.CedisName = user.Cedis?.Nombre;
                     dataResponse.Add(userData);
                 }
                 return Json(new
@@ -110,12 +110,12 @@ namespace MVC_Project.WebBackend.Controllers
 
         private IEnumerable<SelectListItem> PopulateCedis()
         {
-            var availableCedis = _cedisService.GetAll().Where(c=>c.Status == true);
+            var availableCedis = _cedisService.GetAll();
             var cedisList = new List<SelectListItem>();
             cedisList = availableCedis.Select(cedis => new SelectListItem
             {
                 Value = cedis.Id.ToString(),
-                Text = cedis.Name
+                Text = cedis.Nombre
             }).ToList();
             return cedisList;
         }
