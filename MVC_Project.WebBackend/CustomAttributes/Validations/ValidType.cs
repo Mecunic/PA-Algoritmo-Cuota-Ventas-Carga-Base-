@@ -11,6 +11,7 @@ namespace MVC_Project.WebBackend.CustomAttributes.Validations
         ALPHABETICAL_WITH_SPACES,
         NUMERICS,
         ALPHANUMERIC,
-        ALPHANUMERIC_WITH_SPACES
+        ALPHANUMERIC_WITH_SPACES,
+        WITHOUT_SPACES
     }
 }

@@ -1,0 +1,125 @@
+﻿@model MVC_Project.WebBackend.Models.ParametroSaveModel
+
+@section Styles {
+    @Styles.Render("~/Content/template/plugins/chosen/chosenStyles")
+
+}
+
+@{
+    var classTextControl = new Dictionary<string, object> { { "class", "form-control" } };
+
+    var classTextControlDisabled = new Dictionary<string, object> { { "class", "form-control" }, { "disabled", "disabled" } };
+    var classSelectControl = new Dictionary<string, object> { { "class", "chosen-select" } };
+    var classSelectControlDisabled = new Dictionary<string, object> { { "class", "chosen-select" }, { "disabled", "disabled" } };
+    var classTextNumberControl = new Dictionary<string, object> { { "class", "form-control" }, { "type", "number" }, { "min", "0" }, { "step", "0.01" } };
+    ViewBag.Title = Model.IsNew?"Crear Parámetro":"Editar Parámetro";
+}
+
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-content clearfix">
+                    <form method="post" role="form" id="save-form" action='@Url.Action("Create")'>
+                        @Html.AntiForgeryToken()
+                        @Html.HiddenFor(model => model.Uuid)
+                        
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.Clave, new { @class = "col-form-label control-label" })
+                                    @Html.EditorFor(model => model.Clave, classTextControl)
+                                    @Html.ValidationMessageFor(model => model.Clave)
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.Nombre, new { @class = "col-form-label control-label" })
+                                    @Html.EditorFor(model => model.Nombre, classTextControl)
+                                    @Html.ValidationMessageFor(model => model.Nombre)
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.Valor, new { @class = "col-form-label control-label" })
+                                    @Html.EditorFor(model => model.Valor, classTextControl)
+                                    @Html.ValidationMessageFor(model => model.Valor)
+                                </div>
+                            </div>
+
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.Tipo, new { @class = "col-form-label control-label" })
+                                    @Html.EditorFor(model => model.Tipo, classTextControl)
+                                    @Html.ValidationMessageFor(model => model.Tipo)
+                                </div>
+                            </div>
+
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.AlgoritmoUso, new { @class = "col-form-label control-label" })
+                                    @Html.EditorFor(model => model.AlgoritmoUso, classTextControl)
+                                    @Html.ValidationMessageFor(model => model.AlgoritmoUso)
+
+                                </div>
+                            </div>
+
+
+                            @if (!Model.IsNew)
+                            {
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        @Html.Label("Estatus")
+                                        <div class="custom-control custom-switch">
+                                            <input type="checkbox" class="custom-control-input" @(Model.IsNew ? "disabled" : "") @(Model.IsNew ? "checked" : (Model.Estatus ? "checked" : "")) value="@(Model.IsNew ? "true" : (Model.Estatus ? "true" : "false"))" id="Estatus" name="Estatus">
+                                            <label class="custom-control-label" for="Estatus">@(Model.IsNew ? "Activo" : (Model.Estatus ? "Activo" : "Inactivo"))</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                        <div class="col-12 text-right">
+                            <button type="button" class="btn btn-secondary" id="btn-cancel">Cancelar</button>
+                            <button type="button" class="btn btn-primary" id="btn-save">Guardar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+
+    @Scripts.Render("~/plugins/chosen")
+    <script>
+        $(document).ready(function () {
+            $('.chosen-select').chosen({ width: '100%' });
+            $("#ProductoEstrategico").change(function () {
+                $(this).val(this.checked);
+                if (this.checked) {
+                    $(this).parent().find('label.custom-control-label').html('Si');
+                } else {
+                    $(this).parent().find('label.custom-control-label').html('No');
+                }
+            });
+            $("#btn-cancel").click(function () {
+                location.href = '@Url.Action("Index")';
+            });
+            $("#btn-save").click(function () {
+                $("#save-form").submit();
+            });
+            $("#Estatus").change(function () {
+                $(this).val(this.checked);
+                if (this.checked) {
+                    $(this).parent().find('label.custom-control-label').html('Activo');
+                } else {
+                    $(this).parent().find('label.custom-control-label').html('Inactivo');
+                }
+            });
+        });
+    </script>
+}

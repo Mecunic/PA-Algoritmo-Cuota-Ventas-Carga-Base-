@@ -66,6 +66,7 @@ namespace MVC_Project.WebBackend
             container.RegisterType<IProductoService, ProductoService>();
             container.RegisterType<IListaPredefinidaService, ListaPredefinidaService>();
             container.RegisterType<IDetallefinidaService, DetallePredefinidaService>();
+            container.RegisterType<IParametroService, ParametroService>();
         }
     }
 }

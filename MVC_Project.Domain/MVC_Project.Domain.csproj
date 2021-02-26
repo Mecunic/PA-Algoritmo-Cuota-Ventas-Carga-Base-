@@ -74,10 +74,12 @@
     <Compile Include="Entities\DetallePredefinida.cs" />
     <Compile Include="Entities\Document.cs" />
     <Compile Include="Entities\Event.cs" />
+    <Compile Include="Entities\IAudit.cs" />
     <Compile Include="Entities\IEntity.cs" />
     <Compile Include="Entities\ListaPredefinida.cs" />
     <Compile Include="Entities\Order.cs" />
     <Compile Include="Entities\OrderItems.cs" />
+    <Compile Include="Entities\Parametro.cs" />
     <Compile Include="Entities\Payment.cs" />
     <Compile Include="Entities\PaymentApplication.cs" />
     <Compile Include="Entities\Permission.cs" />
@@ -109,6 +111,7 @@
     <Compile Include="Services\IPermissionService.cs" />
     <Compile Include="Services\IPresentacionService.cs" />
     <Compile Include="Services\IProcessService.cs" />
+    <Compile Include="Services\IParametroService.cs" />
     <Compile Include="Services\IProductoService.cs" />
     <Compile Include="Services\IRolePermissionService.cs" />
     <Compile Include="Services\IService.cs" />

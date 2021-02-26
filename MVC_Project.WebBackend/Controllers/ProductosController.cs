@@ -69,13 +69,13 @@ namespace MVC_Project.WebBackend.Controllers
             }
         }
 
-        public ActionResult Create(int uuid)
+        public ActionResult Create(string uuid = null)
         {
             var productoSaveModel = new ProductoSaveModel
             { Categorias = PopulateCategorias(), Presentaciones = PopulatePresentaciones(), UnidadesEmpaque = PopulateUnidadesEmpaque(), TiposEmpaque = PopulateTiposEmpaque()  };
             if(uuid != null)
             {
-                var producto = _productoService.FindBy(p => p.Id == uuid).FirstOrDefault();
+                var producto = _productoService.FindBy(p => p.Uuid == uuid).FirstOrDefault();
                 if(producto != null)
                 {
                     productoSaveModel.Uuid = producto.Id.ToString();

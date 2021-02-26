@@ -91,6 +91,7 @@
     <Compile Include="Mappings\DetallePredefinidaMap.cs" />
     <Compile Include="Mappings\ListaPredefinidaMap.cs" />
     <Compile Include="Mappings\PresentacionMap.cs" />
+    <Compile Include="Mappings\ParametroMap.cs" />
     <Compile Include="Mappings\UnidadEmpaqueMap.cs" />
     <Compile Include="Mappings\TipoEmpaqueMap.cs" />
     <Compile Include="Mappings\CategoriaMap.cs" />
@@ -123,6 +124,7 @@
     <Compile Include="Services\DetallePredefinidaService.cs" />
     <Compile Include="Services\ListaPredefinidaService.cs" />
     <Compile Include="Services\OrderService.cs" />
+    <Compile Include="Services\ParametroService.cs" />
     <Compile Include="Services\PaymentService.cs" />
     <Compile Include="Services\PermissionService.cs" />
     <Compile Include="Services\ProcessService.cs" />

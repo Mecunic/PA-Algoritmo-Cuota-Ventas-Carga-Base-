@@ -19,5 +19,6 @@ namespace MVC_Project.Domain.Entities
         public virtual DateTime FechaAlta { get; set; }
         public virtual DateTime FechaModificacion { get; set; }
         public virtual bool Estatus { get; set; }
+        public virtual string Uuid { get; set; }
     }
 }

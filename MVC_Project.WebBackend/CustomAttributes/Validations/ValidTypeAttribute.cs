@@ -55,6 +55,12 @@ namespace MVC_Project.WebBackend.Models.Attributes
                             return new ValidationResult(campo + " Solo puede Contener letras y Números");
                         }
                         break;
+                    case ValidType.WITHOUT_SPACES:
+                        if (word.ContainsSpaces())
+                        {
+                            return new ValidationResult(campo + " No puede Contener espacios");
+                        }
+                        break;
 
                 }
             }

@@ -13,7 +13,7 @@ namespace MVC_Project.WebBackend.Models
     {
         [Display(Name = "Filtro")]
         public string Filtro { get; set; }
-        public ProductoModel ProductoModelList { get; set; }
+        public ParametroModel ProductoModelList { get; set; }
     }
     public class ProductoModel
     {

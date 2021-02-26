@@ -1725,6 +1725,7 @@
     <Content Include="Scripts\popper.min.js" />
     <Content Include="Scripts\views\InOut\Create.js" />
     <Content Include="Scripts\views\InOut\Detail.js" />
+    <Content Include="Scripts\views\Parametros\Index.js" />
     <Content Include="Scripts\views\PredefinedList\Create.js" />
     <Content Include="Scripts\views\PredefinedList\Detail.js" />
     <Content Include="Scripts\views\PredefinedList\Import.js" />
@@ -1757,9 +1758,7 @@
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Views\Parametros\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="Content\template\bootstrap.css.map" />
     <Content Include="Content\template\bootstrap.min.css.map" />
@@ -1847,6 +1846,8 @@
     <Content Include="Views\InOut\Create.cshtml" />
     <Content Include="Views\InOut\_ProductForm.cshtml" />
     <Content Include="Views\InOut\_ProductsTable.cshtml" />
+    <Content Include="Views\Parametros\Index.cshtml" />
+    <Content Include="Views\Parametros\Create.cshtml" />
     <None Include="Web.Base.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
