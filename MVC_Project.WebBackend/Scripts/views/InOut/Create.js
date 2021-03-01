@@ -5,12 +5,28 @@
     const addProductForm = document.getElementById('addProductForm');
     let products = [];
 
+    const toasterOptions = {
+        closeButton: false,
+        progressBar: true,
+        positionClass: 'toast-top-right',
+        "showDuration": "300",
+        "hideDuration": "1000",
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "fadeIn",
+        "hideMethod": "fadeOut"
+    };
+
     function renderBoolToText(value) {
         return value ? 'Si' : 'No';
     }
 
     function addProduct(form) {
         const item = utils.UserInterfaceToData($(form));
+        if (products.filter(product => product.Sku === item.Sku).length > 0) {
+            toastr.warning('El producto ya se encuentra en la lista', "", toasterOptions);
+            return;
+        }
         item.Name = form.querySelector('option:checked').text;
         products.push(item);
         form.reset();
@@ -84,17 +100,7 @@
         if ($(evt.target).valid()) {
             if (products.length <= 0) {
                 createFormSubmitBtn.disabled = true;
-                toastr.error('Debe añadir al menos un producto', "", {
-                    closeButton: false,
-                    progressBar: true,
-                    positionClass: 'toast-top-right',
-                    "showDuration": "300",
-                    "hideDuration": "1000",
-                    "showEasing": "swing",
-                    "hideEasing": "linear",
-                    "showMethod": "fadeIn",
-                    "hideMethod": "fadeOut"
-                });
+                toastr.error('Debe añadir al menos un producto', "", toasterOptions);
                 evt.preventDefault();
             }
             products.forEach((product, index) => {
