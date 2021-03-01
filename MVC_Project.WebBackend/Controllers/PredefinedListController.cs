@@ -47,7 +47,8 @@ namespace MVC_Project.WebBackend.Controllers
                     Id = x.Id,
                     Cedis = x.Cedis.Nombre,
                     StartDate = x.FechaInicio.ToString("dd/MM/yyyy"),
-                    EndDate = x.FechaFin.ToString("dd/MM/yyyy")
+                    EndDate = x.FechaFin.ToString("dd/MM/yyyy"),
+                    Status = x.Estatus
                 }).ToList();
 
                 return Json(new
@@ -135,16 +136,8 @@ namespace MVC_Project.WebBackend.Controllers
 
             var model = new CreatePredefinedListViewModel
             {
-                Products = products.Select(x => new SelectListItem
-                {
-                    Value = x.IdProducto,
-                    Text = x.Descripcion
-                }),
-                CedisList = cedis.Select(x => new SelectListItem
-                {
-                    Value = x.Id.ToString(),
-                    Text = x.Nombre
-                })
+                Products = this.BuildProductsSelectList(products),
+                CedisList = this.BuildCedisSelectList(cedis)
             };
 
             return View(model);
@@ -241,16 +234,8 @@ namespace MVC_Project.WebBackend.Controllers
             var cedis = _cedisService.GetAll();
             var products = _productoService.FindBy(x => x.Estatus == true);
 
-            model.Products = products.Select(x => new SelectListItem
-            {
-                Value = x.IdProducto,
-                Text = x.Descripcion
-            });
-            model.CedisList = cedis.Select(x => new SelectListItem
-            {
-                Value = x.Id.ToString(),
-                Text = x.Nombre
-            });
+            model.Products = this.BuildProductsSelectList(products);
+            model.CedisList = this.BuildCedisSelectList(cedis);
 
             return View(model);
         }
@@ -263,7 +248,7 @@ namespace MVC_Project.WebBackend.Controllers
             var importResult = (ImportPredefinedListViewModel)TempData["ImportResult"];
             var model = importResult ?? new ImportPredefinedListViewModel();
 
-            model.CedisList = cedis.Select(x => new SelectListItem { Value = x.Id.ToString(), Text = x.Nombre });
+            model.CedisList = this.BuildCedisSelectList(cedis);
 
             return View(model);
         }
@@ -408,6 +393,28 @@ namespace MVC_Project.WebBackend.Controllers
             }
 
             return items;
+        }
+
+        private IEnumerable<SelectListItem> BuildCedisSelectList(IEnumerable<Cedis> cedis)
+        {
+            var selectListItems = cedis.Select(x => new SelectListItem
+            {
+                Value = x.Id.ToString(),
+                Text = $"{x.Clave} - {x.Nombre}"
+            });
+
+            return selectListItems;
+        }
+
+        private IEnumerable<SelectListItem> BuildProductsSelectList(IEnumerable<Producto> productos)
+        {
+            var selectListItems = productos.Select(x => new SelectListItem
+            {
+                Value = x.IdProducto,
+                Text = $"{x.SKU} - {x.Descripcion}"
+            });
+
+            return selectListItems;
         }
     }
 }

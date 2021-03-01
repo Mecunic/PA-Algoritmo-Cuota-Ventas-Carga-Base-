@@ -13,6 +13,7 @@ namespace MVC_Project.WebBackend.Models
         public string Cedis { get; set; }
         public string StartDate { get; set; }
         public string EndDate { get; set; }
+        public bool Status { get; set; }
     }
 
     public class ImportPredefinedListViewModel

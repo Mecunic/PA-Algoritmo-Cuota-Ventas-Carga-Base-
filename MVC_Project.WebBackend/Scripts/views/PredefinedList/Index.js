@@ -4,9 +4,10 @@
     this.baseUrl = baseUrl;
     this.detailUrl = detailUrl;
     this.dataTable = {};
-    this.initModal = function () {
+    this.searchForm = $('#SearchForm');
+    this.searchBtn = $('#btnSearchForm');
+    this.resetSearchBtn = $('#btnClearSearchForm');
 
-    }
     this.init = function () {
         self.dataTable = this.htmlTable.DataTable({
             language: { url: new URL('/Scripts/custom/dataTableslang.es_MX.json', window.location.origin) },
@@ -21,6 +22,13 @@
                 { data: 'Cedis', title: "Cedis" },
                 { data: 'StartDate', title: "Fecha Inicio" },
                 { data: 'EndDate', title: "Fecha Fin" },
+                { data: 'Status', title: "Estatus",
+                  render: function (data) {
+                    console.log(data);
+                    var stringStatus = data ? 'Activo' : 'Inactivo';
+                    return stringStatus;
+                  }
+                },
                 {
                     data: null,
                     //className: 'personal-options',
@@ -37,10 +45,26 @@
             ],
             "fnServerData": function (sSource, aoData, fnCallback) {
                 aoData.push({ "name": "sSortColumn", "value": this.fnSettings().aoColumns[this.fnSettings().aaSorting[0][0]].orderName });
+                aoData.push({ "name": "filtros", "value": self.searchForm.serialize() });
                 $.getJSON(sSource, aoData, function (json) {
                     fnCallback(json);
                 });
             }
+        });
+
+        this.searchBtn.click(function () {
+          self.dataTable.draw();
+        });
+
+        this.resetSearchBtn.click(function () {
+          self.searchForm.each(function () {
+              this.reset();
+          });
+          var iChecks = self.searchForm.find('.i-checks');
+          iChecks.iCheck('uncheck');
+          iChecks.iCheck('update');
+
+          self.dataTable.draw();
         });
     }
 }

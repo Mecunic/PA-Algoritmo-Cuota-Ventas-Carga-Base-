@@ -68,6 +68,20 @@
     this.addItemBtn.click(function () {
       if (self.createForm.valid()) {
         var formData = self.utils.UserInterfaceToData(self.createForm);
+        var indexOfData = self.items.findIndex(function (el) {
+          return el.ProductId == formData.ProductId;
+        });
+
+        if (indexOfData > -1) {
+          swal({
+            text: "El producto ya se encuentra en la lista.",
+            title: "Producto duplicado",
+            type: "warning",
+          });
+
+          return;
+        }
+
         if (formData.StartDate) {
           var d = formData.StartDate.split("/");
           formData.StartDate = d[2] + "-" + d[1] + "-" + d[0];

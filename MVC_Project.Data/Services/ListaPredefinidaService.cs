@@ -19,11 +19,19 @@ namespace MVC_Project.Data.Services
         public override Tuple<IEnumerable<ListaPredefinida>, int> FilterBy(NameValueCollection filtersValue, int? skip, int? take)
         {
             string FilterName = filtersValue.Get("Filtro")?.Trim();
+            string statusFilter = filtersValue.Get("StatusFilter")?.Trim();
 
             var query = _repository.Session.QueryOver<ListaPredefinida>();
             if (!string.IsNullOrWhiteSpace(FilterName))
             {
                 query = query.Where(x => x.Cedis.Nombre.IsInsensitiveLike("%" + FilterName + "%"));
+            }
+            if(!string.IsNullOrEmpty(statusFilter) && statusFilter.Equals("on", StringComparison.InvariantCultureIgnoreCase))
+            {
+                query = query.Where(x => x.Estatus == true || x.Estatus == false);
+            } else
+            {
+                query = query.Where(x => x.Estatus == true);
             }
             var count = query.RowCount();
 
