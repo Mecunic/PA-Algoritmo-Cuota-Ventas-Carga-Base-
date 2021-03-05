@@ -46,11 +46,11 @@ namespace MVC_Project.WebBackend
             //DataTables
             bundles.Add(new StyleBundle("~/plugins/dataTablesStyles").Include(
                       "~/Content/template/plugins/dataTables/datatables.min.css",
-                      "~/Content/template/plugins/dataTables/buttons.bootstrap4.min.css"));          
-            
+                      "~/Content/template/plugins/dataTables/buttons.bootstrap4.min.css"));
+
             bundles.Add(new StyleBundle("~/font-awesome/css").Include(
                       "~/fonts/font-awesome/all.css"));
-            
+
             //Scripts
             //DataTables
             bundles.Add(new ScriptBundle("~/plugins/dataTables").Include(
@@ -133,6 +133,13 @@ namespace MVC_Project.WebBackend
             bundles.Add(new ScriptBundle("~/views/rol").Include(
                       "~/Scripts/views/rol/Index.js"));
 
+
+            // select2
+            bundles.Add(new ScriptBundle("~/plugins/scripts/select2").Include(
+                      "~/Scripts/plugins/select2/select2.full.min.js"));
+            bundles.Add(new StyleBundle("~/plugins/styles/select2").Include(
+                      "~/Content/template/plugins/select2/select2.min.css",
+                      "~/Content/template/plugins/select2/select2-bootstrap4.min.css"));
 
         }
     }

@@ -71,8 +71,6 @@ namespace MVC_Project.WebBackend.Models
 
         public List<CreateProductInOutViewModel> Products { get; set; } = new List<CreateProductInOutViewModel>();
 
-        public IEnumerable<SelectListItem> AvailableCedis { get; set; }
-        public IEnumerable<SelectListItem> AvailableRoutes { get; set; }
         public IEnumerable<SelectListItem> AvailableProducts { get; set; }
     }
 

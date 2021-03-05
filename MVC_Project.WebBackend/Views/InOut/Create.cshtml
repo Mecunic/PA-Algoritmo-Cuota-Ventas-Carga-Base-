@@ -6,6 +6,7 @@
 @section styles {
     @Styles.Render("~/plugins/dataTablesStyles")
     @Styles.Render("~/plugins/datePickerStyles")
+    @Styles.Render("~/plugins/styles/select2")
 }
 
 <div class="wrapper wrapper-content animated fadeInRight">
@@ -23,7 +24,7 @@
                             <div class="col-sm-6 col-12">
                                 <div class="form-group">
                                     @Html.LabelFor(m => m.Cedis)
-                                    @Html.DropDownListFor(m => m.Cedis, Model.AvailableCedis, "Seleccione un CEDIS", new { @class = "form-control m-b" })
+                                    @Html.DropDownListFor(m => m.Cedis, Enumerable.Empty<SelectListItem>(), "Seleccione un CEDIS", new { @class = "form-control m-b" })
                                     @Html.ValidationMessageFor(m => m.Cedis, "", new { @class = "font-bold text-danger" })
                                 </div>
                             </div>
@@ -31,7 +32,7 @@
                                 <div class="form-group">
                                     <div class="form-group">
                                         @Html.LabelFor(m => m.Route)
-                                        @Html.DropDownListFor(m => m.Route, Model.AvailableRoutes, "Seleccione una ruta", new { @class = "form-control m-b" })
+                                        @Html.DropDownListFor(m => m.Route, Enumerable.Empty<SelectListItem>(), "Seleccione un CEDIS", new { @class = "form-control m-b" })
                                         @Html.ValidationMessageFor(m => m.Route, "", new { @class = "font-bold text-danger" })
                                     </div>
                                 </div>
@@ -78,6 +79,13 @@
     @Scripts.Render("~/plugins/dataTables")
     @Scripts.Render("~/plugins/datePicker")
     @Scripts.Render("~/custom/Utils")
-    <script src="~/Scripts/views/InOut/Create.js"></script>    
+    @Scripts.Render("~/plugins/scripts/select2")
+    <script src="~/Scripts/views/InOut/Create.js"></script>
+    <script type="text/javascript">
+        InOutCreate({
+            getCedisUrl: '@Url.Action("GetCedis", "Cedis")',
+            getRoutesUrl: '@Url.Action("GetRoutes", "Routes")'
+        });
+    </script>
 
 }

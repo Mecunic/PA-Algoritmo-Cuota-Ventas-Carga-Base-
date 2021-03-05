@@ -217,6 +217,7 @@
     <Compile Include="AuthManagement\Models\AuthUser.cs" />
     <Compile Include="Controllers\AuthController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
+    <Compile Include="Controllers\RoutesController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\FeesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -240,6 +241,8 @@
     <Compile Include="Models\AuthViewModel.cs" />
     <Compile Include="Models\CalendarViewModel.cs" />
     <Compile Include="Models\ParametrosViewModel.cs" />
+    <Compile Include="Models\RouteViewModel.cs" />
+    <Compile Include="Models\SelectViewModel.cs" />
     <Compile Include="Models\PredefinedListVewModel.cs" />
     <Compile Include="Models\InOutViewModel.cs" />
     <Compile Include="Models\CedisViewModel.cs" />

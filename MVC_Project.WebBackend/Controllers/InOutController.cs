@@ -1,6 +1,9 @@
 ﻿using MVC_Project.FlashMessages;
 using MVC_Project.Utils;
 using MVC_Project.WebBackend.Models;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -135,8 +138,6 @@ namespace MVC_Project.WebBackend.Controllers
         {
             var model = new CreateInOutViewModel
             {
-                AvailableCedis = GetAvailableCedis(),
-                AvailableRoutes = GetAvailableRoutes(),
                 AvailableProducts = GetAvailableProducts()
             };
             return View(model);
@@ -173,8 +174,6 @@ namespace MVC_Project.WebBackend.Controllers
                 });
             }
             model.AvailableProducts = GetAvailableProducts();
-            model.AvailableCedis = GetAvailableCedis();
-            model.AvailableRoutes = GetAvailableRoutes();
             return View(model);
         }
 
@@ -191,42 +190,6 @@ namespace MVC_Project.WebBackend.Controllers
                     new SelectListItem
                     {
                         Text = "Producto 2",
-                        Value = Guid.NewGuid().ToString()
-                    }
-                };
-        }
-
-        private List<SelectListItem> GetAvailableCedis()
-        {
-            //TODO Obtener CEDIS desde el servicio
-            return new List<SelectListItem>
-                {
-                    new SelectListItem
-                    {
-                        Text = "CEDIS 1",
-                        Value = Guid.NewGuid().ToString()
-                    },
-                    new SelectListItem
-                    {
-                        Text = "CEDIS 2",
-                        Value = Guid.NewGuid().ToString()
-                    }
-                };
-        }
-
-        private List<SelectListItem> GetAvailableRoutes()
-        {
-            //TODO Obtener rutas desde el servicio
-            return new List<SelectListItem>
-                {
-                    new SelectListItem
-                    {
-                        Text = "Ruta 1",
-                        Value = Guid.NewGuid().ToString()
-                    },
-                    new SelectListItem
-                    {
-                        Text = "Ruta 2",
                         Value = Guid.NewGuid().ToString()
                     }
                 };

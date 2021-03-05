@@ -3,6 +3,7 @@ using MVC_Project.WebBackend.Models;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
@@ -62,5 +63,43 @@ namespace MVC_Project.WebBackend.Controllers
             }
         }
 
+        [HttpGet]
+        [AllowAnonymous]
+        public JsonResult GetCedis(string term, string page)
+        {
+            //TODO Get CEDIS from service
+            var cedis = new List<CedisViewModel>
+            {
+                new CedisViewModel
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    Code = "C0D301",
+                    Name = "CEDIS 01"
+                },
+                new CedisViewModel
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    Code = "C0D302",
+                    Name = "CEDIS 02"
+                },
+                new CedisViewModel
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    Code = "C0D303",
+                    Name = "CEDIS 03"
+                }
+            };
+
+            var results = cedis.Select(c => new SelectViewModel
+            {
+                id = c.Id,
+                text = $"{c.Code} - {c.Name}"
+            });
+
+            return Json(new
+            {
+                results
+            }, JsonRequestBehavior.AllowGet);
+        }
     }
 }

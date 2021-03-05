@@ -1,4 +1,4 @@
-﻿$(function () {
+﻿function InOutCreate({ getCedisUrl, getRoutesUrl }) {
     const utils = new Utils();
     const createForm = document.getElementById('createForm');
     const createFormSubmitBtn = document.querySelector('button[form="createForm"]');
@@ -119,4 +119,33 @@
         }
     })
 
-});
+    const cedisSelect = $('#Cedis').select2({
+        ajax: {
+            url: getCedisUrl,
+            dataType: 'json',
+            delay: 300,
+        },
+    });
+
+    $('#Route').select2();
+
+    cedisSelect.on('select2:select', (e) => {
+        const selectedCEDIS = e.params.data;
+        $('#Route').empty();
+        $('#Route').select2({
+            ajax: {
+                url: getRoutesUrl,
+                dataType: 'json',
+                data: function (params) {
+                    return {
+                        cedis: selectedCEDIS.id,
+                        term: params.term,
+                        page: params.page
+                    }
+                },
+                delay: 300,
+            },
+            placeholder: 'Seleccione una ruta',
+        });
+    })
+}
