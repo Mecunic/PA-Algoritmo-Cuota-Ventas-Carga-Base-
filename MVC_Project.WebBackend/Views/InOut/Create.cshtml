@@ -40,7 +40,7 @@
                             <div class="col-sm-6 col-12">
                                 @Html.LabelFor(m => m.StartDate)
                                 <div class="input-group m-b">
-                                    @Html.TextBoxFor(m => m.StartDate, "{0:dd/MM/yyyy}", new { @class = "form-control date", autocomplete = "off" })
+                                    @Html.TextBoxFor(m => m.StartDate, "{0:dd/mm/yyyy}", new { @class = "form-control date", autocomplete = "off" })
                                     <div class="input-group-append align-items-center px-2 bg-muted">
                                         <i class="fas fa-calendar-alt"></i>
                                     </div>
@@ -50,7 +50,7 @@
                             <div class="col-sm-6 col-12">
                                 @Html.LabelFor(m => m.EndDate)
                                 <div class="input-group m-b">
-                                    @Html.TextBoxFor(m => m.EndDate, "{0:dd/MM/yyyy}", new { @class = "form-control date", autocomplete = "off" })
+                                    @Html.TextBoxFor(m => m.EndDate, "{0:dd/mm/yyyy}", new { @class = "form-control date", autocomplete = "off" })
                                     <div class="input-group-append align-items-center px-2 bg-muted">
                                         <i class="fas fa-calendar-alt"></i>
                                     </div>
@@ -80,6 +80,8 @@
     @Scripts.Render("~/plugins/datePicker")
     @Scripts.Render("~/custom/Utils")
     @Scripts.Render("~/plugins/scripts/select2")
+    @Scripts.Render("~/Scripts/plugins/moment/moment.min.js")
+    @Scripts.Render("~/Scripts/custom/custom-date-validation.js")
     <script src="~/Scripts/views/InOut/Create.js"></script>
     <script type="text/javascript">
         InOutCreate({

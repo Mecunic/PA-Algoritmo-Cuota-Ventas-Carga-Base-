@@ -17,6 +17,29 @@
         "hideMethod": "fadeOut"
     };
 
+    const datepickerOptions = {
+        format: 'dd/mm/yyyy',
+        language: 'es',
+        orientation: 'bottom',
+        assumeNearbyYear: 20,
+        autoclose: true,
+    };
+
+    const cedisSelect = $('select[name=Cedis]').select2({
+        ajax: {
+            url: getCedisUrl,
+            dataType: 'json',
+            delay: 300,
+        },
+    });
+
+    $('input[name=Route]').select2();
+
+    $('input[name=StartDate]').datepicker(datepickerOptions).on('changeDate', (e) => {
+        $('input[name=EndDate]').datepicker('setStartDate', e.date);
+    });
+    $('input[name=EndDate]').datepicker(datepickerOptions);
+
     function renderBoolToText(value) {
         return value ? 'Si' : 'No';
     }
@@ -39,13 +62,6 @@
         products = products.filter(product => product.Sku !== sku)
         createFormSubmitBtn.disabled = products.length <= 0;
     }
-
-    $('.date').datepicker({
-        format: 'dd/mm/yyyy',
-        language: 'es',
-        orientation: 'bottom',
-        assumeNearbyYear: 20
-    });
 
     const productsDataTable = $('#productsTable').DataTable({
         pageLength: 10,
@@ -98,11 +114,19 @@
 
     createForm.addEventListener('submit', function (evt) {
         if ($(evt.target).valid()) {
+            if (!isEndDateBiggerThanStartDate(new FormData(evt.target))) {
+                toastr.error('La fecha fin debe ser mayor a la fecha de inicio', "", toasterOptions);
+                evt.preventDefault();
+                return;
+            }
+
             if (products.length <= 0) {
                 createFormSubmitBtn.disabled = true;
                 toastr.error('Debe añadir al menos un producto', "", toasterOptions);
                 evt.preventDefault();
+                return;
             }
+
             products.forEach((product, index) => {
                 const variableName = `Products[${index}]`;
                 const productSKUInput = createHiddenInput(`${variableName}.Sku`, product.Sku);
@@ -119,20 +143,10 @@
         }
     })
 
-    const cedisSelect = $('#Cedis').select2({
-        ajax: {
-            url: getCedisUrl,
-            dataType: 'json',
-            delay: 300,
-        },
-    });
-
-    $('#Route').select2();
-
     cedisSelect.on('select2:select', (e) => {
         const selectedCEDIS = e.params.data;
-        $('#Route').empty();
-        $('#Route').select2({
+        $('select[name=Route]').empty();
+        $('select[name=Route]').select2({
             ajax: {
                 url: getRoutesUrl,
                 dataType: 'json',
@@ -148,4 +162,10 @@
             placeholder: 'Seleccione una ruta',
         });
     })
+}
+
+function isEndDateBiggerThanStartDate(formData) {
+    const startDate = new Date(formData.get('StartDate'));
+    const endDate = new Date(formData.get('EndDate'));
+    return startDate <= endDate;
 }
