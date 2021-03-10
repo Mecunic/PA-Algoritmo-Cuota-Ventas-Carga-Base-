@@ -1806,10 +1806,7 @@
     <Content Include="Views\Shared\_Navigation.cshtml" />
     <Content Include="Views\Shared\_TopNavbar.cshtml" />
     <Content Include="Views\Shared\_Footer.cshtml" />
-    <Content Include="Views\Auth\ChangePassword.cshtml" />
     <Content Include="Views\Auth\Login.cshtml" />
-    <Content Include="Views\Auth\_RequestPasswordModal.cshtml" />
-    <Content Include="Views\Auth\ResetPassword.cshtml" />
     <Content Include="Views\Register\Index.cshtml" />
     <Content Include="Views\Error\GenericError.cshtml" />
     <Content Include="Views\Error\ShowError.cshtml" />
@@ -1882,10 +1879,6 @@
     <ProjectReference Include="..\MVC_Project.Utils\MVC_Project.Utils.csproj">
       <Project>{23b89c18-68c5-449f-aded-e51a86da6b52}</Project>
       <Name>MVC_Project.Utils</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\MVC_Project.WebApis\MVC_Project.WebApis.csproj">
-      <Project>{b4fb4021-0a1d-4172-8173-15640b88f6bd}</Project>
-      <Name>MVC_Project.WebApis</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

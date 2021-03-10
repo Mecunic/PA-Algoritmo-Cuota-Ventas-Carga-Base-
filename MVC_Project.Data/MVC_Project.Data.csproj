@@ -153,6 +153,10 @@
       <Project>{23B89C18-68C5-449F-ADED-E51A86DA6B52}</Project>
       <Name>MVC_Project.Utils</Name>
     </ProjectReference>
+    <ProjectReference Include="..\MVC_Project.WebApis\MVC_Project.WebApis.csproj">
+      <Project>{B4FB4021-0A1D-4172-8173-15640B88F6BD}</Project>
+      <Name>MVC_Project.WebApis</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <AdditionalFiles Include="..\.sonarlint\ensitechdevops_plantilla-net\CSharp\SonarLint.xml">

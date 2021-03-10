@@ -16,8 +16,6 @@ namespace MVC_Project.WebBackend.AuthManagement.Models
         public Role Role { get; set; }
         public IList<Permission> Permissions { get; set; }
 
-        public DateTime? PasswordExpiration { get; set; }
-
         public bool HasAccessToModule(string module)
         {
             if (this.Permissions != null && this.Permissions.Count > 0)
@@ -61,5 +59,5 @@ namespace MVC_Project.WebBackend.AuthManagement.Models
         public string Action { get; set; }
         public string Module { get; set; }
     }
-    
+
 }

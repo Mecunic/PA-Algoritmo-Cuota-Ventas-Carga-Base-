@@ -52,10 +52,13 @@
     <Reference Include="Microsoft.Analytics.Types" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Modelos\LoginReq.cs" />
+    <Compile Include="Modelos\LoginResp.cs" />
     <Compile Include="Modelos\CedisResp.cs" />
     <Compile Include="Modelos\Constantes.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Servicios\BaseService.cs" />
+    <Compile Include="Servicios\InventariosService.cs" />
     <Compile Include="Servicios\IntermediaService.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -75,12 +75,12 @@ namespace MVC_Project.WebBackend.Controllers
 
         public ActionResult Create(string uuid = null)
         {
-            var userCreateViewModel = new UserSaveViewModel 
+            var userCreateViewModel = new UserSaveViewModel
             { Roles = PopulateRoles(), CedisList = PopulateCedis() };
-            if(uuid != null)
+            if (uuid != null)
             {
                 var user = _userService.FindBy(u => u.Uuid.Equals(uuid)).FirstOrDefault();
-                if(user != null)
+                if (user != null)
                 {
                     userCreateViewModel.Uuid = user.Uuid;
                     userCreateViewModel.Name = user.FirstName;
@@ -120,7 +120,7 @@ namespace MVC_Project.WebBackend.Controllers
             return cedisList;
         }
 
-        [HttpPost, ValidateAntiForgeryToken,ValidateInput(true)]
+        [HttpPost, ValidateAntiForgeryToken, ValidateInput(true)]
         public ActionResult Create(UserSaveViewModel model)
         {
             ValidationModel(model);
@@ -130,9 +130,6 @@ namespace MVC_Project.WebBackend.Controllers
 
                 if (model.IsNew)
                 {
-                    string daysToExpirateDate = ConfigurationManager.AppSettings["DaysToExpirateDate"];
-
-                    DateTime passwordExpiration = todayDate.AddDays(Int32.Parse(daysToExpirateDate));
                     var user = new User
                     {
                         Uuid = Guid.NewGuid().ToString(),
@@ -143,7 +140,6 @@ namespace MVC_Project.WebBackend.Controllers
                         Email = model.Email,
                         //MobileNumber = userCreateViewModel.MobileNumber,
                         Password = SecurityUtil.EncryptPassword(model.Password),
-                        PasswordExpiration = passwordExpiration,
                         Role = new Role { Id = model.Role },
                         //Username = model.Username,
                         Cedis = new Cedis { Id = model.Cedis },
@@ -197,7 +193,7 @@ namespace MVC_Project.WebBackend.Controllers
             }
         }
 
-        
+
         [HttpPost]
         public ActionResult Delete(string uuid)
         {
@@ -229,7 +225,7 @@ namespace MVC_Project.WebBackend.Controllers
             else
             {
                 var password = model.Password;
-                if(password != null && (password.Trim().Length <8 || password.Trim().Length > 20))
+                if (password != null && (password.Trim().Length < 8 || password.Trim().Length > 20))
                 {
                     ModelState.AddModelError("Password", "El campo Contraseña debe ser una cadena con una longitud mínima de 8 y una longitud máxima de 20.");
                 }
@@ -242,7 +238,7 @@ namespace MVC_Project.WebBackend.Controllers
                     ModelState.AddModelError("Password", "El Contraseña debe contener una letra Mayuscula, un número y un caracter especial.");
                 }
             }
-            if (validEmail && (model.Email == null || model.Email.Trim().Length == 0) )
+            if (validEmail && (model.Email == null || model.Email.Trim().Length == 0))
             {
                 ModelState.AddModelError("Email", "El Email es requerido.");
             }

@@ -18,7 +18,7 @@ namespace MVC_Project.WebApis.Servicios
             RestRequest restRequest = new RestRequest(endpoint, method,DataFormat.Json);
             //restRequest.JsonSerializer = new JsonSerializer();
             return restClient.Execute<T>(restRequest);
-        }
+        }        
 
         protected static string AppSettings(string key)
         {

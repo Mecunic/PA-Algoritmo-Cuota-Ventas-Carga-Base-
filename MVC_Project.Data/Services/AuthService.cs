@@ -1,6 +1,7 @@
 ﻿using MVC_Project.Domain.Entities;
 using MVC_Project.Domain.Repositories;
 using MVC_Project.Domain.Services;
+using MVC_Project.WebApis.Servicios;
 using System.Linq;
 
 namespace MVC_Project.Data.Services
@@ -14,11 +15,12 @@ namespace MVC_Project.Data.Services
             _repository = repository;
         }
 
-        public User Authenticate(string username, string password)
+        public User Authenticate(string username, string password, int cedis)
         {
-            User user = _repository.FindBy(u => u.Email == username).FirstOrDefault();
-            if (user != null && user.Password == password) return user;
+            var response = InventariosService.Login(username, password, cedis);
+            User user = _repository.FindBy(u => u.Email == response.Result.Username).FirstOrDefault();
+            if (user != null) return user;
             return null;
-        }        
+        }
     }
 }

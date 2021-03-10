@@ -50,9 +50,6 @@ namespace MVC_Project.WebBackend.Controllers
                 {
                     DateTime todayDate = DateUtil.GetDateTimeNow();
 
-                    string daysToExpirateDate = ConfigurationManager.AppSettings["DaysToExpirateDate"];
-                    DateTime passwordExpiration = todayDate.AddDays(Int32.Parse(daysToExpirateDate));
-
                     var availableRoles = _roleService.GetAll();
                     var role = availableRoles.Where(x => x.Code == "EMPLOYEE").FirstOrDefault();
 
@@ -63,7 +60,6 @@ namespace MVC_Project.WebBackend.Controllers
                         ApellidoPaterno = model.LastName,
                         Email = model.Email,
                         Password = SecurityUtil.EncryptPassword(model.Password),
-                        PasswordExpiration = passwordExpiration,
                         Username = model.Email,
                         CreatedAt = todayDate,
                         UpdatedAt = todayDate,
@@ -83,13 +79,13 @@ namespace MVC_Project.WebBackend.Controllers
                 {
                     ViewBag.Error = "Ya existe el usuario con el Email registrado.";
                     return View("Index", model);
-                }                
+                }
             }
             else
-            {                
+            {
                 return View("Index", model);
-            }           
+            }
         }
-                
+
     }
 }

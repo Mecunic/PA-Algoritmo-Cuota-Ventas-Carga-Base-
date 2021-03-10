@@ -40,13 +40,6 @@ namespace MVC_Project.WebBackend.AuthManagement
             AuthUser authenticatedUser = Authenticator.AuthenticatedUser;
             if (authenticatedUser != null && filterContext.HttpContext.User.Identity.IsAuthenticated)
             {
-
-                DateTime todayDate = DateUtil.GetDateTimeNow();
-                if (authenticatedUser.PasswordExpiration.HasValue && authenticatedUser.PasswordExpiration.Value.Date < todayDate.Date)
-                {
-                    filterContext.Result = new RedirectToRouteResult(new RouteValueDictionary(new { controller = "Auth", action = "ChangePassword" }));
-                    return;
-                }
                 filterContext.Result = new System.Web.Mvc.HttpStatusCodeResult((int)System.Net.HttpStatusCode.Forbidden);
             }
             else
@@ -61,11 +54,6 @@ namespace MVC_Project.WebBackend.AuthManagement
             AuthUser authenticatedUser = Authenticator.AuthenticatedUser;
             if (authenticatedUser != null)
             {
-                DateTime todayDate = DateUtil.GetDateTimeNow();
-                if (authenticatedUser.PasswordExpiration.HasValue && authenticatedUser.PasswordExpiration.Value.Date < todayDate.Date)
-                {
-                    return false;
-                }
                 string controller = httpContext.Request.RequestContext.RouteData.Values["controller"].ToString();
                 string action = httpContext.Request.RequestContext.RouteData.Values["action"].ToString();
                 if (authenticatedUser.Role.Code.Equals(ConfigurationManager.AppSettings.Get("AdminKey")))

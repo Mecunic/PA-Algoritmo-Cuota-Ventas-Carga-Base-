@@ -7,7 +7,7 @@ namespace MVC_Project.BackendWeb.Models
     public class AuthViewModel
     {
         [Display(Name = "USERNAME", ResourceType = typeof(ViewLabels))]
-        [Required(ErrorMessageResourceType = typeof(ViewLabels), ErrorMessageResourceName = "UsernameRequired"), EmailAddress]
+        [Required(ErrorMessageResourceType = typeof(ViewLabels), ErrorMessageResourceName = "UsernameRequired")]
         public string Email { get; set; }
 
         [Display(Name = "PASSWORD", ResourceType = typeof(ViewLabels))]

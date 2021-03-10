@@ -17,15 +17,11 @@ namespace MVC_Project.Data.Mappings
             Map(x => x.ApellidoPaterno).Column("ApellidoPaterno").Not.Nullable();
             Map(x => x.ApellidoMaterno).Column("ApellidoMaterno").Nullable();
             Map(x => x.Email).Column("Correo").Not.Nullable();
-            Map(x => x.Password).Column("Password").Not.Nullable();
-            Map(x => x.PasswordExpiration).Column("ExpiracionPassword").Nullable();
             Map(x => x.Status).Column("Estatus").Not.Nullable();
-            Map(x => x.Token).Column("Token").Nullable();
-            Map(x => x.ExpiraToken).Column("Expiraciontoken").Nullable();
             Map(x => x.CreatedAt).Column("FechaAlta").Not.Nullable();
             Map(x => x.UpdatedAt).Column("FechaModificacion").Not.Nullable();
             Map(x => x.RemovedAt).Column("FechaBaja").Nullable();
-            
+
             References(x => x.Role).Column("IdRole");
             References(x => x.Cedis).Column("IdCedis");
             HasManyToMany(x => x.Permissions)
