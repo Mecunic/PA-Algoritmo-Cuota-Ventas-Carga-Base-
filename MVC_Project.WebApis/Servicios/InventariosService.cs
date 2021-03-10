@@ -7,12 +7,12 @@ using System.Web.Configuration;
 
 namespace MVC_Project.WebApis.Servicios
 {
-    public class InventariosService
+    public class InventariosService : BaseService
     {
         const string WEB_API = "WEB_API_INVENTARIOS";
         const string USERS_API = "/users/api";
 
-        private static T Execute<T>(RestRequest request) where T : new()
+        /*private static T Execute<T>(RestRequest request) where T : new()
         {
             IRestClient client = new RestClient(WebConfigurationManager.AppSettings[WEB_API]);
             var response = client.Execute<T>(request);
@@ -25,11 +25,11 @@ namespace MVC_Project.WebApis.Servicios
                 throw new Exception("error", response.ErrorException);
             }
             return response.Data;
-        }
+        }*/
 
         public static LoginResp Login(string username, string password, int opcd)
         {
-            var request = new RestRequest($"{USERS_API}/login", Method.POST);
+            //var request = new RestRequest($"{USERS_API}/login", Method.POST);
             var param = new LoginReq()
             {
                 Credentials = new Credentials()
@@ -39,8 +39,12 @@ namespace MVC_Project.WebApis.Servicios
                     Opcd = opcd
                 }
             };
-            request.AddJsonBody(param);
-            return Execute<LoginResp>(request);
+
+            //request.AddJsonBody(param);
+            //return Execute<LoginResp>(request);
+            var response = CallService<LoginResp>(AppSettings(WEB_API), $"{USERS_API}/login", Method.POST, param);
+            return response.Data;
+
         }
 
     }

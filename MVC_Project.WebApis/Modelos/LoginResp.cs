@@ -11,7 +11,7 @@ namespace MVC_Project.WebApis.Modelos
     public class LoginResp
     {
         public int ResultCode { get; set; }
-        public int ErrorMsg { get; set; }
+        public string ErrorMsg { get; set; }
         public Result Result { get; set; }
     }
 
