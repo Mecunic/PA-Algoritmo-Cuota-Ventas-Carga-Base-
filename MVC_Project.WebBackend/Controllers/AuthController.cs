@@ -11,6 +11,8 @@ using System.Configuration;
 using System.Linq;
 using System.Web.Mvc;
 using MVC_Project.WebBackend.Models;
+using MVC_Project.WebApis.Servicios;
+
 namespace MVC_Project.WebBackend.Controllers
 {
     public class AuthController : BaseController
@@ -29,6 +31,7 @@ namespace MVC_Project.WebBackend.Controllers
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
         {
+            //var cedis = IntermediaService.Cedis();
             ViewBag.ReturnUrl = returnUrl;
             return View();
         }
