@@ -47,5 +47,12 @@ namespace MVC_Project.WebApis.Servicios
 
         }
 
+        public static List<UsuariosResp> Usuarios(int CedisId)
+        {
+            var parametros = new Dictionary<string, object>() { { "salepoint",CedisId } };
+            var response = CallService<List<UsuariosResp>>(AppSettings(WEB_API), $"{USERS_API}/users", Method.GET, parametros);
+            return response.Data;
+        }
+
     }
 }

@@ -16,7 +16,21 @@ namespace MVC_Project.WebApis.Servicios
             RestClient restClient = new RestClient(baseUrl);
             restClient.UseJson();
             RestRequest restRequest = new RestRequest(endpoint, method,DataFormat.Json);
-            //restRequest.JsonSerializer = new JsonSerializer();
+            return restClient.Execute<T>(restRequest);
+        }
+
+        protected static IRestResponse<T> CallService<T>(string baseUrl, string endpoint, Method method, Dictionary<string, object> parametros) where T : new()
+        {
+            RestClient restClient = new RestClient(baseUrl);
+            restClient.UseJson();
+            RestRequest restRequest = new RestRequest(endpoint, method, DataFormat.Json);
+            if (parametros.Any())
+            {
+                foreach (KeyValuePair<string, object> entry in parametros)
+                {
+                    restRequest.AddParameter(entry.Key, entry.Value);
+                }
+            }
             return restClient.Execute<T>(restRequest);
         }
 
@@ -26,7 +40,6 @@ namespace MVC_Project.WebApis.Servicios
             restClient.UseJson();
             RestRequest restRequest = new RestRequest(endpoint, method, DataFormat.Json);
             restRequest.AddJsonBody(body);
-            //restRequest.JsonSerializer = new JsonSerializer();
             return restClient.Execute<T>(restRequest);
         }
 
