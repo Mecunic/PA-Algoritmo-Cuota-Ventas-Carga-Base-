@@ -21,6 +21,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MVC_Project.FlashMessages",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MVC_Project.MotorCalculos", "MVC_Project.MotorCalculos\MVC_Project.MotorCalculos.csproj", "{8A7DBD13-4399-4629-BE03-92F6E335B749}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MVC_Project.WebApis", "MVC_Project.WebApis\MVC_Project.WebApis.csproj", "{B4FB4021-0A1D-4172-8173-15640B88F6BD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Base|Any CPU = Base|Any CPU
@@ -82,6 +84,12 @@ Global
 		{8A7DBD13-4399-4629-BE03-92F6E335B749}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8A7DBD13-4399-4629-BE03-92F6E335B749}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8A7DBD13-4399-4629-BE03-92F6E335B749}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B4FB4021-0A1D-4172-8173-15640B88F6BD}.Base|Any CPU.ActiveCfg = Debug|Any CPU
+		{B4FB4021-0A1D-4172-8173-15640B88F6BD}.Base|Any CPU.Build.0 = Debug|Any CPU
+		{B4FB4021-0A1D-4172-8173-15640B88F6BD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B4FB4021-0A1D-4172-8173-15640B88F6BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B4FB4021-0A1D-4172-8173-15640B88F6BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B4FB4021-0A1D-4172-8173-15640B88F6BD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

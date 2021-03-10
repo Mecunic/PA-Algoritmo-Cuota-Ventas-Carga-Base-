@@ -21,7 +21,7 @@ namespace MVC_Project.MotorCalculos
             //OBTENER SEMANAS ATRAS
             List<string> fechasAtras = Utils.ObtenerSemanasAtras(configuracion.FechaACalcular, configuracion.Semanas);
             //OBTENER INVENTARIOS DE CARGA
-            List<Inventario> inventarios = configuracion.Inventarios.Where(i => fechasAtras.Contains(i.Fecha) && i.Ruta.Equals(configuracion.Ruta)).ToList();
+            List<Inventario> inventarios = configuracion.Cargas.Where(i => fechasAtras.Contains(i.Fecha) && i.Ruta.Equals(configuracion.Ruta)).ToList();
             //OBTENER VENTAS
             List<Venta> ventas = configuracion.Ventas.Where(v => fechasAtras.Contains(v.Fecha)).ToList();
             //VALIDAR NUMERO DE INVENTARIOS VS SEMANAS

@@ -15,9 +15,9 @@ namespace MVC_Project.MotorCalculos.Modelos
         /// <summary>
         /// Inventario de Productos, este listado debe contener las semanas a calcular
         /// </summary>
-        public List<Inventario> Inventarios { get; set; }
+        public List<Inventario> Cargas { get; set; }
         /// <summary>
-        /// Historico de Ventas, este listado puede no contener ventas de ciertos productos en ciertas fechas
+        /// Historico de Ventas, este listado puede no contener ventas de ciertos productos en ciertas fechas (Datawarehouse)
         /// </summary>
         public List<Venta> Ventas { get; set; }
         /// <summary>
