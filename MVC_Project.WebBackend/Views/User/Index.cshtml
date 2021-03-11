@@ -26,7 +26,6 @@
                             </div>
                             <div class="col-sm-6 col-xs-12">
                                 <button type="button" id="btnSearchForm" class="btn btn-sm btn-primary btn-filter">Buscar</button>
-                                <button type="button" class="btn btn-create btn-primary float-right"><span class="fas fa-plus"></span> Crear Nuevo</button>
                                 <div class="clearfix"></div>
                             </div>
 
@@ -102,18 +101,6 @@
 
         $(".btn-filter").click(function () {
             $('#table').DataTable().draw();
-        });
-
-        $(".btn-create").click(function (e) {
-            e.preventDefault();
-            let modalCreate = $("#modal-create");
-            modalCreate.find('.modal-body').load('@Url.Action("Create")', function (response, status, xhr) {
-                if (status == "error") {
-                    return;
-                }
-                modalCreate.modal("show");
-                $('.chosen-select').chosen({ width: '100%' });
-            });
         });
 
         function submitCreate(form,url,method) {

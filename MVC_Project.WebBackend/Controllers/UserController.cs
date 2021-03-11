@@ -46,7 +46,7 @@ namespace MVC_Project.WebBackend.Controllers
                 {
                     UserData userData = new UserData();
                     userData.Name = user.FirstName + " " + user.ApellidoPaterno;
-                    userData.Email = user.Email;
+                    userData.UserName = user.Username;
                     userData.Status = user.Status;
                     userData.Uuid = user.Uuid;
                     userData.CedisName = user.Cedis?.Nombre;
@@ -86,9 +86,7 @@ namespace MVC_Project.WebBackend.Controllers
                     userCreateViewModel.Name = user.FirstName;
                     userCreateViewModel.Role = user.Role.Id;
                     userCreateViewModel.Status = user.Status;
-                    userCreateViewModel.Email = user.Email;
-                    userCreateViewModel.ApellidoPaterno = user.ApellidoPaterno;
-                    userCreateViewModel.ApellidoMaterno = user.ApellidoMaterno;
+                    userCreateViewModel.UserName = user.Username;
                     userCreateViewModel.Cedis = user.Cedis != null ? user.Cedis.Id : 0;
                     userCreateViewModel.Status = user.Status;
                 }
@@ -119,139 +117,6 @@ namespace MVC_Project.WebBackend.Controllers
             }).ToList();
             return cedisList;
         }
-
-        [HttpPost, ValidateAntiForgeryToken, ValidateInput(true)]
-        public ActionResult Create(UserSaveViewModel model)
-        {
-            ValidationModel(model);
-            if (ModelState.IsValid)
-            {
-                DateTime todayDate = DateUtil.GetDateTimeNow();
-
-                if (model.IsNew)
-                {
-                    var user = new User
-                    {
-                        Uuid = Guid.NewGuid().ToString(),
-                        FirstName = model.Name,
-                        ApellidoPaterno = model.ApellidoPaterno,
-                        ApellidoMaterno = model.ApellidoMaterno,
-                        //LastName = userCreateViewModel.Apellidos,
-                        Email = model.Email,
-                        //MobileNumber = userCreateViewModel.MobileNumber,
-                        Password = SecurityUtil.EncryptPassword(model.Password),
-                        Role = new Role { Id = model.Role },
-                        //Username = model.Username,
-                        Cedis = new Cedis { Id = model.Cedis },
-                        //Language = userCreateViewModel.Language,
-                        CreatedAt = todayDate,
-                        UpdatedAt = todayDate,
-                        Status = true
-                    };
-                    var role = _roleService.GetById(user.Role.Id);
-                    foreach (var permission in role.Permissions)
-                    {
-                        user.Permissions.Add(permission);
-                    }
-                    _userService.Create(user);
-                    string successMessage = "Usuario Creado";
-                    return Json(new
-                    {
-                        Message = successMessage
-                    });
-                }
-                else
-                {
-                    var user = _userService.FindBy(u => u.Uuid.Equals(model.Uuid)).FirstOrDefault();
-                    user.FirstName = model.Name;
-                    user.ApellidoMaterno = model.ApellidoMaterno;
-                    user.ApellidoPaterno = model.ApellidoPaterno;
-                    user.Role = new Role { Id = model.Role };
-                    var role = _roleService.GetById(user.Role.Id);
-                    user.Status = model.Status;
-                    foreach (var permission in role.Permissions)
-                    {
-                        user.Permissions.Add(permission);
-                    }
-                    _userService.Update(user);
-                    string successMessage = "Usuario Actualizado";
-                    return Json(new
-                    {
-                        Message = successMessage
-                    });
-                }
-            }
-            else
-            {
-                Response.StatusCode = 422;
-                return Json(new
-                {
-                    issue = model,
-                    errors = ModelState.Keys.Where(k => ModelState[k].Errors.Count > 0)
-                    .Select(k => new { propertyName = k, errorMessage = ModelState[k].Errors[0].ErrorMessage })
-                });
-            }
-        }
-
-
-        [HttpPost]
-        public ActionResult Delete(string uuid)
-        {
-            try
-            {
-                var user = _userService.FindBy(x => x.Uuid == uuid).First();
-                if (user != null)
-                {
-                    user.Status = false;
-                    user.RemovedAt = DateTime.Now;
-                    _userService.Update(user);
-                    return Json(true, JsonRequestBehavior.AllowGet);
-                }
-                return Json(false, JsonRequestBehavior.AllowGet);
-            }
-            catch (Exception)
-            {
-                return Json(false, JsonRequestBehavior.AllowGet);
-            }
-        }
-
-        private void ValidationModel(UserSaveViewModel model)
-        {
-            bool validEmail = true;
-            if (!model.IsNew)
-            {
-                validEmail = false;
-            }
-            else
-            {
-                var password = model.Password;
-                if (password != null && (password.Trim().Length < 8 || password.Trim().Length > 20))
-                {
-                    ModelState.AddModelError("Password", "El campo Contraseña debe ser una cadena con una longitud mínima de 8 y una longitud máxima de 20.");
-                }
-                else
-                {
-                    ModelState.AddModelError("Password", "El campo Contraseña es obligatorio");
-                }
-                if (!password.ContainsCapitalLetter() || !password.ContainsNumbers() || !password.ContainsCaractersSpecial())
-                {
-                    ModelState.AddModelError("Password", "El Contraseña debe contener una letra Mayuscula, un número y un caracter especial.");
-                }
-            }
-            if (validEmail && (model.Email == null || model.Email.Trim().Length == 0))
-            {
-                ModelState.AddModelError("Email", "El Email es requerido.");
-            }
-            if (model.Email != null)
-            {
-                if (validEmail && _userService.Exists(model.Email))
-                {
-                    ModelState.AddModelError("Email", "El Usuario ya se encuentra registrado.");
-                }
-            }
-
-        }
-
 
     }
 }

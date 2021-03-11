@@ -33,7 +33,7 @@ namespace MVC_Project.WebBackend.Models
 
         public string Uuid { get; set; }
 
-        public string Email { get; set; }
+        public string UserName { get; set; }
         public bool Status { get; set; }
 
         //Attributes Custom
@@ -46,17 +46,6 @@ namespace MVC_Project.WebBackend.Models
         [ValidType(CustomAttributes.Validations.ValidType.ALPHABETICAL_WITH_SPACES)]
         [Display(Name = "Nombre(s)")]
         public string Name { get; set; }
-        [Required]
-        [ValidType(CustomAttributes.Validations.ValidType.ALPHABETICAL)]
-        [Display(Name = "Apellido Paterno")]
-        public string ApellidoPaterno { get; set; }
-
-        [Display(Name = "Contraseña")]
-        public string Password { get; set; }
-
-        [Display(Name = "Apellido Materno")]
-        [ValidType(CustomAttributes.Validations.ValidType.ALPHABETICAL)]
-        public string ApellidoMaterno { get; set; }
 
         [Display(Name = "Rol")]
         [Required]
@@ -65,8 +54,7 @@ namespace MVC_Project.WebBackend.Models
         public IEnumerable<SelectListItem> Roles { get; set; }
 
         [Required]
-        [EmailAddress]
-        public string Email { get; set; }
+        public string UserName { get; set; }
 
         //Attributes Custom
         [Display(Name="Cedis")]
@@ -96,67 +84,5 @@ namespace MVC_Project.WebBackend.Models
         [Display(Name = "Nombre")]
         public string Name { get; set; }
     }
-    public class UserChangePasswordViewModel
-    {
-        public string Uuid { get; set; }
-        [Display(Name = "NEW_PASSWORD", ResourceType = typeof(Resources.ViewLabels))]
-        [PasswordSecured(ErrorMessageResourceName = "PasswordSecuredValidation", ErrorMessageResourceType = typeof(Resources.ErrorMessages))]
-        [DataType(DataType.Password)]
-        [Required(ErrorMessageResourceName = "RequiredValidation", ErrorMessageResourceType = typeof(Resources.ErrorMessages))]
-        [MinLength(8, ErrorMessageResourceName = "MinLengthValidation", ErrorMessageResourceType = typeof(Resources.ErrorMessages))]
-        public string Password { get; set; }
-        [Display(Name = "CONFIRM_NEW_PASSWORD", ResourceType = typeof(Resources.ViewLabels))]
-        [DataType(DataType.Password)]
-        [System.ComponentModel.DataAnnotations.Compare("Password", ErrorMessageResourceName = "CompareValidation", ErrorMessageResourceType = typeof(Resources.ErrorMessages))]
-        [Required(ErrorMessageResourceName = "RequiredValidation", ErrorMessageResourceType = typeof(Resources.ErrorMessages))]
-        [MinLength(8, ErrorMessageResourceName = "MinLengthValidation", ErrorMessageResourceType = typeof(Resources.ErrorMessages))]
-        public string ConfirmPassword { get; set; }
-    }
-
-    public class UserEditViewModel
-    {
-        public string Uuid { get; set; }
-
-        [Display(Name = "Nombre")]
-        public string Name { get; set; }
-
-        [Display(Name = "Apellidos")]
-        public string Apellidos { get; set; }
-
-        public string Email { get; set; }
-
-        [Display(Name = "Usuario")]
-        public string Username { get; set; }
-
-        [Display(Name = "Teléfono Móvil")]
-        public string MobileNumber { get; set; }
-
-        [Display(Name = "Idioma")]
-        public string Language { get; set; }
-
-        [Display(Name = "Rol")]
-        public int Role { get; set; }
-
-        public IEnumerable<SelectListItem> Roles { get; set; }
-    }
-    public class UserImportViewModel
-    {
-        [Display(Name = "Subir archivo")]
-        [Required(ErrorMessageResourceName = "RequiredValidation", ErrorMessageResourceType = typeof(Resources.ErrorMessages))]
-        public HttpPostedFileBase ImportedFile { get; set; }
-
-        public IList<UserRowImportResultViewModel> ImportResult { get; set; }
-
-        public string FinalUrl { get; set; }
-
-        public string StorageProvider { get; set; }
-    }
-    public class UserRowImportResultViewModel
-    {
-        public int RowNumber { get; set; }
-        public string EmployeeNumber { get; set; }
-        public string Email { get; set; }
-        public string Name { get; set; }
-        public IList<string> Messages { get; set; }
-    }
+    
 }
