@@ -1,8 +1,10 @@
 ﻿using RestSharp;
+using RestSharp.Authenticators;
 using RestSharp.Serialization.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web.Configuration;
@@ -40,6 +42,22 @@ namespace MVC_Project.WebApis.Servicios
             restClient.UseJson();
             RestRequest restRequest = new RestRequest(endpoint, method, DataFormat.Json);
             restRequest.AddJsonBody(body);
+            return restClient.Execute<T>(restRequest);
+        }
+
+        protected static IRestResponse<T> CallServiceUrlEncoder<T,V>(string baseUrl, string endpoint, Method method, V body) where T : new()
+        {
+            RestClient restClient = new RestClient(baseUrl);
+            
+            RestRequest restRequest = new RestRequest(endpoint, method, DataFormat.Json);
+            restRequest.AddHeader("content-type", "application/x-www-form-urlencoded");
+            
+            string parametros = "";
+            foreach (PropertyInfo prop in body.GetType().GetProperties())
+            {
+                parametros += string.Format("{0}={1}&",prop.Name,prop.GetValue(body)); 
+            }
+            restRequest.AddParameter("application/x-www-form-urlencoded", parametros, ParameterType.RequestBody);
             return restClient.Execute<T>(restRequest);
         }
 
