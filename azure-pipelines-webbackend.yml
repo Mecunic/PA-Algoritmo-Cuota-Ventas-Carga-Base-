@@ -5,7 +5,7 @@
 trigger:
   branches:
     include:
-      - develop
+      - master
   paths:
     include:
     - 'MVC_Project.WebBackend'
@@ -35,8 +35,8 @@ steps:
     SonarCloud: 'SonarCloud'
     organization: 'ensitechdevops'
     scannerMode: 'MSBuild'
-    projectKey: 'ensitechdevops_Metalinspec_SistemaWebR8'
-    projectName: 'Metalinspec_SistemaWebR8'
+    projectKey: 'PlantillaNET-WebBackend'
+    projectName: 'PlantillaNET WebBackend'
 - task: VSBuild@1
   inputs:
     solution: '$(solution)'
@@ -48,7 +48,6 @@ steps:
   inputs:
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
-    
 - task: SonarCloudAnalyze@1
 - task: ArchiveFiles@2
   inputs:

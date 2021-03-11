@@ -1,0 +1,133 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <Name>MVC_Project.Database</Name>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectVersion>4.1</ProjectVersion>
+    <ProjectGuid>{aa67c342-377e-4a9a-98f8-c6ea579b923f}</ProjectGuid>
+    <DSP>Microsoft.Data.Tools.Schema.Sql.SqlAzureV12DatabaseSchemaProvider</DSP>
+    <OutputType>Database</OutputType>
+    <RootPath>
+    </RootPath>
+    <RootNamespace>MVC_Project.Database</RootNamespace>
+    <AssemblyName>MVC_Project.Database</AssemblyName>
+    <ModelCollation>1033,CS</ModelCollation>
+    <DefaultFileStructure>BySchemaAndSchemaType</DefaultFileStructure>
+    <DeployToDatabase>True</DeployToDatabase>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetLanguage>CS</TargetLanguage>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <SqlServerVerification>False</SqlServerVerification>
+    <IncludeCompositeObjects>True</IncludeCompositeObjects>
+    <TargetDatabaseSet>True</TargetDatabaseSet>
+    <DefaultCollation>SQL_Latin1_General_CP1_CS_AS</DefaultCollation>
+    <DefaultFilegroup>PRIMARY</DefaultFilegroup>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>bin\Release\</OutputPath>
+    <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
+    <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>bin\Debug\</OutputPath>
+    <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">11.0</VisualStudioVersion>
+    <!-- Default to the v11.0 targets path if the targets file for the current VS version is not found -->
+    <SSDTExists Condition="Exists('$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets')">True</SSDTExists>
+    <VisualStudioVersion Condition="'$(SSDTExists)' == ''">11.0</VisualStudioVersion>
+  </PropertyGroup>
+  <Import Condition="'$(SQLDBExtensionsRefPath)' != ''" Project="$(SQLDBExtensionsRefPath)\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
+  <Import Condition="'$(SQLDBExtensionsRefPath)' == ''" Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
+  <ItemGroup>
+    <Folder Include="Properties" />
+    <Folder Include="production\" />
+    <Folder Include="production\Tables\" />
+    <Folder Include="sales\" />
+    <Folder Include="sales\Tables\" />
+    <Folder Include="dbo\" />
+    <Folder Include="dbo\Tables\" />
+    <Folder Include="HangFire\" />
+    <Folder Include="HangFire\Tables\" />
+    <Folder Include="calendar\" />
+    <Folder Include="calendar\Tables\" />
+    <Folder Include="jobs\" />
+    <Folder Include="jobs\Tables\" />
+    <Folder Include="nothub\" />
+    <Folder Include="nothub\Tables\" />
+    <Folder Include="dbo\Functions\" />
+    <Folder Include="dbo\Stored Procedures\" />
+    <Folder Include="Security\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Build Include="production\Tables\products.sql" />
+    <Build Include="sales\Tables\customers.sql" />
+    <Build Include="sales\Tables\stores.sql" />
+    <Build Include="sales\Tables\staffs.sql" />
+    <Build Include="sales\Tables\orders.sql" />
+    <Build Include="sales\Tables\order_items.sql" />
+    <Build Include="production\Tables\stocks.sql" />
+    <Build Include="dbo\Tables\payments.sql" />
+    <Build Include="HangFire\Tables\Schema.sql" />
+    <Build Include="HangFire\Tables\Job.sql" />
+    <Build Include="HangFire\Tables\State.sql" />
+    <Build Include="dbo\Tables\config_params.sql" />
+    <Build Include="calendar\Tables\events.sql" />
+    <Build Include="HangFire\Tables\JobParameter.sql" />
+    <Build Include="calendar\Tables\event_categories.sql" />
+    <Build Include="HangFire\Tables\JobQueue.sql" />
+    <Build Include="HangFire\Tables\Server.sql" />
+    <Build Include="HangFire\Tables\List.sql" />
+    <Build Include="HangFire\Tables\Set.sql" />
+    <Build Include="HangFire\Tables\Counter.sql" />
+    <Build Include="HangFire\Tables\Hash.sql" />
+    <Build Include="HangFire\Tables\AggregatedCounter.sql" />
+    <Build Include="jobs\Tables\process.sql" />
+    <Build Include="jobs\Tables\process_execution.sql" />
+    <Build Include="dbo\Tables\payment_applications.sql" />
+    <Build Include="dbo\Tables\permissions.sql" />
+    <Build Include="dbo\Tables\roles.sql" />
+    <Build Include="dbo\Tables\users.sql" />
+    <Build Include="dbo\Tables\documents.sql" />
+    <Build Include="dbo\Tables\permission_user.sql" />
+    <Build Include="nothub\Tables\accounts.sql" />
+    <Build Include="nothub\Tables\applications.sql" />
+    <Build Include="nothub\Tables\notification_message.sql" />
+    <Build Include="nothub\Tables\notifications.sql" />
+    <Build Include="nothub\Tables\providers.sql" />
+    <Build Include="nothub\Tables\templates.sql" />
+    <Build Include="nothub\Tables\users.sql" />
+    <Build Include="dbo\Tables\permission_role.sql" />
+    <Build Include="production\Tables\categories.sql" />
+    <Build Include="production\Tables\brands.sql" />
+    <Build Include="dbo\Functions\MM2PSS_TO_TIME.sql" />
+    <Build Include="dbo\Functions\ObtieneMinSeg.sql" />
+    <Build Include="dbo\Functions\ObtieneMinSegTO.sql" />
+    <Build Include="dbo\Stored Procedures\Genera.sql" />
+    <Build Include="dbo\Stored Procedures\Generar.sql" />
+    <Build Include="Security\calendar.sql" />
+    <Build Include="Security\HangFire.sql" />
+    <Build Include="Security\jobs.sql" />
+    <Build Include="Security\nothub.sql" />
+    <Build Include="Security\production.sql" />
+    <Build Include="Security\sales.sql" />
+  </ItemGroup>
+</Project>
