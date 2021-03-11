@@ -22,5 +22,15 @@ namespace MVC_Project.WebApis.Servicios
             }
             return response.Data;
         }
+
+        public static List<ProductoResp> Productos(int CedisId)
+        {
+            var response = CallService<List<ProductoResp>>(AppSettings(WEB_API), "/API/AdminProduct/" + CedisId, Method.GET);
+            if (response.StatusCode != System.Net.HttpStatusCode.OK)
+            {
+                throw new Exception(response.Content);
+            }
+            return response.Data;
+        }
     }
 }

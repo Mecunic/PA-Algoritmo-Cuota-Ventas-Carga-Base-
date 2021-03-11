@@ -55,6 +55,7 @@
     <Compile Include="Modelos\LoginReq.cs" />
     <Compile Include="Modelos\LoginResp.cs" />
     <Compile Include="Modelos\CedisResp.cs" />
+    <Compile Include="Modelos\ProductoResp.cs" />
     <Compile Include="Modelos\TokenReq.cs" />
     <Compile Include="Modelos\TokenResp.cs" />
     <Compile Include="Modelos\UsuariosReq.cs" />

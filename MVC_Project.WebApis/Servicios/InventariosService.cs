@@ -54,7 +54,6 @@ namespace MVC_Project.WebApis.Servicios
             return response.Data;
         }
 
-        public static List<Rutas>
 
     }
 }
