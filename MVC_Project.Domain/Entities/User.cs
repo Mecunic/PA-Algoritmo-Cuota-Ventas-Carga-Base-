@@ -9,28 +9,15 @@ namespace MVC_Project.Domain.Entities
     {
         public virtual int Id { get; set; }
         public virtual string Uuid { get; set; }
-        public virtual string FirstName { get; set; }
-        public virtual string ApellidoPaterno { get; set; }
-
-        public virtual string ApellidoMaterno { get; set; }
-        public virtual string Email { get; set; }
-        public virtual string Username { get; set; }
-        public virtual string Language { get; set; }
-        public virtual string Password { get; set; }
-        public virtual string EmployeeIdentifier { get; set; }
-        public virtual string MobileNumber { get; set; }
-        public virtual string Profile { get; set; }
+        public virtual string Nombre { get; set; }
+        public virtual string Usuario { get; set; }
         public virtual Role Role { get; set; }
         public virtual IList<Permission> Permissions { get; set; }
         public virtual DateTime CreatedAt { get; set; }
         public virtual DateTime UpdatedAt { get; set; }
         public virtual DateTime? RemovedAt { get; set; }
-        public virtual Boolean Status { get; set; }
-        public virtual string ApiKey { get; set; }
-        public virtual DateTime? ExpiraApiKey { get; set; }
-        public virtual DateTime? LastLoginAt { get; set; }
-
-        public virtual Cedis Cedis { get; set; }
+        public virtual bool Status { get; set; }
+        public virtual int IdCedis { get; set; }
 
         public User()
         {

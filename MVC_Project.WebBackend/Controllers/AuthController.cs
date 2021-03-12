@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using MVC_Project.WebBackend.Models;
+using MVC_Project.WebApis.Servicios;
 
 namespace MVC_Project.WebBackend.Controllers
 {
@@ -29,7 +30,6 @@ namespace MVC_Project.WebBackend.Controllers
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
         {
-            //var cedis = IntermediaService.Cedis();
             ViewBag.ReturnUrl = returnUrl;
             return View();
         }
@@ -49,7 +49,6 @@ namespace MVC_Project.WebBackend.Controllers
                         ViewBag.Error = Resources.ErrorMessages.UserInactive;
                         return View(model);
                     }
-                    user.LastLoginAt = DateTime.Now;
                     _userService.Update(user);
 
                     List<Permission> permissionsUser = user.Role.Permissions.Select(p => new Permission
@@ -62,10 +61,7 @@ namespace MVC_Project.WebBackend.Controllers
                     AuthUser authUser = new AuthUser
                     {
                         Id = user.Id,
-                        FirstName = user.FirstName,
-                        LastName = user.ApellidoPaterno,
-                        Email = user.Email,
-                        Language = user.Language,
+                        FirstName = user.Nombre,
                         Uuid = user.Uuid,
                         Role = new Role
                         {

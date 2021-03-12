@@ -39,7 +39,7 @@ namespace MVC_Project.WebBackend.Controllers
                         Code = cedi.Clave,
                         Name = cedi.Nombre,
                         Description = cedi.Descripcion,
-                        Manager = cedi.Responsable != null ? $"{cedi.Responsable.FirstName} {cedi.Responsable.ApellidoPaterno}" : "NA"
+                        Manager = cedi.Responsable != null ? $"{cedi.Responsable.Nombre}" : "NA"
                     };
                     dataResponse.Add(cediVM);
                 }

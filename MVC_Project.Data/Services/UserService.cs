@@ -22,10 +22,6 @@ namespace MVC_Project.Data.Services
             _repository = baseRepository;
         }
 
-        public bool Exists(string email)
-        {
-            return _repository.FindBy(u => u.Email.Trim().ToLower().Equals(email.Trim().ToLower())).Any();
-        }
 
         public override Tuple<IEnumerable<User>, int> FilterBy(NameValueCollection filtersValue, int? skip, int? take)
         {
@@ -34,7 +30,7 @@ namespace MVC_Project.Data.Services
             var query = _repository.Session.QueryOver<User>();
             if (!string.IsNullOrWhiteSpace(FilterName))
             {
-                query = query.Where(user => user.Email.IsInsensitiveLike("%" + FilterName + "%") || user.FirstName.IsInsensitiveLike("%" + FilterName + "%") || user.ApellidoPaterno.IsInsensitiveLike("%" + FilterName + "%"));
+                query = query.Where(user =>  user.Nombre.IsInsensitiveLike("%" + FilterName + "%"));
             }
             var count = query.RowCount();
 

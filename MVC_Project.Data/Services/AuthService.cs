@@ -18,8 +18,11 @@ namespace MVC_Project.Data.Services
         public User Authenticate(string username, string password, int cedis)
         {
             var response = InventariosService.Login(username, password, cedis);
-            User user = _repository.FindBy(u => u.Email == response.Result.Username).FirstOrDefault();
-            if (user != null) return user;
+            if(response != null && response.Result != null)
+            {
+                User user = _repository.FindBy(u => u.Usuario == response.Result.Username).FirstOrDefault();
+                if (user != null) return user;
+            }
             return null;
         }
     }

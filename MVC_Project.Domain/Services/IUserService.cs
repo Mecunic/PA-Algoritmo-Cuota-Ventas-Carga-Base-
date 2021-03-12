@@ -12,6 +12,5 @@ namespace MVC_Project.Domain.Services
 {
     public interface IUserService : IService<User>
     {
-        bool Exists(string email);
     }
 }

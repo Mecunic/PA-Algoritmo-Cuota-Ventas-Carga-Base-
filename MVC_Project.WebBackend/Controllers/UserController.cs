@@ -45,11 +45,11 @@ namespace MVC_Project.WebBackend.Controllers
                 foreach (var user in results.Item1)
                 {
                     UserData userData = new UserData();
-                    userData.Name = user.FirstName + " " + user.ApellidoPaterno;
-                    userData.UserName = user.Username;
+                    userData.Name = user.Nombre;
+                    userData.UserName = user.Usuario;
                     userData.Status = user.Status;
                     userData.Uuid = user.Uuid;
-                    userData.CedisName = user.Cedis?.Nombre;
+                    //userData.CedisName = user.Cedis?.Nombre;
                     dataResponse.Add(userData);
                 }
                 return Json(new
@@ -83,11 +83,11 @@ namespace MVC_Project.WebBackend.Controllers
                 if (user != null)
                 {
                     userCreateViewModel.Uuid = user.Uuid;
-                    userCreateViewModel.Name = user.FirstName;
+                    userCreateViewModel.Name = user.Nombre;
                     userCreateViewModel.Role = user.Role.Id;
                     userCreateViewModel.Status = user.Status;
-                    userCreateViewModel.UserName = user.Username;
-                    userCreateViewModel.Cedis = user.Cedis != null ? user.Cedis.Id : 0;
+                    userCreateViewModel.UserName = user.Usuario;
+                    //userCreateViewModel.Cedis = user.Cedis != null ? user.Cedis.Id : 0;
                     userCreateViewModel.Status = user.Status;
                 }
             }

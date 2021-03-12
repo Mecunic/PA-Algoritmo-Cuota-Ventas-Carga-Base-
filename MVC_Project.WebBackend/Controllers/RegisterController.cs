@@ -44,7 +44,7 @@ namespace MVC_Project.WebBackend.Controllers
 
             if (ModelState.IsValid)
             {
-                var UserVal = _userService.FindBy(x => x.Email == model.Email).FirstOrDefault();
+                var UserVal = _userService.FindBy(x => x.Usuario == model.Email).FirstOrDefault();
 
                 if (UserVal == null)
                 {
@@ -56,11 +56,8 @@ namespace MVC_Project.WebBackend.Controllers
                     var user = new User
                     {
                         Uuid = Guid.NewGuid().ToString(),
-                        FirstName = model.FistName,
-                        ApellidoPaterno = model.LastName,
-                        Email = model.Email,
-                        Password = SecurityUtil.EncryptPassword(model.Password),
-                        Username = model.Email,
+                        Nombre = model.FistName,
+                        Usuario = model.Email,
                         CreatedAt = todayDate,
                         UpdatedAt = todayDate,
                         Status = true,
