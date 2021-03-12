@@ -19,7 +19,7 @@ namespace MVC_Project.Data.Services
         public User Authenticate(string username, string password, int cedis)
         {
             var response = InventariosService.Login(username, password, cedis);
-            if (response.ResultCode != (int)HttpStatusCode.OK) return null;
+            if (response == null || response.ResultCode != (int)HttpStatusCode.OK) return null;
             User user = _repository.FindBy(u => u.Usuario == response.Result.Username).FirstOrDefault();
             if (user != null) return user;
             return null;
