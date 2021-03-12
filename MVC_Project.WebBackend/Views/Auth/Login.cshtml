@@ -21,6 +21,8 @@
     @Styles.Render("~/plugins/sweetAlertStyles")
     @Scripts.Render("~/plugins/sweetAlert")
 
+    @Styles.Render("~/plugins/styles/select2")
+
 </head>
 
 @{
@@ -78,16 +80,20 @@
             @using (Html.BeginForm("Login", "Auth", FormMethod.Post, new { @class = "m-t", role = "form" }))
             {
                 @Html.AntiForgeryToken()
-                @*@Html.ValidationSummary("Errors", new { @class = "alert alert-danger" })*@
                 @Html.Hidden("ReturnUrl", (string)ViewBag.ReturnUrl)
                 <div class="input-group mb-3">
                     <span class="input-group-addon"><i class="fa fa-user"></i></span>
-                    @Html.TextBoxFor(m => m.Email, new { @class = "form-control", placeholder = @ViewLabels.USERNAME, @required = "required", maxlength = "20" })
+                    @Html.TextBoxFor(m => m.Username, new { @class = "form-control", placeholder = @ViewLabels.USERNAME, @required = "required", maxlength = "20" })
                 </div>
                 <span class="help-block"></span>
                 <div class="input-group mb-3">
                     <span class="input-group-addon"><i class="fa fa-lock"></i></span>
                     @Html.PasswordFor(m => m.Password, new { @class = "form-control", type = "password", placeholder = @ViewLabels.PASSWORD, @required = "required", maxlength = "20" })
+                </div>
+                <span class="help-block"></span>
+                <div class="mb-3 d-flex">
+                    <span class="input-group-addon"><i class="fa fa-building"></i></span>
+                    @Html.DropDownListFor(m => m.IdCedis, Model.AvailableCedis, new { @class = "flex-grow-1" })
                 </div>
                 <span class="help-block"></span>
                 <button type="submit" class="btn btn-primary block full-width m-b">@ViewLabels.AUTH_LOGIN_SUBMIT</button>
@@ -105,6 +111,13 @@
     <script src="~/Scripts/popper.min.js"></script>
     <script src="~/Scripts/bootstrap.js"></script>
     <script src="/Scripts/plugins/validate/jquery.validate.min.js"></script>
+    @Scripts.Render("~/plugins/scripts/select2")
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('select[name=@Html.NameFor(m => m.IdCedis)]').select2();
+        });
+    </script>
 </body>
 </html>
 

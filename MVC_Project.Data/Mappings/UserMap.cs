@@ -22,6 +22,7 @@ namespace MVC_Project.Data.Mappings
             Map(x => x.RemovedAt).Column("FechaBaja").Nullable();
 
             References(x => x.Role).Column("IdRole");
+
             HasManyToMany(x => x.Permissions)
                 .Cascade.SaveUpdate()
                 .Table("PermisosUsuarios")

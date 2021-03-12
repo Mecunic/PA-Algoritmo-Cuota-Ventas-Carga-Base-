@@ -195,4 +195,10 @@
   <data name="Warning" xml:space="preserve">
     <value>Warning</value>
   </data>
+  <data name="CedisRequired" xml:space="preserve">
+    <value>CEDIS is required</value>
+  </data>
+  <data name="CEDIS" xml:space="preserve">
+    <value>CEDIS</value>
+  </data>
 </root>

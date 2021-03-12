@@ -1880,6 +1880,10 @@
       <Project>{23b89c18-68c5-449f-aded-e51a86da6b52}</Project>
       <Name>MVC_Project.Utils</Name>
     </ProjectReference>
+    <ProjectReference Include="..\MVC_Project.WebApis\MVC_Project.WebApis.csproj">
+      <Project>{B4FB4021-0A1D-4172-8173-15640B88F6BD}</Project>
+      <Name>MVC_Project.WebApis</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

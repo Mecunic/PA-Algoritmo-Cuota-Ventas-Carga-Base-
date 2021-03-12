@@ -30,8 +30,12 @@ namespace MVC_Project.WebBackend.Controllers
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
         {
+            var model = new AuthViewModel
+            {
+                AvailableCedis = SetAvailableCedis()
+            };
             ViewBag.ReturnUrl = returnUrl;
-            return View();
+            return View(model);
         }
 
         [HttpPost]
@@ -41,12 +45,13 @@ namespace MVC_Project.WebBackend.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = _authService.Authenticate(model.Email, model.Password, 1);
+                var user = _authService.Authenticate(model.Username, model.Password, model.IdCedis);
                 if (user != null)
                 {
                     if (!user.Status)
                     {
                         ViewBag.Error = Resources.ErrorMessages.UserInactive;
+                        model.AvailableCedis = SetAvailableCedis(model.IdCedis);
                         return View(model);
                     }
                     _userService.Update(user);
@@ -92,7 +97,7 @@ namespace MVC_Project.WebBackend.Controllers
                     AddViewMessage(TypeMessageView.ERROR, ErrorMessages.UserNotExistsOrPasswordInvalid);
                 }
             }
-
+            model.AvailableCedis = SetAvailableCedis(model.IdCedis);
             return View(model);
         }
 
@@ -109,6 +114,22 @@ namespace MVC_Project.WebBackend.Controllers
         {
             LanguageMngr.SetLanguage(lang);
             return RedirectToAction("Index", "Home");
+        }
+
+        private IEnumerable<SelectListItem> SetAvailableCedis(int? selected = null)
+        {
+            var cedisResponse = IntermediaService.Cedis();
+            var items = new List<SelectListItem>();
+            foreach (var cedis in cedisResponse)
+            {
+                items.Add(new SelectListItem
+                {
+                    Value = cedis.CedisIdOpecd.ToString(),
+                    Text = cedis.Nombre,
+                    Selected = cedis.CedisIdOpecd == selected
+                });
+            }
+            return items;
         }
     }
 }
