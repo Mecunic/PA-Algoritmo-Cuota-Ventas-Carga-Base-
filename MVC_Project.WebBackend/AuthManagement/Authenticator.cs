@@ -17,7 +17,7 @@ namespace MVC_Project.WebBackend.AuthManagement
         public static void StoreAuthenticatedUser(AuthUser authUser)
         {
             HttpContext.Current.Session.Add("ST_AUTH_USER", authUser);
-            FormsAuthentication.SetAuthCookie(authUser.Email, true);
+            FormsAuthentication.SetAuthCookie(authUser.Uuid, true);
         }
 
         public static void RemoveAuthenticatedUser()

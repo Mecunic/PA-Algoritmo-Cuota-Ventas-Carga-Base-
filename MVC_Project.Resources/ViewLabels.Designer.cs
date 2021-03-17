@@ -142,7 +142,7 @@ namespace MVC_Project.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Welcome to Template Project.
+        ///   Looks up a localized string similar to Welcome to the Bepensa Bebidas Quota and Loading System.
         /// </summary>
         public static string HOME_TITLE {
             get {
