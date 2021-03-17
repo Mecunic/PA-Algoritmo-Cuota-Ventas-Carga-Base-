@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using Hangfire;
 using Microsoft.Owin;
-using Owin;
 using MVC_Project.Jobs.App_Code;
-using MVC_Project.Jobs;
+
+using Owin;
 
 [assembly: OwinStartupAttribute(typeof(MVC_Project.Jobs.Startup))]
 namespace MVC_Project.Jobs
@@ -17,16 +14,21 @@ namespace MVC_Project.Jobs
         {
             bool NotificationProcessEnabled = false;
             string JobName = string.Empty;
-            string JobCron = string.Empty;
+            string JobCron = string.Empty,
+                JobHPagosCron = string.Empty;
             string Dashboardurl = string.Empty;
+            string sAttempts = string.Empty;
+            int Attempts = 0;
 
             ConfigureAuth(app);
 
             try
             {
+                #region Configuración basica y Conexión a Base de datos
                 GlobalConfiguration.Configuration.UseSqlServerStorage("DBConnectionString");
                 Boolean.TryParse(System.Configuration.ConfigurationManager.AppSettings["Jobs.EnabledJobs"], out NotificationProcessEnabled);
                 Dashboardurl = System.Configuration.ConfigurationManager.AppSettings["Jobs.Dashboard.Url"].ToString();
+                #endregion
 
                 if (NotificationProcessEnabled)
                 {
@@ -35,6 +37,13 @@ namespace MVC_Project.Jobs
                     RecurringJob.AddOrUpdate(JobName, () => DemoJob.DemoMethod(), JobCron, TimeZoneInfo.FindSystemTimeZoneById("Central Standard Time (Mexico)"));
                 }
 
+                int.TryParse(sAttempts, out Attempts);
+
+                GlobalJobFilters.Filters.Add(new AutomaticRetryAttribute { Attempts = Attempts, OnAttemptsExceeded = AttemptsExceededAction.Delete });
+
+                JobCron = System.Configuration.ConfigurationManager.AppSettings["Jobs.HPagos.Cron"].ToString();
+                RecurringJob.AddOrUpdate("Notificador_Historico", () => HPagosJob.ListaCedis(), JobHPagosCron, TimeZoneInfo.FindSystemTimeZoneById("Central Standard Time (Mexico)"));
+                
                 app.UseHangfireDashboard(Dashboardurl, new DashboardOptions
                 {
                     DisplayStorageConnectionString = false,
