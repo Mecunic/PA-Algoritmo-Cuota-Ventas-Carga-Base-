@@ -21,10 +21,5 @@ namespace MVC_Project.Jobs
             #endregion
         }
 
-        [DisableConcurrentExecution(0)]
-        public static void StartBBVA()
-        {
-            //pruebas
-        }
     }
 }
